@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- #strings:title# -->
+    <!-- prettier-ignore -->
+    <meta charset="utf-8">
+    <title>play</title>
+    <!-- prettier-ignore -->
+    <meta name="viewport" content="width=device-width">
+    <!-- #icon# -->
+    <!-- prettier-ignore -->
+    <link rel="icon" href="{favicon}">
+    <!-- prettier-ignore -->
+    <link rel="manifest" href="{manifest}">
+    <style>
+      :root {
+        font-family: system-ui, Helvetica, Arial, sans-serif;
+        /* Support light and dark mode. */
+        color-scheme: light dark;
+
+        /* #theme# Light mode. */
+        color: #213547;
+        background-color: #ffffff;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          /* #theme# Dark mode. */
+          color: rgba(255, 255, 255, 0.87);
+          background-color: #242424;
+        }
+      }
+
+      /* All elements and pseudo-elements sizing includes borders and padding. */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        /* Any elements rendered are full-bleed. */
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- prettier-ignore -->
+    <script type="module">{js}</script>
+    <play-app></play-app>
+  </body>
+</html>

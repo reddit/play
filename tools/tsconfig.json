@@ -1,0 +1,15 @@
+{
+  "extends": "./base-tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+
+    // tsc is only used for type-checking.
+    "noEmit": true,
+
+    "lib": ["ES2022"],
+
+    "rootDir": ".."
+  },
+  "include": [".", "../package.json", "../src/ui/assets/manifest.json"]
+}

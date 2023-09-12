@@ -1,0 +1,5 @@
+{
+  // Only build references.
+  "files": [],
+  "references": [{"path": "examples"}, {"path": "src"}, {"path": "tools"}]
+}

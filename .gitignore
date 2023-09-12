@@ -1,0 +1,8 @@
+/node_modules/
+
+tsconfig.tsbuildinfo
+
+# #build:dist#
+/dist/
+# #build:tsd#
+/src/bundler/tsd.json

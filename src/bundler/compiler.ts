@@ -1,0 +1,56 @@
+import * as tsvfs from '@typescript/vfs'
+import ts from 'typescript'
+import tsd from './tsd.json' assert {type: 'json'}
+
+export const appEntrypointFilename = '/src/main.tsx'
+
+export function newTSEnv(): tsvfs.VirtualTypeScriptEnvironment {
+  const system = tsvfs.createSystem(new Map())
+  const env = tsvfs.createVirtualTypeScriptEnvironment(
+    system,
+    [],
+    ts,
+    compilerOpts()
+  )
+  for (const [name, data] of virtualFiles().entries())
+    env.createFile(name, data)
+  return env
+}
+
+export function compile(tsEnv: tsvfs.VirtualTypeScriptEnvironment): string {
+  const src =
+    tsEnv.languageService.getEmitOutput(appEntrypointFilename).outputFiles[0]
+      ?.text ?? ''
+  // Adapt bundle CommonJS output to format expected by runtime-lite.
+  return 'module.exports = {}; const {exports} = module; ' + src
+}
+
+function virtualFiles(): Map<string, string> {
+  return new Map([
+    ...Object.entries(tsd),
+    [appEntrypointFilename, ' '] // empty files are immediately deleted!
+  ])
+}
+
+function compilerOpts(): ts.CompilerOptions {
+  // Match config used in production apps.
+  return {
+    jsx: ts.JsxEmit.React,
+    jsxFactory: 'Devvit.createElement',
+    jsxFragmentFactory: 'Devvit.Fragment',
+
+    lib: ['ES2020', 'WebWorker'],
+
+    module: ts.ModuleKind.CommonJS,
+
+    // Maximize friendly type checking.
+    noImplicitOverride: true,
+    strict: true,
+
+    // Provided types are already checked.
+    skipLibCheck: true,
+    skipDefaultLibCheck: true,
+
+    target: ts.ScriptTarget.ES2020
+  }
+}
