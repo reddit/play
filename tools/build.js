@@ -76,7 +76,7 @@ const options = {
   // Bundle pen worker as text so it can be loaded in a worker.
   loader: {'.worker.min.js': 'text'},
   logLevel: `info`,
-  logOverride: {'direct-eval': 'info'}, // Suppress upstream protos eval().
+  logOverride: {'direct-eval': 'verbose'}, // Suppress upstream protos eval().
   outdir: 'dist', // #build:dist#
   sourcemap: 'linked',
   plugins: [plugin],
