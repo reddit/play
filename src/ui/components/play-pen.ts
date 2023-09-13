@@ -28,7 +28,7 @@ export class PlayPen extends LitElement {
       display: flex;
       flex-direction: column;
 
-      /* Fill the viewport. */
+      /* Fill available space. */
       height: 100%;
     }
 

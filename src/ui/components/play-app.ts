@@ -41,7 +41,7 @@ export class PlayApp extends LitElement {
             render: ctx => {
               const [counter, setCounter] = ctx.useState(0)
               return (
-                <vstack alignment='center middle'>
+                <vstack alignment='center middle' height={100}>
                   <hstack alignment='center middle' gap='medium' padding='medium'>
                     <text size='xxlarge' style='heading'>
                       Hello! 👋
