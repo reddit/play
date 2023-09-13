@@ -17,7 +17,11 @@ Devvit.addCustomPostType({
             Click me!
           </button>
         </hstack>
-        {counter && <text>{`You clicked ${counter} time(s)!`}</text>}
+        {counter ? (
+          <text>{`You clicked ${counter} time(s)!`}</text>
+        ) : (
+          <text>&nbsp;</text>
+        )}
       </vstack>
     )
   }
