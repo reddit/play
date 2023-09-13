@@ -24,7 +24,6 @@ test('an indented program is unindented to the depth of the first nonblank line'
       }
     })
 
-    export default Devvit
-    "
+    export default Devvit"
   `)
 })
