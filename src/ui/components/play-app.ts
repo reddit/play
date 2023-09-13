@@ -33,7 +33,7 @@ export class PlayApp extends LitElement {
   override render() {
     return html`
       <play-pen>
-        <script lang="tsx">
+        <script type="devvit">
           import {Devvit} from '@devvit/public-api'
 
           Devvit.addCustomPostType({
