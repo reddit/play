@@ -42,7 +42,7 @@ export class PlayPen extends LitElement {
     }
   `
 
-  @queryAssignedElements({selector: 'script[type=devvit]'})
+  @queryAssignedElements({selector: 'script[type="application/devvit"]'})
   private _scripts!: HTMLScriptElement[]
   #pen: Pen = Pen()
 
