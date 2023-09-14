@@ -2,18 +2,14 @@
   "//": "#build:dist# #build:tsd# #strings:description# #strings:keywords# #url# #version#",
   "author": "Reddit",
   "bugs": "https://github.com/reddit/devvit-play/issues",
-  "bundlesize": [
-    {
-      "path": "dist/play-*.html",
-      "maxSize": "2.03 MB"
-    },
-    {
-      "path": "dist/play-pen.js",
-      "maxSize": "2.63 MB"
+  "filesize": {
+    "dist/play-pen.js": {
+      "brotli": "1.9 MB"
     }
-  ],
+  },
   "description": "Devvit app :playground.",
   "devDependencies": {
+    "@ampproject/filesize": "4.3.0",
     "@codemirror/autocomplete": "6.9.0",
     "@codemirror/lang-javascript": "6.2.1",
     "@codemirror/language": "6.9.0",
@@ -25,7 +21,6 @@
     "@devvit/public-api": "0.10.5-next-2023-09-11-f52a6ae79.0",
     "@devvit/runtime-lite": "0.10.5-next-2023-09-11-f52a6ae79.0",
     "@typescript/vfs": "1.5.0",
-    "bundlesize": "0.18.1",
     "codemirror": "6.0.1",
     "esbuild": "0.19.2",
     "lit": "2.8.0",
@@ -72,7 +67,7 @@
   "scripts": {
     "start": "tools/build.js --watch",
     "build": "tools/build.js && tsc --build",
-    "test": "npm run formatter -- --check && npm run test:types && npm run test:unit && npm run build && bundlesize",
+    "test": "npm run formatter -- --check && npm run test:types && npm run test:unit && npm run build && filesize",
     "test:types": "tsc",
     "test:unit": "vitest --reporter=dot --run",
     "clean": "rm -rf dist src/bundler/tsd.json",

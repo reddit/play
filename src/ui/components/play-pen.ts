@@ -4,7 +4,6 @@ import {LitElement, css, html} from 'lit'
 import {
   customElement,
   eventOptions,
-  property,
   queryAssignedElements,
   state
 } from 'lit/decorators.js'
