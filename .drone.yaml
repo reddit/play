@@ -6,14 +6,14 @@ trigger:
 steps:
   - name: install
     pull: if-not-exists
-    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18
     pull: always
     commands:
-      - npm install --no-fund
+      - npm ci --no-fund
 
   - name: test:format
     pull: if-not-exists
-    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18
     pull: always
     commands:
       - npm run test:format
@@ -22,7 +22,7 @@ steps:
 
   - name: test:types
     pull: if-not-exists
-    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18
     pull: always
     commands:
       - npm run test:types
@@ -31,7 +31,7 @@ steps:
 
   - name: test:unit
     pull: if-not-exists
-    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18
     pull: always
     commands:
       - npm run test:unit
@@ -40,7 +40,7 @@ steps:
 
   - name: build
     pull: if-not-exists
-    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18
     pull: always
     commands:
       - npm run build
@@ -49,7 +49,7 @@ steps:
 
   - name: test:size
     pull: if-not-exists
-    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18
     pull: always
     commands:
       - npm run test:size
