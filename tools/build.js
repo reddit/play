@@ -7,9 +7,9 @@
 // --no-warnings shebang works around JSON import warnings. See
 // https://github.com/nodejs/node/issues/27355.
 
-import * as esbuild from 'esbuild'
-import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
+import esbuild from 'esbuild'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import pkg from '../package.json' assert {type: 'json'}
 import manifest from '../src/ui/assets/manifest.json' assert {type: 'json'}
 import {readTSDs} from './tsd.js'
@@ -67,33 +67,40 @@ async function pluginOnEnd(result) {
   await fs.writeFile(outFilename, html)
 }
 
-/** @type {esbuild.BuildOptions} */
-const options = {
-  bundle: true,
-  define: {'globalThis.play.version': `'${version}'`}, // #defines#
-  entryPoints: [path.join('src', 'ui', 'components', 'play-app.ts')], // #build:src#
-  format: 'esm',
-  // Bundle pen worker as text so it can be loaded in a worker.
-  loader: {'.worker.min.js': 'text'},
-  logLevel: `info`,
-  logOverride: {'direct-eval': 'verbose'}, // Suppress upstream protos eval().
-  outdir: 'dist', // #build:dist#
-  sourcemap: 'linked',
-  plugins: [plugin],
-  minify: !watch,
-  treeShaking: !watch,
-  write: false // Written by plugin.
-}
-
 await fs.writeFile(
   path.join('src', 'bundler', 'tsd.json'), // #build:tsd#
   JSON.stringify(await readTSDs(), null, 2)
 )
 
+/** @type {esbuild.BuildOptions} */
+const opts = {
+  bundle: true,
+  define: {'globalThis.play.version': `'${version}'`}, // #defines#
+  format: 'esm',
+  // Bundle pen worker as text so it can be loaded in a worker.
+  loader: {'.worker.min.js': 'text'},
+  logLevel: `info`, // Print the port and build demarcations.
+  outdir: 'dist', // #build:dist#
+  sourcemap: 'linked'
+}
+const appOpts = {
+  ...opts,
+  entryPoints: [path.join('src', 'ui', 'components', 'play-app.ts')], // #build:src#
+  minify: !watch,
+  plugins: [plugin],
+  write: false // Written by plugin.
+}
 if (watch) {
-  const ctx = await esbuild.context(options)
+  const ctx = await esbuild.context(appOpts)
   await Promise.race([
     ctx.watch(),
     ctx.serve({port: 1234, servedir: 'dist'}) // #build:dist#
   ])
-} else await esbuild.build(options)
+} else
+  await Promise.all([
+    esbuild.build(appOpts),
+    esbuild.build({
+      ...opts,
+      entryPoints: [path.join('src', 'ui', 'components', 'play-pen.ts')] // #build:src#
+    })
+  ])

@@ -6,6 +6,10 @@
     {
       "path": "dist/play-*.html",
       "maxSize": "2.03 MB"
+    },
+    {
+      "path": "dist/play-pen.js",
+      "maxSize": "2.63 MB"
     }
   ],
   "description": "Devvit app :playground.",
@@ -31,6 +35,19 @@
   },
   "engines": {
     "node": ">=18.7.0"
+  },
+  "exports": {
+    "./pen": {
+      "types": "./dist/ui/components/play-pen.d.ts",
+      "import": "./dist/play-pen.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "pen": [
+        "./dist/ui/components/play-pen.d.ts"
+      ]
+    }
   },
   "homepage": "https://github.com/reddit/devvit-play",
   "keywords": [

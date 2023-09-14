@@ -39,6 +39,10 @@ The contents of each bundle generated can be evaluated through its source map.
 [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview) can be used
 to generate reports for bundle breakdowns.
 
+```
+npx source-map-explorer --gzip --no-border-checks dist/play-pen.js
+```
+
 ## Ignoring OS Cache Files
 
 Unwanted environment-specific files such as `.DS_Store` and `Thumbs.db` should

@@ -8,16 +8,39 @@ Devvit app :playground.<!-- #strings:description# -->
 npm install --save-prefix= @devvit/play
 ```
 
-<!-- to-do: add <play-pen> integration note. -->
-
 See the [changelog](changelog.md) for release notes.
+
+### Usage
+
+Import play in your JavaScript bundle to define the `play-pen` element:
+
+```ts
+import '@devvit/play/pen'
+```
+
+Add a pen to your HTML markup:
+
+```html
+<play-pen>
+  <script type="application/devvit">
+    import {Devvit} from '@devvit/public-api'
+
+    Devvit.addCustomPostType({
+      name: 'Say Hello',
+      render: () => <text>Hello!</text>
+    })
+
+    export default Devvit
+  </script>
+</play-pen>
+```
 
 ### Artifacts
 
-Published each release and under `dist/`:
+Published releases include:
 
 - **play-.\*.html**: portable playground.
-<!-- to-do: - **play-pen.js**: `<play-pen />` web component. -->
+- **play-pen.js**: `play-pen` element.
 
 ## Development
 
@@ -27,6 +50,7 @@ npm start
 ```
 
 Visit **[http://localhost:1234](http://localhost:1234)** in your web browser.
+Run `npm test` to execute tests.
 
 See [supplemental development notes](docs/development.md).
 
@@ -48,7 +72,7 @@ See [supplemental development notes](docs/development.md).
 
 ### Project Structure
 
-- **docs**/: play documentation.
+- **docs**/: supplemental play documentation.
 - **examples**/: projects that play well.
 - **src**/: source inputs.
 - **tools**/: development tools.
