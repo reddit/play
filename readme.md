@@ -8,7 +8,7 @@ Devvit app :playground.<!-- #strings:description# -->
 npm install --save-prefix= @devvit/play
 ```
 
-See the [changelog](changelog.md) for release notes.
+See the [changelog](docs/changelog.md) for release notes.
 
 ### Usage
 
