@@ -29,7 +29,7 @@
     "vitest": "0.34.4"
   },
   "engines": {
-    "node": ">=18.7.0"
+    "node": ">=18.17.0"
   },
   "exports": {
     "./pen": {
@@ -65,14 +65,16 @@
     "url": "https://github.com/reddit/devvit-play.git"
   },
   "scripts": {
-    "start": "tools/build.js --watch",
     "build": "tools/build.js && tsc --build",
-    "test": "npm run formatter -- --check && npm run test:types && npm run test:unit && npm run build && filesize",
-    "test:types": "tsc",
-    "test:unit": "vitest --reporter=dot --run",
     "clean": "rm -rf dist src/bundler/tsd.json",
     "format": "npm run formatter -- --write",
-    "formatter": "prettier --cache --log-level warn './**/*.{css,html,js,json,md,ts}'"
+    "formatter": "prettier --cache --log-level warn './**/*.{css,html,js,json,md,ts}'",
+    "start": "tools/build.js --watch",
+    "test:format": "npm run formatter -- --check",
+    "test:size": "filesize",
+    "test:types": "tsc",
+    "test:unit": "vitest --reporter=dot --run",
+    "test": "npm run test:format && npm run test:types && npm run test:unit && npm run build && npm run test:size"
   },
   "type": "module",
   "version": "0.0.0"

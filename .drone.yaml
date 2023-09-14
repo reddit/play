@@ -1,0 +1,57 @@
+kind: pipeline
+name: default
+trigger:
+  event:
+    - push
+steps:
+  - name: install
+    pull: if-not-exists
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    pull: always
+    commands:
+      - npm install --no-fund
+
+  - name: test:format
+    pull: if-not-exists
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    pull: always
+    commands:
+      - npm run test:format
+    depends_on:
+      - install
+
+  - name: test:types
+    pull: if-not-exists
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    pull: always
+    commands:
+      - npm run test:types
+    depends_on:
+      - install
+
+  - name: test:unit
+    pull: if-not-exists
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    pull: always
+    commands:
+      - npm run test:unit
+    depends_on:
+      - install
+
+  - name: build
+    pull: if-not-exists
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    pull: always
+    commands:
+      - npm run build
+    depends_on:
+      - install
+
+  - name: test:size
+    pull: if-not-exists
+    image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18-dev
+    pull: always
+    commands:
+      - npm run test:size
+    depends_on:
+      - build
