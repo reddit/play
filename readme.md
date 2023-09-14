@@ -94,8 +94,8 @@ tags used with `rg '#[a-z0-9:-]+#'`.
   you write a lot of it.
 - Open-source for everyone. This repo was started with the intention to be
   open-sourced as soon as possible.
-  - Avoid closed-source Reddit dependencies. All dependencies must be available
-    publicly.
+  - All dependencies must be available publicly. Avoid closed-source Reddit
+    dependencies.
   - Avoid Reddit-specific branding.
 - Code should be written to be read. We value good context. This often means
   including short inline or accompanying docs.

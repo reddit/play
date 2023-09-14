@@ -1,14 +1,10 @@
 import penWorker from '@devvit/previews/dist/pen.worker.min.js'
+import type {LinkedBundle, Metadata} from '@devvit/protos'
 import {BrowserLiteClient} from '@devvit/runtime-lite/BrowserLiteClient.js'
-import {LitElement, css, html} from 'lit'
+import {LitElement, css, html, type PropertyValueMap} from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
-import {SourceChanged} from '../events.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
-import type {Metadata} from '@devvit/protos'
-import {appEntrypointFilename, compile} from '../../bundler/compiler.js'
-import {link} from '../../bundler/linker.js'
-import type {Pen} from '../../types/pen.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -49,7 +45,7 @@ export class PlayPreview extends LitElement {
     `
   }
 
-  @property({attribute: false}) pen!: Pen
+  @property({attribute: false}) bundle?: LinkedBundle | undefined
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
     new Blob([penWorker], {type: 'text/javascript'})
@@ -60,45 +56,29 @@ export class PlayPreview extends LitElement {
     'devvit-user': {values: ['t2_user']}
   }
 
-  override connectedCallback() {
-    super.connectedCallback()
-    globalThis.addEventListener(
-      SourceChanged,
-      <(event: Event) => void>(<unknown>this.#onSourceChanged)
-    )
-  }
-
-  override disconnectedCallback() {
-    globalThis.removeEventListener(
-      SourceChanged,
-      <(event: Event) => void>(<unknown>this.#onSourceChanged)
-    )
-    super.disconnectedCallback()
+  protected override async willUpdate(
+    changedProperties: PropertyValueMap<any> | Map<PropertyKey, unknown>
+  ): Promise<void> {
+    if (changedProperties.has('bundle') && this.bundle) {
+      this._client.quit()
+      try {
+        await this._client.loadBundle(this.bundle)
+      } catch (e) {
+        console.error(e)
+      }
+      // to-do: fix hack to stimulate a reload.
+      this.#meta = {...this.#meta}
+      this.requestUpdate()
+    }
   }
 
   override render() {
     return html`<div class="preview">
-      ${this.pen.bundle &&
+      ${this.bundle &&
       html`<devvit-preview
         .meta="${this.#meta}"
         .client=${this._client}
       ></devvit-preview>`}
     </div>`
-  }
-
-  #onSourceChanged = async (ev: CustomEvent<{src: string}>): Promise<void> => {
-    this.pen.env.updateFile(appEntrypointFilename, ev.detail.src)
-    const build = link(compile(this.pen.env))
-
-    this._client.quit()
-    try {
-      await this._client.loadBundle(build)
-    } catch (e) {
-      console.error(e)
-    }
-    this.pen.bundle = build
-    // to-do: fix hack to stimulate a reload.
-    this.#meta = {...this.#meta}
-    this.requestUpdate()
   }
 }

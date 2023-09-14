@@ -9,9 +9,8 @@ import {LitElement, css, html} from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
 import ts, {displayPartsToString} from 'typescript'
 import {appEntrypointFilename} from '../../bundler/compiler.js'
-import {type Pen} from '../../types/pen.js'
 import {throttle} from '../../utils/throttle.js'
-import {SourceChangedEvent} from '../events.js'
+import {Bubble} from '../bubble.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -32,7 +31,7 @@ export class PlayEditor extends LitElement {
     }
   `
 
-  @property({attribute: false}) pen!: Pen
+  @property({attribute: false}) env!: tsvfs.VirtualTypeScriptEnvironment
   @query('div') private _root!: HTMLDivElement
 
   #state?: EditorState
@@ -42,23 +41,22 @@ export class PlayEditor extends LitElement {
   }
 
   override firstUpdated(): void {
-    const src = this.pen.env.getSourceFile(appEntrypointFilename)?.text ?? ''
+    const src = this.env.getSourceFile(appEntrypointFilename)?.text ?? ''
     this.#state = EditorState.create({
       extensions: [
         basicSetup,
         tsxLanguage,
         linter(
           async (_view: EditorView): Promise<Diagnostic[]> => {
-            const diagnostics =
-              this.pen.env.languageService.getSemanticDiagnostics(
-                appEntrypointFilename
-              )
+            const diagnostics = this.env.languageService.getSemanticDiagnostics(
+              appEntrypointFilename
+            )
             return diagnostics.map(tsDiagnosticToMirrorDiagnostic)
           },
           {delay: 100}
         ),
-        tsAutocomplete(this.pen.env),
-        tsHoverTip(this.pen.env)
+        tsAutocomplete(this.env),
+        tsHoverTip(this.env)
       ],
       doc: src
     })
@@ -78,7 +76,7 @@ export class PlayEditor extends LitElement {
 
   #dispatchThrottledSourceChangedEvent: (code: string) => void = throttle(
     (code: string) => {
-      this.dispatchEvent(SourceChangedEvent(code))
+      this.dispatchEvent(Bubble('edit', code))
     },
     500
   )

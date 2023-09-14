@@ -1,13 +1,21 @@
+import type {LinkedBundle} from '@devvit/protos'
+import * as tsvfs from '@typescript/vfs'
 import {LitElement, css, html} from 'lit'
 import {
   customElement,
   eventOptions,
-  queryAssignedElements
+  property,
+  queryAssignedElements,
+  state
 } from 'lit/decorators.js'
-
-import {Pen} from '../../types/pen.js'
+import {
+  appEntrypointFilename,
+  compile,
+  newTSEnv
+} from '../../bundler/compiler.js'
+import {link} from '../../bundler/linker.js'
 import {unindent} from '../../utils/unindent.js'
-import {SourceChangedEvent} from '../events.js'
+
 import './play-editor.js'
 import './play-preview.js'
 
@@ -44,13 +52,17 @@ export class PlayPen extends LitElement {
 
   @queryAssignedElements({selector: 'script[type="application/devvit"]'})
   private _scripts!: HTMLScriptElement[]
-  #pen: Pen = Pen()
+  @state() private _bundle?: LinkedBundle | undefined
+  readonly #env: tsvfs.VirtualTypeScriptEnvironment = newTSEnv()
 
   override render() {
     return html`
       <div>
-        <play-editor .pen=${this.#pen}></play-editor>
-        <play-preview .pen=${this.#pen}></play-preview>
+        <play-editor
+          @edit=${(ev: CustomEvent<string>) => this.#build(ev.detail)}
+          .env=${this.#env}
+        ></play-editor>
+        <play-preview .bundle=${this._bundle}></play-preview>
       </div>
       <slot @slotchange=${this._onSlotChange}></slot>
     `
@@ -59,6 +71,11 @@ export class PlayPen extends LitElement {
   @eventOptions({once: true}) private _onSlotChange(): void {
     // If <script>...</script> exists, get the program inside.
     const src = unindent(this._scripts[0]?.innerText ?? '')
-    this.dispatchEvent(SourceChangedEvent(src))
+    this.#build(src)
+  }
+
+  #build(src: string): void {
+    this.#env.updateFile(appEntrypointFilename, src)
+    this._bundle = link(compile(this.#env))
   }
 }
