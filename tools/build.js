@@ -15,11 +15,9 @@ import manifest from '../src/ui/assets/manifest.json' assert {type: 'json'}
 import {readTSDs} from './tsd.js'
 
 const watch = process.argv.includes('--watch')
-const timestamp = new Date().toISOString().split(':').slice(0, 2).join('')
-const version = `${pkg.version}+${timestamp}` // #version#
 const outFilename = path.join(
   'dist',
-  watch ? 'index.html' : `play-${version}.html`
+  watch ? 'index.html' : `play-${pkg.version}.html`
 )
 
 /** @type {esbuild.Plugin} */
@@ -40,8 +38,8 @@ async function pluginOnEnd(result) {
   }
   if (watch)
     delete (/** @type {{start_url?: string}} */ (manifestCopy).start_url) // Suppress warning.
-  manifestCopy.version = version // #version#
-  manifestCopy.version_name = `${pkg.version}${watch ? 'dev' : ''}` // #version#
+  manifestCopy.version = pkg.version
+  manifestCopy.version_name = `${pkg.version}${watch ? '.dev' : ''}` // #version#
   const manifestURI = `data:application/json,${encodeURIComponent(
     JSON.stringify(manifestCopy)
   )}`
@@ -75,7 +73,7 @@ await fs.writeFile(
 /** @type {esbuild.BuildOptions} */
 const opts = {
   bundle: true,
-  define: {'globalThis.play.version': `'${version}'`}, // #defines#
+  define: {'globalThis.play.version': `'${pkg.version}'`}, // #defines#
   format: 'esm',
   // Bundle pen worker as text so it can be loaded in a worker.
   loader: {'.worker.min.js': 'text'},

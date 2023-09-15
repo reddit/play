@@ -69,12 +69,15 @@
     "clean": "rm -rf dist src/bundler/tsd.json",
     "format": "npm run formatter -- --write",
     "formatter": "prettier --cache --log-level warn './**/*.{css,html,js,json,md,ts}'",
+    "preversion": "[ -z \"$(git status -z)\" ]",
+    "prepublishOnly": "! git symbolic-ref --quiet HEAD || git push --follow-tags origin \"$(git branch --show-current)\"",
     "start": "tools/build.js --watch",
     "test:format": "npm run formatter -- --check",
     "test:size": "filesize",
     "test:types": "tsc",
     "test:unit": "vitest --reporter=dot --run",
-    "test": "npm run test:format && npm run test:types && npm run test:unit && npm run build && npm run test:size"
+    "test": "npm run test:format && npm run test:types && npm run test:unit && npm run build && npm run test:size",
+    "version": "npm test"
   },
   "type": "module",
   "version": "0.0.0"

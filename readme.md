@@ -64,8 +64,6 @@ See [supplemental development notes](docs/development.md).
   snapshots.
 - `run format`: apply lint fixes automatically where available.
 - `run build`: compile source inputs to artifacts under `dist/`.
-- `publish`: publish a new version to NPM. See
-  [versioning](docs/versioning.md).<!-- to-do: add -->
 
 💡 Add `--` to pass arguments to the script command. For example,
 `npm run test:unit -- --update` to update snapshots.
