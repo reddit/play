@@ -19,6 +19,6 @@ npm ci
 
 # This will create a new version commit on the detached `HEAD` like
 # `v1.2.4-dev+2000-01-02.3`.
-npm version prerelease --preid="-dev+$(TZ=utc date +%F)"
+npm version prerelease --preid="dev+$(TZ=utc date +%F)"
 
 npm publish --tag next
