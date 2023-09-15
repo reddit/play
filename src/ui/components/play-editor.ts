@@ -6,10 +6,17 @@ import {hoverTooltip} from '@codemirror/view'
 import * as tsvfs from '@typescript/vfs'
 import {EditorView, basicSetup} from 'codemirror'
 import {LitElement, css, html} from 'lit'
-import {customElement, property, query} from 'lit/decorators.js'
+import {
+  customElement,
+  eventOptions,
+  property,
+  query,
+  queryAssignedElements
+} from 'lit/decorators.js'
 import ts, {displayPartsToString} from 'typescript'
 import {appEntrypointFilename} from '../../bundler/compiler.js'
 import {throttle} from '../../utils/throttle.js'
+import {unindent} from '../../utils/unindent.js'
 import {Bubble} from '../bubble.js'
 
 declare global {
@@ -32,17 +39,18 @@ export class PlayEditor extends LitElement {
   `
 
   @property({attribute: false}) env!: tsvfs.VirtualTypeScriptEnvironment
+
   @query('div') private _root!: HTMLDivElement
 
-  #state?: EditorState
-
-  protected override render(): unknown {
-    return html`<div class="editor"></div>`
-  }
+  @queryAssignedElements({
+    flatten: true,
+    selector: 'script[type="application/devvit"]'
+  })
+  private _scripts!: HTMLScriptElement[]
+  #editor!: EditorView
 
   override firstUpdated(): void {
-    const src = this.env.getSourceFile(appEntrypointFilename)?.text ?? ''
-    this.#state = EditorState.create({
+    const init = EditorState.create({
       extensions: [
         basicSetup,
         tsxLanguage,
@@ -57,21 +65,35 @@ export class PlayEditor extends LitElement {
         ),
         tsAutocomplete(this.env),
         tsHoverTip(this.env)
-      ],
-      doc: src
+      ]
     })
-    const editor = new EditorView({
-      state: this.#state,
-      parent: this._root,
+    this.#editor = new EditorView({
       dispatch: async transaction => {
-        editor.update([transaction])
+        this.#editor.update([transaction])
 
         if (transaction.docChanged) {
-          const code = transaction.state.doc.sliceString(0)
-          this.#dispatchThrottledSourceChangedEvent(code || ' ') // empty strings trigger file deletion!
+          const src = transaction.state.doc.sliceString(0)
+          this.#dispatchThrottledSourceChangedEvent(src)
         }
-      }
+      },
+      parent: this._root,
+      state: init
     })
+  }
+
+  protected override render(): unknown {
+    return html`<div class="editor"></div>
+      <slot @slotchange=${this._onSlotChange} />`
+  }
+
+  @eventOptions({once: true}) private _onSlotChange(): void {
+    // If <script /> exists, get the program inside.
+    const src = unindent(this._scripts[0]?.innerText ?? '')
+    const transaction = this.#editor.state.update({
+      changes: {from: 0, to: this.#editor.state.doc.length, insert: src}
+    })
+    this.#editor.update([transaction])
+    this.#dispatchThrottledSourceChangedEvent(src)
   }
 
   #dispatchThrottledSourceChangedEvent: (code: string) => void = throttle(

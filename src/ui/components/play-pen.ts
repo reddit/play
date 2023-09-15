@@ -1,19 +1,13 @@
 import type {LinkedBundle} from '@devvit/protos'
 import * as tsvfs from '@typescript/vfs'
 import {LitElement, css, html} from 'lit'
-import {
-  customElement,
-  eventOptions,
-  queryAssignedElements,
-  state
-} from 'lit/decorators.js'
+import {customElement, state} from 'lit/decorators.js'
 import {
   appEntrypointFilename,
   compile,
   newTSEnv
 } from '../../bundler/compiler.js'
 import {link} from '../../bundler/linker.js'
-import {unindent} from '../../utils/unindent.js'
 
 import './play-editor.js'
 import './play-preview.js'
@@ -49,32 +43,25 @@ export class PlayPen extends LitElement {
     }
   `
 
-  @queryAssignedElements({selector: 'script[type="application/devvit"]'})
-  private _scripts!: HTMLScriptElement[]
   @state() private _bundle?: LinkedBundle | undefined
   readonly #env: tsvfs.VirtualTypeScriptEnvironment = newTSEnv()
 
-  override render() {
+  protected override render() {
     return html`
       <div>
         <play-editor
           @edit=${(ev: CustomEvent<string>) => this.#build(ev.detail)}
           .env=${this.#env}
-        ></play-editor>
+          ><slot
+        /></play-editor>
         <play-preview .bundle=${this._bundle}></play-preview>
       </div>
-      <slot @slotchange=${this._onSlotChange}></slot>
     `
   }
 
-  @eventOptions({once: true}) private _onSlotChange(): void {
-    // If <script>...</script> exists, get the program inside.
-    const src = unindent(this._scripts[0]?.innerText ?? '')
-    this.#build(src)
-  }
-
   #build(src: string): void {
-    this.#env.updateFile(appEntrypointFilename, src)
+    this.#env.updateFile(appEntrypointFilename, src || ' ') // empty strings trigger file deletion!
+    if (/^\s*$/.test(src)) return // Skip blank source.
     this._bundle = link(compile(this.#env))
   }
 }

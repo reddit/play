@@ -64,15 +64,16 @@ export class PlayPreview extends LitElement {
       try {
         await this._client.loadBundle(this.bundle)
       } catch (e) {
+        // to-do: report errors to users.
         console.error(e)
       }
-      // to-do: fix hack to stimulate a reload.
+      // Re-render the preview.
       this.#meta = {...this.#meta}
       this.requestUpdate()
     }
   }
 
-  override render() {
+  protected override render() {
     return html`<div class="preview">
       ${this.bundle &&
       html`<devvit-preview
