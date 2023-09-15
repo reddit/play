@@ -7,7 +7,7 @@
 git checkout main && git pull
 
 # Review the changes since the last release.
-git log "$(git describe --tags --abbrev=0)..@" --oneline`
+git log "$(git describe --tags --abbrev=0)..@" --oneline
 
 # Document changes since the last release.
 vim changelog.md
