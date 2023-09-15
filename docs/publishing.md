@@ -21,7 +21,8 @@ git commit -m 'Version changelog'
 # Version (patch, minor, or major), build, and test a release.
 VERSION_TYPE=patch tools/publish-stable.bash
 
-# Upload the play-*.html artifact.
+# Upload the play-*.html artifact. Click "generate release notes". Append
+# `[**Repo changelog**](https://github.com/reddit/devvit-play/blob/main/docs/changelog.md)`.
 open https://github.com/reddit/devvit-play/releases/new
 ```
 
