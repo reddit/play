@@ -23,6 +23,8 @@ npm ci
 # This will create a new version commit on the detached `HEAD` like
 # `v1.2.4-dev.2000-01-02T0304.0`. Time is used to prevent collision by passing
 # as a prerelease version instead of metadata. The base number (.0) seems fixed.
-npm version prerelease --preid="dev.$(TZ=utc date +%FT%H%M)"
+# The _prior_ commit hash is for quick lookup. The version bump patch is not
+# committed for unstable releases.
+npm version prerelease --preid="dev.$(TZ=utc date +%FT%H%M).$(git rev-parse --short HEAD)"
 
 npm publish --tag next
