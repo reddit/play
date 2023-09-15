@@ -39,7 +39,6 @@ async function pluginOnEnd(result) {
   if (watch)
     delete (/** @type {{start_url?: string}} */ (manifestCopy).start_url) // Suppress warning.
   manifestCopy.version = pkg.version
-  manifestCopy.version_name = `${pkg.version}${watch ? '.dev' : ''}` // #version#
   const manifestURI = `data:application/json,${encodeURIComponent(
     JSON.stringify(manifestCopy)
   )}`

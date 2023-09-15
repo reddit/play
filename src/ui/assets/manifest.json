@@ -1,5 +1,5 @@
 {
-  "//": "#icon# #strings:description# #strings:title# #theme# #version#",
+  "//": "#icon# #strings:description# #strings:title# #theme#",
   "background_color": "#123456",
   "description": "Devvit app :playground.",
   "display": "standalone",
@@ -16,6 +16,5 @@
   "orientation": "any",
   "start_url": "/",
   "theme_color": "#123456",
-  "version": "0.0.0",
-  "version_name": "0.0.0-dev"
+  "version": "0.0.0"
 }
