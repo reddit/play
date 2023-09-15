@@ -14,6 +14,9 @@ set -${V:+x}
 git fetch origin main
 git checkout origin/main
 
+# Clear outdated artifacts.
+npm run clean
+
 # Validate the installation. See `npm help ci`.
 npm ci
 

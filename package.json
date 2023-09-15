@@ -2,11 +2,6 @@
   "//": "#build:dist# #build:tsd# #strings:description# #strings:keywords# #url# #version#",
   "author": "Reddit",
   "bugs": "https://github.com/reddit/devvit-play/issues",
-  "filesize": {
-    "dist/play-pen.js": {
-      "brotli": "1.9 MB"
-    }
-  },
   "description": "Devvit app :playground.",
   "devDependencies": {
     "@ampproject/filesize": "4.3.0",
@@ -35,6 +30,14 @@
     "./pen": {
       "types": "./dist/ui/components/play-pen.d.ts",
       "import": "./dist/play-pen.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "filesize": {
+    "dist/play-pen.js": {
+      "brotli": "1.9 MB"
     }
   },
   "typesVersions": {

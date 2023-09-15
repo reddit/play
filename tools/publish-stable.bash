@@ -15,6 +15,9 @@ set -${V:+x}
 # local-only commit to revise the changelog.
 git pull
 
+# Clear outdated artifacts.
+npm run clean
+
 # Validate the installation. See `npm help ci`.
 npm ci
 

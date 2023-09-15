@@ -18,7 +18,7 @@ git add changelog.md
 # Commit the changelog.
 git commit -m 'Version changelog'
 
-# Version, build, and test a release.
+# Version (patch, minor, or major), build, and test a release.
 VERSION_TYPE=patch tools/publish-stable.bash
 
 # Upload the play-*.html artifact.
