@@ -15,10 +15,6 @@ import manifest from '../src/ui/assets/manifest.json' assert {type: 'json'}
 import {readTSDs} from './tsd.js'
 
 const watch = process.argv.includes('--watch')
-const outFilename = path.join(
-  'dist',
-  watch ? 'index.html' : `play-${pkg.version}.html`
-)
 
 /** @type {esbuild.Plugin} */
 const plugin = {
@@ -60,6 +56,10 @@ async function pluginOnEnd(result) {
     .replace('{js}', () => js)
 
   await fs.mkdir('dist', {recursive: true})
+  const outFilename = path.join(
+    'dist',
+    watch ? 'index.html' : `play-${pkg.version}.html`
+  )
   await fs.writeFile(outFilename, html)
 }
 
