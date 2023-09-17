@@ -33,8 +33,7 @@ async function pluginOnEnd(result) {
   const manifestCopy = structuredClone(manifest)
   for (const icon of manifestCopy.icons) {
     const file = await fs.readFile(path.join('src', 'ui', 'assets', icon.src)) // #build:assets#
-    // Assume PNGs. #icon#
-    icon.src = `data:image/png;base64,${file.toString('base64')}`
+    icon.src = `data:${icon.type};base64,${file.toString('base64')}`
   }
   if (watch)
     delete (/** @type {{start_url?: string}} */ (manifestCopy).start_url) // Suppress warning.
