@@ -17,12 +17,23 @@ export function newTSEnv(): tsvfs.VirtualTypeScriptEnvironment {
   return env
 }
 
-export function compile(tsEnv: tsvfs.VirtualTypeScriptEnvironment): string {
+export function compile(env: tsvfs.VirtualTypeScriptEnvironment): string {
   const src =
-    tsEnv.languageService.getEmitOutput(appEntrypointFilename).outputFiles[0]
+    env.languageService.getEmitOutput(appEntrypointFilename).outputFiles[0]
       ?.text ?? ''
   // Adapt bundle CommonJS output to format expected by runtime-lite.
   return 'module.exports = {}; const {exports} = module; ' + src
+}
+
+export function getSource(env: tsvfs.VirtualTypeScriptEnvironment): string {
+  return env.getSourceFile(appEntrypointFilename)?.text ?? ''
+}
+
+export function setSource(
+  env: tsvfs.VirtualTypeScriptEnvironment,
+  src: string
+): void {
+  env.updateFile(appEntrypointFilename, src || ' ') // empty strings trigger file deletion!
 }
 
 function virtualFiles(): Map<string, string> {
