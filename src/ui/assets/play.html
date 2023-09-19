@@ -14,13 +14,37 @@
     <link rel="manifest" href="{manifest}">
     <style>
       :root {
-        font-family: system-ui, Helvetica, Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+          'Segoe UI Symbol';
         /* Support light and dark mode. */
         color-scheme: light dark;
 
+        /* Global color definitions. */
+        --rpl-global-orangered: #ff4500;
+        --rpl-orangered-100: #ffede5;
+
+        /* #theme# Light mode color definitions. */
+        --rpl-neutral-content-weak: #576f76;
+        --rpl-neutral-content-strong: #0f1a1c;
+        --rpl-neutral-background-weak: #f9fafa;
+        --rpl-neutral-background-weak-hovered: #f2f4f5;
+        --rpl-neutral-background: #ffffff;
+        --rpl-neutral-background-hovered: #f9fafa;
+        --rpl-neutral-border: rgba(0, 0, 0, 0.2);
+        --rpl-brand-background: #d93a00;
+        --rpl-brand-background-hovered: #962900;
+        --rpl-brand-background-pressed: #7e2200;
+        --rpl-brand-onBackground: #ffffff;
+        --rpl-secondary-plain: #0f1a1c;
+        --rpl-secondary-background: #eaedef;
+        --rpl-secondary-background-hovered: #e2e7e9;
+        --rpl-secondary-background-pressed: #bec2c4;
+        --rpl-secondary-onBackground: #000000;
+
         /* #theme# Light mode. */
         color: #213547;
-        background-color: #ffffff;
+        background-color: var(--rpl-neutral-background);
       }
 
       @media (prefers-color-scheme: dark) {

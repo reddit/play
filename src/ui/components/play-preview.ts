@@ -17,17 +17,15 @@ declare global {
 export class PlayPreview extends LitElement {
   static override get styles() {
     return css`
-      :host {
-        background: #c8ccd1;
-      }
       .preview {
         /* Hide overflow on corners */
         overflow: hidden;
         border-width: 1px;
         border-style: solid;
-        border-color: #72777d;
-        border-radius: 8px;
+        border-color: var(--rpl-neutral-border);
+        border-radius: 16px;
         min-height: 320px;
+        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
 
         /* When the background is visible, the preview is loading. */
         background-color: #f8f9fa;
@@ -40,7 +38,6 @@ export class PlayPreview extends LitElement {
             #eaecf080 32px
           )
           0 / 200%;
-        box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.1) inset;
       }
     `
   }

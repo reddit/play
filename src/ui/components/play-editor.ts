@@ -29,12 +29,33 @@ declare global {
 export class PlayEditor extends LitElement {
   static override readonly styles = css`
     .editor {
-      background: #f8f9fa;
-      display: contents;
+      height: 100%;
+      width: 100%;
     }
     .cm-editor {
-      min-height: 0;
       height: 100%;
+      overflow: hidden;
+    }
+    .cm-editor.cm-focused {
+      outline: none;
+    }
+    .cm-editor .cm-gutters {
+      background-color: var(--rpl-neutral-background);
+      color: var(--rpl-neutral-content-weak);
+      border-right: none;
+    }
+    .cm-editor .cm-lineNumbers .cm-activeLineGutter {
+      background-color: var(--rpl-orangered-100);
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    .cm-editor .cm-foldGutter .cm-activeLineGutter {
+      background-color: var(--rpl-orangered-100);
+    }
+    .cm-editor .cm-activeLine {
+      background-color: var(--rpl-orangered-100);
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
     }
   `
 
@@ -54,6 +75,7 @@ export class PlayEditor extends LitElement {
       extensions: [
         basicSetup,
         tsxLanguage,
+        EditorView.lineWrapping,
         linter(
           async (_view: EditorView): Promise<Diagnostic[]> => {
             const diagnostics = this.env.languageService.getSemanticDiagnostics(
