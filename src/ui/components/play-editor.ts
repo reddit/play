@@ -76,21 +76,18 @@ export class PlayEditor extends LitElement {
         basicSetup,
         tsxLanguage,
         EditorView.lineWrapping,
-        linter(
-          async (_view: EditorView): Promise<Diagnostic[]> => {
-            const diagnostics = this.env.languageService.getSemanticDiagnostics(
-              appEntrypointFilename
-            )
-            return diagnostics.map(tsDiagnosticToMirrorDiagnostic)
-          },
-          {delay: 100}
-        ),
+        linter((_view: EditorView): Diagnostic[] => {
+          const diagnostics = this.env.languageService.getSemanticDiagnostics(
+            appEntrypointFilename
+          )
+          return diagnostics.map(tsDiagnosticToMirrorDiagnostic)
+        }),
         tsAutocomplete(this.env),
         tsHoverTip(this.env)
       ]
     })
     this.#editor = new EditorView({
-      dispatch: async transaction => {
+      dispatch: transaction => {
         this.#editor.update([transaction])
 
         if (transaction.docChanged) {
@@ -111,10 +108,9 @@ export class PlayEditor extends LitElement {
   @eventOptions({once: true}) private _onSlotChange(): void {
     // If <script /> exists, get the program inside.
     const src = unindent(this._scripts[0]?.innerText ?? '')
-    const transaction = this.#editor.state.update({
+    this.#editor.dispatch({
       changes: {from: 0, to: this.#editor.state.doc.length, insert: src}
     })
-    this.#editor.update([transaction])
     this.#dispatchThrottledSourceChangedEvent(src)
   }
 
