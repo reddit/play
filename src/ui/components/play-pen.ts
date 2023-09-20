@@ -97,6 +97,7 @@ export class PlayPen extends LitElement {
       <div>
         <play-pen-header
           @edit-name=${(ev: CustomEvent<string>) => this.#editName(ev.detail)}
+          @new=${this.#reset}
           @share=${this.#onShare}
           .name=${this._name}
         ></play-pen-header>
@@ -142,7 +143,13 @@ export class PlayPen extends LitElement {
       savePen(undefined, globalThis.localStorage, PenSave(this._name, src))
   }
 
+  #reset(): void {
+    // to-do: reset to template / starting URL in an undo-able way or show a
+    // prompt.
+  }
+
   #onShare(): void {
+    // to-do: record to clipboard and show a toast.
     savePen(
       this.url ? globalThis.location : undefined,
       this.save ? globalThis.localStorage : undefined,

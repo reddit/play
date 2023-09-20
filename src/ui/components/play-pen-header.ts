@@ -73,6 +73,7 @@ export class PlayPenHeader extends LitElement {
           appearance="plain"
           label="New"
           icon="add-outline"
+          title="Reset Program Template"
         ></play-button>
         <play-button
           @click=${() =>
@@ -84,12 +85,14 @@ export class PlayPenHeader extends LitElement {
           appearance="plain"
           label="Docs"
           icon="info-outline"
+          title="Open Documentation"
         ></play-button>
         <play-button
           @click=${() => this.dispatchEvent(Bubble('share', undefined))}
           appearance="brand"
           label="Share"
           icon="share-new-outline"
+          title="Copy Program to URL"
         ></play-button>
       </div>
     </div>`

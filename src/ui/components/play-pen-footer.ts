@@ -36,6 +36,7 @@ export class PlayPenFooter extends LitElement {
         appearance="brand"
         label="Console"
         endIcon="caret-up-outline"
+        title="Toggle Console"
         @click=${() => console.log('Toggle the console')}
       ></play-button>
       <div class="actions">
@@ -43,16 +44,19 @@ export class PlayPenFooter extends LitElement {
           appearance="brand"
           label="Mobile"
           endIcon="caret-down-outline"
+          title="Toggle Device Options"
           @click=${() => console.log('Show devices/sizes menu')}
         ></play-button>
         <play-button
           appearance="brand"
           icon="night-outline"
+          title="Toggle Scheme"
           @click=${() => this.dispatchEvent(Bubble('toggle-scheme', undefined))}
         ></play-button>
         <play-button
           appearance="brand"
           icon="overflow-horizontal-outline"
+          title="Additional Options"
           @click=${() => console.log('Show overflow menu')}
         ></play-button>
       </div>
