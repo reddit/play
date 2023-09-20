@@ -96,21 +96,23 @@ export class PlayPen extends LitElement {
     return html`
       <div>
         <play-pen-header
+          .name=${this._name}
           @edit-name=${(ev: CustomEvent<string>) => this.#editName(ev.detail)}
           @new=${this.#reset}
           @share=${this.#onShare}
-          .name=${this._name}
         ></play-pen-header>
         <main>
           <play-editor
-            @edit=${(ev: CustomEvent<string>) => this.#editSrc(ev.detail)}
             .env=${this.#env}
             .src=${this.#initSrc}
+            @edit=${(ev: CustomEvent<string>) => this.#editSrc(ev.detail)}
             ><slot
           /></play-editor>
           <play-preview
             .bundle=${this._bundle}
             .scheme=${this._scheme}
+            @execution-error=${(ev: CustomEvent<unknown>) =>
+              this.#reportError(ev.detail)}
           ></play-preview>
         </main>
         <play-pen-footer
@@ -162,5 +164,10 @@ export class PlayPen extends LitElement {
       globalThis.matchMedia('(prefers-color-scheme: dark)').matches ||
       this._scheme === 'dark'
     )
+  }
+
+  #reportError(err: unknown): void {
+    // to-do: report errors to users.
+    console.error(err)
   }
 }
