@@ -38,7 +38,7 @@
   ],
   "filesize": {
     "dist/play-pen.js": {
-      "brotli": "1.9 MB"
+      "gzip": "2.70 MB"
     }
   },
   "typesVersions": {
