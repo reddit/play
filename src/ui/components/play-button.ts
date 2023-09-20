@@ -1,6 +1,5 @@
 import {LitElement, css, html} from 'lit'
-import {property} from 'lit-element'
-import {customElement} from 'lit/decorators.js'
+import {customElement, property} from 'lit/decorators.js'
 import './play-icon.js'
 
 declare global {
