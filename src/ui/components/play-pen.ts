@@ -66,11 +66,12 @@ export class PlayPen extends LitElement {
       height: 100%;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 0 0 24px var(--rpl-brand-background);
     }
 
     play-editor {
       width: 100%;
+      flex-grow: 1;
+      flex-shrink: 1;
     }
 
     play-preview {
@@ -82,9 +83,8 @@ export class PlayPen extends LitElement {
       display: flex;
       flex-direction: row;
       gap: 24px;
-      padding-top: 0;
+      overflow: clip;
       padding-right: 24px;
-      padding-bottom: 24px;
       padding-left: 24px;
       height: 100%;
     }
