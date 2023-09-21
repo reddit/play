@@ -79,6 +79,7 @@ export class PlayPen extends LitElement {
   #initSrc?: string | undefined
   /** Program name. */
   @state() private _name: string = ''
+  @state() private _scheme: 'dark' | 'light' | undefined
 
   override connectedCallback(): void {
     super.connectedCallback()
@@ -106,9 +107,16 @@ export class PlayPen extends LitElement {
             .src=${this.#initSrc}
             ><slot
           /></play-editor>
-          <play-preview .bundle=${this._bundle}></play-preview>
+          <play-preview
+            .bundle=${this._bundle}
+            .scheme=${this._scheme}
+          ></play-preview>
         </main>
-        <play-pen-footer></play-pen-footer>
+        <play-pen-footer
+          @toggle-scheme=${() => {
+            this._scheme = this.#isDark() ? 'light' : 'dark'
+          }}
+        ></play-pen-footer>
       </div>
     `
   }
@@ -139,6 +147,13 @@ export class PlayPen extends LitElement {
       this.url ? globalThis.location : undefined,
       this.save ? globalThis.localStorage : undefined,
       PenSave(this._name, getSource(this.#env))
+    )
+  }
+
+  #isDark(): boolean {
+    return (
+      globalThis.matchMedia('(prefers-color-scheme: dark)').matches ||
+      this._scheme === 'dark'
     )
   }
 }

@@ -43,6 +43,7 @@ export class PlayPreview extends LitElement {
   }
 
   @property({attribute: false}) bundle?: LinkedBundle | undefined
+  @property({attribute: false}) scheme: 'dark' | 'light' | undefined
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
     new Blob([penWorker], {type: 'text/javascript'})
@@ -76,6 +77,7 @@ export class PlayPreview extends LitElement {
       html`<devvit-preview
         .meta="${this.#meta}"
         .client=${this._client}
+        .scheme=${this.scheme}
       ></devvit-preview>`}
     </div>`
   }

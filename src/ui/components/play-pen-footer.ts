@@ -1,5 +1,6 @@
 import {LitElement, css, html} from 'lit'
 import {customElement} from 'lit/decorators.js'
+import {Bubble} from '../bubble.js'
 import './play-button.js'
 
 declare global {
@@ -47,7 +48,7 @@ export class PlayPenFooter extends LitElement {
         <play-button
           appearance="brand"
           icon="night-outline"
-          @click=${() => console.log('Toggle theme')}
+          @click=${() => this.dispatchEvent(Bubble('toggle-scheme', undefined))}
         ></play-button>
         <play-button
           appearance="brand"
