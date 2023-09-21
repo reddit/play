@@ -2,7 +2,11 @@
 
 play is [semantically versioned](https://semver.org).
 
-## v0.0.3 (unreleased)
+## v0.0.5 (unreleased)
+
+## v0.0.4
+
+Fix play-pen styles.
 
 ## v0.0.3
 
