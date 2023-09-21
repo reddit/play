@@ -32,7 +32,7 @@ export class PlayApp extends LitElement {
 
   protected override render() {
     return html`
-      <play-pen save url>
+      <play-pen allow-storage allow-url>
         <script lang="tsx" type="application/devvit">
           import {Devvit} from '@devvit/public-api'
 

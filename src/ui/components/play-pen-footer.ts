@@ -1,6 +1,10 @@
+import {consume} from '@lit-labs/context'
 import {LitElement, css, html} from 'lit'
-import {customElement} from 'lit/decorators.js'
+import {customElement, property} from 'lit/decorators.js'
+import type {ColorScheme} from '../../types/color-scheme.js'
 import {Bubble} from '../bubble.js'
+import {penCtx} from './play-pen-context.js'
+
 import './play-button.js'
 
 declare global {
@@ -30,6 +34,10 @@ export class PlayPenFooter extends LitElement {
     }
   `
 
+  @consume({context: penCtx.scheme, subscribe: true})
+  @property({attribute: false})
+  scheme: ColorScheme | undefined
+
   protected override render() {
     return html`<footer>
       <play-button
@@ -51,7 +59,10 @@ export class PlayPenFooter extends LitElement {
           appearance="brand"
           icon="night-outline"
           title="Toggle Scheme"
-          @click=${() => this.dispatchEvent(Bubble('toggle-scheme', undefined))}
+          @click=${() =>
+            this.dispatchEvent(
+              Bubble('play-pen-set-scheme', this.#isDark() ? 'light' : 'dark')
+            )}
         ></play-button>
         <play-button
           appearance="brand"
@@ -61,5 +72,12 @@ export class PlayPenFooter extends LitElement {
         ></play-button>
       </div>
     </footer>`
+  }
+
+  #isDark(): boolean {
+    return (
+      globalThis.matchMedia('(prefers-color-scheme: dark)').matches ||
+      this.scheme === 'dark'
+    )
   }
 }

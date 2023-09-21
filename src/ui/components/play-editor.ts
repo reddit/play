@@ -3,6 +3,7 @@ import {tsxLanguage} from '@codemirror/lang-javascript'
 import {linter, type Diagnostic} from '@codemirror/lint'
 import {EditorState, type Extension} from '@codemirror/state'
 import {hoverTooltip} from '@codemirror/view'
+import {consume} from '@lit-labs/context'
 import * as tsvfs from '@typescript/vfs'
 import {EditorView, basicSetup} from 'codemirror'
 import {LitElement, css, html} from 'lit'
@@ -18,6 +19,7 @@ import {appEntrypointFilename} from '../../bundler/compiler.js'
 import {throttle} from '../../utils/throttle.js'
 import {unindent} from '../../utils/unindent.js'
 import {Bubble} from '../bubble.js'
+import {penCtx} from './play-pen-context.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -25,6 +27,7 @@ declare global {
   }
 }
 
+/** Accepts a slotted template. */
 @customElement('play-editor')
 export class PlayEditor extends LitElement {
   static override readonly styles = css`
@@ -59,12 +62,15 @@ export class PlayEditor extends LitElement {
     }
   `
 
-  @property({attribute: false}) env!: tsvfs.VirtualTypeScriptEnvironment
-  /**
-   * Initial program source code. If nonnullish, takes precedence over any slot.
-   * Never updated.
-   */
-  @property({attribute: false}) src: string | undefined
+  @consume({context: penCtx.env})
+  @property({attribute: false})
+  env!: tsvfs.VirtualTypeScriptEnvironment
+  @consume({context: penCtx.src})
+  @property({attribute: false})
+  src: string | undefined
+  @consume({context: penCtx.template})
+  @property({attribute: false})
+  template: string | undefined
 
   @query('div') private _root!: HTMLDivElement
 
@@ -75,9 +81,15 @@ export class PlayEditor extends LitElement {
   private _scripts!: HTMLScriptElement[]
   #editor!: EditorView
 
+  setSrc(src: string): void {
+    this.#editor.dispatch({
+      changes: {from: 0, to: this.#editor.state.doc.length, insert: src}
+    })
+  }
+
   protected override firstUpdated(): void {
     const init = EditorState.create({
-      doc: this.src ?? '',
+      doc: this.src ?? this.template ?? '',
       extensions: [
         basicSetup,
         tsxLanguage,
@@ -112,18 +124,23 @@ export class PlayEditor extends LitElement {
   }
 
   @eventOptions({once: true}) private _onSlotChange(): void {
-    if (this.src != null) return
     // If <script /> exists, get the program inside.
     const src = unindent(this._scripts[0]?.innerText ?? '')
-    this.#editor.dispatch({
-      changes: {from: 0, to: this.#editor.state.doc.length, insert: src}
-    })
-    this.#dispatchThrottledSourceChangedEvent(src)
+
+    // The slotted template has the lowest precedence. Do not overwrite
+    // any existing template.
+    if (this.template == null)
+      this.dispatchEvent(Bubble('play-pen-set-template', src))
+
+    // If no source was restored, use the template.
+    if (this.src != null) return
+    this.setSrc(src)
+    this.dispatchEvent(Bubble('play-pen-set-src', src))
   }
 
-  #dispatchThrottledSourceChangedEvent: (code: string) => void = throttle(
-    (code: string) => {
-      this.dispatchEvent(Bubble('edit', code))
+  #dispatchThrottledSourceChangedEvent: (src: string) => void = throttle(
+    (src: string) => {
+      this.dispatchEvent(Bubble('play-pen-set-src', src))
     },
     500
   )

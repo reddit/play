@@ -27,12 +27,10 @@ export function PenSave(name: string, src: string): PenSave {
 
 /** Retrieve pen from location or storage. */
 export function loadPen(
-  location: Readonly<{hash: string}> | undefined,
-  storage: Readonly<Storage> | undefined
+  medium: Readonly<{hash: string}> | Readonly<Storage>
 ): PenSave | undefined {
-  let pen = location && fromLocation(location)
-  pen ??= storage && fromJSON(storage.getItem(storageKey) ?? '')
-  return pen
+  if ('getItem' in medium) return fromJSON(medium.getItem(storageKey) ?? '')
+  return fromLocation(medium)
 }
 
 /** Save pen to storage and location. */

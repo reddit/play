@@ -1,9 +1,12 @@
 import penWorker from '@devvit/previews/dist/pen.worker.min.js'
 import type {LinkedBundle, Metadata} from '@devvit/protos'
 import {BrowserLiteClient} from '@devvit/runtime-lite/BrowserLiteClient.js'
+import {consume} from '@lit-labs/context'
 import {LitElement, css, html, type PropertyValues} from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
+import type {ColorScheme} from '../../types/color-scheme.js'
 import {Bubble} from '../bubble.js'
+import {penCtx} from './play-pen-context.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
 
@@ -44,8 +47,12 @@ export class PlayPreview extends LitElement {
     `
   }
 
-  @property({attribute: false}) bundle?: LinkedBundle | undefined
-  @property({attribute: false}) scheme: 'dark' | 'light' | undefined
+  @consume({context: penCtx.bundle, subscribe: true})
+  @property({attribute: false})
+  bundle?: LinkedBundle | undefined
+  @consume({context: penCtx.scheme, subscribe: true})
+  @property({attribute: false})
+  scheme: ColorScheme | undefined
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
     new Blob([penWorker], {type: 'text/javascript'})

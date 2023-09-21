@@ -49,15 +49,15 @@ export class PlayResizableTextInput extends LitElement {
     }
   `
 
-  @property({attribute: false, type: String}) text: string = ''
-  @property({type: String}) placeholder: string = ''
+  @property({attribute: false}) text: string = ''
+  @property() placeholder: string = ''
 
   protected override render() {
     return html`<input
-      @input=${this.#onInput}
       type="text"
       placeholder=${this.placeholder}
-      value=${this.text}
+      .value=${this.text}
+      @input=${this.#onInput}
     />`
   }
 
@@ -71,7 +71,7 @@ export class PlayResizableTextInput extends LitElement {
 
   #resizeInput(input: HTMLInputElement): void {
     const span = document.createElement('span')
-    span.innerText = this.text || input.placeholder
+    span.innerText = this.text || this.placeholder
     span.style.visibility = 'hidden'
     span.style.whiteSpace = 'pre'
     span.style.fontFamily = 'inherit'
