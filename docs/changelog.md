@@ -2,7 +2,12 @@
 
 play is [semantically versioned](https://semver.org).
 
-## v0.0.5 (unreleased)
+## v0.0.6 (unreleased)
+
+## v0.0.5
+
+- Fix viewport height.
+- Fix Drone registry config.
 
 ## v0.0.4
 
