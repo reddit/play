@@ -13,7 +13,7 @@ git log "$(git describe --tags --abbrev=0)..@" --oneline
 vim changelog.md
 
 # Stage the changelog.
-git add changelog.md
+git add docs/changelog.md
 
 # Commit the changelog.
 git commit -m 'Version changelog'
