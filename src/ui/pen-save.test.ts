@@ -15,7 +15,7 @@ test.each([
   ],
   ['malformed pen', '#pen123']
 ])('%s is parsed gracefully', (_, hash) =>
-  expect(loadPen({hash}, undefined)).toBe(undefined)
+  expect(loadPen({hash})).toBe(undefined)
 )
 
 test('hello world can be parsed', () => {
@@ -33,7 +33,7 @@ test('hello world can be parsed', () => {
   `
   const location = {hash: ''}
   savePen(location, undefined, PenSave('Hello World!', src))
-  expect(loadPen(location, undefined)).toMatchInlineSnapshot(`
+  expect(loadPen(location)).toMatchInlineSnapshot(`
     {
       "name": "Hello World!",
       "src": "
