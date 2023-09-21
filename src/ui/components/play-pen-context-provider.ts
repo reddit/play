@@ -44,14 +44,11 @@ export class PlayPenContextProvider extends LitElement {
     super.connectedCallback()
 
     let pen
-    if (this.allowStorage) pen = loadPen(globalThis.localStorage)
     if (this.allowURL) {
-      const urlPen = loadPen(globalThis.location)
-      if (urlPen) {
-        this.setTemplate(urlPen.src)
-        pen ??= urlPen
-      }
+      pen = loadPen(globalThis.location)
+      if (pen) this.setTemplate(pen.src)
     }
+    if (this.allowStorage) pen ??= loadPen(globalThis.localStorage)
     if (!pen) return
     this.setSrc(pen.src)
     this.setName(pen.name)
