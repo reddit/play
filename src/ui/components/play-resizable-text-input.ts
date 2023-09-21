@@ -1,5 +1,6 @@
 import {LitElement, css, html} from 'lit'
-import {customElement} from 'lit/decorators.js'
+import {customElement, property} from 'lit/decorators.js'
+import {Bubble} from '../bubble.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -10,7 +11,7 @@ declare global {
 @customElement('play-resizable-text-input')
 export class PlayResizableTextInput extends LitElement {
   static override styles = css`
-    input[type='text'] {
+    input {
       margin: 0;
       padding-top: 2px;
       padding-right: 8px;
@@ -28,57 +29,57 @@ export class PlayResizableTextInput extends LitElement {
       caret-color: var(--rpl-brand-background);
     }
 
-    input[type='text']::placeholder {
+    input::placeholder {
       color: var(--rpl-neutral-content-weak);
     }
 
-    input[type='text']:focus {
+    input:focus {
       outline-width: 2px;
       outline-style: solid;
       outline-color: var(--rpl-brand-background);
     }
 
-    input[type='text']:hover {
+    input:hover {
       background-color: var(--rpl-secondary-background);
     }
 
-    input[type='text']::selection {
+    input::selection {
       color: var(--rpl-brand-onBackground);
       background-color: var(--rpl-brand-background);
     }
   `
 
-  override updated(): void {
-    this.resizeInput()
-  }
+  @property({attribute: false, type: String}) text: string = ''
+  @property({type: String}) placeholder: string = ''
 
-  private resizeInput(): void {
-    const input = this.shadowRoot?.querySelector('input')
-    if (input) {
-      const span = document.createElement('span')
-      const text = input.value.length > 0 ? input.value : 'Untitled playground'
-      span.innerText = text
-      span.style.visibility = 'hidden'
-      span.style.whiteSpace = 'pre'
-      span.style.fontFamily = 'inherit'
-      span.style.fontSize = '24px'
-      span.style.fontStyle = 'normal'
-      span.style.fontWeight = '400'
-      document.body.appendChild(span)
-      input.style.width = `${span.offsetWidth}px`
-      document.body.removeChild(span)
-    }
-  }
-
-  handleChange(): void {
-    this.resizeInput()
-  }
-
-  override render() {
+  protected override render() {
     return html`<input
+      @input=${this.#onInput}
       type="text"
-      placeholder="Untitled playground"
-      @input=${this.handleChange}
+      placeholder=${this.placeholder}
+      value=${this.text}
     />`
+  }
+
+  protected override updated(): void {
+    this.#resizeInput(this.shadowRoot?.querySelector('input')!)
+  }
+
+  #onInput(ev: InputEvent & {currentTarget: HTMLInputElement}): void {
+    this.dispatchEvent(Bubble('edit-text', ev.currentTarget.value))
+  }
+
+  #resizeInput(input: HTMLInputElement): void {
+    const span = document.createElement('span')
+    span.innerText = this.text || input.placeholder
+    span.style.visibility = 'hidden'
+    span.style.whiteSpace = 'pre'
+    span.style.fontFamily = 'inherit'
+    span.style.fontSize = '24px'
+    span.style.fontStyle = 'normal'
+    span.style.fontWeight = '400'
+    document.body.appendChild(span)
+    input.style.width = `${span.offsetWidth}px`
+    document.body.removeChild(span)
   }
 }

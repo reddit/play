@@ -60,6 +60,11 @@ export class PlayEditor extends LitElement {
   `
 
   @property({attribute: false}) env!: tsvfs.VirtualTypeScriptEnvironment
+  /**
+   * Initial program source code. If nonnullish, takes precedence over any slot.
+   * Never updated.
+   */
+  @property({attribute: false}) src: string | undefined
 
   @query('div') private _root!: HTMLDivElement
 
@@ -70,8 +75,9 @@ export class PlayEditor extends LitElement {
   private _scripts!: HTMLScriptElement[]
   #editor!: EditorView
 
-  override firstUpdated(): void {
+  protected override firstUpdated(): void {
     const init = EditorState.create({
+      doc: this.src ?? '',
       extensions: [
         basicSetup,
         tsxLanguage,
@@ -106,6 +112,7 @@ export class PlayEditor extends LitElement {
   }
 
   @eventOptions({once: true}) private _onSlotChange(): void {
+    if (this.src != null) return
     // If <script /> exists, get the program inside.
     const src = unindent(this._scripts[0]?.innerText ?? '')
     this.#editor.dispatch({

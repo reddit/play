@@ -39,7 +39,7 @@ export class PlayIcon extends LitElement {
     }
   `
 
-  override render() {
+  protected override render() {
     const iconStyles = {
       width: this.size,
       height: this.size,

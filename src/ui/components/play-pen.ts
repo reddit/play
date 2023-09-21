@@ -1,18 +1,21 @@
 import type {LinkedBundle} from '@devvit/protos'
 import * as tsvfs from '@typescript/vfs'
 import {LitElement, css, html} from 'lit'
-import {customElement, state} from 'lit/decorators.js'
+import {customElement, property, state} from 'lit/decorators.js'
 import {
   appEntrypointFilename,
   compile,
-  newTSEnv
+  getSource,
+  newTSEnv,
+  setSource
 } from '../../bundler/compiler.js'
 import {link} from '../../bundler/linker.js'
+import {PenSave, loadPen, savePen} from '../pen-save.js'
 
-import './play-pen-header.js'
 import './play-editor.js'
-import './play-preview.js'
 import './play-pen-footer.js'
+import './play-pen-header.js'
+import './play-preview.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -58,17 +61,49 @@ export class PlayPen extends LitElement {
     }
   `
 
+  /**
+   * Allow loading and saving from LocalStorage. Do not enable for multiple
+   * playgrounds on the same document.
+   */
+  @property({type: Boolean}) save: boolean = false
+  /**
+   * Allow loading and saving from URL hash. Loading from hash has precedence
+   * over LocalStorage. Do not enable for multiple playgrounds on the same
+   * document.
+   */
+  @property({type: Boolean}) url: boolean = false
+
   @state() private _bundle?: LinkedBundle | undefined
   readonly #env: tsvfs.VirtualTypeScriptEnvironment = newTSEnv()
+  /** Initial program source on load. This value is never updated. */
+  #initSrc?: string | undefined
+  /** Program name. */
+  @state() private _name: string = ''
+
+  override connectedCallback(): void {
+    super.connectedCallback()
+    const pen = loadPen(
+      this.url ? globalThis.location : undefined,
+      this.save ? globalThis.localStorage : undefined
+    )
+    this.#initSrc = pen?.src
+    this._name = pen?.name ?? ''
+    if (this.#initSrc != null) this.#editSrc(this.#initSrc)
+  }
 
   protected override render() {
     return html`
       <div>
-        <play-pen-header></play-pen-header>
+        <play-pen-header
+          @edit-name=${(ev: CustomEvent<string>) => this.#editName(ev.detail)}
+          @share=${this.#onShare}
+          .name=${this._name}
+        ></play-pen-header>
         <main>
           <play-editor
-            @edit=${(ev: CustomEvent<string>) => this.#build(ev.detail)}
+            @edit=${(ev: CustomEvent<string>) => this.#editSrc(ev.detail)}
             .env=${this.#env}
+            .src=${this.#initSrc}
             ><slot
           /></play-editor>
           <play-preview .bundle=${this._bundle}></play-preview>
@@ -78,9 +113,32 @@ export class PlayPen extends LitElement {
     `
   }
 
-  #build(src: string): void {
+  #editName(name: string): void {
+    this._name = name
+    // Don't update URL on auto-save.
+    if (this.save)
+      savePen(
+        undefined,
+        globalThis.localStorage,
+        PenSave(this._name, getSource(this.#env))
+      )
+  }
+
+  #editSrc(src: string): void {
+    setSource(this.#env, src)
     this.#env.updateFile(appEntrypointFilename, src || ' ') // empty strings trigger file deletion!
-    if (/^\s*$/.test(src)) return // Skip blank source.
-    this._bundle = link(compile(this.#env))
+    // Skip blank source.
+    if (!/^\s*$/.test(src)) this._bundle = link(compile(this.#env))
+    // Don't update URL on auto-save.
+    if (this.save)
+      savePen(undefined, globalThis.localStorage, PenSave(this._name, src))
+  }
+
+  #onShare(): void {
+    savePen(
+      this.url ? globalThis.location : undefined,
+      this.save ? globalThis.localStorage : undefined,
+      PenSave(this._name, getSource(this.#env))
+    )
   }
 }

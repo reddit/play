@@ -1,5 +1,6 @@
 import {LitElement, css, html} from 'lit'
-import {customElement} from 'lit/decorators.js'
+import {customElement, property} from 'lit/decorators.js'
+import {Bubble} from '../bubble.js'
 import './play-button.js'
 import './play-icon.js'
 import './play-resizable-text-input.js'
@@ -51,26 +52,41 @@ export class PlayPenHeader extends LitElement {
     }
   `
 
-  override render() {
+  @property({attribute: false, type: String}) name: string = ''
+
+  protected override render() {
     return html`<div class="wrapper">
       <div class="titling">
         <div class="avatar">
           <play-icon icon="devvit-outline" size="28px"></play-icon>
         </div>
-        <play-resizable-text-input></play-resizable-text-input>
+        <play-resizable-text-input
+          @edit-text=${(ev: CustomEvent<string>) =>
+            this.dispatchEvent(Bubble('edit-name', ev.detail))}
+          placeholder="Untitled pen"
+          .text=${this.name}
+        ></play-resizable-text-input>
       </div>
       <div class="actions">
         <play-button
+          @click=${() => this.dispatchEvent(Bubble('new', undefined))}
           appearance="plain"
           label="New"
           icon="add-outline"
         ></play-button>
         <play-button
+          @click=${() =>
+            globalThis.open(
+              'https://developers.reddit.com/docs',
+              '_blank',
+              'noopener,noreferrer'
+            )}
           appearance="plain"
           label="Docs"
           icon="info-outline"
         ></play-button>
         <play-button
+          @click=${() => this.dispatchEvent(Bubble('share', undefined))}
           appearance="brand"
           label="Share"
           icon="share-new-outline"

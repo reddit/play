@@ -77,7 +77,7 @@ export class PlayButton extends LitElement {
     /* to-do: Add disabled styes */
   `
 
-  override render() {
+  protected override render() {
     return html`<button>
       ${this.icon &&
       html`<play-icon size="20px" icon=${this.icon}></play-icon>`}

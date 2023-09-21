@@ -30,9 +30,9 @@ export class PlayApp extends LitElement {
     console.log(`play v${globalThis.play.version}`)
   }
 
-  override render() {
+  protected override render() {
     return html`
-      <play-pen>
+      <play-pen save url>
         <script lang="tsx" type="application/devvit">
           import {Devvit} from '@devvit/public-api'
 

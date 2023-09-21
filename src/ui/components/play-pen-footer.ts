@@ -29,7 +29,7 @@ export class PlayPenFooter extends LitElement {
     }
   `
 
-  override render() {
+  protected override render() {
     return html`<footer>
       <play-button
         appearance="brand"
