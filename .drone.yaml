@@ -9,7 +9,7 @@ steps:
     image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18
     pull: always
     commands:
-      - npm ci --no-fund
+      - npm ci --no-fund --registry https://registry.npmjs.org
 
   - name: test:format
     pull: if-not-exists
