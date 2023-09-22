@@ -47,6 +47,8 @@ export class PlayPen extends LitElement {
       --rpl-secondary-background-hovered: #e2e7e9;
       --rpl-secondary-background-pressed: #bec2c4;
       --rpl-secondary-onBackground: #000000;
+      --rpl-interactive-content-disabled: rgba(0, 0, 0, 0.25);
+      --rpl-interactive-background-disabled: rgba(0, 0, 0, 0.05);
 
       /* #theme# Light mode. */
       color: #213547;

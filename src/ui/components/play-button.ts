@@ -11,9 +11,10 @@ declare global {
 
 @customElement('play-button')
 export class PlayButton extends LitElement {
-  @property({type: String}) appearance = 'plain'
+  @property({type: String}) appearance = 'secondary'
   @property({type: String}) icon = ''
   @property({type: String}) endIcon = ''
+  @property({type: Boolean}) disabled = false
 
   static override styles = css`
     /* Default button styles. Medium size. */
@@ -37,49 +38,68 @@ export class PlayButton extends LitElement {
       user-select: none;
     }
 
-    /* Add horizontal padding if a label */
+    /* Add additional horizontal padding if a label is present. */
     :host([label]) button {
       padding-right: 16px;
       padding-left: 16px;
     }
 
-    /* Define styles for the "plain" appearance */
+    /* Appearance: "plain" */
     :host([appearance='plain']) button {
       color: var(--rpl-secondary-plain);
       background-color: transparent;
     }
-
     :host([appearance='plain']:hover) button {
       color: var(--rpl-secondary-onBackground);
       background-color: var(--rpl-secondary-background-hovered);
     }
-
     :host([appearance='plain']:active) button {
       color: var(--rpl-secondary-onBackground);
       background-color: var(--rpl-secondary-background-pressed);
     }
+    :host([appearance='plain']) button:disabled {
+      color: var(--rpl-interactive-content-disabled);
+      background-color: transparent;
+      cursor: unset;
+    }
 
-    /* Define styles for the "plain" appearance */
+    /* Appearance: "brand" */
     :host([appearance='brand']) button {
       color: var(--rpl-brand-onBackground);
       background-color: var(--rpl-brand-background);
     }
-
     :host([appearance='brand']:hover) button {
-      color: var(--rpl-brand-onBackground);
       background-color: var(--rpl-brand-background-hovered);
     }
-
     :host([appearance='brand']:active) button {
-      color: var(--rpl-brand-onBackground);
       background-color: var(--rpl-brand-background-pressed);
     }
+    :host([appearance='brand']) button:disabled {
+      color: var(--rpl-interactive-content-disabled);
+      background-color: var(--rpl-interactive-background-disabled);
+      cursor: unset;
+    }
 
-    /* to-do: Add disabled styes */
+    /* Appearance: "secondary"  */
+    :host([appearance='secondary']) button {
+      color: var(--rpl-secondary-onBackground);
+      background-color: var(--rpl-secondary-background);
+    }
+    :host([appearance='secondary']:hover) button {
+      background-color: var(--rpl-secondary-background-hovered);
+    }
+    :host([appearance='secondary']:active) button {
+      background-color: var(--rpl-secondary-background-pressed);
+    }
+    :host([appearance='secondary']) button:disabled {
+      color: var(--rpl-interactive-content-disabled);
+      background-color: var(--rpl-interactive-background-disabled);
+      cursor: unset;
+    }
   `
 
   protected override render() {
-    return html`<button>
+    return html`<button ?disabled=${this.disabled}>
       ${this.icon &&
       html`<play-icon size="20px" icon=${this.icon}></play-icon>`}<slot
       ></slot>${this.endIcon &&

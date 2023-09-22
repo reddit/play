@@ -19,7 +19,7 @@ declare global {
 export class PlayPenFooter extends LitElement {
   static override styles = css`
     footer {
-      background-color: var(--rpl-brand-background);
+      background-color: var(--rpl-secondary-background);
     }
     .buttons {
       display: flex;
@@ -68,7 +68,7 @@ export class PlayPenFooter extends LitElement {
     return html`<footer>
       <div class="buttons">
         <play-button
-          appearance="brand"
+          appearance="secondary"
           endIcon="${this._open ? 'caret-down-outline' : 'caret-up-outline'}"
           title="Toggle Console"
           @click=${() => (this._open = !this._open)}
@@ -76,7 +76,7 @@ export class PlayPenFooter extends LitElement {
         >
         <div class="actions">
           <play-button
-            appearance="brand"
+            appearance="secondary"
             endIcon="caret-down-outline"
             title="Toggle Device"
             @click=${() =>
@@ -86,7 +86,7 @@ export class PlayPenFooter extends LitElement {
             >${this.desktop ? 'Desktop' : 'Mobile'}</play-button
           >
           <play-button
-            appearance="brand"
+            appearance="secondary"
             icon="night-outline"
             title="Toggle Scheme"
             @click=${() =>
@@ -95,7 +95,7 @@ export class PlayPenFooter extends LitElement {
               )}
           ></play-button>
           <play-button
-            appearance="brand"
+            appearance="secondary"
             icon="overflow-horizontal-outline"
             title="Additional Options"
             @click=${() => console.log('Show overflow menu')}
