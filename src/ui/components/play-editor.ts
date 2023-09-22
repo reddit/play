@@ -60,6 +60,11 @@ export class PlayEditor extends LitElement {
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
     }
+
+    .cm-editor .cm-selectionBackground,
+    .cm-editor .cm-content ::selection {
+      background-color: var(--rpl-secondary-background-pressed) !important;
+    }
   `
 
   @consume({context: penCtx.env})
