@@ -1,4 +1,4 @@
-# play <!-- #strings:title# -->
+# :play <!-- #strings:title# -->
 
 Devvit app :playground.<!-- #strings:description# -->
 

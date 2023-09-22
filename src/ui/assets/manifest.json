@@ -12,7 +12,7 @@
     {"src": "favicon/favicon.svg", "sizes": "any", "type": "image/svg+xml"}
   ],
   "manifest_version": 3,
-  "name": "play",
+  "name": ":play",
   "orientation": "any",
   "start_url": "/",
   "theme_color": "#000000",
