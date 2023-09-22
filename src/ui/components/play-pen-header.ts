@@ -21,20 +21,22 @@ export class PlayPenHeader extends LitElement {
       padding: 24px;
       display: flex;
       flex-direction: row;
-      gap: 16px;
+      column-gap: 16px;
+      row-gap: 16px;
       justify-content: space-between;
       align-items: center;
     }
 
-    .titling {
+    .name {
       width: 100%;
       display: flex;
       flex-direction: row;
       align-items: center;
-      gap: 8px;
+      column-gap: 8px;
+      row-gap: 8px;
     }
 
-    .avatar {
+    .logo {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -50,7 +52,8 @@ export class PlayPenHeader extends LitElement {
     .actions {
       display: flex;
       flex-direction: row;
-      gap: 8px;
+      column-gap: 8px;
+      row-gap: 8px;
       align-items: center;
     }
   `
@@ -61,8 +64,8 @@ export class PlayPenHeader extends LitElement {
 
   protected override render() {
     return html`<div class="wrapper">
-      <div class="titling">
-        <div class="avatar">
+      <div class="name">
+        <div class="logo">
           <play-icon icon="devvit-outline" size="28px"></play-icon>
         </div>
         <play-resizable-text-input

@@ -19,7 +19,8 @@ export class PlayPenFooter extends LitElement {
     footer {
       display: flex;
       flex-direction: row;
-      gap: 16px;
+      column-gap: 16px;
+      row-gap: 16px;
       justify-content: space-between;
       background-color: var(--rpl-brand-background);
       padding-top: 2px;
@@ -30,7 +31,8 @@ export class PlayPenFooter extends LitElement {
     .actions {
       display: flex;
       flex-direction: row;
-      gap: 8px;
+      column-gap: 8px;
+      row-gap: 8px;
     }
   `
 

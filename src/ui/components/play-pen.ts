@@ -80,12 +80,13 @@ export class PlayPen extends LitElement {
     }
 
     main {
+      column-gap: 24px;
       display: flex;
       flex-direction: row;
-      gap: 24px;
       overflow: clip;
       padding-right: 24px;
       padding-left: 24px;
+      row-gap: 24px;
       height: 100%;
     }
   `

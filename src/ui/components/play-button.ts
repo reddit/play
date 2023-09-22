@@ -1,5 +1,6 @@
 import {LitElement, css, html} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
+
 import './play-icon.js'
 
 declare global {
@@ -20,7 +21,8 @@ export class PlayButton extends LitElement {
     :host button {
       display: flex;
       flex-direction: row;
-      gap: 8px;
+      column-gap: 8px;
+      row-gap: 8px;
       padding: 10px;
       border: none;
       border-radius: 9001px;
