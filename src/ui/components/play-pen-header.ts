@@ -79,10 +79,10 @@ export class PlayPenHeader extends LitElement {
         <play-button
           @click=${() => this.dispatchEvent(Bubble('new', undefined))}
           appearance="plain"
-          label="New"
           icon="add-outline"
           title="Reset Program Template"
-        ></play-button>
+          >New</play-button
+        >
         <play-button
           @click=${() =>
             globalThis.open(
@@ -91,17 +91,17 @@ export class PlayPenHeader extends LitElement {
               'noopener,noreferrer'
             )}
           appearance="plain"
-          label="Docs"
           icon="info-outline"
           title="Open Documentation"
-        ></play-button>
+          >Docs</play-button
+        >
         <play-button
           @click=${() => this.dispatchEvent(Bubble('share', undefined))}
           appearance="brand"
-          label="Share"
           icon="share-new-outline"
           title="Copy Program to URL"
-        ></play-button>
+          >Share</play-button
+        >
       </div>
     </div>`
   }

@@ -1,5 +1,5 @@
 import {consume} from '@lit-labs/context'
-import {LitElement, css, html} from 'lit'
+import {LitElement, css, html, type TemplateResult} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import {penCtx} from './play-pen-context.js'
@@ -42,21 +42,23 @@ export class PlayConsole extends LitElement {
       padding-left: 8px;
       padding-right: 8px;
       padding-top: 12px;
+
+      /* Default is middle. */
       vertical-align: top;
     }
 
-    tbody tr:nth-of-type(odd) {
+    /* Zebra striping. */
+    tbody > tr:nth-child(odd) {
       background-color: var(--rpl-neutral-background-weak);
     }
 
+    /* Initial / minimum size to avoid distracting resizing between errors and
+       no errors layouts. .details gets the rest. */
     .name {
-      /** Initial / minimum size to avoid snapp. */
       width: 120px;
-      min-width: 32px;
     }
     .message {
       width: 200px;
-      min-width: 32px;
     }
 
     .resize {
@@ -77,7 +79,8 @@ export class PlayConsole extends LitElement {
       margin-top: 0;
     }
   `
-  protected override render() {
+
+  protected override render(): TemplateResult<1> {
     const errs = []
     for (const err of this.diagnostics?.previewErrs ?? []) errs.push(row(err))
     return html`<div class="play-console">
@@ -97,7 +100,7 @@ export class PlayConsole extends LitElement {
   }
 }
 
-function row(err: unknown) {
+function row(err: unknown): TemplateResult<1> {
   if (!(err instanceof Error))
     return html`<tr>
       <td></td>

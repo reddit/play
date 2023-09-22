@@ -12,7 +12,6 @@ declare global {
 @customElement('play-button')
 export class PlayButton extends LitElement {
   @property({type: String}) appearance = 'plain'
-  @property({type: String}) label = ''
   @property({type: String}) icon = ''
   @property({type: String}) endIcon = ''
 
@@ -82,9 +81,8 @@ export class PlayButton extends LitElement {
   protected override render() {
     return html`<button>
       ${this.icon &&
-      html`<play-icon size="20px" icon=${this.icon}></play-icon>`}
-      ${this.label}
-      ${this.endIcon &&
+      html`<play-icon size="20px" icon=${this.icon}></play-icon>`}<slot />${this
+        .endIcon &&
       html`<play-icon size="20px" icon=${this.endIcon}></play-icon>`}
     </button>`
   }
