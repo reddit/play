@@ -117,7 +117,7 @@ export class PlayPen extends LitElement {
           @share=${this.#onShare}
         ></play-pen-header>
         <main>
-          <play-editor><slot /></play-editor>
+          <play-editor><slot></slot></play-editor>
           <play-preview></play-preview>
         </main>
         <play-pen-footer></play-pen-footer>
