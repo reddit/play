@@ -11,6 +11,7 @@ import {
 } from '../../bundler/compiler.js'
 import {link} from '../../bundler/linker.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
+import type {Diagnostics} from '../../types/diagnostics.js'
 import {PenSave, loadPen, savePen} from '../pen-save.js'
 import {penCtx} from './play-pen-context.js'
 
@@ -32,6 +33,12 @@ export class PlayPenContextProvider extends LitElement {
   @provide({context: penCtx.bundle}) @property({type: Object}) bundle?:
     | LinkedBundle
     | undefined
+  @provide({context: penCtx.desktop})
+  @property({type: Boolean})
+  desktop: boolean = false
+  @provide({context: penCtx.diagnostics})
+  @property({type: Object})
+  diagnostics: Diagnostics = {previewErrs: []}
   @provide({context: penCtx.env})
   @property({attribute: false})
   readonly env: VirtualTypeScriptEnvironment = newTSEnv()
@@ -56,13 +63,32 @@ export class PlayPenContextProvider extends LitElement {
 
   protected override render() {
     return html`<slot
+      @play-pen-clear-preview-errors=${() => this.clearPreviewErrors()}
+      @play-pen-preview-error=${(ev: CustomEvent<unknown>) =>
+        this.appendPreviewError(ev.detail)}
       @play-pen-set-name=${(ev: CustomEvent<string>) => this.setName(ev.detail)}
+      @play-pen-set-desktop=${(ev: CustomEvent<boolean>) =>
+        this.setDesktop(ev.detail)}
       @play-pen-set-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>
         this.setScheme(ev.detail)}
       @play-pen-set-src=${(ev: CustomEvent<string>) => this.setSrc(ev.detail)}
       @play-pen-set-template=${(ev: CustomEvent<string>) =>
         this.setTemplate(ev.detail)}
     />`
+  }
+
+  appendPreviewError(err: unknown): void {
+    const diagnostics = {
+      ...this.diagnostics,
+      previewErrs: [...this.diagnostics.previewErrs]
+    }
+    diagnostics.previewErrs.push(err)
+    this.diagnostics = diagnostics
+  }
+
+  clearPreviewErrors(): void {
+    if (this.diagnostics) this.diagnostics.previewErrs.length = 0
+    this.diagnostics = {...this.diagnostics}
   }
 
   /** Save to LocalStorage as allowed. */
@@ -82,6 +108,10 @@ export class PlayPenContextProvider extends LitElement {
       this.allowStorage ? globalThis.localStorage : undefined,
       PenSave(this.name, this.src ?? '')
     )
+  }
+
+  setDesktop(desktop: boolean): void {
+    this.desktop = desktop
   }
 
   setName(name: string): void {

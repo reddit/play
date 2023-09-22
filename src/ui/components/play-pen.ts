@@ -75,7 +75,6 @@ export class PlayPen extends LitElement {
     }
 
     play-preview {
-      width: 343px;
       flex-shrink: 0;
     }
 
@@ -119,10 +118,7 @@ export class PlayPen extends LitElement {
         ></play-pen-header>
         <main>
           <play-editor><slot /></play-editor>
-          <play-preview
-            @execution-error=${(ev: CustomEvent<unknown>) =>
-              this.#reportError(ev.detail)}
-          ></play-preview>
+          <play-preview></play-preview>
         </main>
         <play-pen-footer></play-pen-footer>
       </play-pen-context-provider>
@@ -138,10 +134,5 @@ export class PlayPen extends LitElement {
   #onShare(): void {
     // to-do: record to clipboard and show a toast.
     this._provider.save()
-  }
-
-  #reportError(err: unknown): void {
-    // to-do: report errors to users.
-    console.error(err)
   }
 }

@@ -43,6 +43,11 @@ export class PlayPreview extends LitElement {
             #eaecf080 32px
           )
           0 / 200%;
+        width: 343px;
+      }
+
+      .desktop {
+        width: 718px;
       }
     `
   }
@@ -50,6 +55,9 @@ export class PlayPreview extends LitElement {
   @consume({context: penCtx.bundle, subscribe: true})
   @property({attribute: false})
   bundle?: LinkedBundle | undefined
+  @consume({context: penCtx.desktop, subscribe: true})
+  @property({attribute: false})
+  desktop: boolean = false
   @consume({context: penCtx.scheme, subscribe: true})
   @property({attribute: false})
   scheme: ColorScheme | undefined
@@ -69,11 +77,11 @@ export class PlayPreview extends LitElement {
   }
 
   protected override render() {
-    return html`<div class="preview">
+    return html`<div class="preview ${this.desktop ? 'desktop' : ''}">
       ${this.bundle &&
       html`<devvit-preview
         @devvit-ui-error=${(ev: CustomEvent<unknown>) =>
-          this.dispatchEvent(Bubble('execution-error', ev.detail))}
+          this.dispatchEvent(Bubble('play-pen-preview-error', ev.detail))}
         .meta="${this.#meta}"
         .client=${this._client}
         .scheme=${this.scheme}
@@ -86,10 +94,11 @@ export class PlayPreview extends LitElement {
   ): Promise<void> {
     if (changedProperties.has('bundle') && this.bundle) {
       this._client.quit()
+      this.dispatchEvent(Bubble('play-pen-clear-preview-errors', undefined))
       try {
         await this._client.loadBundle(this.bundle)
       } catch (err) {
-        this.dispatchEvent(Bubble('execution-error', err))
+        this.dispatchEvent(Bubble('play-pen-preview-error', err))
       }
       // Re-render the preview.
       this.#meta = {...this.#meta}

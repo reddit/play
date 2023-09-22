@@ -2,6 +2,7 @@ import {LinkedBundle} from '@devvit/protos'
 import {createContext} from '@lit-labs/context'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
 import type {ColorScheme} from '../../types/color-scheme.js'
+import type {Diagnostics} from '../../types/diagnostics.js'
 
 export const penCtx = <const>{
   /** Allow loading and saving from LocalStorage. */
@@ -13,6 +14,9 @@ export const penCtx = <const>{
   allowURL: createContext<boolean>('play-pen-allow-url'),
   /** Program executable. */
   bundle: createContext<LinkedBundle | undefined>('play-pen-bundle'),
+  /** Execution desktop / mobile render mode. */
+  desktop: createContext<boolean>('play-pen-desktop'),
+  diagnostics: createContext<Diagnostics>('play-pen-diagnostics'),
   env: createContext<VirtualTypeScriptEnvironment>('play-pen-env'),
   /** Program title. */
   name: createContext<string>('play-pen-name'),
