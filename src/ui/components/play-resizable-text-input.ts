@@ -11,36 +11,69 @@ declare global {
 @customElement('play-resizable-text-input')
 export class PlayResizableTextInput extends LitElement {
   static override styles = css`
-    input {
-      margin: 0;
-      padding-top: 2px;
-      padding-right: 8px;
-      padding-bottom: 2px;
-      padding-left: 8px;
-      color: var(--rpl-neutral-content-strong);
+    :host {
+      position: relative;
+      width: 100%;
+      flex-shrink: 1;
       font-family: inherit;
       font-size: 24px;
       font-style: normal;
       font-weight: 400;
       line-height: 28px;
-      background-color: var(--rpl-neutral-background);
+    }
+
+    .label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      user-select: none;
+      text-overflow: ellipsis;
+      white-space: pre;
+      overflow-x: clip;
+    }
+
+    input {
+      font: inherit;
+      line-height: inherit;
+      margin: 0;
+      color: transparent;
+      background-color: transparent;
       border: none;
       border-radius: 4px;
       caret-color: var(--rpl-brand-background);
+    }
+
+    input,
+    .label {
+      width: 100%;
+      padding-top: 2px;
+      padding-right: 8px;
+      padding-bottom: 2px;
+      padding-left: 8px;
     }
 
     input::placeholder {
       color: var(--rpl-neutral-content-weak);
     }
 
-    input:focus {
+    input:focus,
+    input:focus:hover {
       outline-width: 2px;
       outline-style: solid;
       outline-color: var(--rpl-brand-background);
+      background-color: var(--rpl-neutral-background);
+      color: var(--rpl-neutral-content-strong);
+    }
+
+    input:focus + .label {
+      display: none;
     }
 
     input:hover {
-      background-color: var(--rpl-secondary-background);
+      outline-width: 1px;
+      outline-style: solid;
+      outline-color: var(--rpl-neutral-border);
     }
 
     input::selection {
@@ -53,12 +86,17 @@ export class PlayResizableTextInput extends LitElement {
   @property() placeholder: string = ''
 
   protected override render() {
-    return html`<input
-      type="text"
-      placeholder=${this.placeholder}
-      .value=${this.text}
-      @input=${this.#onInput}
-    />`
+    return html`
+      <div>
+        <input
+          type="text"
+          placeholder=${this.placeholder}
+          .value=${this.text}
+          @input=${this.#onInput}
+        />
+        <div class="label" aria-hidden="true">${this.text}</div>
+      </div>
+    `
   }
 
   protected override updated(): void {
@@ -79,7 +117,7 @@ export class PlayResizableTextInput extends LitElement {
     span.style.fontStyle = 'normal'
     span.style.fontWeight = '400'
     document.body.appendChild(span)
-    input.style.width = `${span.offsetWidth}px`
+    input.style.maxWidth = `${span.offsetWidth}px`
     document.body.removeChild(span)
   }
 }
