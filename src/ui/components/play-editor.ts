@@ -1,11 +1,43 @@
-import {autocompletion, completeFromList} from '@codemirror/autocomplete'
+import {
+  autocompletion,
+  closeBrackets,
+  closeBracketsKeymap,
+  completeFromList,
+  completionKeymap
+} from '@codemirror/autocomplete'
+import {
+  defaultKeymap,
+  history,
+  historyKeymap,
+  indentWithTab
+} from '@codemirror/commands'
 import {tsxLanguage} from '@codemirror/lang-javascript'
-import {linter, type Diagnostic} from '@codemirror/lint'
+import {
+  bracketMatching,
+  defaultHighlightStyle,
+  foldGutter,
+  foldKeymap,
+  indentOnInput,
+  syntaxHighlighting
+} from '@codemirror/language'
+import {lintKeymap, linter, type Diagnostic} from '@codemirror/lint'
+import {highlightSelectionMatches} from '@codemirror/search'
 import {EditorState, type Extension} from '@codemirror/state'
-import {hoverTooltip} from '@codemirror/view'
+import {
+  crosshairCursor,
+  drawSelection,
+  dropCursor,
+  highlightActiveLine,
+  highlightActiveLineGutter,
+  highlightSpecialChars,
+  hoverTooltip,
+  keymap,
+  lineNumbers,
+  rectangularSelection
+} from '@codemirror/view'
 import {consume} from '@lit-labs/context'
 import * as tsvfs from '@typescript/vfs'
-import {EditorView, basicSetup} from 'codemirror'
+import {EditorView} from 'codemirror'
 import {LitElement, css, html} from 'lit'
 import {
   customElement,
@@ -96,7 +128,36 @@ export class PlayEditor extends LitElement {
     const init = EditorState.create({
       doc: this.src ?? this.template ?? '',
       extensions: [
-        basicSetup,
+        // Mostly https://github.com/codemirror/basic-setup extension without
+        // search, which we don't render well, and with [shift]-tab indenting.
+        lineNumbers(),
+        highlightActiveLineGutter(),
+        highlightSpecialChars(),
+        history(),
+        foldGutter(),
+        drawSelection(),
+        dropCursor(),
+        EditorState.allowMultipleSelections.of(true),
+        indentOnInput(),
+        // @ts-expect-error
+        syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
+        bracketMatching(),
+        closeBrackets(),
+        autocompletion(),
+        rectangularSelection(),
+        crosshairCursor(),
+        highlightActiveLine(),
+        highlightSelectionMatches(),
+        keymap.of([
+          ...closeBracketsKeymap,
+          ...defaultKeymap,
+          ...historyKeymap,
+          ...foldKeymap,
+          ...completionKeymap,
+          ...lintKeymap,
+          indentWithTab
+        ]),
+
         tsxLanguage,
         EditorView.lineWrapping,
         linter((_view: EditorView): Diagnostic[] => {
