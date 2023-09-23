@@ -87,7 +87,7 @@ export class PlayPenFooter extends LitElement {
           >
           <play-button
             appearance="secondary"
-            icon="night-outline"
+            icon=${this.#isDark() ? 'night-outline' : 'day-outline'}
             title="Toggle Scheme"
             @click=${() =>
               this.dispatchEvent(
