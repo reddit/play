@@ -5,9 +5,9 @@
     "jsxFactory": "Devvit.createElement",
     "jsxFragmentFactory": "Devvit.Fragment",
 
-    // tsc is only used for type-checking.
-    "noEmit": true,
+    "lib": ["ES2022", "WebWorker"],
 
-    "lib": ["ES2022", "WebWorker"]
+    // tsc is only used for type-checking.
+    "noEmit": true
   }
 }

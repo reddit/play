@@ -28,6 +28,8 @@
     // config though which suggests an upstream issue.
     "skipLibCheck": true,
 
+    "sourceMap": true,
+
     "target": "ES2020",
 
     // Don't transform type-only imports.
