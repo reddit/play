@@ -39,12 +39,14 @@ export function savePen(
   storage: Readonly<Storage> | undefined,
   pen: Readonly<PenSave>
 ): void {
-  const json = JSON.stringify(pen)
-  storage?.setItem(storageKey, json)
-  if (location)
-    location.hash = `${fragmentPrefix}${lzstring.compressToEncodedURIComponent(
-      json
-    )}`
+  storage?.setItem(storageKey, JSON.stringify(pen))
+  if (location) location.hash = penToHash(pen)
+}
+
+export function penToHash(pen: Readonly<PenSave>): string {
+  return `${fragmentPrefix}${lzstring.compressToEncodedURIComponent(
+    JSON.stringify(pen)
+  )}`
 }
 
 /**

@@ -2,6 +2,7 @@ import {LitElement, css, html} from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
 import type {PlayEditor} from './play-editor.js'
 import type {PlayPenContextProvider} from './play-pen-context-provider.js'
+import {PenSave, penToHash} from '../pen-save.js'
 
 import './play-editor.js'
 import './play-pen-context-provider.js'
@@ -131,10 +132,15 @@ export class PlayPen extends LitElement {
     this._provider.setName('')
     this._provider.setSrc(this._provider.template ?? '')
     this._editor.setSrc(this._provider.template ?? '')
+    if (this.allowURL && this._provider.template == null)
+      globalThis.location.hash = ''
   }
 
-  #onShare(): void {
+  async #onShare(): Promise<void> {
     // to-do: record to clipboard and show a toast.
     this._provider.save()
+    const url = new URL(globalThis.location.href)
+    url.hash = penToHash(PenSave(this._provider.name, this._provider.src ?? ''))
+    await navigator.clipboard.writeText(url.href)
   }
 }
