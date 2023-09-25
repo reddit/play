@@ -52,11 +52,11 @@ export class PlayPenFooter extends LitElement {
     }
   `
 
-  @property({attribute: false}) desktop?: boolean
-  @property({attribute: false}) diagnostics?: Diagnostics
-  @property({attribute: false}) scheme: ColorScheme | undefined
+  @property({type: Boolean}) desktop?: boolean
+  @property({attribute: false}) diagnostics?: Readonly<Diagnostics>
+  @property() scheme: ColorScheme | undefined
 
-  @state() private _open = false
+  @state() private _open: boolean = false
 
   protected override render() {
     const errs = this.diagnostics?.previewErrs.length

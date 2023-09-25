@@ -2,6 +2,7 @@ import type {LinkedBundle} from '@devvit/protos'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
 import {LitElement, css, html} from 'lit'
 import {customElement, property, query, state} from 'lit/decorators.js'
+import {ifDefined} from 'lit/directives/if-defined.js'
 import {
   appEntrypointFilename,
   compile,
@@ -120,7 +121,7 @@ export class PlayPen extends LitElement {
   @property({attribute: 'allow-url', type: Boolean}) allowURL: boolean = false
 
   /** Program executable. */
-  @state() private _bundle?: LinkedBundle | undefined
+  @state() private _bundle?: Readonly<LinkedBundle> | undefined
   /** Execution desktop / mobile render mode. */
   @state() private _desktop: boolean = false
   @state() private _diagnostics: Diagnostics = {previewErrs: []}
@@ -151,9 +152,8 @@ export class PlayPen extends LitElement {
   }
 
   protected override render() {
-    return html`
-      <play-pen-header
-        .name=${this._name}
+    return html`<play-pen-header
+        name=${this._name}
         @new=${this.#onReset}
         @share=${this.#onShare}
         @edit-name=${(ev: CustomEvent<string>) => this.#setName(ev.detail)}
@@ -161,8 +161,8 @@ export class PlayPen extends LitElement {
       <main>
         <play-editor
           .env=${this.#env}
-          .src=${this._src}
-          .template=${this._template}
+          src=${ifDefined(this._src)}
+          template=${ifDefined(this._template)}
           @edit=${(ev: CustomEvent<string>) => this.#setSrc(ev.detail)}
           @edit-template=${(ev: CustomEvent<string>) =>
             (this._template = ev.detail)}
@@ -170,23 +170,22 @@ export class PlayPen extends LitElement {
         ></play-editor>
         <play-preview
           .bundle=${this._bundle}
-          .desktop=${this._desktop}
-          .scheme=${this._scheme}
+          ?desktop=${this._desktop}
+          scheme=${ifDefined(this._scheme)}
           @clear-errors=${() => this.#clearPreviewErrors()}
           @error=${(ev: CustomEvent<unknown>) =>
             this.#appendPreviewError(ev.detail)}
         ></play-preview>
       </main>
       <play-pen-footer
-        .desktop=${this._desktop}
+        ?desktop=${this._desktop}
         .diagnostics=${this._diagnostics}
-        .scheme=${this._scheme}
+        scheme=${ifDefined(this._scheme)}
         @preview-desktop=${(ev: CustomEvent<boolean>) =>
           (this._desktop = ev.detail)}
         @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>
           (this._scheme = ev.detail)}
-      ></play-pen-footer>
-    `
+      ></play-pen-footer>`
   }
 
   #appendPreviewError(err: unknown): void {

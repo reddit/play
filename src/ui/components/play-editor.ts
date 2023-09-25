@@ -113,8 +113,8 @@ export class PlayEditor extends LitElement {
   `
 
   @property({attribute: false}) env!: VirtualTypeScriptEnvironment
-  @property({attribute: false}) src: string | undefined
-  @property({attribute: false}) template: string | undefined
+  @property() src: string | undefined
+  @property() template: string | undefined
 
   @query('div') private _root!: HTMLDivElement
 

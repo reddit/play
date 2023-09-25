@@ -1,7 +1,11 @@
 import {LitElement, css, html} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
+import type {PlayIconSVG} from './play-icon.js'
 
 import './play-icon.js'
+
+export type PlayButtonAppearance = 'brand' | 'plain' | 'secondary' | 'inverted'
+export type PlayButtonSize = 'small' | 'medium'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -11,11 +15,11 @@ declare global {
 
 @customElement('play-button')
 export class PlayButton extends LitElement {
-  @property({type: String}) appearance = 'secondary'
-  @property({type: String}) size = 'medium'
-  @property({type: String}) icon = ''
-  @property({type: String}) endIcon = ''
-  @property({type: Boolean}) disabled = false
+  @property() appearance: PlayButtonAppearance = 'secondary'
+  @property({type: Boolean}) disabled?: boolean
+  @property() endIcon?: PlayIconSVG
+  @property() icon?: PlayIconSVG
+  @property() size: PlayButtonSize = 'medium'
 
   static override styles = css`
     /* Default button styles. Medium size. */
@@ -138,9 +142,7 @@ export class PlayButton extends LitElement {
       html`<play-icon
         size=${this.size === 'small' ? '16px' : '20px'}
         icon=${this.icon}
-      ></play-icon>`}
-      <slot></slot>
-      ${this.endIcon &&
+      ></play-icon>`}<slot></slot>${this.endIcon &&
       html`<play-icon
         size=${this.size === 'small' ? '16px' : '20px'}
         icon=${this.endIcon}

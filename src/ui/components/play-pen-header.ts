@@ -15,7 +15,7 @@ declare global {
 @customElement('play-pen-header')
 export class PlayPenHeader extends LitElement {
   static override styles = css`
-    .wrapper {
+    :host {
       padding-top: 24px;
       padding-right: 24px;
       padding-bottom: 24px;
@@ -61,11 +61,10 @@ export class PlayPenHeader extends LitElement {
     }
   `
 
-  @property({attribute: false}) name: string = ''
+  @property() name: string = ''
 
   protected override render() {
-    return html`<div class="wrapper">
-      <div class="name">
+    return html`<div class="name">
         <div class="logo">
           <svg
             width="40"
@@ -169,7 +168,6 @@ export class PlayPenHeader extends LitElement {
           title="Copy Program to URL"
           >Share</play-button
         >
-      </div>
-    </div>`
+      </div>`
   }
 }

@@ -53,9 +53,9 @@ export class PlayPreview extends LitElement {
     `
   }
 
-  @property({attribute: false}) bundle: LinkedBundle | undefined
-  @property({attribute: false}) desktop?: boolean
-  @property({attribute: false}) scheme: ColorScheme | undefined
+  @property({attribute: false}) bundle: Readonly<LinkedBundle> | undefined
+  @property({type: Boolean}) desktop?: boolean
+  @property() scheme: ColorScheme | undefined
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
     new Blob([penWorker], {type: 'text/javascript'})
