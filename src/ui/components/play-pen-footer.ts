@@ -1,10 +1,8 @@
-import {consume} from '@lit-labs/context'
 import {LitElement, css, html, nothing} from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import {Bubble} from '../bubble.js'
-import {penCtx} from './play-pen-context.js'
 
 import './play-button.js'
 import './play-console.js'
@@ -47,17 +45,9 @@ export class PlayPenFooter extends LitElement {
     }
   `
 
-  @consume({context: penCtx.scheme, subscribe: true})
-  @property({attribute: false})
-  scheme: ColorScheme | undefined
-
-  @consume({context: penCtx.desktop, subscribe: true})
-  @property({attribute: false})
-  desktop: boolean = false
-
-  @consume({context: penCtx.diagnostics, subscribe: true})
-  @property({attribute: false})
-  diagnostics?: Diagnostics
+  @property({attribute: false}) desktop?: boolean
+  @property({attribute: false}) diagnostics?: Diagnostics
+  @property({attribute: false}) scheme: ColorScheme | undefined
 
   @state() private _open = false
 
@@ -81,7 +71,7 @@ export class PlayPenFooter extends LitElement {
             title="Toggle Device"
             @click=${() =>
               this.dispatchEvent(
-                Bubble('play-pen-set-desktop', this.desktop ? false : true)
+                Bubble('preview-desktop', this.desktop ? false : true)
               )}
             >${this.desktop ? 'Desktop' : 'Mobile'}</play-button
           >
@@ -91,7 +81,7 @@ export class PlayPenFooter extends LitElement {
             title="Toggle Scheme"
             @click=${() =>
               this.dispatchEvent(
-                Bubble('play-pen-set-scheme', this.#isDark() ? 'light' : 'dark')
+                Bubble('preview-scheme', this.#isDark() ? 'light' : 'dark')
               )}
           ></play-button>
           <play-button
@@ -102,7 +92,9 @@ export class PlayPenFooter extends LitElement {
           ></play-button>
         </div>
       </div>
-      ${this._open ? html`<play-console></play-console>` : nothing}
+      ${this._open
+        ? html`<play-console .diagnostics=${this.diagnostics}></play-console>`
+        : nothing}
     </footer>`
   }
 

@@ -1,8 +1,6 @@
-import {consume} from '@lit-labs/context'
 import {LitElement, css, html, type TemplateResult} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
-import {penCtx} from './play-pen-context.js'
 
 import './play-button.js'
 
@@ -14,9 +12,7 @@ declare global {
 
 @customElement('play-console')
 export class PlayConsole extends LitElement {
-  @consume({context: penCtx.diagnostics, subscribe: true})
-  @property({attribute: false})
-  diagnostics?: Diagnostics
+  @property({attribute: false}) diagnostics?: Diagnostics
 
   static override styles = css`
     .play-console {

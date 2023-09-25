@@ -1,11 +1,20 @@
+import type {LinkedBundle} from '@devvit/protos'
+import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
 import {LitElement, css, html} from 'lit'
-import {customElement, property, query} from 'lit/decorators.js'
+import {customElement, property, query, state} from 'lit/decorators.js'
+import {
+  appEntrypointFilename,
+  compile,
+  newTSEnv,
+  setSource
+} from '../../bundler/compiler.js'
+import {link} from '../../bundler/linker.js'
+import type {ColorScheme} from '../../types/color-scheme.js'
+import type {Diagnostics} from '../../types/diagnostics.js'
+import {PenSave, loadPen, penToHash, savePen} from '../pen-save.js'
 import type {PlayEditor} from './play-editor.js'
-import type {PlayPenContextProvider} from './play-pen-context-provider.js'
-import {PenSave, penToHash} from '../pen-save.js'
 
 import './play-editor.js'
-import './play-pen-context-provider.js'
 import './play-pen-footer.js'
 import './play-pen-header.js'
 import './play-preview.js'
@@ -54,6 +63,11 @@ export class PlayPen extends LitElement {
       /* #theme# Light mode. */
       color: #213547;
       background-color: var(--rpl-neutral-background);
+
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -62,13 +76,6 @@ export class PlayPen extends LitElement {
         /* color: rgba(255, 255, 255, 0.87);
         background-color: #242424; */
       }
-    }
-
-    play-pen-context-provider {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
     }
 
     play-editor {
@@ -106,41 +113,133 @@ export class PlayPen extends LitElement {
    */
   @property({attribute: 'allow-url', type: Boolean}) allowURL: boolean = false
 
-  @query('play-pen-context-provider') private _provider!: PlayPenContextProvider
+  /** Program executable. */
+  @state() private _bundle?: LinkedBundle | undefined
+  /** Execution desktop / mobile render mode. */
+  @state() private _desktop: boolean = false
+  @state() private _diagnostics: Diagnostics = {previewErrs: []}
   @query('play-editor') private _editor!: PlayEditor
+  readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
+  /** Program title. */ @state() private _name: string = ''
+  /** Execution color scheme. */ @state() private _scheme:
+    | ColorScheme
+    | undefined
+  /** Program source code. Undefined when not restored. */ @state()
+  private _src: string | undefined
+  /** Program source code reset state. */ @state() private _template:
+    | string
+    | undefined
+
+  override connectedCallback(): void {
+    super.connectedCallback()
+
+    let pen
+    if (this.allowURL) {
+      pen = loadPen(globalThis.location)
+      if (pen) this._template = pen.src
+    }
+    if (this.allowStorage) pen ??= loadPen(globalThis.localStorage)
+    if (!pen) return
+    this.#setSrc(pen.src)
+    this.#setName(pen.name)
+  }
 
   protected override render() {
     return html`
-      <play-pen-context-provider
-        ?allow-storage=${this.allowStorage}
-        ?allow-url=${this.allowURL}
-      >
-        <play-pen-header
-          @new=${this.#onReset}
-          @share=${this.#onShare}
-        ></play-pen-header>
-        <main>
-          <play-editor><slot></slot></play-editor>
-          <play-preview></play-preview>
-        </main>
-        <play-pen-footer></play-pen-footer>
-      </play-pen-context-provider>
+      <play-pen-header
+        .name=${this._name}
+        @new=${this.#onReset}
+        @share=${this.#onShare}
+        @edit-name=${(ev: CustomEvent<string>) => this.#setName(ev.detail)}
+      ></play-pen-header>
+      <main>
+        <play-editor
+          .env=${this.#env}
+          .src=${this._src}
+          .template=${this._template}
+          @edit=${(ev: CustomEvent<string>) => this.#setSrc(ev.detail)}
+          @edit-template=${(ev: CustomEvent<string>) =>
+            (this._template = ev.detail)}
+          ><slot></slot
+        ></play-editor>
+        <play-preview
+          .bundle=${this._bundle}
+          .desktop=${this._desktop}
+          .scheme=${this._scheme}
+          @clear-errors=${() => this.#clearPreviewErrors()}
+          @error=${(ev: CustomEvent<unknown>) =>
+            this.#appendPreviewError(ev.detail)}
+        ></play-preview>
+      </main>
+      <play-pen-footer
+        .desktop=${this._desktop}
+        .diagnostics=${this._diagnostics}
+        .scheme=${this._scheme}
+        @preview-desktop=${(ev: CustomEvent<boolean>) =>
+          (this._desktop = ev.detail)}
+        @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>
+          (this._scheme = ev.detail)}
+      ></play-pen-footer>
     `
   }
 
+  #appendPreviewError(err: unknown): void {
+    this._diagnostics = {
+      ...this._diagnostics,
+      previewErrs: [...this._diagnostics.previewErrs, err]
+    }
+  }
+
+  /** Save to LocalStorage as allowed. */
+  #autoSave(): void {
+    if (this.allowStorage)
+      savePen(
+        undefined,
+        globalThis.localStorage,
+        PenSave(this._name, this._src ?? '')
+      )
+  }
+
+  #clearPreviewErrors(): void {
+    if (this._diagnostics) this._diagnostics.previewErrs.length = 0
+    this._diagnostics = {...this._diagnostics}
+  }
+
   #onReset(): void {
-    this._provider.setName('')
-    this._provider.setSrc(this._provider.template ?? '')
-    this._editor.setSrc(this._provider.template ?? '')
-    if (this.allowURL && this._provider.template == null)
-      globalThis.location.hash = ''
+    this.#setName('')
+    this.#setSrc(this._template ?? '')
+    this._editor.setSrc(this._template ?? '')
+    if (this.allowURL && this._template == null) globalThis.location.hash = ''
   }
 
   async #onShare(): Promise<void> {
     // to-do: record to clipboard and show a toast.
-    this._provider.save()
+    this.#save()
     const url = new URL(globalThis.location.href)
-    url.hash = penToHash(PenSave(this._provider.name, this._provider.src ?? ''))
+    url.hash = penToHash(PenSave(this._name, this._src ?? ''))
     await navigator.clipboard.writeText(url.href)
+  }
+
+  /** Save to LocalStorage and URL as allowed. */
+  #save(): void {
+    savePen(
+      this.allowURL ? globalThis.location : undefined,
+      this.allowStorage ? globalThis.localStorage : undefined,
+      PenSave(this._name, this._src ?? '')
+    )
+  }
+
+  #setName(name: string): void {
+    this._name = name
+    this.#autoSave()
+  }
+
+  #setSrc(src: string): void {
+    this._src = src
+    setSource(this.#env, src)
+    this.#env.updateFile(appEntrypointFilename, src || ' ') // empty strings trigger file deletion!
+    // Skip blank source.
+    if (!/^\s*$/.test(src)) this._bundle = link(compile(this.#env))
+    this.#autoSave()
   }
 }

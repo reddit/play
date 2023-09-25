@@ -1,8 +1,6 @@
-import {consume} from '@lit-labs/context'
 import {LitElement, css, html} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {Bubble} from '../bubble.js'
-import {penCtx} from './play-pen-context.js'
 
 import './play-button.js'
 import './play-icon.js'
@@ -58,9 +56,7 @@ export class PlayPenHeader extends LitElement {
     }
   `
 
-  @consume({context: penCtx.name, subscribe: true})
-  @property({attribute: false})
-  name: string = ''
+  @property({attribute: false}) name: string = ''
 
   protected override render() {
     return html`<div class="wrapper">
@@ -70,7 +66,7 @@ export class PlayPenHeader extends LitElement {
         </div>
         <play-resizable-text-input
           @edit-text=${(ev: CustomEvent<string>) =>
-            this.dispatchEvent(Bubble('play-pen-set-name', ev.detail))}
+            this.dispatchEvent(Bubble('edit-name', ev.detail))}
           placeholder="Untitled pen"
           .text=${this.name}
         ></play-resizable-text-input>

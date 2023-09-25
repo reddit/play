@@ -35,8 +35,7 @@ import {
   lineNumbers,
   rectangularSelection
 } from '@codemirror/view'
-import {consume} from '@lit-labs/context'
-import * as tsvfs from '@typescript/vfs'
+import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
 import {EditorView} from 'codemirror'
 import {LitElement, css, html} from 'lit'
 import {
@@ -51,7 +50,6 @@ import {appEntrypointFilename} from '../../bundler/compiler.js'
 import {throttle} from '../../utils/throttle.js'
 import {unindent} from '../../utils/unindent.js'
 import {Bubble} from '../bubble.js'
-import {penCtx} from './play-pen-context.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -99,15 +97,9 @@ export class PlayEditor extends LitElement {
     }
   `
 
-  @consume({context: penCtx.env})
-  @property({attribute: false})
-  env!: tsvfs.VirtualTypeScriptEnvironment
-  @consume({context: penCtx.src})
-  @property({attribute: false})
-  src: string | undefined
-  @consume({context: penCtx.template})
-  @property({attribute: false})
-  template: string | undefined
+  @property({attribute: false}) env!: VirtualTypeScriptEnvironment
+  @property({attribute: false}) src: string | undefined
+  @property({attribute: false}) template: string | undefined
 
   @query('div') private _root!: HTMLDivElement
 
@@ -195,18 +187,17 @@ export class PlayEditor extends LitElement {
 
     // The slotted template has the lowest precedence. Do not overwrite
     // any existing template.
-    if (this.template == null)
-      this.dispatchEvent(Bubble('play-pen-set-template', src))
+    if (this.template == null) this.dispatchEvent(Bubble('edit-template', src))
 
     // If no source was restored, use the template.
     if (this.src != null) return
     this.setSrc(src)
-    this.dispatchEvent(Bubble('play-pen-set-src', src))
+    this.dispatchEvent(Bubble('edit', src))
   }
 
   #dispatchThrottledSourceChangedEvent: (src: string) => void = throttle(
     (src: string) => {
-      this.dispatchEvent(Bubble('play-pen-set-src', src))
+      this.dispatchEvent(Bubble('edit', src))
     },
     500
   )
@@ -228,7 +219,7 @@ function tsDiagnosticToMirrorDiagnostic(diagnostic: ts.Diagnostic): Diagnostic {
   }
 }
 
-function tsHoverTip(env: tsvfs.VirtualTypeScriptEnvironment) {
+function tsHoverTip(env: VirtualTypeScriptEnvironment) {
   return hoverTooltip((_editor, pos) => {
     // to-do: clean up.
     console.log('hover')
@@ -256,7 +247,7 @@ function tsHoverTip(env: tsvfs.VirtualTypeScriptEnvironment) {
   })
 }
 
-function tsAutocomplete(env: tsvfs.VirtualTypeScriptEnvironment): Extension {
+function tsAutocomplete(env: VirtualTypeScriptEnvironment): Extension {
   return autocompletion({
     override: [
       ctx => {

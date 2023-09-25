@@ -1,12 +1,10 @@
 import penWorker from '@devvit/previews/dist/pen.worker.min.js'
 import type {LinkedBundle, Metadata} from '@devvit/protos'
 import {BrowserLiteClient} from '@devvit/runtime-lite/BrowserLiteClient.js'
-import {consume} from '@lit-labs/context'
 import {LitElement, css, html, type PropertyValues} from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import {Bubble} from '../bubble.js'
-import {penCtx} from './play-pen-context.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
 
@@ -52,15 +50,9 @@ export class PlayPreview extends LitElement {
     `
   }
 
-  @consume({context: penCtx.bundle, subscribe: true})
-  @property({attribute: false})
-  bundle?: LinkedBundle | undefined
-  @consume({context: penCtx.desktop, subscribe: true})
-  @property({attribute: false})
-  desktop: boolean = false
-  @consume({context: penCtx.scheme, subscribe: true})
-  @property({attribute: false})
-  scheme: ColorScheme | undefined
+  @property({attribute: false}) bundle: LinkedBundle | undefined
+  @property({attribute: false}) desktop?: boolean
+  @property({attribute: false}) scheme: ColorScheme | undefined
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
     new Blob([penWorker], {type: 'text/javascript'})
@@ -81,7 +73,7 @@ export class PlayPreview extends LitElement {
       ${this.bundle &&
       html`<devvit-preview
         @devvit-ui-error=${(ev: CustomEvent<unknown>) =>
-          this.dispatchEvent(Bubble('play-pen-preview-error', ev.detail))}
+          this.dispatchEvent(Bubble('error', ev.detail))}
         .meta="${this.#meta}"
         .client=${this._client}
         .scheme=${this.scheme}
@@ -94,11 +86,11 @@ export class PlayPreview extends LitElement {
   ): Promise<void> {
     if (changedProperties.has('bundle') && this.bundle) {
       this._client.quit()
-      this.dispatchEvent(Bubble('play-pen-clear-preview-errors', undefined))
+      this.dispatchEvent(Bubble('clear-errors', undefined))
       try {
         await this._client.loadBundle(this.bundle)
       } catch (err) {
-        this.dispatchEvent(Bubble('play-pen-preview-error', err))
+        this.dispatchEvent(Bubble('error', err))
       }
       // Re-render the preview.
       this.#meta = {...this.#meta}
