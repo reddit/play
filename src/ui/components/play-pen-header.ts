@@ -149,7 +149,6 @@ export class PlayPenHeader extends LitElement {
           >New</play-button
         >
         <play-button
-          @click=${() => this.dispatchEvent(Bubble('new', undefined))}
           appearance="plain"
           size="medium"
           icon="external-outline"
