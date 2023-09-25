@@ -37,21 +37,19 @@ export class PlayApp extends LitElement {
 
         Devvit.addCustomPostType({
           name: 'Say Hello',
-          render: ctx => {
-            const [counter, setCounter] = ctx.useState(0)
+          render: context => {
+            const [counter, setCounter] = context.useState(0)
             return (
-              <vstack alignment='center middle' height={100}>
-                <hstack alignment='center middle' gap='medium' padding='medium'>
-                  <text size='xxlarge' style='heading'>
-                    Hello! 👋
-                  </text>
-                  <button
-                    appearance='primary'
-                    onPress={() => setCounter(counter => counter + 1)}
-                  >
-                    Click me!
-                  </button>
-                </hstack>
+              <vstack alignment='center middle' height={100} gap='large'>
+                <text size='xxlarge' style='heading'>
+                  Hello! 👋
+                </text>
+                <button
+                  appearance='primary'
+                  onPress={() => setCounter(counter => counter + 1)}
+                >
+                  Click me!
+                </button>
                 {counter ? (
                   <text>{\`You clicked \${counter} time(s)!\`}</text>
                 ) : (

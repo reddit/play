@@ -17,7 +17,7 @@ declare global {
 export class PlayPenFooter extends LitElement {
   static override styles = css`
     footer {
-      background-color: var(--rpl-secondary-background);
+      background-color: var(--rpl-neutral-content-weak);
     }
     .buttons {
       display: flex;
@@ -25,23 +25,30 @@ export class PlayPenFooter extends LitElement {
       column-gap: 16px;
       row-gap: 16px;
       justify-content: space-between;
-      padding-top: 2px;
-      padding-right: 0px;
-      padding-bottom: 2px;
-      padding-left: 0px;
+      padding-top: 0;
+      padding-right: 24px;
+      padding-bottom: 0;
+      padding-left: 24px;
     }
     .actions {
       display: flex;
       flex-direction: row;
-      column-gap: 8px;
-      row-gap: 8px;
+      column-gap: 16px;
+      row-gap: 16px;
     }
 
     .badge {
-      color: var(--rpl-neutral-content-strong);
-      border-radius: 8px;
-      background-color: var(--rpl-neutral-background);
-      min-width: 24px;
+      color: var(--rpl-neutral-background);
+      border-radius: 9001px;
+      background-color: var(--rpl-orangered-500);
+      padding-top: 2px;
+      padding-right: 8px;
+      padding-bottom: 2px;
+      padding-left: 8px;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 16px;
     }
   `
 
@@ -58,7 +65,8 @@ export class PlayPenFooter extends LitElement {
     return html`<footer>
       <div class="buttons">
         <play-button
-          appearance="secondary"
+          appearance="inverted"
+          size="medium"
           endIcon="${this._open ? 'caret-down-outline' : 'caret-up-outline'}"
           title="Toggle Console"
           @click=${() => (this._open = !this._open)}
@@ -66,7 +74,8 @@ export class PlayPenFooter extends LitElement {
         >
         <div class="actions">
           <play-button
-            appearance="secondary"
+            appearance="inverted"
+            size="medium"
             endIcon="caret-down-outline"
             title="Toggle Device"
             @click=${() =>
@@ -76,16 +85,19 @@ export class PlayPenFooter extends LitElement {
             >${this.desktop ? 'Desktop' : 'Mobile'}</play-button
           >
           <play-button
-            appearance="secondary"
+            appearance="inverted"
+            size="medium"
             icon=${this.#isDark() ? 'night-outline' : 'day-outline'}
             title="Toggle Scheme"
             @click=${() =>
               this.dispatchEvent(
                 Bubble('preview-scheme', this.#isDark() ? 'light' : 'dark')
               )}
-          ></play-button>
+            >Theme</play-button
+          >
           <play-button
-            appearance="secondary"
+            appearance="inverted"
+            size="medium"
             icon="overflow-horizontal-outline"
             title="Additional Options"
             @click=${() => console.log('Show overflow menu')}

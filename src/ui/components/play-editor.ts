@@ -68,15 +68,30 @@ export class PlayEditor extends LitElement {
     .cm-editor {
       height: 100%;
       overflow: hidden;
+      font-family: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+        'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+        'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.5;
     }
+
+    .cm-editor .cm-scroller {
+      font: inherit;
+    }
+
     .cm-editor.cm-focused {
       outline: none;
     }
     .cm-editor .cm-gutters {
-      background-color: var(--rpl-neutral-background);
-      color: var(--rpl-neutral-content-weak);
+      background-color: transparent;
+      color: var(--rpl-orangered-500);
       border-right: none;
     }
+
+    .cm-editor .cm-line {
+      padding-left: 16px;
+    }
+
     .cm-editor .cm-lineNumbers .cm-activeLineGutter {
       background-color: var(--rpl-orangered-100);
       border-top-left-radius: 4px;

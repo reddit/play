@@ -62,7 +62,6 @@ export class PlayResizableTextInput extends LitElement {
       outline-width: 2px;
       outline-style: solid;
       outline-color: var(--rpl-brand-background);
-      background-color: var(--rpl-neutral-background);
       color: var(--rpl-neutral-content-strong);
     }
 

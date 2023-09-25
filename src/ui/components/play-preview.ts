@@ -42,6 +42,9 @@ export class PlayPreview extends LitElement {
           )
           0 / 200%;
         width: 343px;
+        transition-duration: 0.2s;
+        transition-property: width;
+        transition-timing-function: ease-out;
       }
 
       .desktop {

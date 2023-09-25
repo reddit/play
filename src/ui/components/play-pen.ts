@@ -39,9 +39,14 @@ export class PlayPen extends LitElement {
       /* Global color definitions. */
       --rpl-global-orangered: #ff4500;
       --rpl-orangered-100: #ffede5;
+      --rpl-orangered-500: #d93a00;
+
+      /*  #theme# Duck branding */
+      --color-background: #fffcf0;
 
       /* #theme# Light mode color definitions. */
       --rpl-neutral-content-weak: #576f76;
+      --rpl-neutral-content: #2a3c42;
       --rpl-neutral-content-strong: #0f1a1c;
       --rpl-neutral-background-weak: #f9fafa;
       --rpl-neutral-background-weak-hovered: #f2f4f5;
@@ -62,7 +67,7 @@ export class PlayPen extends LitElement {
 
       /* #theme# Light mode. */
       color: #213547;
-      background-color: var(--rpl-neutral-background);
+      background-color: var(--color-background);
 
       width: 100%;
       height: 100%;
@@ -97,6 +102,7 @@ export class PlayPen extends LitElement {
       padding-left: 24px;
       row-gap: 24px;
       height: 100%;
+      background-color: var(--color-background);
     }
   `
 
