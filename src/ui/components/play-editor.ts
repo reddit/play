@@ -45,11 +45,12 @@ import {
   query,
   queryAssignedElements
 } from 'lit/decorators.js'
-import ts, {displayPartsToString} from 'typescript'
+import ts from 'typescript'
 import {appEntrypointFilename} from '../../bundler/compiler.js'
 import {throttle} from '../../utils/throttle.js'
 import {unindent} from '../../utils/unindent.js'
 import {Bubble} from '../bubble.js'
+import {PlayEditorTip} from './play-editor-tip.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -192,11 +193,11 @@ export class PlayEditor extends LitElement {
 
   protected override render(): unknown {
     return html`<div class="editor"></div>
-      <slot @slotchange=${this._onSlotChange} />`
+      <slot @slotchange=${this._onSlotChange}></slot>`
   }
 
   @eventOptions({once: true}) private _onSlotChange(): void {
-    // If <script /> exists, get the program inside.
+    // If <script> exists, get the program inside.
     let src = this._scripts[0]?.innerText
     if (src == null) return
     src = unindent(src ?? '')
@@ -225,28 +226,19 @@ function tsDiagnosticToMirrorDiagnostic(diagnostic: ts.Diagnostic): Diagnostic {
   }
 }
 
-function tsHoverTip(env: VirtualTypeScriptEnvironment) {
+function tsHoverTip(env: VirtualTypeScriptEnvironment): Extension {
   return hoverTooltip((_editor, pos) => {
-    // to-do: clean up.
-    console.log('hover')
     const info = env.languageService.getQuickInfoAtPosition(
       appEntrypointFilename,
       pos
     )
     if (!info) return null
-    console.log('hover with info', info)
     return {
       pos: info.textSpan.start,
       end: info.textSpan.start + info.textSpan.length,
       create() {
-        const dom = document.createElement('div')
-        dom.className = 'cm-quickinfo-tooltip'
-        dom.textContent =
-          displayPartsToString(info.displayParts) +
-          (info.documentation?.length
-            ? '\n' + displayPartsToString(info.documentation)
-            : '')
-
+        const dom = new PlayEditorTip()
+        dom.info = info
         return {dom}
       }
     }
