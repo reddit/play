@@ -137,18 +137,12 @@ export class PlayPen extends LitElement {
     | undefined
   /** Program source code. Undefined when not restored. */ @state()
   private _src: string | undefined
-  /** Program source code reset state. */ @state() private _template:
-    | string
-    | undefined
 
   override connectedCallback(): void {
     super.connectedCallback()
 
     let pen
-    if (this.allowURL) {
-      pen = loadPen(globalThis.location)
-      if (pen) this._template = pen.src
-    }
+    if (this.allowURL) pen = loadPen(globalThis.location)
     if (this.allowStorage) pen ??= loadPen(globalThis.localStorage)
     if (!pen) return
     this.#setSrc(pen.src)
@@ -159,22 +153,25 @@ export class PlayPen extends LitElement {
     return html`<play-pen-header
         name=${this._name}
         .srcByLabel=${this.srcByLabel}
-        @new=${this.#onReset}
-        @share=${this.#onShare}
         @edit-name=${(ev: CustomEvent<string>) => this.#setName(ev.detail)}
         @edit-src=${(ev: CustomEvent<string>) => {
           this.#setSrc(ev.detail)
           this._editor.setSrc(ev.detail)
         }}
+        @share=${this.#onShare}
       ></play-pen-header>
       <main>
         <play-editor
           .env=${this.#env}
           src=${ifDefined(this._src)}
-          template=${ifDefined(this._template)}
           @edit=${(ev: CustomEvent<string>) => this.#setSrc(ev.detail)}
-          @edit-template=${(ev: CustomEvent<string>) =>
-            (this._template = ev.detail)}
+          @edit-template=${(ev: CustomEvent<string>) => {
+            this.srcByLabel = {['Default']: ev.detail, ...this.srcByLabel}
+            if (this._src != null) return
+            // If no source was restored, use the template.
+            this.#setSrc(ev.detail)
+            this._editor.setSrc(ev.detail)
+          }}
           ><slot></slot
         ></play-editor>
         <play-preview
@@ -217,13 +214,6 @@ export class PlayPen extends LitElement {
   #clearPreviewErrors(): void {
     if (this._diagnostics) this._diagnostics.previewErrs.length = 0
     this._diagnostics = {...this._diagnostics}
-  }
-
-  #onReset(): void {
-    this.#setName('')
-    this.#setSrc(this._template ?? '')
-    this._editor.setSrc(this._template ?? '')
-    if (this.allowURL && this._template == null) globalThis.location.hash = ''
   }
 
   async #onShare(): Promise<void> {

@@ -114,7 +114,6 @@ export class PlayEditor extends LitElement {
 
   @property({attribute: false}) env!: VirtualTypeScriptEnvironment
   @property() src: string | undefined
-  @property() template: string | undefined
 
   @query('div') private _root!: HTMLDivElement
 
@@ -133,7 +132,7 @@ export class PlayEditor extends LitElement {
 
   protected override firstUpdated(): void {
     const init = EditorState.create({
-      doc: this.src ?? this.template ?? '',
+      doc: this.src ?? '',
       extensions: [
         // Mostly https://github.com/codemirror/basic-setup extension without
         // search, which we don't render well, and with [shift]-tab indenting.
@@ -198,22 +197,14 @@ export class PlayEditor extends LitElement {
 
   @eventOptions({once: true}) private _onSlotChange(): void {
     // If <script /> exists, get the program inside.
-    const src = unindent(this._scripts[0]?.innerText ?? '')
-
-    // The slotted template has the lowest precedence. Do not overwrite
-    // any existing template.
-    if (this.template == null) this.dispatchEvent(Bubble('edit-template', src))
-
-    // If no source was restored, use the template.
-    if (this.src != null) return
-    this.setSrc(src)
-    this.dispatchEvent(Bubble('edit', src))
+    let src = this._scripts[0]?.innerText
+    if (src == null) return
+    src = unindent(src ?? '')
+    this.dispatchEvent(Bubble('edit-template', src))
   }
 
   #dispatchThrottledSourceChangedEvent: (src: string) => void = throttle(
-    (src: string) => {
-      this.dispatchEvent(Bubble('edit', src))
-    },
+    (src: string) => this.dispatchEvent(Bubble('edit', src)),
     500
   )
 }
