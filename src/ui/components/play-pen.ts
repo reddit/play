@@ -144,7 +144,10 @@ export class PlayPen extends LitElement {
     let pen
     if (this.allowURL) pen = loadPen(globalThis.location)
     if (this.allowStorage) pen ??= loadPen(globalThis.localStorage)
-    if (!pen) return
+    if (!pen) {
+      this.#setSrc(helloBlocks)
+      return
+    }
     this.#setSrc(pen.src)
     this.#setName(pen.name)
   }
