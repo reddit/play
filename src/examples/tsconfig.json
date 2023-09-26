@@ -1,5 +1,5 @@
 {
-  "extends": "../tools/base-tsconfig.json",
+  "extends": "../../tools/base-tsconfig.json",
   "compilerOptions": {
     "jsx": "react",
     "jsxFactory": "Devvit.createElement",

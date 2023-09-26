@@ -1,6 +1,6 @@
 # Changelog
 
-play is [semantically versioned](https://semver.org).
+:play is [semantically versioned](https://semver.org).
 
 ## v0.0.7 (unreleased)
 

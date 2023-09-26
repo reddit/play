@@ -11,5 +11,5 @@
   },
   // https://github.com/Microsoft/TypeScript/issues/25636
   "include": ["**/*", "**/*.json"],
-  "exclude": ["**/*.test.ts"]
+  "exclude": ["**/*.test.ts", "examples"]
 }

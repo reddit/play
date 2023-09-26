@@ -10,6 +10,8 @@ import {
   setSource
 } from '../../bundler/compiler.js'
 import {link} from '../../bundler/linker.js'
+import blocksGallery from '../../examples/blocks-gallery.example.js'
+import helloBlocks from '../../examples/hello-blocks.example.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import {PenSave, loadPen, penToHash, savePen} from '../pen-save.js'
@@ -119,6 +121,8 @@ export class PlayPen extends LitElement {
    * document.
    */
   @property({attribute: 'allow-url', type: Boolean}) allowURL: boolean = false
+  @property({attribute: false}) srcByLabel: Readonly<{[key: string]: string}> =
+    {'Hello Blocks!': helloBlocks, 'Blocks Gallery': blocksGallery}
 
   /** Program executable. */
   @state() private _bundle?: Readonly<LinkedBundle> | undefined
@@ -154,9 +158,14 @@ export class PlayPen extends LitElement {
   protected override render() {
     return html`<play-pen-header
         name=${this._name}
+        .srcByLabel=${this.srcByLabel}
         @new=${this.#onReset}
         @share=${this.#onShare}
         @edit-name=${(ev: CustomEvent<string>) => this.#setName(ev.detail)}
+        @edit-src=${(ev: CustomEvent<string>) => {
+          this.#setSrc(ev.detail)
+          this._editor.setSrc(ev.detail)
+        }}
       ></play-pen-header>
       <main>
         <play-editor

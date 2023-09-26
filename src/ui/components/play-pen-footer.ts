@@ -56,7 +56,7 @@ export class PlayPenFooter extends LitElement {
   @property({attribute: false}) diagnostics?: Readonly<Diagnostics>
   @property() scheme: ColorScheme | undefined
 
-  @state() private _open: boolean = false
+  @state() private _open?: boolean
 
   protected override render() {
     const errs = this.diagnostics?.previewErrs.length

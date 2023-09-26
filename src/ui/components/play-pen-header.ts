@@ -3,8 +3,10 @@ import {customElement, property} from 'lit/decorators.js'
 import {Bubble} from '../bubble.js'
 
 import './play-button.js'
+import './play-details.js'
 import './play-icon.js'
 import './play-resizable-text-input.js'
+import './play-template-select.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -62,6 +64,7 @@ export class PlayPenHeader extends LitElement {
   `
 
   @property() name: string = ''
+  @property({attribute: false}) srcByLabel?: Readonly<{[key: string]: string}>
 
   protected override render() {
     return html`<div class="name">
@@ -139,14 +142,9 @@ export class PlayPenHeader extends LitElement {
         ></play-resizable-text-input>
       </div>
       <div class="actions">
-        <play-button
-          @click=${() => this.dispatchEvent(Bubble('new', undefined))}
-          appearance="plain"
-          size="medium"
-          icon="add-outline"
-          title="Reset Program Template"
-          >New</play-button
-        >
+        <play-template-select
+          .srcByLabel=${this.srcByLabel}
+        ></play-template-select>
         <play-button
           appearance="plain"
           size="medium"
