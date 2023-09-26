@@ -15,8 +15,9 @@ export class PlayConsole extends LitElement {
   @property({attribute: false}) diagnostics?: Diagnostics
 
   static override styles = css`
-    .play-console {
+    :host {
       height: 320px;
+      display: block;
       overflow: auto;
       background-color: var(--rpl-neutral-background);
     }
@@ -79,20 +80,18 @@ export class PlayConsole extends LitElement {
   protected override render(): TemplateResult<1> {
     const errs = []
     for (const err of this.diagnostics?.previewErrs ?? []) errs.push(row(err))
-    return html`<div class="play-console">
-      <table>
-        <thead>
-          <tr>
-            <th class="name"><div class="resize">Name</div></th>
-            <th class="message"><div class="resize">Message</div></th>
-            <th class="details">Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${errs}
-        </tbody>
-      </table>
-    </div>`
+    return html`<table>
+      <thead>
+        <tr>
+          <th class="name"><div class="resize">Name</div></th>
+          <th class="message"><div class="resize">Message</div></th>
+          <th class="details">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${errs}
+      </tbody>
+    </table>`
   }
 }
 

@@ -107,7 +107,7 @@ export class PlayResizableTextInput extends LitElement {
   }
 
   #resizeInput(input: HTMLInputElement): void {
-    const span = document.createElement('span')
+    const span = globalThis.document.createElement('span')
     span.innerText = this.text || this.placeholder
     span.style.visibility = 'hidden'
     span.style.whiteSpace = 'pre'
@@ -115,8 +115,8 @@ export class PlayResizableTextInput extends LitElement {
     span.style.fontSize = '24px'
     span.style.fontStyle = 'normal'
     span.style.fontWeight = '400'
-    document.body.appendChild(span)
+    globalThis.document.body.appendChild(span)
     input.style.maxWidth = `${span.offsetWidth}px`
-    document.body.removeChild(span)
+    globalThis.document.body.removeChild(span)
   }
 }
