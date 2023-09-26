@@ -137,6 +137,7 @@ export class PlayPen extends LitElement {
     | undefined
   /** Program source code. Undefined when not restored. */ @state()
   private _src: string | undefined
+  #template?: boolean
 
   override connectedCallback(): void {
     super.connectedCallback()
@@ -145,6 +146,7 @@ export class PlayPen extends LitElement {
     if (this.allowURL) pen = loadPen(globalThis.location)
     if (this.allowStorage) pen ??= loadPen(globalThis.localStorage)
     if (!pen) {
+      this.#template = true
       this.#setSrc(helloBlocks)
       return
     }
@@ -170,7 +172,7 @@ export class PlayPen extends LitElement {
           @edit=${(ev: CustomEvent<string>) => this.#setSrc(ev.detail)}
           @edit-template=${(ev: CustomEvent<string>) => {
             this.srcByLabel = {['Default']: ev.detail, ...this.srcByLabel}
-            if (this._src != null) return
+            if (!this.#template) return
             // If no source was restored, use the template.
             this.#setSrc(ev.detail)
             this._editor.setSrc(ev.detail)
