@@ -2,7 +2,11 @@
 
 :play is [semantically versioned](https://semver.org).
 
-## v0.0.7 (unreleased)
+## v0.0.8 (unreleased)
+
+## v0.0.7
+
+Add template select.
 
 ## v0.0.6
 
