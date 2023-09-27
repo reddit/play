@@ -147,20 +147,21 @@ export class PlayPen extends LitElement {
     if (this.allowStorage) pen ??= loadPen(globalThis.localStorage)
     if (!pen) {
       this.#template = true
-      this.#setSrc(helloBlocks)
+      this.#setSrc(helloBlocks, false)
       return
     }
-    this.#setSrc(pen.src)
-    this.#setName(pen.name)
+    this.#setSrc(pen.src, false)
+    this.#setName(pen.name, false)
   }
 
   protected override render() {
     return html`<play-pen-header
         name=${this._name}
         .srcByLabel=${this.srcByLabel}
-        @edit-name=${(ev: CustomEvent<string>) => this.#setName(ev.detail)}
+        @edit-name=${(ev: CustomEvent<string>) =>
+          this.#setName(ev.detail, true)}
         @edit-src=${(ev: CustomEvent<string>) => {
-          this.#setSrc(ev.detail)
+          this.#setSrc(ev.detail, false)
           this._editor.setSrc(ev.detail)
         }}
         @share=${this.#onShare}
@@ -169,12 +170,12 @@ export class PlayPen extends LitElement {
         <play-editor
           .env=${this.#env}
           src=${ifDefined(this._src)}
-          @edit=${(ev: CustomEvent<string>) => this.#setSrc(ev.detail)}
+          @edit=${(ev: CustomEvent<string>) => this.#setSrc(ev.detail, true)}
           @edit-template=${(ev: CustomEvent<string>) => {
             this.srcByLabel = {['Default']: ev.detail, ...this.srcByLabel}
             if (!this.#template) return
             // If no source was restored, use the template.
-            this.#setSrc(ev.detail)
+            this.#setSrc(ev.detail, false)
             this._editor.setSrc(ev.detail)
           }}
           ><slot></slot
@@ -238,12 +239,12 @@ export class PlayPen extends LitElement {
     )
   }
 
-  #setName(name: string): void {
+  #setName(name: string, save: boolean): void {
     this._name = name
-    this.#autoSave()
+    if (save) this.#autoSave()
   }
 
-  #setSrc(src: string): void {
+  #setSrc(src: string, save: boolean): void {
     this._src = src
     setSource(this.#env, src)
     this.#env.updateFile(appEntrypointFilename, src || ' ') // empty strings trigger file deletion!
@@ -255,6 +256,6 @@ export class PlayPen extends LitElement {
     }
     // Skip blank source.
     if (!/^\s*$/.test(src)) this._bundle = link(compile(this.#env))
-    this.#autoSave()
+    if (save) this.#autoSave()
   }
 }
