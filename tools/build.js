@@ -75,7 +75,7 @@ const opts = {
   format: 'esm',
   // Bundle templates for loading in pens and bundle pen worker as text so it
   // can be loaded in a worker.
-  loader: {'.example.tsx': 'text', '.worker.min.js': 'text'},
+  loader: {'.css': 'text', '.example.tsx': 'text', '.worker.min.js': 'text'},
   logLevel: `info`, // Print the port and build demarcations.
   outdir: 'dist', // #build:dist#
   sourcemap: 'linked'
