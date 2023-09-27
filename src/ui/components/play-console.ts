@@ -129,7 +129,7 @@ function previewErrRow(err: unknown): TemplateResult<1> {
     <td>Execution</td>
     <td>${err.name}</td>
     <td>${err.message}</td>
-    <td>${detail || html`<pre>err.stack</pre>`}</td>
+    <td>${detail || html`<pre>${err.stack}</pre>`}</td>
   </tr>`
 }
 
