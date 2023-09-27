@@ -2,13 +2,18 @@
 // See tools/build.js
 
 declare module '*.css' {
-  const styles: string
-  export = styles
+  const text: string
+  export = text
 }
 
 declare module '*.example.js' {
-  const src: string
-  export = src
+  const text: string
+  export = text
+}
+
+declare module '*.svg' {
+  const text: string
+  export = text
 }
 
 declare module '*.worker.min.js' {

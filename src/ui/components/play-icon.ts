@@ -1,34 +1,35 @@
-import {LitElement, css, html} from 'lit'
+import {LitElement, html, nothing} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {styleMap} from 'lit/directives/style-map.js'
+import {unsafeHTML} from 'lit/directives/unsafe-html.js'
+import addOutline from '../assets/icons/add-outline.svg'
+import caretDownOutline from '../assets/icons/caret-down-outline.svg'
+import caretUpOutline from '../assets/icons/caret-up-outline.svg'
+import communityOutline from '../assets/icons/community-outline.svg'
+import dayOutline from '../assets/icons/day-outline.svg'
+import externalOutline from '../assets/icons/external-outline.svg'
+import infoOutline from '../assets/icons/info-outline.svg'
+import nightOutline from '../assets/icons/night-outline.svg'
+import overflowHorizontalOutline from '../assets/icons/overflow-horizontal-outline.svg'
+import reportOutline from '../assets/icons/report-outline.svg'
+import resizeHorizontalOutline from '../assets/icons/resize-horizontal-outline.svg'
+import shareNewOutline from '../assets/icons/share-new-outline.svg'
 
 export type PlayIconSVG = keyof typeof icons
 
 const icons = {
-  'add-outline':
-    'M19 9.375h-8.375V1h-1.25v8.375H1v1.25h8.375V19h1.25v-8.375H19v-1.25Z',
-  'info-outline':
-    'M10 20a10 10 0 1 1 10-10 10.011 10.011 0 0 1-10 10Zm0-18.75A8.75 8.75 0 1 0 18.75 10 8.76 8.76 0 0 0 10 1.25Zm-.543 5.705a1.058 1.058 0 0 1-.39-.393 1.11 1.11 0 0 1 0-1.09c.093-.161.228-.295.39-.386a1.1 1.1 0 0 1 1.484.39c.098.163.149.35.147.54a1.08 1.08 0 0 1-.54.936A1.05 1.05 0 0 1 10 7.1a1.062 1.062 0 0 1-.543-.145Zm1.354 8.463H9.2V8.124h1.614l-.003 7.294Z',
-  'share-new-outline':
-    'm18.8 8.286-6.466-7.064a.759.759 0 0 0-1.295.537v3.277C5.623 5.365 1 9.918 1 15.082v2.907h1.274C2.516 15 5.81 12.62 9.834 12.62h1.205v3.226a.757.757 0 0 0 1.315.515l6.422-7.021A.756.756 0 0 0 19 8.8a.736.736 0 0 0-.2-.514Zm-6.508 6.3V12a.625.625 0 0 0-.625-.625H9.834A9.436 9.436 0 0 0 2.26 14.7c.228-4.536 4.525-8.435 9.4-8.435a.626.626 0 0 0 .625-.625V3.023L17.576 8.8l-5.284 5.786Zm5.586-6.107a.176.176 0 0 0-.023.024.171.171 0 0 1 .02-.028l.003.004Zm-.011.642a.53.53 0 0 0-.003-.004l.003.004Z',
-  'overflow-horizontal-outline':
-    'M5.5 10a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0ZM10 8.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z',
-  'day-outline':
-    'M3 10.625H0v-1.25h3v1.25Zm17-1.25h-3v1.25h3v-1.25ZM10.625 0h-1.25v3h1.25V0Zm0 17h-1.25v3h1.25v-3ZM5.492 4.608 3.37 2.487l-.883.884 2.122 2.121.883-.884Zm12.022 12.021-2.121-2.121-.885.884 2.121 2.121.885-.884Zm0-13.258-.883-.884-2.123 2.121.883.884 2.123-2.121ZM5.492 15.392l-.885-.884-2.121 2.121.885.884 2.121-2.121ZM15 10a5 5 0 1 0-9.999 0A5 5 0 0 0 15 10Zm-1.25 0a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z',
-  'night-outline':
-    'M9.875 19a9.073 9.073 0 0 1-8.48-5.78 1.094 1.094 0 0 1 .247-1.191 1.145 1.145 0 0 1 1.232-.255c1.13.449 2.361.587 3.564.4A6.89 6.89 0 0 0 12.17 6.44a6.806 6.806 0 0 0-.394-3.564 1.148 1.148 0 0 1 .255-1.231 1.1 1.1 0 0 1 1.193-.248 9.082 9.082 0 0 1 5.746 9.254 9.184 9.184 0 0 1-8.32 8.32 11.93 11.93 0 0 1-.775.028Zm-7.206-5.967A7.871 7.871 0 1 0 13.033 2.668 8.116 8.116 0 0 1 2.669 13.033Z',
-  'caret-down-outline':
-    'M10 13.125a.624.624 0 0 1-.442-.183l-5-5 .884-.884L10 11.616l4.558-4.558.884.884-5 5a.624.624 0 0 1-.442.183Z',
-  'caret-up-outline':
-    'M14.558 12.942 10 8.384l-4.558 4.558-.884-.884 5-5a.623.623 0 0 1 .884 0l5 5-.884.884Z',
-  'external-outline':
-    'M15.75 13H17v3.375A2.63 2.63 0 0 1 14.375 19H3.625A2.63 2.63 0 0 1 1 16.375V5.625A2.629 2.629 0 0 1 3.625 3H7v1.25H3.625A1.377 1.377 0 0 0 2.25 5.625v10.75a1.377 1.377 0 0 0 1.375 1.375h10.75a1.377 1.377 0 0 0 1.375-1.375V13Zm2.625-12h-5v1.25h3.491l-8.433 8.433.884.884 8.433-8.433v3.491H19v-5A.625.625 0 0 0 18.375 1Z',
-  'report-outline':
-    'M2.25 19.775H1V2.193l.353-.171a10.293 10.293 0 0 1 8.919 0 9.054 9.054 0 0 0 7.7.061l.309-.144.385.188a.715.715 0 0 1 .334.606V14.79l-.353.17a10.286 10.286 0 0 1-8.919 0 9.033 9.033 0 0 0-7.478-.16v4.975Zm3.562-6.956a10.23 10.23 0 0 1 4.46 1.016A9.04 9.04 0 0 0 17.75 14V3.531a10.17 10.17 0 0 1-8.022-.384 9.037 9.037 0 0 0-7.478-.162v10.468c1.14-.42 2.347-.635 3.562-.634Z',
-  'resize-horizontal-outline':
-    'M3.13397 9.37498L5.60248 6.90647L4.71859 6.02258L1.18306 9.55812C1.06585 9.67533 1 9.8343 1 10.0001C1 10.1658 1.06585 10.3248 1.18306 10.442L4.71859 13.9775L5.60248 13.0937L3.13397 10.6251H16.8662L14.3977 13.0937L15.2816 13.9775L18.8171 10.442C18.9343 10.3248 19.0002 10.1658 19.0002 10.0001C19.0002 9.8343 18.9343 9.67533 18.8171 9.55812L15.2816 6.02258L14.3977 6.90647L16.8662 9.37498H3.13397Z',
-  'community-outline':
-    'M9.875 7.614a2.055 2.055 0 0 0-.974.222 1.62 1.62 0 0 0-.879 1.46v4.2H6.409V6.2h1.552v.93H8c.275-.32.616-.575 1-.748.453-.207.947-.31 1.445-.3.243-.003.487.02.725.071.158.03.31.084.451.161l-.649 1.559a1.731 1.731 0 0 0-.523-.2 2.755 2.755 0 0 0-.574-.059ZM20 10A10 10 0 1 1 10 0a10.011 10.011 0 0 1 10 10Zm-1.25 0a8.722 8.722 0 0 0-2.841-6.435l-4.974 11.986H9.581l5.3-12.809A8.748 8.748 0 1 0 18.75 10Z'
+  'add-outline': addOutline,
+  'caret-down-outline': caretDownOutline,
+  'caret-up-outline': caretUpOutline,
+  'community-outline': communityOutline,
+  'day-outline': dayOutline,
+  'external-outline': externalOutline,
+  'info-outline': infoOutline,
+  'night-outline': nightOutline,
+  'overflow-horizontal-outline': overflowHorizontalOutline,
+  'report-outline': reportOutline,
+  'resize-horizontal-outline': resizeHorizontalOutline,
+  'share-new-outline': shareNewOutline
 }
 
 declare global {
@@ -43,29 +44,16 @@ export class PlayIcon extends LitElement {
   @property({type: String}) color = 'currentColor'
   @property({type: String}) icon?: PlayIconSVG
 
-  static override styles = css`
-    :host svg {
-      display: block;
-    }
-  `
-
   protected override render() {
-    const iconStyles = {
+    const style = {
       width: this.size,
       height: this.size,
       fill: this.color
     }
-
-    return (
-      this.icon &&
-      html`<svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        style=${styleMap(iconStyles)}
-      >
-        <path d=${icons[this.icon]} />
-      </svg>`
-    )
+    return this.icon
+      ? html`<div style=${styleMap(style)}>
+          ${unsafeHTML(icons[this.icon])}
+        </div>`
+      : nothing
   }
 }
