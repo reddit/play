@@ -41,7 +41,7 @@ export class PlayResizableTextInput extends LitElement {
       background-color: transparent;
       border: none;
       border-radius: 4px;
-      caret-color: var(--rpl-brand-background);
+      caret-color: var(--color-brand-background);
     }
 
     input,
@@ -54,15 +54,15 @@ export class PlayResizableTextInput extends LitElement {
     }
 
     input::placeholder {
-      color: var(--rpl-neutral-content-weak);
+      color: var(--color-neutral-content-weak);
     }
 
     input:focus,
     input:focus:hover {
       outline-width: 2px;
       outline-style: solid;
-      outline-color: var(--rpl-brand-background);
-      color: var(--rpl-neutral-content-strong);
+      outline-color: var(--color-brand-background);
+      color: var(--color-neutral-content-strong);
     }
 
     input:focus + .label {
@@ -72,12 +72,12 @@ export class PlayResizableTextInput extends LitElement {
     input:hover {
       outline-width: 1px;
       outline-style: solid;
-      outline-color: var(--rpl-neutral-border);
+      outline-color: var(--color-neutral-border);
     }
 
     input::selection {
-      color: var(--rpl-brand-onBackground);
-      background-color: var(--rpl-brand-background);
+      color: var(--color-brand-onBackground);
+      background-color: var(--color-brand-background);
     }
   `
 

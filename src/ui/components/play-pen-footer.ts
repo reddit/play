@@ -6,6 +6,17 @@ import {Bubble} from '../bubble.js'
 
 import './play-button.js'
 import './play-console.js'
+import './play-dropdown-menu.js'
+import './play-list-item.js'
+
+/* Available preview sizes */
+const sizes: readonly [width: number, label: string][] = [
+  [288, '288 - Mobile small'],
+  [343, '343 - Mobile'],
+  [400, '400 - Mobile large'],
+  [512, '512 - Desktop Small'],
+  [718, '718 - Desktop Large']
+]
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -17,42 +28,40 @@ declare global {
 export class PlayPenFooter extends LitElement {
   static override styles = css`
     footer {
-      background-color: var(--rpl-neutral-content-weak);
+      background-color: var(--color-neutral-content-weak);
     }
-    .buttons {
+
+    .footer-buttons {
       display: flex;
       flex-direction: row;
       column-gap: 16px;
-      row-gap: 16px;
       justify-content: space-between;
       padding-top: 0;
-      padding-right: 24px;
+      padding-right: 16px;
       padding-bottom: 0;
-      padding-left: 24px;
+      padding-left: 16px;
     }
+
     .actions {
       display: flex;
       flex-direction: row;
       column-gap: 16px;
-      row-gap: 16px;
     }
 
-    .badge {
-      color: var(--rpl-neutral-background);
-      border-radius: 9001px;
-      background-color: var(--rpl-orangered-500);
-      padding-top: 2px;
-      padding-right: 8px;
-      padding-bottom: 2px;
-      padding-left: 8px;
-      font-size: 12px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 16px;
+    .console-container {
+      height: 0;
+      overflow: hidden;
+      transition-duration: 0.1s;
+      transition-property: height;
+      transition-timing-function: ease-out;
+      background-color: var(--color-background);
+    }
+    .console-container.open {
+      height: 320px;
     }
   `
 
-  @property({type: Boolean}) desktop?: boolean
+  @property({type: Number}) previewWidth = 718
   @property({attribute: false}) diagnostics?: Readonly<Diagnostics>
   @property() scheme: ColorScheme | undefined
 
@@ -62,52 +71,79 @@ export class PlayPenFooter extends LitElement {
     const errsLen =
       (this.diagnostics?.previewErrs.length ?? 0) +
       (this.diagnostics?.tsErrs.length ?? 0)
-    const errs = errsLen ? html`<span class="badge">${errsLen}</span>` : nothing
     return html`<footer>
-      <div class="buttons">
+      <div class="footer-buttons">
         <play-button
           appearance="inverted"
           size="medium"
           endIcon="${this._open ? 'caret-down-outline' : 'caret-up-outline'}"
-          title="Toggle Console"
+          title="Toggle console"
           @click=${() => (this._open = !this._open)}
-          >Console${errs}</play-button
-        >
+          badge=${errsLen}
+          label="Console"
+        ></play-button>
         <div class="actions">
-          <play-button
-            appearance="inverted"
-            size="medium"
-            endIcon="caret-down-outline"
-            title="Toggle Device"
-            @click=${() =>
-              this.dispatchEvent(
-                Bubble('preview-desktop', this.desktop ? false : true)
+          <play-dropdown-menu direction="up">
+            <div slot="trigger">
+              <play-button
+                appearance="inverted"
+                size="medium"
+                icon="resize-horizontal-outline"
+                title="Select preview width"
+                label=${`${this.previewWidth} wide`}
+              ></play-button>
+            </div>
+            <div slot="menu">
+              ${sizes.map(
+                ([value, label]) =>
+                  html` <play-list-item
+                    label=${label}
+                    @click=${() =>
+                      this.dispatchEvent(Bubble('preview-width', value))}
+                  ></play-list-item>`
               )}
-            >${this.desktop ? 'Desktop' : 'Mobile'}</play-button
-          >
+            </div>
+          </play-dropdown-menu>
+
           <play-button
             appearance="inverted"
             size="medium"
             icon=${this.#isDark() ? 'night-outline' : 'day-outline'}
-            title="Toggle Scheme"
+            title="Toggle the theme"
+            label="Theme"
             @click=${() =>
               this.dispatchEvent(
                 Bubble('preview-scheme', this.#isDark() ? 'light' : 'dark')
               )}
-            >Theme</play-button
-          >
-          <play-button
-            appearance="inverted"
-            size="medium"
-            icon="overflow-horizontal-outline"
-            title="Additional Options"
-            @click=${() => console.log('Show overflow menu')}
           ></play-button>
+
+          <play-dropdown-menu direction="up">
+            <div slot="trigger">
+              <play-button
+                appearance="inverted"
+                size="medium"
+                icon="overflow-horizontal-outline"
+                title="Additional options"
+              ></play-button>
+            </div>
+            <div slot="menu">
+              <play-list-item
+                icon="report-outline"
+                label="Report a bug"
+              ></play-list-item>
+              <play-list-item
+                icon="community-outline"
+                label="Devvit community"
+              ></play-list-item>
+            </div>
+          </play-dropdown-menu>
         </div>
       </div>
-      ${this._open
-        ? html`<play-console .diagnostics=${this.diagnostics}></play-console>`
-        : nothing}
+      <div class=${`console-container ${this._open ? 'open' : 'closed'}`}>
+        ${this._open
+          ? html`<play-console .diagnostics=${this.diagnostics}></play-console>`
+          : nothing}
+      </div>
     </footer>`
   }
 

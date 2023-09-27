@@ -24,7 +24,7 @@ export class PlayPreview extends LitElement {
         overflow: hidden;
         border-width: 1px;
         border-style: solid;
-        border-color: var(--rpl-neutral-border);
+        border-color: var(--color-neutral-border);
         border-radius: 16px;
         min-height: 320px;
         box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
@@ -41,20 +41,32 @@ export class PlayPreview extends LitElement {
             #eaecf080 32px
           )
           0 / 200%;
-        width: 343px;
+        min-width: 288px;
         transition-duration: 0.2s;
         transition-property: width;
         transition-timing-function: ease-out;
       }
 
-      .desktop {
+      :host([previewWidth='288']) .preview {
+        width: 288px;
+      }
+      :host([previewWidth='343']) .preview {
+        width: 343px;
+      }
+      :host([previewWidth='400']) .preview {
+        width: 400px;
+      }
+      :host([previewWidth='512']) .preview {
+        width: 512px;
+      }
+      :host([previewWidth='718']) .preview {
         width: 718px;
       }
     `
   }
 
   @property({attribute: false}) bundle: Readonly<LinkedBundle> | undefined
-  @property({type: Boolean}) desktop?: boolean
+  @property({attribute: false}) previewWidth?: Number
   @property() scheme: ColorScheme | undefined
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
@@ -72,7 +84,7 @@ export class PlayPreview extends LitElement {
   }
 
   protected override render() {
-    return html`<div class="preview ${this.desktop ? 'desktop' : ''}">
+    return html`<div class="preview">
       ${this.bundle &&
       html`<devvit-preview
         @devvit-ui-error=${(ev: CustomEvent<unknown>) =>

@@ -85,7 +85,7 @@ export class PlayEditor extends LitElement {
     }
     .cm-editor .cm-gutters {
       background-color: transparent;
-      color: var(--rpl-orangered-500);
+      color: var(--color-orangered-500);
       border-right: none;
     }
 
@@ -94,22 +94,22 @@ export class PlayEditor extends LitElement {
     }
 
     .cm-editor .cm-lineNumbers .cm-activeLineGutter {
-      background-color: var(--rpl-orangered-100);
+      background-color: var(--color-orangered-100);
       border-top-left-radius: 4px;
       border-bottom-left-radius: 4px;
     }
     .cm-editor .cm-foldGutter .cm-activeLineGutter {
-      background-color: var(--rpl-orangered-100);
+      background-color: var(--color-orangered-100);
     }
     .cm-editor .cm-activeLine {
-      background-color: var(--rpl-orangered-100);
+      background-color: var(--color-orangered-100);
       border-top-right-radius: 4px;
       border-bottom-right-radius: 4px;
     }
 
     .cm-editor .cm-selectionBackground,
     .cm-editor .cm-content ::selection {
-      background-color: var(--rpl-secondary-background-pressed) !important;
+      background-color: var(--color-secondary-background-pressed) !important;
     }
   `
 

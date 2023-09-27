@@ -19,21 +19,24 @@ export class PlayConsole extends LitElement {
 
   static override styles = css`
     :host {
-      height: 320px;
+      height: 100%;
+      padding-left: 16px;
+      padding-right: 16px;
       display: block;
       overflow: auto;
-      background-color: var(--rpl-neutral-background);
+      background-color: var(--color-background);
     }
     table {
       height: 100%;
       width: 100%;
+      border-spacing: 0;
     }
     thead tr {
       text-align: left;
     }
 
-    tbody > tr:hover {
-      background-color: var(--rpl-neutral-background-weak-hovered);
+    tbody tr:hover {
+      background-color: var(--color-orangered-100);
     }
 
     th,
@@ -49,7 +52,10 @@ export class PlayConsole extends LitElement {
 
     /* Zebra striping. */
     tbody > tr:nth-child(odd) {
-      background-color: var(--rpl-neutral-background-weak);
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+    tbody > tr:nth-child(odd):hover {
+      background-color: var(--color-orangered-100);
     }
 
     /* Initial / minimum size to avoid distracting resizing between errors and

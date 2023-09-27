@@ -39,34 +39,33 @@ export class PlayPen extends LitElement {
       /* to-do: Support light and dark mode. */
       /* color-scheme: light dark; */
 
-      /* Global color definitions. */
-      --rpl-global-orangered: #ff4500;
-      --rpl-orangered-100: #ffede5;
-      --rpl-orangered-500: #d93a00;
+      /* Global z-index definitions. */
+      --z-menu: 10;
+      --z-base: 1;
 
-      /*  #theme# Duck branding */
-      --color-background: #fffcf0;
+      /* Global color definitions. */
+      --color-orangered-100: #ffede5;
+      --color-orangered-500: #d93a00;
 
       /* #theme# Light mode color definitions. */
-      --rpl-neutral-content-weak: #576f76;
-      --rpl-neutral-content: #2a3c42;
-      --rpl-neutral-content-strong: #0f1a1c;
-      --rpl-neutral-background-weak: #f9fafa;
-      --rpl-neutral-background-weak-hovered: #f2f4f5;
-      --rpl-neutral-background: #ffffff;
-      --rpl-neutral-background-hovered: #f9fafa;
-      --rpl-neutral-border: rgba(0, 0, 0, 0.2);
-      --rpl-brand-background: #d93a00;
-      --rpl-brand-background-hovered: #962900;
-      --rpl-brand-background-pressed: #7e2200;
-      --rpl-brand-onBackground: #ffffff;
-      --rpl-secondary-plain: #0f1a1c;
-      --rpl-secondary-background: #eaedef;
-      --rpl-secondary-background-hovered: #e2e7e9;
-      --rpl-secondary-background-pressed: #bec2c4;
-      --rpl-secondary-onBackground: #000000;
-      --rpl-interactive-content-disabled: rgba(0, 0, 0, 0.25);
-      --rpl-interactive-background-disabled: rgba(0, 0, 0, 0.05);
+      --color-background: #fffcf0;
+      --color-neutral-content-weak: #576f76;
+      --color-neutral-content: #2a3c42;
+      --color-neutral-content-strong: #0f1a1c;
+      --color-neutral-background: #ffffff;
+      --color-neutral-background-hovered: #f9fafa;
+      --color-neutral-border: rgba(0, 0, 0, 0.2);
+      --color-brand-background: #d93a00;
+      --color-brand-background-hovered: #962900;
+      --color-brand-background-pressed: #7e2200;
+      --color-brand-onBackground: #ffffff;
+      --color-secondary-plain: #0f1a1c;
+      --color-secondary-background: #eaedef;
+      --color-secondary-background-hovered: #e2e7e9;
+      --color-secondary-background-pressed: #bec2c4;
+      --color-secondary-onBackground: #000000;
+      --color-interactive-content-disabled: rgba(0, 0, 0, 0.25);
+      --color-interactive-background-disabled: rgba(0, 0, 0, 0.05);
 
       /* #theme# Light mode. */
       color: #213547;
@@ -97,15 +96,22 @@ export class PlayPen extends LitElement {
     }
 
     main {
-      column-gap: 24px;
+      column-gap: 16px;
       display: flex;
       flex-direction: row;
       overflow: clip;
-      padding-right: 24px;
-      padding-left: 24px;
-      row-gap: 24px;
+      padding-right: 16px;
+      padding-left: 16px;
+      row-gap: 16px;
       height: 100%;
       background-color: var(--color-background);
+      z-index: var(--z-base);
+    }
+
+    /* Makes dropdowns appear over other content */
+    play-pen-header,
+    play-pen-footer {
+      z-index: var(--z-menu);
     }
   `
 
@@ -126,8 +132,8 @@ export class PlayPen extends LitElement {
 
   /** Program executable. */
   @state() private _bundle?: Readonly<LinkedBundle> | undefined
-  /** Execution desktop / mobile render mode. */
-  @state() private _desktop: boolean = false
+  /** Execution preview widths. */
+  @state() private _previewWidth: Number = 288
   @state() private _diagnostics: Diagnostics = {previewErrs: [], tsErrs: []}
   @query('play-editor') private _editor!: PlayEditor
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
@@ -182,7 +188,7 @@ export class PlayPen extends LitElement {
         ></play-editor>
         <play-preview
           .bundle=${this._bundle}
-          ?desktop=${this._desktop}
+          previewWidth=${this._previewWidth}
           scheme=${ifDefined(this._scheme)}
           @clear-errors=${() => this.#clearPreviewErrors()}
           @error=${(ev: CustomEvent<unknown>) =>
@@ -190,11 +196,11 @@ export class PlayPen extends LitElement {
         ></play-preview>
       </main>
       <play-pen-footer
-        ?desktop=${this._desktop}
+        previewWidth=${this._previewWidth}
         .diagnostics=${this._diagnostics}
         scheme=${ifDefined(this._scheme)}
-        @preview-desktop=${(ev: CustomEvent<boolean>) =>
-          (this._desktop = ev.detail)}
+        @preview-width=${(ev: CustomEvent<number>) =>
+          (this._previewWidth = ev.detail)}
         @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>
           (this._scheme = ev.detail)}
       ></play-pen-footer>`

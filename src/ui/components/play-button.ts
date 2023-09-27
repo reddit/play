@@ -4,7 +4,11 @@ import type {PlayIconSVG} from './play-icon.js'
 
 import './play-icon.js'
 
-export type PlayButtonAppearance = 'brand' | 'plain' | 'secondary' | 'inverted'
+export type PlayButtonAppearance =
+  | 'orangered'
+  | 'plain'
+  | 'secondary'
+  | 'inverted'
 export type PlayButtonSize = 'small' | 'medium'
 
 declare global {
@@ -20,129 +24,164 @@ export class PlayButton extends LitElement {
   @property() endIcon?: PlayIconSVG
   @property() icon?: PlayIconSVG
   @property() size: PlayButtonSize = 'medium'
+  @property({type: String}) label = ''
+  @property({type: Number}) badge = 0
 
   static override styles = css`
     /* Default button styles. Medium size. */
-    :host button {
+    button {
       display: flex;
       flex-direction: row;
       column-gap: 8px;
-      row-gap: 8px;
-      border: none;
-      border-radius: 9001px;
       align-items: center;
       height: min-content;
       cursor: pointer;
       font-family: inherit;
       user-select: none;
       white-space: nowrap;
-    }
-
-    /* Add additional horizontal padding if a label is present. */
-    /* todo: fix this bug */
-    ::slotted(*) button {
-      padding-right: 16px;
-      padding-left: 16px;
+      border: none;
+      border-radius: 9001px;
     }
 
     /* Size: "Small" */
     :host([size='small']) button {
-      padding: 8px;
+      padding-top: 8px;
+      padding-right: 12px;
+      padding-bottom: 8px;
+      padding-left: 12px;
       font-size: 12px;
       font-style: normal;
       font-weight: 600;
       line-height: 16px;
       letter-spacing: -0.1px;
     }
+    :host([size='small']) button.icon-button {
+      padding-right: 8px;
+      padding-left: 8px;
+    }
 
     /* Size: "Medium" */
     :host([size='medium']) button {
-      padding: 10px;
+      padding-top: 10px;
+      padding-right: 16px;
+      padding-bottom: 10px;
+      padding-left: 16px;
       font-size: 14px;
       font-style: normal;
       font-weight: 600;
       line-height: 20px;
       letter-spacing: -0.3px;
     }
-
-    /* Appearance: "plain" */
-    :host([appearance='plain']) button {
-      color: var(--rpl-secondary-plain);
-      background-color: transparent;
+    :host([size='medium']) button.icon-button {
+      padding-right: 10px;
+      padding-left: 10px;
     }
-    :host([appearance='plain']:hover) button {
-      color: var(--rpl-secondary-onBackground);
+
+    /* Appearance: "bordered" */
+    :host([appearance='bordered']) button {
+      color: var(--color-secondary-plain);
+      background-color: transparent;
+      box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
+    }
+    :host([appearance='bordered']:hover) button {
+      color: var(--color-secondary-onBackground);
       background-color: rgba(0, 0, 0, 0.1);
     }
-    :host([appearance='plain']:active) button {
-      color: var(--rpl-secondary-onBackground);
+    :host([appearance='bordered']:active) button {
+      color: var(--color-secondary-onBackground);
       background-color: rgba(0, 0, 0, 0.3);
     }
-    :host([appearance='plain']) button:disabled {
-      color: var(--rpl-interactive-content-disabled);
+    :host([appearance='bordered']) button:disabled {
+      color: var(--color-interactive-content-disabled);
       background-color: transparent;
       cursor: unset;
     }
 
-    /* Appearance: "brand" */
-    :host([appearance='brand']) button {
-      color: var(--rpl-brand-onBackground);
-      background-color: var(--rpl-brand-background);
+    /* Appearance: "orangered" */
+    :host([appearance='orangered']) button {
+      color: var(--color-brand-onBackground);
+      background-color: var(--color-brand-background);
     }
-    :host([appearance='brand']:hover) button {
-      background-color: var(--rpl-brand-background-hovered);
+    :host([appearance='orangered']:hover) button {
+      background-color: var(--color-brand-background-hovered);
     }
-    :host([appearance='brand']:active) button {
-      background-color: var(--rpl-brand-background-pressed);
+    :host([appearance='orangered']:active) button {
+      background-color: var(--color-brand-background-pressed);
     }
-    :host([appearance='brand']) button:disabled {
-      color: var(--rpl-interactive-content-disabled);
-      background-color: var(--rpl-interactive-background-disabled);
+    :host([appearance='orangered']) button:disabled {
+      color: var(--color-interactive-content-disabled);
+      background-color: var(--color-interactive-background-disabled);
       cursor: unset;
     }
 
     /* Appearance: "secondary"  */
     :host([appearance='secondary']) button {
-      color: var(--rpl-secondary-onBackground);
-      background-color: var(--rpl-secondary-background);
+      color: var(--color-secondary-onBackground);
+      background-color: var(--color-secondary-background);
     }
     :host([appearance='secondary']:hover) button {
-      background-color: var(--rpl-secondary-background-hovered);
+      background-color: var(--color-secondary-background-hovered);
     }
     :host([appearance='secondary']:active) button {
-      background-color: var(--rpl-secondary-background-pressed);
+      background-color: var(--color-secondary-background-pressed);
     }
     :host([appearance='secondary']) button:disabled {
-      color: var(--rpl-interactive-content-disabled);
-      background-color: var(--rpl-interactive-background-disabled);
+      color: var(--color-interactive-content-disabled);
+      background-color: var(--color-interactive-background-disabled);
       cursor: unset;
     }
 
     /* Appearance: "inverted"  */
     :host([appearance='inverted']) button {
-      color: var(--rpl-neutral-background);
-      background-color: var(--rpl-neutral-content-weak);
+      color: var(--color-neutral-background);
+      background-color: var(--color-neutral-content-weak);
     }
     :host([appearance='inverted']:hover) button {
-      background-color: var(--rpl-neutral-content);
+      background-color: var(--color-neutral-content);
     }
     :host([appearance='inverted']:active) button {
-      background-color: var(--rpl-neutral-content-strong);
+      background-color: var(--color-neutral-content-strong);
     }
     :host([appearance='inverted']) button:disabled {
       color: rgba(255, 255, 255, 0.25);
       background-color: rgba(255, 255, 255, 0.05);
       cursor: unset;
     }
+
+    button:focus {
+      outline-color: var(--color-brand-background);
+    }
+
+    .badge {
+      color: var(--color-neutral-background);
+      border-radius: 9001px;
+      background-color: var(--color-orangered-500);
+      padding-top: 2px;
+      padding-right: 8px;
+      padding-bottom: 2px;
+      padding-left: 8px;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 16px;
+    }
   `
 
   protected override render() {
-    return html`<button ?disabled=${this.disabled}>
+    const iconOnly = this.icon && !this.label && !this.endIcon
+    return html`<button
+      ?disabled=${this.disabled}
+      class=${iconOnly ? 'icon-button' : ''}
+    >
       ${this.icon &&
       html`<play-icon
         size=${this.size === 'small' ? '16px' : '20px'}
         icon=${this.icon}
-      ></play-icon>`}<slot></slot>${this.endIcon &&
+      ></play-icon>`}
+      <slot></slot>
+      ${this.label && html`<span>${this.label}</span>`}
+      ${this.badge > 0 ? html`<span class="badge">${this.badge}</span>` : ''}
+      ${this.endIcon &&
       html`<play-icon
         size=${this.size === 'small' ? '16px' : '20px'}
         icon=${this.endIcon}
