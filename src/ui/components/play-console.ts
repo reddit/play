@@ -1,8 +1,9 @@
+import {isCircuitBreaker} from '@devvit/runtime-lite/CircuitBreaker.js'
 import {LitElement, css, html, type TemplateResult} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import type {Diagnostics} from '../../types/diagnostics.js'
 import type {Diagnostic} from 'typescript'
 import ts from 'typescript'
+import type {Diagnostics} from '../../types/diagnostics.js'
 
 import './play-button.js'
 
@@ -112,11 +113,17 @@ function previewErrRow(err: unknown): TemplateResult<1> {
       <td>${String(err)}</td>
       <td></td>
     </tr>`
+  const detail = isCircuitBreaker(err)
+    ? // @ts-expect-error
+      `${err.cause?.method ? `${err.cause?.method} ` : ''}API call ` +
+      'unsupported; this program may run correctly on reddit.com but most ' +
+      'APIs are currently unavailable in the playground.'
+    : ''
   return html`<tr>
     <td>Execution</td>
     <td>${err.name}</td>
     <td>${err.message}</td>
-    <td><pre>${err.stack}</pre></td>
+    <td>${detail || html`<pre>err.stack</pre>`}</td>
   </tr>`
 }
 
