@@ -71,9 +71,8 @@ See [supplemental development notes](docs/development.md).
 ### Project Structure
 
 - **docs**/: supplemental play documentation.
-- **examples**/: projects that play well.
 - **src**/: source inputs.
-- **tools**/: development tools.
+- **tools**/: development tools for building :play.
 
 ### Tagging
 
