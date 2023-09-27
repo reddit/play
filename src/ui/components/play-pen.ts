@@ -128,7 +128,7 @@ export class PlayPen extends LitElement {
   @state() private _bundle?: Readonly<LinkedBundle> | undefined
   /** Execution desktop / mobile render mode. */
   @state() private _desktop: boolean = false
-  @state() private _diagnostics: Diagnostics = {previewErrs: []}
+  @state() private _diagnostics: Diagnostics = {previewErrs: [], tsErrs: []}
   @query('play-editor') private _editor!: PlayEditor
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
   /** Program title. */ @state() private _name: string = ''
@@ -247,6 +247,12 @@ export class PlayPen extends LitElement {
     this._src = src
     setSource(this.#env, src)
     this.#env.updateFile(appEntrypointFilename, src || ' ') // empty strings trigger file deletion!
+    this._diagnostics = {
+      ...this._diagnostics,
+      tsErrs: this.#env.languageService.getSemanticDiagnostics(
+        appEntrypointFilename
+      )
+    }
     // Skip blank source.
     if (!/^\s*$/.test(src)) this._bundle = link(compile(this.#env))
     this.#autoSave()

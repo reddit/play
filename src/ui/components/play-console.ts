@@ -1,6 +1,8 @@
 import {LitElement, css, html, type TemplateResult} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
+import type {Diagnostic} from 'typescript'
+import ts from 'typescript'
 
 import './play-button.js'
 
@@ -51,6 +53,9 @@ export class PlayConsole extends LitElement {
 
     /* Initial / minimum size to avoid distracting resizing between errors and
        no errors layouts. .details gets the rest. */
+    .type {
+      width: 100px;
+    }
     .name {
       width: 120px;
     }
@@ -78,33 +83,58 @@ export class PlayConsole extends LitElement {
   `
 
   protected override render(): TemplateResult<1> {
-    const errs = []
-    for (const err of this.diagnostics?.previewErrs ?? []) errs.push(row(err))
+    const previewErrs = []
+    for (const err of this.diagnostics?.previewErrs ?? [])
+      previewErrs.push(previewErrRow(err))
+    const tsErrs = []
+    for (const err of this.diagnostics?.tsErrs ?? []) tsErrs.push(tsErrRow(err))
     return html`<table>
       <thead>
         <tr>
+          <th class="type"><div class="resize">Type</div></th>
           <th class="name"><div class="resize">Name</div></th>
           <th class="message"><div class="resize">Message</div></th>
           <th class="details">Details</th>
         </tr>
       </thead>
       <tbody>
-        ${errs}
+        ${tsErrs}${previewErrs}
       </tbody>
     </table>`
   }
 }
 
-function row(err: unknown): TemplateResult<1> {
+function previewErrRow(err: unknown): TemplateResult<1> {
   if (!(err instanceof Error))
     return html`<tr>
+      <td>Execution</td>
       <td></td>
       <td>${String(err)}</td>
       <td></td>
     </tr>`
   return html`<tr>
+    <td>Execution</td>
     <td>${err.name}</td>
     <td>${err.message}</td>
     <td><pre>${err.stack}</pre></td>
+  </tr>`
+}
+
+function tsErrRow(err: Diagnostic): TemplateResult<1> {
+  const type = {
+    0: 'Warning',
+    1: 'Error',
+    2: 'Suggestion',
+    3: 'Message'
+  }[err.category]
+  const line =
+    err.start == null
+      ? undefined
+      : err.file?.getLineAndCharacterOfPosition(err.start).line
+  return html`<tr>
+    <td>Compile</td>
+    <td>${type}</td>
+    <td>${line == null ? '' : `Line ${line + 1}`}</td>
+    <td>${ts.flattenDiagnosticMessageText(err.messageText, '\n')}</td>
   </tr>`
 }

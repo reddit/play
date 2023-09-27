@@ -59,9 +59,10 @@ export class PlayPenFooter extends LitElement {
   @state() private _open?: boolean
 
   protected override render() {
-    const errs = this.diagnostics?.previewErrs.length
-      ? html`<span class="badge">${this.diagnostics?.previewErrs.length}</span>`
-      : nothing
+    const errsLen =
+      (this.diagnostics?.previewErrs.length ?? 0) +
+      (this.diagnostics?.tsErrs.length ?? 0)
+    const errs = errsLen ? html`<span class="badge">${errsLen}</span>` : nothing
     return html`<footer>
       <div class="buttons">
         <play-button
