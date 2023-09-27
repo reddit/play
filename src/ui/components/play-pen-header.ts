@@ -4,9 +4,9 @@ import {Bubble} from '../bubble.js'
 
 import './play-button.js'
 import './play-icon.js'
-import './play-resizable-text-input.js'
-import './play-new-pen-button.js'
 import './play-logo.js'
+import './play-new-pen-button.js'
+import './play-resizable-text-input.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -68,11 +68,8 @@ export class PlayPenHeader extends LitElement {
       <div class="actions">
         <play-new-pen-button
           .srcByLabel=${this.srcByLabel}
-        ></play-new-pen-button>
-
-        <play-button
-          @click=${() => this.dispatchEvent(Bubble('new', undefined))}
-          appearance="bordered"
+        ></play-new-pen-button
+        ><play-button
           size="medium"
           icon="external-outline"
           title="Open Documentation"
