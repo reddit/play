@@ -13,13 +13,14 @@ declare global {
   }
 }
 
-export type OpenLineEvent = CustomEvent<{
+export type OpenLine = {
   /** One-based index. */
   line: number
   /** Zero-based index. */
   char: number
-}>
+}
 
+/** @fires {OpenLine} open-line */
 @customElement('play-console')
 export class PlayConsole extends LitElement {
   @property({attribute: false}) diagnostics?: Diagnostics
@@ -151,7 +152,10 @@ export class PlayConsole extends LitElement {
 }
 
 /** @arg line One-based index. */
-export function OpenLineEvent(line: number, char: number): OpenLineEvent {
+export function OpenLineEvent(
+  line: number,
+  char: number
+): CustomEvent<OpenLine> {
   return Bubble('open-line', {line, char})
 }
 

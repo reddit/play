@@ -14,7 +14,12 @@ declare global {
   }
 }
 
-/** The rendered output of Devvit program under various parameters. */
+/**
+ * The rendered output of Devvit program under various parameters.
+ * @fires {PreviewError} error
+ * @fires {undefined} clear-errors
+ * @fires {unknown} devvit-ui-error
+ */
 @customElement('play-preview')
 export class PlayPreview extends LitElement {
   static override get styles() {
@@ -66,7 +71,7 @@ export class PlayPreview extends LitElement {
   }
 
   @property({attribute: false}) bundle: Readonly<LinkedBundle> | undefined
-  @property({attribute: false}) previewWidth?: Number
+  @property({type: Number}) previewWidth?: number
   @property() scheme: ColorScheme | undefined
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(

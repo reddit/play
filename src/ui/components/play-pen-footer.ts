@@ -25,6 +25,10 @@ declare global {
   }
 }
 
+/**
+ * @fires {ColorScheme} preview-scheme
+ * @fires {number} preview-width
+ */
 @customElement('play-pen-footer')
 export class PlayPenFooter extends LitElement {
   static override styles = css`
@@ -96,11 +100,11 @@ export class PlayPenFooter extends LitElement {
             </div>
             <div slot="menu">
               ${sizes.map(
-                ([value, label]) =>
+                ([width, label]) =>
                   html` <play-list-item
                     label=${label}
                     @click=${() =>
-                      this.dispatchEvent(Bubble('preview-width', value))}
+                      this.dispatchEvent(Bubble('preview-width', width))}
                   ></play-list-item>`
               )}
             </div>

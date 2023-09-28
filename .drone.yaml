@@ -20,12 +20,12 @@ steps:
     depends_on:
       - install
 
-  - name: test:types
+  - name: test:types:ui
     pull: if-not-exists
     image: artifactory.build.ue1.snooguts.net/reddit-docker-prod/node:18
     pull: always
     commands:
-      - npm run test:types
+      - npm run test:types:ui
     depends_on:
       - install
 

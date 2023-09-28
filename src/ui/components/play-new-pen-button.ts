@@ -4,10 +4,10 @@ import {repeat} from 'lit/directives/repeat.js'
 import {Bubble} from '../bubble.js'
 
 import './play-button.js'
-import './play-icon.js'
-import './play-resizable-text-input.js'
 import './play-dropdown-menu.js'
+import './play-icon.js'
 import './play-list-item.js'
+import './play-resizable-text-input.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -15,6 +15,7 @@ declare global {
   }
 }
 
+/** @fires {string} edit-src */
 @customElement('play-new-pen-button')
 export class PlayNewPenButton extends LitElement {
   static override styles = css`

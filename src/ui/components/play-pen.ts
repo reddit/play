@@ -18,7 +18,7 @@ import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import type {PreviewError} from '../../types/preview-error.js'
 import {PenSave, loadPen, penToHash, savePen} from '../pen-save.js'
-import type {OpenLineEvent} from './play-console.js'
+import type {OpenLine} from './play-console.js'
 import type {PlayEditor} from './play-editor.js'
 
 import './play-editor.js'
@@ -82,11 +82,11 @@ export class PlayPen extends LitElement {
     }
 
     @media (prefers-color-scheme: dark) {
-      :host {
-        /* #theme# Dark mode. */
-        /* color: rgba(255, 255, 255, 0.87);
+      /* :host { */
+      /* #theme# Dark mode. */
+      /* color: rgba(255, 255, 255, 0.87);
         background-color: #242424; */
-      }
+      /* } */
     }
 
     play-editor {
@@ -212,7 +212,7 @@ export class PlayPen extends LitElement {
           (this._previewWidth = ev.detail)}
         @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>
           (this._scheme = ev.detail)}
-        @open-line=${(ev: OpenLineEvent) =>
+        @open-line=${(ev: CustomEvent<OpenLine>) =>
           this._editor.openLine(ev.detail.line, ev.detail.char)}
       ></play-pen-footer>`
   }

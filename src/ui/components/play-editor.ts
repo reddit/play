@@ -58,6 +58,10 @@ declare global {
   }
 }
 
+/**
+ * @fires {string} edit
+ * @fires {string} edit-template
+ */
 /** Accepts a slotted template. */
 @customElement('play-editor')
 export class PlayEditor extends LitElement {

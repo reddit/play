@@ -8,6 +8,7 @@ declare global {
   }
 }
 
+/** @fires {string} edit-text */
 @customElement('play-resizable-text-input')
 export class PlayResizableTextInput extends LitElement {
   static override styles = css`

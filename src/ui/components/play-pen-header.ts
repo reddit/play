@@ -15,6 +15,10 @@ declare global {
   }
 }
 
+/**
+ * @fires {string} edit-name
+ * @fires {undefined} share
+ */
 @customElement('play-pen-header')
 export class PlayPenHeader extends LitElement {
   static override styles = css`
