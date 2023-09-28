@@ -70,7 +70,8 @@ export class PlayPreview extends LitElement {
   @property() scheme: ColorScheme | undefined
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
-    new Blob([penWorker], {type: 'text/javascript'})
+    new Blob([penWorker], {type: 'text/javascript'}),
+    (type, err) => this.dispatchEvent(Bubble('error', {type, err}))
   )
   #meta: Metadata = {
     'devvit-app-user': {values: ['t2_appuser']},
@@ -88,7 +89,7 @@ export class PlayPreview extends LitElement {
       ${this.bundle &&
       html`<devvit-preview
         @devvit-ui-error=${(ev: CustomEvent<unknown>) =>
-          this.dispatchEvent(Bubble('error', ev.detail))}
+          this.dispatchEvent(Bubble('error', {type: 'Error', err: ev.detail}))}
         .meta="${this.#meta}"
         .client=${this._client}
         .scheme=${this.scheme}
@@ -105,7 +106,7 @@ export class PlayPreview extends LitElement {
       try {
         await this._client.loadBundle(this.bundle)
       } catch (err) {
-        this.dispatchEvent(Bubble('error', err))
+        this.dispatchEvent(Bubble('error', {type: 'Error', err}))
       }
       // Re-render the preview.
       this.#meta = {...this.#meta}

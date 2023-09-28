@@ -16,6 +16,7 @@ import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import {PenSave, loadPen, penToHash, savePen} from '../pen-save.js'
 import type {PlayEditor} from './play-editor.js'
+import type {PreviewError} from '../../types/preview-error.js'
 
 import './play-editor.js'
 import './play-pen-footer.js'
@@ -133,7 +134,7 @@ export class PlayPen extends LitElement {
   /** Program executable. */
   @state() private _bundle?: Readonly<LinkedBundle> | undefined
   /** Execution preview widths. */
-  @state() private _previewWidth: Number = 288
+  @state() private _previewWidth: number = 288
   @state() private _diagnostics: Diagnostics = {previewErrs: [], tsErrs: []}
   @query('play-editor') private _editor!: PlayEditor
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
@@ -191,7 +192,7 @@ export class PlayPen extends LitElement {
           previewWidth=${this._previewWidth}
           scheme=${ifDefined(this._scheme)}
           @clear-errors=${() => this.#clearPreviewErrors()}
-          @error=${(ev: CustomEvent<unknown>) =>
+          @error=${(ev: CustomEvent<PreviewError>) =>
             this.#appendPreviewError(ev.detail)}
         ></play-preview>
       </main>
@@ -206,7 +207,7 @@ export class PlayPen extends LitElement {
       ></play-pen-footer>`
   }
 
-  #appendPreviewError(err: unknown): void {
+  #appendPreviewError(err: PreviewError): void {
     this._diagnostics = {
       ...this._diagnostics,
       previewErrs: [...this._diagnostics.previewErrs, err]

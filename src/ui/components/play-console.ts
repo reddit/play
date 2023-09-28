@@ -4,8 +4,7 @@ import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostic} from 'typescript'
 import ts from 'typescript'
 import type {Diagnostics} from '../../types/diagnostics.js'
-
-import './play-button.js'
+import type {PreviewError} from '../../types/preview-error.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -111,34 +110,38 @@ export class PlayConsole extends LitElement {
   }
 }
 
-function previewErrRow(err: unknown): TemplateResult<1> {
-  if (!(err instanceof Error))
+function previewErrRow(err: PreviewError): TemplateResult<1> {
+  const detail =
+    err.type === 'UnhandledRejection'
+      ? 'Unhandled promise rejection; `await` asynchronous execution and ' +
+        'catch errors.'
+      : isCircuitBreaker(err.err)
+      ? `${err.err.cause?.method ? `${err.err.cause.method} ` : ''}API call ` +
+        'unsupported; this program may run correctly on reddit.com but most ' +
+        'APIs are currently unavailable in the playground.'
+      : ''
+  if (!(err.err instanceof Error))
     return html`<tr>
       <td>Execution</td>
       <td></td>
-      <td>${String(err)}</td>
-      <td></td>
+      <td>${String(err.err)}</td>
+      <td>${detail}</td>
     </tr>`
-  const detail = isCircuitBreaker(err)
-    ? `${err.cause?.method ? `${err.cause?.method} ` : ''}API call ` +
-      'unsupported; this program may run correctly on reddit.com but most ' +
-      'APIs are currently unavailable in the playground.'
-    : ''
   return html`<tr>
     <td>Execution</td>
-    <td>${err.name}</td>
-    <td>${err.message}</td>
-    <td>${detail || html`<pre>${err.stack}</pre>`}</td>
+    <td>${err.err.name}</td>
+    <td>${err.err.message}</td>
+    <td>
+      ${detail}
+      <pre>${err.err.stack}</pre>
+    </td>
   </tr>`
 }
 
 function tsErrRow(err: Diagnostic): TemplateResult<1> {
-  const type = {
-    0: 'Warning',
-    1: 'Error',
-    2: 'Suggestion',
-    3: 'Message'
-  }[err.category]
+  const type = {0: 'Warning', 1: 'Error', 2: 'Suggestion', 3: 'Message'}[
+    err.category
+  ]
   const line =
     err.start == null
       ? undefined
