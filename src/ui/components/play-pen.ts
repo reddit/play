@@ -177,6 +177,7 @@ export class PlayPen extends LitElement {
           this.#setName(ev.detail, true)}
         @edit-src=${(ev: CustomEvent<string>) => {
           this.#setSrc(ev.detail, false)
+          this.#setName('', false)
           this._editor.setSrc(ev.detail)
         }}
         @share=${this.#onShare}
