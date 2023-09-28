@@ -5,12 +5,20 @@ import type {Diagnostic} from 'typescript'
 import ts from 'typescript'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import type {PreviewError} from '../../types/preview-error.js'
+import {Bubble} from '../bubble.js'
 
 declare global {
   interface HTMLElementTagNameMap {
     'play-console': PlayConsole
   }
 }
+
+export type OpenLineEvent = CustomEvent<{
+  /** One-based index. */
+  line: number
+  /** Zero-based index. */
+  char: number
+}>
 
 @customElement('play-console')
 export class PlayConsole extends LitElement {
@@ -86,6 +94,11 @@ export class PlayConsole extends LitElement {
       margin-right: 0;
       margin-top: 0;
     }
+
+    a {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   `
 
   protected override render(): TemplateResult<1> {
@@ -93,7 +106,8 @@ export class PlayConsole extends LitElement {
     for (const err of this.diagnostics?.previewErrs ?? [])
       previewErrs.push(previewErrRow(err))
     const tsErrs = []
-    for (const err of this.diagnostics?.tsErrs ?? []) tsErrs.push(tsErrRow(err))
+    for (const err of this.diagnostics?.tsErrs ?? [])
+      tsErrs.push(this.tsErrRow(err))
     return html`<table>
       <thead>
         <tr>
@@ -108,6 +122,37 @@ export class PlayConsole extends LitElement {
       </tbody>
     </table>`
   }
+
+  tsErrRow(err: Diagnostic): TemplateResult<1> {
+    const type = {0: 'Warning', 1: 'Error', 2: 'Suggestion', 3: 'Message'}[
+      err.category
+    ]
+    const line =
+      err.start == null
+        ? undefined
+        : err.file?.getLineAndCharacterOfPosition(err.start)
+    return html`<tr>
+      <td>Compile</td>
+      <td>${type}</td>
+      <td>
+        ${line == null
+          ? ''
+          : html`<a
+              @click=${() =>
+                this.dispatchEvent(
+                  OpenLineEvent(line.line + 1, line.character)
+                )}
+              >Line ${line.line + 1}</a
+            >`}
+      </td>
+      <td>${ts.flattenDiagnosticMessageText(err.messageText, '\n')}</td>
+    </tr>`
+  }
+}
+
+/** @arg line One-based index. */
+export function OpenLineEvent(line: number, char: number): OpenLineEvent {
+  return Bubble('open-line', {line, char})
 }
 
 function previewErrRow(err: PreviewError): TemplateResult<1> {
@@ -146,20 +191,4 @@ function isErrorLike(err: unknown): err is Error & Record<never, never> {
     typeof err === 'object' &&
     ('cause' in err || 'message' in err || 'stack' in err)
   )
-}
-
-function tsErrRow(err: Diagnostic): TemplateResult<1> {
-  const type = {0: 'Warning', 1: 'Error', 2: 'Suggestion', 3: 'Message'}[
-    err.category
-  ]
-  const line =
-    err.start == null
-      ? undefined
-      : err.file?.getLineAndCharacterOfPosition(err.start).line
-  return html`<tr>
-    <td>Compile</td>
-    <td>${type}</td>
-    <td>${line == null ? '' : `Line ${line + 1}`}</td>
-    <td>${ts.flattenDiagnosticMessageText(err.messageText, '\n')}</td>
-  </tr>`
 }

@@ -22,7 +22,7 @@ import {
 } from '@codemirror/language'
 import {lintKeymap, linter, type Diagnostic} from '@codemirror/lint'
 import {highlightSelectionMatches} from '@codemirror/search'
-import {EditorState, type Extension} from '@codemirror/state'
+import {EditorSelection, EditorState, type Extension} from '@codemirror/state'
 import {
   crosshairCursor,
   drawSelection,
@@ -131,6 +131,19 @@ export class PlayEditor extends LitElement {
   })
   private _scripts!: HTMLScriptElement[]
   #editor!: EditorView
+
+  /**
+   * @arg line One-based index.
+   * @arg char Zero-based index.
+   */
+  openLine(line: number, char: number): void {
+    const info = this.#editor.state.doc.line(line)
+    const selection = EditorSelection.create([
+      EditorSelection.cursor(info.from + char)
+    ])
+    this.#editor.dispatch({selection: selection, scrollIntoView: true})
+    this.#editor.focus()
+  }
 
   setSrc(src: string): void {
     this.#editor.dispatch({

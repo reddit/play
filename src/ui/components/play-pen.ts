@@ -11,14 +11,15 @@ import {
 } from '../../bundler/compiler.js'
 import {link} from '../../bundler/linker.js'
 import blocksGallery from '../../examples/blocks-gallery.example.js'
+import clock from '../../examples/clock.example.js'
 import helloBlocks from '../../examples/hello-blocks.example.js'
 import progressBar from '../../examples/progress-bar.example.js'
-import clock from '../../examples/clock.example.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
-import {PenSave, loadPen, penToHash, savePen} from '../pen-save.js'
-import type {PlayEditor} from './play-editor.js'
 import type {PreviewError} from '../../types/preview-error.js'
+import {PenSave, loadPen, penToHash, savePen} from '../pen-save.js'
+import type {OpenLineEvent} from './play-console.js'
+import type {PlayEditor} from './play-editor.js'
 
 import './play-editor.js'
 import './play-pen-footer.js'
@@ -211,6 +212,8 @@ export class PlayPen extends LitElement {
           (this._previewWidth = ev.detail)}
         @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>
           (this._scheme = ev.detail)}
+        @open-line=${(ev: OpenLineEvent) =>
+          this._editor.openLine(ev.detail.line, ev.detail.char)}
       ></play-pen-footer>`
   }
 
