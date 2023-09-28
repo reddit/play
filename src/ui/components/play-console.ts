@@ -120,7 +120,7 @@ function previewErrRow(err: PreviewError): TemplateResult<1> {
         'unsupported; this program may run correctly on reddit.com but most ' +
         'APIs are currently unavailable in the playground.'
       : ''
-  if (!(err.err instanceof Error))
+  if (!isErrorLike(err.err))
     return html`<tr>
       <td>Execution</td>
       <td></td>
@@ -136,6 +136,16 @@ function previewErrRow(err: PreviewError): TemplateResult<1> {
       <pre>${err.err.stack}</pre>
     </td>
   </tr>`
+}
+
+// BrowserLiteWorker may report objects that are Error-like but that aren't
+// instances of Error.
+function isErrorLike(err: unknown): err is Error & Record<never, never> {
+  return (
+    err != null &&
+    typeof err === 'object' &&
+    ('cause' in err || 'message' in err || 'stack' in err)
+  )
 }
 
 function tsErrRow(err: Diagnostic): TemplateResult<1> {
