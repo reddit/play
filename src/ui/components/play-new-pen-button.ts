@@ -78,14 +78,16 @@ export class PlayNewPenButton extends LitElement {
     }
   `
 
-  @property({attribute: false}) name: string = ''
   @property({attribute: false}) srcByLabel?: Readonly<{[key: string]: string}>
 
   protected override render() {
     return html`<div class="container">
       <button
         class="new-pen"
-        @click=${() => this.dispatchEvent(Bubble('new', undefined))}
+        @click=${() =>
+          this.dispatchEvent(
+            Bubble('edit-src', this.srcByLabel?.Default || '')
+          )}
         title="New pen"
       >
         <play-icon size="20px" icon="add-outline"></play-icon>
