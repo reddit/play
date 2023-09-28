@@ -22,7 +22,10 @@ export function compile(env: tsvfs.VirtualTypeScriptEnvironment): string {
     env.languageService.getEmitOutput(appEntrypointFilename).outputFiles[0]
       ?.text ?? ''
   // Adapt bundle CommonJS output to format expected by runtime-lite.
-  return 'module.exports = {}; const {exports} = module; ' + src
+  return src.replace(
+    '"use strict";',
+    '"use strict"; module.exports = {}; const {exports} = module;'
+  )
 }
 
 export function getSource(env: tsvfs.VirtualTypeScriptEnvironment): string {
