@@ -5,6 +5,7 @@ import type {PlayIconSVG} from './play-icon.js'
 import './play-icon.js'
 
 export type PlayButtonAppearance =
+  | 'bordered'
   | 'orangered'
   | 'plain'
   | 'secondary'
