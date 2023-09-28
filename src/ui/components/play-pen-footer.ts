@@ -130,10 +130,22 @@ export class PlayPenFooter extends LitElement {
               <play-list-item
                 icon="report-outline"
                 label="Report a bug"
+                @click=${() =>
+                  globalThis.open(
+                    'https://www.reddit.com/r/devvit',
+                    '_blank',
+                    'noopener,noreferrer'
+                  )}
               ></play-list-item>
               <play-list-item
                 icon="community-outline"
                 label="Devvit community"
+                @click=${() =>
+                  globalThis.open(
+                    'https://www.reddit.com/r/devvit',
+                    '_blank',
+                    'noopener,noreferrer'
+                  )}
               ></play-list-item>
             </div>
           </play-dropdown-menu>

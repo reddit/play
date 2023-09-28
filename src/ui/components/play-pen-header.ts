@@ -70,6 +70,7 @@ export class PlayPenHeader extends LitElement {
           .srcByLabel=${this.srcByLabel}
         ></play-new-pen-button
         ><play-button
+          appearance="bordered"
           size="medium"
           icon="external-outline"
           title="Open Documentation"
