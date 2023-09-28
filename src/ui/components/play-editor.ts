@@ -111,6 +111,13 @@ export class PlayEditor extends LitElement {
     .cm-editor .cm-content ::selection {
       background-color: var(--color-secondary-background-pressed) !important;
     }
+
+    @media (prefers-color-scheme: dark) {
+      .cm-editor .cm-selectionBackground,
+      .cm-editor .cm-content ::selection {
+        background-color: rgba(255, 255, 255, 0.5) !important;
+      }
+    }
   `
 
   @property({attribute: false}) env!: VirtualTypeScriptEnvironment
