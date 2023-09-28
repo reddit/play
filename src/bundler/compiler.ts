@@ -23,7 +23,7 @@ export function compile(env: tsvfs.VirtualTypeScriptEnvironment): string {
       ?.text ?? ''
   // Adapt bundle CommonJS output to format expected by runtime-lite.
   return src.replace(
-    '"use strict";',
+    /^"use strict";/,
     '"use strict"; module.exports = {}; const {exports} = module;'
   )
 }
@@ -64,6 +64,10 @@ function compilerOpts(): ts.CompilerOptions {
     // Provided types are already checked.
     skipLibCheck: true,
     skipDefaultLibCheck: true,
+
+    // Improve `debugger` support.
+    inlineSources: true,
+    inlineSourceMap: true,
 
     target: ts.ScriptTarget.ES2020
   }
