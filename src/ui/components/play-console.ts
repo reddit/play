@@ -120,8 +120,7 @@ function previewErrRow(err: unknown): TemplateResult<1> {
       <td></td>
     </tr>`
   const detail = isCircuitBreaker(err)
-    ? // @ts-expect-error
-      `${err.cause?.method ? `${err.cause?.method} ` : ''}API call ` +
+    ? `${err.cause?.method ? `${err.cause?.method} ` : ''}API call ` +
       'unsupported; this program may run correctly on reddit.com but most ' +
       'APIs are currently unavailable in the playground.'
     : ''
