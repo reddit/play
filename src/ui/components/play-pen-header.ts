@@ -1,6 +1,7 @@
 import {LitElement, css, html} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {Bubble} from '../bubble.js'
+import {openURL} from '../../utils/open-url.js'
 
 import './play-button.js'
 import './play-icon.js'
@@ -75,12 +76,7 @@ export class PlayPenHeader extends LitElement {
           icon="external-outline"
           title="Open Documentation"
           label="Docs"
-          @click=${() =>
-            globalThis.open(
-              'https://developers.reddit.com/docs',
-              '_blank',
-              'noopener,noreferrer'
-            )}
+          @click=${() => openURL('https://developers.reddit.com/docs')}
         ></play-button>
         <play-button
           @click=${() => this.dispatchEvent(Bubble('share', undefined))}

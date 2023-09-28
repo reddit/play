@@ -4,6 +4,7 @@ import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import {Bubble} from '../bubble.js'
 
+import {openURL} from '../../utils/open-url.js'
 import './play-button.js'
 import './play-console.js'
 import './play-dropdown-menu.js'
@@ -130,22 +131,12 @@ export class PlayPenFooter extends LitElement {
               <play-list-item
                 icon="report-outline"
                 label="Report a bug"
-                @click=${() =>
-                  globalThis.open(
-                    'https://www.reddit.com/r/devvit',
-                    '_blank',
-                    'noopener,noreferrer'
-                  )}
+                @click=${() => openURL('https://www.reddit.com/r/devvit')}
               ></play-list-item>
               <play-list-item
                 icon="community-outline"
                 label="Devvit community"
-                @click=${() =>
-                  globalThis.open(
-                    'https://www.reddit.com/r/devvit',
-                    '_blank',
-                    'noopener,noreferrer'
-                  )}
+                @click=${() => openURL('https://www.reddit.com/r/devvit')}
               ></play-list-item>
             </div>
           </play-dropdown-menu>
