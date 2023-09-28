@@ -131,7 +131,10 @@ export class PlayPenFooter extends LitElement {
               <play-list-item
                 icon="report-outline"
                 label="Report a bug"
-                @click=${() => openURL('https://www.reddit.com/r/devvit')}
+                @click=${() =>
+                  openURL(
+                    'https://discord.com/channels/1050224141732687912/1115441897079574620'
+                  )}
               ></play-list-item>
               <play-list-item
                 icon="community-outline"

@@ -1,7 +1,7 @@
 import {LitElement, css, html} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import {Bubble} from '../bubble.js'
 import {openURL} from '../../utils/open-url.js'
+import {Bubble} from '../bubble.js'
 
 import './play-button.js'
 import './play-icon.js'
