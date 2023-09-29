@@ -1,4 +1,4 @@
-# :play <!-- #strings:title# -->
+# ![:play](src/ui/assets/favicon/favicon48.png) :play <!-- #strings:title# -->
 
 Devvit app :playground.<!-- #strings:description# -->
 
