@@ -20,12 +20,14 @@ Devvit.addCustomPostType({
           <button
             icon='subtract-fill'
             width={50}
-            onPress={() => setProgress(p => (p > 10 ? p - 10 : 0))}
+            onPress={() => setProgress(progress => Math.max(progress - 10, 0))}
           />
           <button
             icon='add-fill'
             width={50}
-            onPress={() => setProgress(p => (p < 90 ? p + 10 : 100))}
+            onPress={() =>
+              setProgress(progress => Math.min(progress + 10, 100))
+            }
           />
         </hstack>
       </vstack>
