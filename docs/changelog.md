@@ -2,7 +2,20 @@
 
 :play is [semantically versioned](https://semver.org).
 
-## v0.0.8 (unreleased)
+## v0.0.9 (unreleased)
+
+## v0.0.8
+
+- Add example templates (#21)
+- Add dropdown menus (#17)
+- [DX-4069] Report unhandled rejections
+- [DX-4069] Report compilation errors
+- [DX-4069] Link line numbers
+- Clear name when applying template.
+- Check component typing (#23)
+- Improve dark mode editor highlight color
+- Improve debuggability
+- Fix strict mode
 
 ## v0.0.7
 
