@@ -84,6 +84,20 @@ export class PlayPreview extends LitElement {
     'devvit-user': {values: ['t2_user']}
   }
 
+  async reset(): Promise<void> {
+    if (!this.bundle) return
+    this._client.quit()
+    this.dispatchEvent(Bubble('clear-errors', undefined))
+    try {
+      await this._client.loadBundle(this.bundle)
+    } catch (err) {
+      this.dispatchEvent(Bubble('error', {type: 'Error', err}))
+    }
+    // Re-render the preview.
+    this.#meta = {...this.#meta}
+    this.requestUpdate()
+  }
+
   override disconnectedCallback(): void {
     this._client.quit()
     super.disconnectedCallback()
@@ -105,17 +119,7 @@ export class PlayPreview extends LitElement {
   protected override async willUpdate(
     changedProperties: PropertyValues
   ): Promise<void> {
-    if (changedProperties.has('bundle') && this.bundle) {
-      this._client.quit()
-      this.dispatchEvent(Bubble('clear-errors', undefined))
-      try {
-        await this._client.loadBundle(this.bundle)
-      } catch (err) {
-        this.dispatchEvent(Bubble('error', {type: 'Error', err}))
-      }
-      // Re-render the preview.
-      this.#meta = {...this.#meta}
-      this.requestUpdate()
-    }
+    if (changedProperties.has('bundle')) await this.reset()
+    else this.requestUpdate()
   }
 }
