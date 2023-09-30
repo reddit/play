@@ -10,8 +10,8 @@ import {
   setSource
 } from '../../bundler/compiler.js'
 import {link} from '../../bundler/linker.js'
-import blocksGallery from '../../examples/blocks-gallery.example.js'
 import clock from '../../examples/clock.example.js'
+import polls from '../../examples/polls.example.js'
 import helloBlocks from '../../examples/hello-blocks.example.js'
 import progressBar from '../../examples/progress-bar.example.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
@@ -141,7 +141,7 @@ export class PlayPen extends LitElement {
       'Hello Blocks!': helloBlocks,
       'Progress Bar': progressBar,
       Clock: clock,
-      'Blocks Gallery': blocksGallery
+      Polls: polls
     }
 
   /** Program executable. */

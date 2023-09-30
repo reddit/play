@@ -14,6 +14,7 @@ declare global {
 export class PlayListItem extends LitElement {
   @property() label: String = ''
   @property() icon?: PlayIconSVG
+  @property() endIcon?: PlayIconSVG
 
   static override styles = css`
     li {
@@ -45,6 +46,8 @@ export class PlayListItem extends LitElement {
       ${this.icon &&
       html`<play-icon size="20px" icon=${this.icon}></play-icon>`}
       ${this.label}
+      ${this.endIcon &&
+      html`<play-icon size="20px" icon=${this.endIcon}></play-icon>`}
     </li>`
   }
 }

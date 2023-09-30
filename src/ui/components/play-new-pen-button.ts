@@ -1,6 +1,7 @@
 import {LitElement, css, html} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {repeat} from 'lit/directives/repeat.js'
+import {openURL} from '../../utils/open-url.js'
 import {Bubble} from '../bubble.js'
 
 import './play-dropdown-menu.js'
@@ -168,6 +169,11 @@ export class PlayNewPenButton extends LitElement {
                 >${label}</play-list-item
               >`
           )}
+          <play-list-item
+            label="More examples"
+            endIcon="external-outline"
+            @click=${() => openURL('https://developers.reddit.com/docs')}
+          ></play-list-item>
         </div>
       </play-dropdown-menu>
     </div>`
