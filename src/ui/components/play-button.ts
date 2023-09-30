@@ -8,7 +8,6 @@ export type PlayButtonAppearance =
   | 'bordered'
   | 'orangered'
   | 'plain'
-  | 'secondary'
   | 'inverted'
 export type PlayButtonSize = 'small' | 'medium'
 
@@ -20,7 +19,7 @@ declare global {
 
 @customElement('play-button')
 export class PlayButton extends LitElement {
-  @property() appearance: PlayButtonAppearance = 'secondary'
+  @property() appearance: PlayButtonAppearance = 'plain'
   @property({type: Boolean}) disabled?: boolean
   @property() endIcon?: PlayIconSVG
   @property() icon?: PlayIconSVG
@@ -115,18 +114,18 @@ export class PlayButton extends LitElement {
       cursor: unset;
     }
 
-    /* Appearance: "secondary"  */
-    :host([appearance='secondary']) button {
+    /* Appearance: "plain"  */
+    :host([appearance='plain']) button {
       color: var(--color-secondary-onBackground);
-      background-color: var(--color-secondary-background);
+      background-color: transparent;
     }
-    :host([appearance='secondary']:hover) button {
-      background-color: var(--color-secondary-background-hovered);
+    :host([appearance='plain']:hover) button {
+      background-color: rgba(0, 0, 0, 0.1);
     }
-    :host([appearance='secondary']:active) button {
-      background-color: var(--color-secondary-background-pressed);
+    :host([appearance='plain']:active) button {
+      background-color: rgba(0, 0, 0, 0.3);
     }
-    :host([appearance='secondary']) button:disabled {
+    :host([appearance='plain']) button:disabled {
       color: var(--color-interactive-content-disabled);
       background-color: var(--color-interactive-background-disabled);
       cursor: unset;

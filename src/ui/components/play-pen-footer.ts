@@ -1,23 +1,12 @@
 import {LitElement, css, html, nothing} from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
-import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
-import {Bubble} from '../bubble.js'
-
 import {openURL} from '../../utils/open-url.js'
+
 import './play-button.js'
 import './play-console.js'
 import './play-dropdown-menu.js'
 import './play-list-item.js'
-
-/* Available preview sizes */
-const sizes: readonly [width: number, label: string][] = [
-  [288, '288 - Mobile small'],
-  [343, '343 - Mobile'],
-  [400, '400 - Mobile large'],
-  [512, '512 - Desktop Small'],
-  [718, '718 - Desktop Large']
-]
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -25,10 +14,6 @@ declare global {
   }
 }
 
-/**
- * @fires {ColorScheme} preview-scheme
- * @fires {number} preview-width
- */
 @customElement('play-pen-footer')
 export class PlayPenFooter extends LitElement {
   static override styles = css`
@@ -66,10 +51,7 @@ export class PlayPenFooter extends LitElement {
     }
   `
 
-  @property({type: Number}) previewWidth = 718
   @property({attribute: false}) diagnostics?: Readonly<Diagnostics>
-  @property() scheme: ColorScheme | undefined
-
   @state() private _open?: boolean
 
   protected override render() {
@@ -88,40 +70,6 @@ export class PlayPenFooter extends LitElement {
           label="Console"
         ></play-button>
         <div class="actions">
-          <play-dropdown-menu direction="up">
-            <div slot="trigger">
-              <play-button
-                appearance="inverted"
-                size="small"
-                icon="resize-horizontal-outline"
-                title="Select preview width"
-                label=${`${this.previewWidth} wide`}
-              ></play-button>
-            </div>
-            <div slot="menu">
-              ${sizes.map(
-                ([width, label]) =>
-                  html` <play-list-item
-                    label=${label}
-                    @click=${() =>
-                      this.dispatchEvent(Bubble('preview-width', width))}
-                  ></play-list-item>`
-              )}
-            </div>
-          </play-dropdown-menu>
-
-          <play-button
-            appearance="inverted"
-            size="small"
-            icon=${this.#isDark() ? 'night-outline' : 'day-outline'}
-            title="Toggle the theme"
-            label="Theme"
-            @click=${() =>
-              this.dispatchEvent(
-                Bubble('preview-scheme', this.#isDark() ? 'light' : 'dark')
-              )}
-          ></play-button>
-
           <play-dropdown-menu direction="up">
             <div slot="trigger">
               <play-button
@@ -155,12 +103,5 @@ export class PlayPenFooter extends LitElement {
           : nothing}
       </div>
     </footer>`
-  }
-
-  #isDark(): boolean {
-    return (
-      globalThis.matchMedia('(prefers-color-scheme: dark)').matches ||
-      this.scheme === 'dark'
-    )
   }
 }

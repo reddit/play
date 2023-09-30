@@ -20,11 +20,13 @@ import type {PreviewError} from '../../types/preview-error.js'
 import {PenSave, loadPen, penToHash, savePen} from '../pen-save.js'
 import type {OpenLine} from './play-console.js'
 import type {PlayEditor} from './play-editor.js'
+import type {PlayPreview} from './play-preview.js'
 
 import './play-editor.js'
 import './play-pen-footer.js'
 import './play-pen-header.js'
 import './play-preview.js'
+import './play-preview-controls.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -95,8 +97,11 @@ export class PlayPen extends LitElement {
       flex-shrink: 1;
     }
 
-    play-preview {
+    .preview {
       flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      row-gap: 8px;
     }
 
     main {
@@ -145,7 +150,9 @@ export class PlayPen extends LitElement {
   @state() private _previewWidth: number = 288
   @state() private _diagnostics: Diagnostics = {previewErrs: [], tsErrs: []}
   @query('play-editor') private _editor!: PlayEditor
+  @query('play-preview') private _preview!: PlayPreview
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
+
   /** Program title. */ @state() private _name: string = ''
   /** Execution color scheme. */ @state() private _scheme:
     | ColorScheme
@@ -196,19 +203,28 @@ export class PlayPen extends LitElement {
           }}
           ><slot></slot
         ></play-editor>
-        <play-preview
-          .bundle=${this._bundle}
-          previewWidth=${this._previewWidth}
-          scheme=${ifDefined(this._scheme)}
-          @clear-errors=${() => this.#clearPreviewErrors()}
-          @error=${(ev: CustomEvent<PreviewError>) =>
-            this.#appendPreviewError(ev.detail)}
-        ></play-preview>
+        <div class="preview">
+          <play-preview
+            .bundle=${this._bundle}
+            previewWidth=${this._previewWidth}
+            scheme=${ifDefined(this._scheme)}
+            @clear-errors=${() => this.#clearPreviewErrors()}
+            @error=${(ev: CustomEvent<PreviewError>) =>
+              this.#appendPreviewError(ev.detail)}
+          ></play-preview>
+          <play-preview-controls
+            previewWidth=${this._previewWidth}
+            scheme=${ifDefined(this._scheme)}
+            @reset=${() => this._preview.reset()}
+            @preview-width=${(ev: CustomEvent<number>) =>
+              (this._previewWidth = ev.detail)}
+            @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>
+              (this._scheme = ev.detail)}
+          ></play-preview-controls>
+        </div>
       </main>
       <play-pen-footer
-        previewWidth=${this._previewWidth}
         .diagnostics=${this._diagnostics}
-        scheme=${ifDefined(this._scheme)}
         @preview-width=${(ev: CustomEvent<number>) =>
           (this._previewWidth = ev.detail)}
         @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>
