@@ -72,11 +72,12 @@ export class PlayPenHeader extends LitElement {
       </div>
       <div class="actions">
         <play-new-pen-button
+          size="small"
           .srcByLabel=${this.srcByLabel}
         ></play-new-pen-button
         ><play-button
           appearance="bordered"
-          size="medium"
+          size="small"
           icon="external-outline"
           title="Open Documentation"
           label="Docs"
@@ -85,7 +86,7 @@ export class PlayPenHeader extends LitElement {
         <play-button
           @click=${() => this.dispatchEvent(Bubble('share', undefined))}
           appearance="orangered"
-          size="medium"
+          size="small"
           icon="share-new-outline"
           title="Copy Program to URL"
           label="Share"

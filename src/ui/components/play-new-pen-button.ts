@@ -3,11 +3,15 @@ import {customElement, property} from 'lit/decorators.js'
 import {repeat} from 'lit/directives/repeat.js'
 import {Bubble} from '../bubble.js'
 
-import './play-button.js'
 import './play-dropdown-menu.js'
 import './play-icon.js'
 import './play-list-item.js'
-import './play-resizable-text-input.js'
+
+export type SizeOptions = 'small' | 'medium'
+const iconSizes: {[key in SizeOptions]: string} = {
+  small: '16px',
+  medium: '20px'
+}
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -30,15 +34,45 @@ export class PlayNewPenButton extends LitElement {
     }
 
     button {
-      font: inherit;
+      font-family: inherit;
+      color: var(--color-secondary-plain);
       background-color: transparent;
       border: none;
       cursor: pointer;
     }
 
+    :host([size='small']) button {
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 16px;
+      letter-spacing: -0.1px;
+    }
+
+    :host([size='medium']) button {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 20px;
+      letter-spacing: -0.3px;
+    }
+
     .new-pen {
       display: flex;
       flex-direction: row;
+    }
+
+    :host([size='small']) .new-pen {
+      column-gap: 8px;
+      padding-top: 8px;
+      padding-right: 8px;
+      padding-bottom: 8px;
+      padding-left: 12px;
+      border-top-left-radius: 16px;
+      border-bottom-left-radius: 16px;
+    }
+
+    :host([size='medium']) .new-pen {
       column-gap: 8px;
       padding-top: 10px;
       padding-right: 12px;
@@ -48,7 +82,16 @@ export class PlayNewPenButton extends LitElement {
       border-bottom-left-radius: 20px;
     }
 
-    .new-from-template {
+    :host([size='small']) .new-from-template {
+      padding-top: 8px;
+      padding-right: 8px;
+      padding-bottom: 8px;
+      padding-left: 8px;
+      border-top-right-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
+
+    :host([size='medium']) .new-from-template {
       padding-top: 10px;
       padding-right: 10px;
       padding-bottom: 10px;
@@ -74,12 +117,20 @@ export class PlayNewPenButton extends LitElement {
 
     .divider {
       width: 1px;
-      height: 20px;
       background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    :host([size='small']) .divider {
+      height: 16px;
+    }
+
+    :host([size='medium']) .divider {
+      height: 20px;
     }
   `
 
   @property({attribute: false}) srcByLabel?: Readonly<{[key: string]: string}>
+  @property() size: SizeOptions = 'medium'
 
   protected override render() {
     return html`<div class="container">
@@ -91,14 +142,17 @@ export class PlayNewPenButton extends LitElement {
           )}
         title="New pen"
       >
-        <play-icon size="20px" icon="add-outline"></play-icon>
+        <play-icon size=${iconSizes[this.size]} icon="add-outline"></play-icon>
         <span>New</span>
       </button>
       <div class="divider"></div>
       <play-dropdown-menu direction="down">
         <div slot="trigger">
           <button class="new-from-template" title="New pen from template">
-            <play-icon size="20px" icon="caret-down-outline"></play-icon>
+            <play-icon
+              size=${iconSizes[this.size]}
+              icon="caret-down-outline"
+            ></play-icon>
           </button>
         </div>
         <div slot="menu">

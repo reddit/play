@@ -157,14 +157,17 @@ export class PlayButton extends LitElement {
       color: var(--color-neutral-background);
       border-radius: 9001px;
       background-color: var(--color-orangered-500);
-      padding-top: 2px;
-      padding-right: 8px;
-      padding-bottom: 2px;
-      padding-left: 8px;
+      padding-top: 0px;
+      padding-right: 4px;
+      padding-bottom: 0px;
+      padding-left: 4px;
       font-size: 12px;
       font-style: normal;
       font-weight: 600;
       line-height: 16px;
+      outline-width: 2px;
+      outline-style: solid;
+      outline-color: var(--color-orangered-500);
     }
   `
 

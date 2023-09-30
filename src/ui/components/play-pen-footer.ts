@@ -41,9 +41,9 @@ export class PlayPenFooter extends LitElement {
       flex-direction: row;
       column-gap: 16px;
       justify-content: space-between;
-      padding-top: 0;
+      padding-top: 0px;
       padding-right: 16px;
-      padding-bottom: 0;
+      padding-bottom: 0px;
       padding-left: 16px;
     }
 
@@ -80,7 +80,7 @@ export class PlayPenFooter extends LitElement {
       <div class="footer-buttons">
         <play-button
           appearance="inverted"
-          size="medium"
+          size="small"
           endIcon="${this._open ? 'caret-down-outline' : 'caret-up-outline'}"
           title="Toggle console"
           @click=${() => (this._open = !this._open)}
@@ -92,7 +92,7 @@ export class PlayPenFooter extends LitElement {
             <div slot="trigger">
               <play-button
                 appearance="inverted"
-                size="medium"
+                size="small"
                 icon="resize-horizontal-outline"
                 title="Select preview width"
                 label=${`${this.previewWidth} wide`}
@@ -112,7 +112,7 @@ export class PlayPenFooter extends LitElement {
 
           <play-button
             appearance="inverted"
-            size="medium"
+            size="small"
             icon=${this.#isDark() ? 'night-outline' : 'day-outline'}
             title="Toggle the theme"
             label="Theme"
@@ -126,7 +126,7 @@ export class PlayPenFooter extends LitElement {
             <div slot="trigger">
               <play-button
                 appearance="inverted"
-                size="medium"
+                size="small"
                 icon="overflow-horizontal-outline"
                 title="Additional options"
               ></play-button>
