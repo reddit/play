@@ -2,7 +2,11 @@
 
 :play is [semantically versioned](https://semver.org).
 
-## v0.0.10 (unreleased)
+## v0.0.11 (unreleased)
+
+## v0.0.10
+
+Fix color scheme.
 
 ## v0.0.9
 
