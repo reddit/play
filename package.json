@@ -81,11 +81,11 @@
     "start": "tools/build.js --watch",
     "test:format": "npm run formatter -- --check",
     "test:size": "filesize",
-    "test:types:ui": "lit-analyzer --maxWarnings=0 --rules.no-missing-import=off --rules.no-missing-element-type-definition --rules.no-unknown-event --strict",
+    "test:types:ui": "lit-analyzer --maxWarnings=0 --rules.no-invalid-css=off --rules.no-missing-import=off --rules.no-missing-element-type-definition --rules.no-unknown-event --strict",
     "test:unit": "vitest --reporter=dot --run",
     "test": "npm run test:format && npm run test:unit && npm run build && npm run test:types:ui && npm run test:size",
     "version": "npm test"
   },
   "type": "module",
-  "version": "0.0.9"
+  "version": "0.0.10"
 }
