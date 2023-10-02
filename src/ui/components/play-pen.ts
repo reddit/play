@@ -42,9 +42,6 @@ declare global {
 export class PlayPen extends LitElement {
   static override styles = css`
     :host {
-      /* to-do: Support light and dark mode. */
-      /* color-scheme: light dark; */
-
       /* Global z-index definitions. */
       --z-menu: 10;
       --z-base: 1;
@@ -81,14 +78,6 @@ export class PlayPen extends LitElement {
       height: 100%;
       display: flex;
       flex-direction: column;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      /* :host { */
-      /* #theme# Dark mode. */
-      /* color: rgba(255, 255, 255, 0.87);
-        background-color: #242424; */
-      /* } */
     }
 
     play-editor {

@@ -37,7 +37,11 @@ export class PlayPreviewControls extends LitElement {
   `
 
   @property({type: Number}) previewWidth = 718
-  @property() scheme: ColorScheme | undefined
+  @property() scheme: ColorScheme = globalThis.matchMedia(
+    '(prefers-color-scheme: dark)'
+  ).matches
+    ? 'dark'
+    : 'light'
 
   protected override render() {
     return html`
@@ -75,21 +79,14 @@ export class PlayPreviewControls extends LitElement {
       <play-button
         appearance="plain"
         size="small"
-        icon=${this.#isDark() ? 'night-outline' : 'day-outline'}
+        icon=${this.scheme === 'dark' ? 'night-outline' : 'day-outline'}
         title="Toggle the scheme"
-        label=${this.#isDark() ? 'Dark' : 'Light'}
+        label=${this.scheme === 'dark' ? 'Dark' : 'Light'}
         @click=${() =>
           this.dispatchEvent(
-            Bubble('preview-scheme', this.#isDark() ? 'light' : 'dark')
+            Bubble('preview-scheme', this.scheme === 'dark' ? 'light' : 'dark')
           )}
       ></play-button>
     `
-  }
-
-  #isDark(): boolean {
-    return (
-      globalThis.matchMedia('(prefers-color-scheme: dark)').matches ||
-      this.scheme === 'dark'
-    )
   }
 }

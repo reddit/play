@@ -72,7 +72,7 @@ export class PlayPreview extends LitElement {
 
   @property({attribute: false}) bundle: Readonly<LinkedBundle> | undefined
   @property({type: Number}) previewWidth?: number
-  @property() scheme: ColorScheme | undefined
+  @property() scheme?: ColorScheme
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
     new Blob([penWorker], {type: 'text/javascript'}),
@@ -104,6 +104,8 @@ export class PlayPreview extends LitElement {
   }
 
   protected override render() {
+    // to-do: don't override toaster's --rem16 to offset the toast. Upstream a
+    // variable.
     return html`<div class="preview">
       ${this.bundle &&
       html`<devvit-preview
@@ -112,6 +114,7 @@ export class PlayPreview extends LitElement {
         .meta="${this.#meta}"
         .client=${this._client}
         .scheme=${this.scheme}
+        style="--rem16: 50px;"
       ></devvit-preview>`}
     </div>`
   }
