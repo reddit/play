@@ -11,8 +11,8 @@ import {
 } from '../../bundler/compiler.js'
 import {link} from '../../bundler/linker.js'
 import clock from '../../examples/clock.example.js'
-import polls from '../../examples/polls.example.js'
 import helloBlocks from '../../examples/hello-blocks.example.js'
+import polls from '../../examples/polls.example.js'
 import progressBar from '../../examples/progress-bar.example.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
@@ -25,8 +25,8 @@ import type {PlayPreview} from './play-preview.js'
 import './play-editor.js'
 import './play-pen-footer.js'
 import './play-pen-header.js'
-import './play-preview.js'
 import './play-preview-controls.js'
+import './play-preview.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -78,6 +78,8 @@ export class PlayPen extends LitElement {
       height: 100%;
       display: flex;
       flex-direction: column;
+
+      color-scheme: light;
     }
 
     play-editor {
