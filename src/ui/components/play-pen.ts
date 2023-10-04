@@ -11,6 +11,7 @@ import {
 } from '../../bundler/compiler.js'
 import {link} from '../../bundler/linker.js'
 import clock from '../../examples/clock.example.js'
+import defaultExample from '../../examples/default.example.js'
 import helloBlocks from '../../examples/hello-blocks.example.js'
 import polls from '../../examples/polls.example.js'
 import progressBar from '../../examples/progress-bar.example.js'
@@ -129,6 +130,7 @@ export class PlayPen extends LitElement {
   @property({attribute: 'allow-url', type: Boolean}) allowURL: boolean = false
   @property({attribute: false}) srcByLabel: Readonly<{[key: string]: string}> =
     {
+      Default: defaultExample, // The default can be overridden by the slot.
       'Hello Blocks!': helloBlocks,
       'Progress Bar': progressBar,
       Clock: clock,
