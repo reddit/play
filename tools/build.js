@@ -71,7 +71,7 @@ await fs.writeFile(
 /** @type {esbuild.BuildOptions} */
 const opts = {
   bundle: true,
-  define: {'globalThis.play.version': `'${pkg.version}'`}, // #defines#
+  define: {'globalThis.version': `'${pkg.version}'`}, // #defines#
   format: 'esm',
   // Bundle templates for loading in pens and bundle pen worker as text so it
   // can be loaded in a worker.

@@ -1,6 +1,5 @@
 /**
- * Defines populated by tools/build.js. References to globalThis.play will be
- * replaced with constants by esbuild.
+ * globalThis.* defines that are replaced with constants by esbuild.
  * #defines#
  */
-var play: Readonly<{version: string}>
+var version: string

@@ -27,7 +27,7 @@ export class PlayApp extends LitElement {
 
   constructor() {
     super()
-    console.log(`:play v${globalThis.play.version}`) // #strings:title#
+    console.log(`:play v${globalThis.version}`) // #strings:title#
   }
 
   protected override render() {
