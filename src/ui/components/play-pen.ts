@@ -38,6 +38,8 @@ declare global {
 /**
  * A complete and standalone playground: an editor, a runtime and client, a
  * preview and toolbar. Accepts a slotted template.
+ *
+ * @slot - Optional template.
  */
 @customElement('play-pen')
 export class PlayPen extends LitElement {

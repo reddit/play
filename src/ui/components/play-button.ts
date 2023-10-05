@@ -17,6 +17,7 @@ declare global {
   }
 }
 
+/** @slot - Contents. */
 @customElement('play-button')
 export class PlayButton extends LitElement {
   @property() appearance: PlayButtonAppearance = 'plain'

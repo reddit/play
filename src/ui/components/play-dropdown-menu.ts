@@ -1,5 +1,5 @@
 import {LitElement, css, html} from 'lit'
-import {customElement, state, property} from 'lit/decorators.js'
+import {customElement, property, state} from 'lit/decorators.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -7,6 +7,11 @@ declare global {
   }
 }
 
+/**
+ * @slot menu - Menu list items. to-do: extract menu component instead of
+ *              assuming li.
+ * @slot trigger - Button. to-do: use a button.
+ */
 @customElement('play-dropdown-menu')
 export class PlayDropdownMenu extends LitElement {
   @property({type: String}) direction?: 'down' | 'up' = 'up'
