@@ -83,7 +83,8 @@ const opts = {
   },
   logLevel: `info`, // Print the port and build demarcations.
   outdir: 'dist', // #build:dist#
-  sourcemap: 'linked'
+  sourcemap: 'linked',
+  target: 'es2022' // https://esbuild.github.io/content-types/#tsconfig-json
 }
 const appOpts = {
   ...opts,
