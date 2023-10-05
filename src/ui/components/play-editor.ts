@@ -61,6 +61,7 @@ declare global {
 /**
  * @fires {string} edit
  * @fires {string} edit-template
+ * @slot - Optional template.
  */
 /** Accepts a slotted template. */
 @customElement('play-editor')
