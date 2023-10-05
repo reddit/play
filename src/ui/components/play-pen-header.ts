@@ -83,14 +83,6 @@ export class PlayPenHeader extends LitElement {
           label="Docs"
           @click=${() => openURL('https://developers.reddit.com/docs')}
         ></play-button>
-        <play-button
-          @click=${() => this.dispatchEvent(Bubble('share', undefined))}
-          appearance="orangered"
-          size="small"
-          icon="share-new-outline"
-          title="Copy Program to URL"
-          label="Share"
-        ></play-button>
       </div>
     </header>`
   }

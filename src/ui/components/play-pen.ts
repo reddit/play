@@ -18,7 +18,7 @@ import progressBar from '../../examples/progress-bar.example.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import type {PreviewError} from '../../types/preview-error.js'
-import {PenSave, loadPen, penToHash, savePen} from '../pen-save.js'
+import {PenSave, loadPen, savePen} from '../pen-save.js'
 import type {OpenLine} from './play-console.js'
 import type {PlayEditor} from './play-editor.js'
 import type {PlayPreview} from './play-preview.js'
@@ -180,7 +180,6 @@ export class PlayPen extends LitElement {
           this.#setName('', false)
           this._editor.setSrc(ev.detail)
         }}
-        @share=${this.#onShare}
       ></play-pen-header>
       <main>
         <play-editor
@@ -234,27 +233,9 @@ export class PlayPen extends LitElement {
     }
   }
 
-  /** Save to LocalStorage as allowed. */
-  #autoSave(): void {
-    if (this.allowStorage)
-      savePen(
-        undefined,
-        globalThis.localStorage,
-        PenSave(this._name, this._src ?? '')
-      )
-  }
-
   #clearPreviewErrors(): void {
     if (this._diagnostics) this._diagnostics.previewErrs.length = 0
     this._diagnostics = {...this._diagnostics}
-  }
-
-  async #onShare(): Promise<void> {
-    // to-do: record to clipboard and show a toast.
-    this.#save()
-    const url = new URL(globalThis.location.href)
-    url.hash = penToHash(PenSave(this._name, this._src ?? ''))
-    await navigator.clipboard.writeText(url.href)
   }
 
   /** Save to LocalStorage and URL as allowed. */
@@ -268,7 +249,7 @@ export class PlayPen extends LitElement {
 
   #setName(name: string, save: boolean): void {
     this._name = name
-    if (save) this.#autoSave()
+    if (save) this.#save()
   }
 
   #setSrc(src: string, save: boolean): void {
@@ -283,6 +264,6 @@ export class PlayPen extends LitElement {
     }
     // Skip blank source.
     if (!/^\s*$/.test(src)) this._bundle = link(compile(this.#env))
-    if (save) this.#autoSave()
+    if (save) this.#save()
   }
 }
