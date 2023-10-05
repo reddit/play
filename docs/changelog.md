@@ -2,11 +2,22 @@
 
 :play is [semantically versioned](https://semver.org).
 
-## v0.0.11 (unreleased)
+## v0.0.13 (unreleased)
 
-## v0.0.10
+## v0.0.12
+
+- 51aff9b Upgrade dependencies
+- e4ce8bb [DX-4077] Remove share and always save to URL (#31)
+- 34378ee Fix compilation target
+- f68dcfc Fix type complaint
+- d6dd6e1 Add nonempty default example
+- 2d55459 Upgrade dependencies
+
+## v0.0.11
 
 Fix color scheme.
+
+## v0.0.10 (invalid)
 
 ## v0.0.9
 
