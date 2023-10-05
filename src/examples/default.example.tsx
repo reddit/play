@@ -2,7 +2,7 @@ import {Devvit} from '@devvit/public-api'
 
 Devvit.addCustomPostType({
   name: 'Name',
-  render: context => {
+  render: _context => {
     return <blocks></blocks>
   }
 })
