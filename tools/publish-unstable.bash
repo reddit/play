@@ -27,5 +27,8 @@ npm ci
 # committed for unstable releases.
 npm version prerelease --preid="dev.$(TZ=utc date +%FT%H%M).$(git rev-parse --short HEAD)"
 
+version="$(node --print --eval='require("./package").version')"
+read -p "ready to publish v${version}; <enter> to continue, <ctrl-c> to abort: "
+
 # If this fails, retrying manually is fine.
 npm publish --tag next

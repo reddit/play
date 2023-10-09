@@ -15,13 +15,21 @@ set -${V:+x}
 # local-only commit to revise the changelog.
 git pull
 
+read -p 'commit changelog; <enter> to continue, <ctrl-c> to abort: '
+
 # Clear outdated artifacts.
 npm run clean
 
 # Validate the installation. See `npm help ci`.
 npm ci
 
-# This will create a new version commit on the current branch like `v1.2.3`.
+# This will create a new version commit and tag on the current branch like
+# `v1.2.3`.
 npm version "$VERSION_TYPE"
 
+version="$(node --print --eval='require("./package").version')"
+read -p "ready to publish v${version}; <enter> to continue, <ctrl-c> to abort: "
+
 npm publish
+
+read -p 'upload dist/play-*.html artifact; <enter> to continue: '
