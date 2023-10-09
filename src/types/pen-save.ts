@@ -4,7 +4,7 @@ import lzstring from 'lz-string'
  * Pen state for un/packing to/from a shareable URL or LocalStorage. This
  * structure is not intended to be visible to or manually edited by users.
  */
-type PenSave = {
+export type PenSave = {
   /** Pen title. Possibly empty. */
   name: string
   /** The program source code. Possibly empty. */
@@ -29,8 +29,8 @@ export function PenSave(name: string, src: string): PenSave {
 export function loadPen(
   medium: Readonly<{hash: string}> | Readonly<Storage>
 ): PenSave | undefined {
-  if ('getItem' in medium) return fromJSON(medium.getItem(storageKey) ?? '')
-  return fromLocation(medium)
+  if ('getItem' in medium) return penFromJSON(medium.getItem(storageKey) ?? '')
+  return penFromHash(medium.hash)
 }
 
 /** Save pen to storage and location. */
@@ -58,13 +58,13 @@ export function penToHash(pen: Readonly<PenSave>): string {
  *
  * [the TypeScript website]: https://github.com/microsoft/TypeScript-Website/blob/944d9aa/packages/sandbox/src/getInitialCode.ts#L6
  */
-function fromLocation(location: Readonly<{hash: string}>): PenSave | undefined {
-  if (!location.hash.startsWith(fragmentPrefix)) return
-  const lz = location.hash.slice(fragmentPrefix.length)
-  return fromJSON(lzstring.decompressFromEncodedURIComponent(lz))
+export function penFromHash(hash: string): PenSave | undefined {
+  if (!hash.startsWith(fragmentPrefix)) return
+  const lz = hash.slice(fragmentPrefix.length)
+  return penFromJSON(lzstring.decompressFromEncodedURIComponent(lz))
 }
 
-function fromJSON(json: string): PenSave | undefined {
+function penFromJSON(json: string): PenSave | undefined {
   let pen
   try {
     pen = JSON.parse(json)

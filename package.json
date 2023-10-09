@@ -29,6 +29,10 @@
     "node": ">=18.17.0"
   },
   "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
     "./pen": {
       "types": "./dist/ui/components/play-pen.d.ts",
       "import": "./dist/play-pen.js"
@@ -40,12 +44,18 @@
     "!dist/tsconfig.tsbuildinfo"
   ],
   "filesize": {
+    "dist/index.js": {
+      "gzip": "3.4 KB"
+    },
     "dist/play-pen.js": {
       "gzip": "2.70 MB"
     }
   },
   "typesVersions": {
     "*": {
+      ".": [
+        "./dist/index.ts"
+      ],
       "pen": [
         "./dist/ui/components/play-pen.d.ts"
       ]

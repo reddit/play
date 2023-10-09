@@ -104,6 +104,10 @@ if (watch) {
     esbuild.build(appOpts),
     esbuild.build({
       ...opts,
+      entryPoints: [path.join('src', 'index.ts')] // #build:src#
+    }),
+    esbuild.build({
+      ...opts,
       entryPoints: [path.join('src', 'ui', 'components', 'play-pen.ts')] // #build:src#
     })
   ])
