@@ -2,7 +2,18 @@
 
 :play is [semantically versioned](https://semver.org).
 
-## v0.0.13 (unreleased)
+## v0.0.14 (unreleased)
+
+## v0.0.13
+
+- ee4be05 Add publish prompts
+- a3b1ac9 Upgrade dependencies
+- 4babb48 Tidy PropertyValues type
+- ca5cd8f [DX-4174] Expose PenSave and version
+- 381fc3b Add missed @slot
+- ed72635 Simplify defines
+- b68a460 Add @slot docs
+- 39b4cb6 Tweak examples
 
 ## v0.0.12
 
