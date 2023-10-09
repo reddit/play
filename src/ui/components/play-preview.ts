@@ -120,9 +120,9 @@ export class PlayPreview extends LitElement {
   }
 
   protected override async willUpdate(
-    changedProperties: PropertyValues
+    props: PropertyValues<this>
   ): Promise<void> {
-    if (changedProperties.has('bundle')) await this.reset()
+    if (props.has('bundle')) await this.reset()
     else this.requestUpdate()
   }
 }
