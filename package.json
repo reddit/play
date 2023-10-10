@@ -1,5 +1,4 @@
 {
-  "//": "#build:dist# #build:tsd# #strings:description# #strings:keywords# #url# #version#",
   "author": "Reddit",
   "bugs": "https://github.com/reddit/devvit-play/issues",
   "description": "Devvit app :playground.",

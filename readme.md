@@ -1,6 +1,6 @@
-# ![:play](src/ui/assets/favicon/favicon48.png) :play <!-- #strings:title# -->
+# ![:play](src/ui/assets/favicon/favicon48.png) :play
 
-Devvit app :playground.<!-- #strings:description# -->
+Devvit app :playground.
 
 ## Installation
 
@@ -74,13 +74,6 @@ See [supplemental development notes](docs/development.md).
 - **docs**/: supplemental play documentation.
 - **src**/: source inputs.
 - **tools**/: development tools for building :play.
-
-### Tagging
-
-Coupling that is difficult to express with tooling is tagged as helpful. Eg,
-`#strings:description#` or `#version#`. This makes it easier to see all the
-places a cross-cutting concern touches with a grep. Eg, `rg '#theme#'`. See all
-tags used with `rg '#[a-z0-9:-]+#'`.
 
 ### Contribution Guidelines and Design Principles
 

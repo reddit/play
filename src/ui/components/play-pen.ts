@@ -53,7 +53,7 @@ export class PlayPen extends LitElement {
       --color-orangered-100: #ffede5;
       --color-orangered-500: #d93a00;
 
-      /* #theme# Light mode color definitions. */
+      /* Light mode color definitions. */
       --color-background: #fffcf0;
       --color-neutral-content-weak: #576f76;
       --color-neutral-content: #2a3c42;
@@ -73,7 +73,7 @@ export class PlayPen extends LitElement {
       --color-interactive-content-disabled: rgba(0, 0, 0, 0.25);
       --color-interactive-background-disabled: rgba(0, 0, 0, 0.05);
 
-      /* #theme# Light mode. */
+      /* Light mode. */
       color: #213547;
       background-color: var(--color-background);
 

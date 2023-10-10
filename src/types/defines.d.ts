@@ -1,5 +1,2 @@
-/**
- * globalThis.* defines that are replaced with constants by esbuild.
- * #defines#
- */
+/** globalThis.* defines that are replaced with constants by esbuild. */
 var version: string

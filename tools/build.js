@@ -28,7 +28,7 @@ const plugin = {
 async function pluginOnEnd(result) {
   const manifestCopy = structuredClone(manifest)
   for (const icon of manifestCopy.icons) {
-    const file = await fs.readFile(path.join('src', 'ui', 'assets', icon.src)) // #build:assets#
+    const file = await fs.readFile(path.join('src', 'ui', 'assets', icon.src))
     icon.src = `data:${icon.type};base64,${file.toString('base64')}`
   }
   if (watch)
@@ -47,7 +47,7 @@ async function pluginOnEnd(result) {
     js += `new EventSource('/esbuild').addEventListener('change', () => location.reload());`
 
   let html = await fs.readFile(
-    path.join('src', 'ui', 'assets', 'play.html'), // #build:assets#
+    path.join('src', 'ui', 'assets', 'play.html'),
     'utf8'
   )
   html = html
@@ -64,14 +64,14 @@ async function pluginOnEnd(result) {
 }
 
 await fs.writeFile(
-  path.join('src', 'bundler', 'tsd.json'), // #build:tsd#
+  path.join('src', 'bundler', 'tsd.json'),
   JSON.stringify(await readTSDs(), null, 2)
 )
 
 /** @type {esbuild.BuildOptions} */
 const opts = {
   bundle: true,
-  define: {'globalThis.version': `'${pkg.version}'`}, // #defines#
+  define: {'globalThis.version': `'${pkg.version}'`},
   format: 'esm',
   // Bundle templates for loading in pens and bundle pen worker as text so it
   // can be loaded in a worker.
@@ -82,32 +82,29 @@ const opts = {
     '.worker.min.js': 'text'
   },
   logLevel: `info`, // Print the port and build demarcations.
-  outdir: 'dist', // #build:dist#
+  outdir: 'dist',
   sourcemap: 'linked',
   target: 'es2022' // https://esbuild.github.io/content-types/#tsconfig-json
 }
 const appOpts = {
   ...opts,
-  entryPoints: [path.join('src', 'ui', 'components', 'play-app.ts')], // #build:src#
+  entryPoints: [path.join('src', 'ui', 'components', 'play-app.ts')],
   minify: !watch,
   plugins: [plugin],
   write: false // Written by plugin.
 }
 if (watch) {
   const ctx = await esbuild.context(appOpts)
-  await Promise.race([
-    ctx.watch(),
-    ctx.serve({port: 1234, servedir: 'dist'}) // #build:dist#
-  ])
+  await Promise.race([ctx.watch(), ctx.serve({port: 1234, servedir: 'dist'})])
 } else
   await Promise.all([
     esbuild.build(appOpts),
     esbuild.build({
       ...opts,
-      entryPoints: [path.join('src', 'index.ts')] // #build:src#
+      entryPoints: [path.join('src', 'index.ts')]
     }),
     esbuild.build({
       ...opts,
-      entryPoints: [path.join('src', 'ui', 'components', 'play-pen.ts')] // #build:src#
+      entryPoints: [path.join('src', 'ui', 'components', 'play-pen.ts')]
     })
   ])
