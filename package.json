@@ -66,6 +66,7 @@
     "playground"
   ],
   "license": "BSD-3-Clause",
+  "main": "./dist/index.js",
   "name": "@devvit/play",
   "prettier": {
     "arrowParens": "avoid",
@@ -96,5 +97,6 @@
     "version": "npm test"
   },
   "type": "module",
+  "types": "./dist/index.d.ts",
   "version": "0.0.14"
 }
