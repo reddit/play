@@ -41,7 +41,7 @@ Published releases include:
 
 - **play-.\*.html**: portable playground.
 - **play-pen.js**: `play-pen` element.
-- **index.js**: library utilities.
+- **play.js**: library utilities.
 
 ## Development
 

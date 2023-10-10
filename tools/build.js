@@ -82,7 +82,6 @@ const opts = {
     '.worker.min.js': 'text'
   },
   logLevel: `info`, // Print the port and build demarcations.
-  outdir: 'dist',
   sourcemap: 'linked',
   target: 'es2022' // https://esbuild.github.io/content-types/#tsconfig-json
 }
@@ -90,6 +89,7 @@ const appOpts = {
   ...opts,
   entryPoints: [path.join('src', 'ui', 'components', 'play-app.ts')],
   minify: !watch,
+  outdir: 'dist',
   plugins: [plugin],
   write: false // Written by plugin.
 }
@@ -101,10 +101,12 @@ if (watch) {
     esbuild.build(appOpts),
     esbuild.build({
       ...opts,
-      entryPoints: [path.join('src', 'index.ts')]
+      entryPoints: [path.join('src', 'index.ts')],
+      outfile: path.join('dist', 'play.js')
     }),
     esbuild.build({
       ...opts,
-      entryPoints: [path.join('src', 'ui', 'components', 'play-pen.ts')]
+      entryPoints: [path.join('src', 'ui', 'components', 'play-pen.ts')],
+      outdir: 'dist'
     })
   ])
