@@ -2,9 +2,13 @@
 
 :play is [semantically versioned](https://semver.org).
 
-## v0.0.14 (unreleased)
+## v0.0.16 (unreleased)
 
 ## v0.0.15
+
+Add package main + type
+
+## v0.0.14
 
 - 2517f80 Remove tags
 - dfe8dee Upgrade dependencies
