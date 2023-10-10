@@ -54,7 +54,7 @@
   "typesVersions": {
     "*": {
       ".": [
-        "./dist/index.ts"
+        "./dist/index.d.ts"
       ],
       "pen": [
         "./dist/ui/components/play-pen.d.ts"
