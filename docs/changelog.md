@@ -4,6 +4,12 @@
 
 ## v0.0.14 (unreleased)
 
+## v0.0.15
+
+- 2517f80 Remove tags
+- dfe8dee Upgrade dependencies
+- d5eff08 Fix default export types
+
 ## v0.0.13
 
 - ee4be05 Add publish prompts
