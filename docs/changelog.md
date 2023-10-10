@@ -2,7 +2,11 @@
 
 :play is [semantically versioned](https://semver.org).
 
-## v0.0.16 (unreleased)
+## v0.0.17 (unreleased)
+
+## v0.0.16
+
+Fix default build product
 
 ## v0.0.15
 
