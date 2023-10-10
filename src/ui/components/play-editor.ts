@@ -21,7 +21,7 @@ import {
   syntaxHighlighting
 } from '@codemirror/language'
 import {lintKeymap, linter, type Diagnostic} from '@codemirror/lint'
-import {highlightSelectionMatches} from '@codemirror/search'
+import {highlightSelectionMatches, searchKeymap} from '@codemirror/search'
 import {EditorSelection, EditorState, type Extension} from '@codemirror/state'
 import {
   crosshairCursor,
@@ -32,7 +32,6 @@ import {
   highlightSpecialChars,
   hoverTooltip,
   keymap,
-  lineNumbers,
   rectangularSelection
 } from '@codemirror/view'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
@@ -160,9 +159,8 @@ export class PlayEditor extends LitElement {
     const init = EditorState.create({
       doc: this.src ?? '',
       extensions: [
-        // Mostly https://github.com/codemirror/basic-setup extension without
-        // search, which we don't render well, and with [shift]-tab indenting.
-        lineNumbers(),
+        // Mostly https://github.com/codemirror/basic-setup extension with
+        // [shift]-tab indenting.
         highlightActiveLineGutter(),
         highlightSpecialChars(),
         history(),
@@ -187,6 +185,7 @@ export class PlayEditor extends LitElement {
           ...foldKeymap,
           ...completionKeymap,
           ...lintKeymap,
+          ...searchKeymap,
           indentWithTab
         ]),
 
