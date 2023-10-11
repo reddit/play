@@ -1,9 +1,11 @@
 import {LitElement, css, html} from 'lit'
-import {customElement, property} from 'lit/decorators.js'
+import {customElement, property, query} from 'lit/decorators.js'
 import {openURL} from '../../utils/open-url.js'
 import {Bubble} from '../bubble.js'
+import type {PlayExportDialog} from './play-export-dialog.js'
 
 import './play-button.js'
+import './play-export-dialog.js'
 import './play-icon.js'
 import './play-logo.js'
 import './play-new-pen-button.js'
@@ -58,6 +60,8 @@ export class PlayPenHeader extends LitElement {
 
   @property() name: string = ''
   @property({attribute: false}) srcByLabel?: Readonly<{[key: string]: string}>
+  @property() url: string = ''
+  @query('play-export-dialog') private _export!: PlayExportDialog
 
   protected override render() {
     return html`<header>
@@ -75,6 +79,14 @@ export class PlayPenHeader extends LitElement {
           size="small"
           .srcByLabel=${this.srcByLabel}
         ></play-new-pen-button
+        ><play-export-dialog url=${this.url}></play-export-dialog
+        ><play-button
+          appearance="bordered"
+          size="small"
+          title="Export Pen"
+          label="Export"
+          @click=${() => this._export.open()}
+        ></play-button
         ><play-button
           appearance="bordered"
           size="small"

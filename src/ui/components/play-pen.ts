@@ -73,6 +73,10 @@ export class PlayPen extends LitElement {
       --color-interactive-content-disabled: rgba(0, 0, 0, 0.25);
       --color-interactive-background-disabled: rgba(0, 0, 0, 0.05);
 
+      --space: 16px;
+      --radius: 16px;
+      --border-width: 1px;
+
       /* Light mode. */
       color: #213547;
       background-color: var(--color-background);
@@ -172,9 +176,13 @@ export class PlayPen extends LitElement {
   }
 
   protected override render() {
+    // Compute the URL--an unmodified template would be at /.
+    const shareURL = new URL(globalThis.location.toString())
+    shareURL.hash = penToHash(PenSave(this._name, this._src ?? ''))
     return html`<play-pen-header
         name=${this._name}
         .srcByLabel=${this.srcByLabel}
+        url=${shareURL.toString()}
         @edit-name=${(ev: CustomEvent<string>) =>
           this.#setName(ev.detail, true)}
         @edit-src=${(ev: CustomEvent<string>) => {
