@@ -1,4 +1,4 @@
-import {LitElement, css, html} from 'lit'
+import {LitElement, css, html, type PropertyValues} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {Bubble} from '../bubble.js'
 
@@ -99,7 +99,8 @@ export class PlayResizableTextInput extends LitElement {
     `
   }
 
-  protected override updated(): void {
+  protected override updated(props: PropertyValues<this>): void {
+    super.updated(props)
     this.#resizeInput(this.shadowRoot?.querySelector('input')!)
   }
 
