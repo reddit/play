@@ -35,6 +35,7 @@ export class PlayToast extends LitElement {
     }
   `
 
+  // @ts-expect-error
   @property({reflect: true, type: Boolean}) private opened = false
   #timeout: ReturnType<typeof setTimeout> | undefined
 
