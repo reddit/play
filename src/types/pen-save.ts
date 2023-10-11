@@ -27,7 +27,7 @@ export function PenSave(name: string, src: string): PenSave {
 
 /** Retrieve pen from location or storage. */
 export function loadPen(
-  medium: Readonly<{hash: string}> | Readonly<Storage>
+  medium: Readonly<Location> | Readonly<Storage>
 ): PenSave | undefined {
   if ('getItem' in medium) return penFromJSON(medium.getItem(storageKey) ?? '')
   return penFromHash(medium.hash)
@@ -35,12 +35,12 @@ export function loadPen(
 
 /** Save pen to storage and location. */
 export function savePen(
-  location: {hash: string} | undefined,
+  location: Location | undefined,
   storage: Readonly<Storage> | undefined,
   pen: Readonly<PenSave>
 ): void {
   storage?.setItem(storageKey, JSON.stringify(pen))
-  if (location) location.hash = penToHash(pen)
+  if (location) location.replace(penToHash(pen))
 }
 
 export function penToHash(pen: Readonly<PenSave>): string {

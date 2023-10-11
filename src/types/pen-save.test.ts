@@ -8,14 +8,19 @@ test.each([
   [
     'unknown version',
     (() => {
-      const location = {hash: ''}
+      const location = <Location>{
+        hash: '',
+        replace(url: string) {
+          this.hash = url
+        }
+      }
       savePen(location, undefined, {name: '', src: '', version: <1>99})
       return location.hash
     })()
   ],
   ['malformed pen', '#pen123']
 ])('%s is parsed gracefully', (_, hash) =>
-  expect(loadPen({hash})).toBe(undefined)
+  expect(loadPen(<Location>{hash})).toBe(undefined)
 )
 
 test('hello world can be parsed', () => {
@@ -31,7 +36,12 @@ test('hello world can be parsed', () => {
 
     export default Devvit
   `
-  const location = {hash: ''}
+  const location = <Location>{
+    hash: '',
+    replace(url: string) {
+      this.hash = url
+    }
+  }
   savePen(location, undefined, PenSave('Hello World!', src))
   expect(loadPen(location)).toMatchInlineSnapshot(`
     {
