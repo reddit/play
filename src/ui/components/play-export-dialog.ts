@@ -1,9 +1,9 @@
 import {LitElement, css, html} from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
+import type {PlayToast} from './play-toast.js'
 
 import './play-button.js'
 import './play-toast.js'
-import type {PlayToast} from './play-toast.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -108,7 +108,7 @@ export class PlayExportDialog extends LitElement {
               this._toast.open()
             }}
             >Copy to Clipboard</play-button
-          ><play-toast>Command copied.</play-toast>
+          ><play-toast>Command copied to clipboard.</play-toast>
         </li>
         <li>Paste the command into a terminal and press enter.</li>
       </ol>

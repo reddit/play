@@ -13,6 +13,7 @@ import nightOutline from '../assets/icons/night-outline.svg'
 import overflowHorizontalOutline from '../assets/icons/overflow-horizontal-outline.svg'
 import reportOutline from '../assets/icons/report-outline.svg'
 import resizeHorizontalOutline from '../assets/icons/resize-horizontal-outline.svg'
+import shareNewOutline from '../assets/icons/share-new-outline.svg'
 import restartOutline from '../assets/icons/restart-outline.svg'
 
 export type PlayIconSVG = keyof typeof icons
@@ -29,6 +30,7 @@ const icons = {
   'overflow-horizontal-outline': overflowHorizontalOutline,
   'report-outline': reportOutline,
   'resize-horizontal-outline': resizeHorizontalOutline,
+  'share-new-outline': shareNewOutline,
   'restart-outline': restartOutline
 }
 

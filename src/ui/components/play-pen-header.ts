@@ -79,7 +79,14 @@ export class PlayPenHeader extends LitElement {
           size="small"
           .srcByLabel=${this.srcByLabel}
         ></play-new-pen-button
-        ><play-export-dialog url=${this.url}></play-export-dialog
+        ><play-button
+          appearance="orangered"
+          size="small"
+          icon="share-new-outline"
+          title="Copy Program URL to Clipboard"
+          label="Share"
+          @click=${() => this.dispatchEvent(Bubble('share', undefined))}
+        ></play-button
         ><play-button
           appearance="bordered"
           size="small"
@@ -87,6 +94,7 @@ export class PlayPenHeader extends LitElement {
           label="Export"
           @click=${() => this._export.open()}
         ></play-button
+        ><play-export-dialog url=${this.url}></play-export-dialog
         ><play-button
           appearance="bordered"
           size="small"

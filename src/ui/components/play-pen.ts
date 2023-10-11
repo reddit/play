@@ -22,12 +22,14 @@ import type {PreviewError} from '../../types/preview-error.js'
 import type {OpenLine} from './play-console.js'
 import type {PlayEditor} from './play-editor.js'
 import type {PlayPreview} from './play-preview.js'
+import type {PlayToast} from './play-toast.js'
 
 import './play-editor.js'
 import './play-pen-footer.js'
 import './play-pen-header.js'
 import './play-preview-controls.js'
 import './play-preview.js'
+import './play-toast.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -46,6 +48,7 @@ export class PlayPen extends LitElement {
   static override styles = css`
     :host {
       /* Global z-index definitions. */
+      --z-toast: 100;
       --z-menu: 10;
       --z-base: 1;
 
@@ -150,6 +153,7 @@ export class PlayPen extends LitElement {
   @state() private _diagnostics: Diagnostics = {previewErrs: [], tsErrs: []}
   @query('play-editor') private _editor!: PlayEditor
   @query('play-preview') private _preview!: PlayPreview
+  @query('play-toast') private _toast!: PlayToast
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
 
   /** Program title. */ @state() private _name: string = ''
@@ -176,13 +180,11 @@ export class PlayPen extends LitElement {
   }
 
   protected override render() {
-    // Compute the URL--an unmodified template would be at /.
-    const shareURL = new URL(globalThis.location.toString())
-    shareURL.hash = penToHash(PenSave(this._name, this._src ?? ''))
-    return html`<play-pen-header
+    return html`<play-toast>URL copied to clipboard.</play-toast
+      ><play-pen-header
         name=${this._name}
         .srcByLabel=${this.srcByLabel}
-        url=${shareURL.toString()}
+        url=${this.#shareURL().toString()}
         @edit-name=${(ev: CustomEvent<string>) =>
           this.#setName(ev.detail, true)}
         @edit-src=${(ev: CustomEvent<string>) => {
@@ -190,6 +192,7 @@ export class PlayPen extends LitElement {
           this.#setName('', false)
           this._editor.setSrc(ev.detail)
         }}
+        @share=${this.#onShare}
       ></play-pen-header>
       <main>
         <play-editor
@@ -248,6 +251,11 @@ export class PlayPen extends LitElement {
     this._diagnostics = {...this._diagnostics}
   }
 
+  async #onShare(): Promise<void> {
+    await navigator.clipboard.writeText(this.#shareURL().toString())
+    this._toast.open()
+  }
+
   /** Save to LocalStorage and URL as allowed. */
   #save(): void {
     savePen(
@@ -275,5 +283,12 @@ export class PlayPen extends LitElement {
     // Skip blank source.
     if (!/^\s*$/.test(src)) this._bundle = link(compile(this.#env))
     if (save) this.#save()
+  }
+
+  /** Recompute the current hash regardless of the location bar state. */
+  #shareURL(): URL {
+    const url = new URL(globalThis.location.toString())
+    url.hash = penToHash(PenSave(this._name, this._src ?? ''))
+    return url
   }
 }

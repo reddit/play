@@ -27,6 +27,7 @@ export class PlayToast extends LitElement {
       padding-bottom: var(--space);
       padding-top: var(--space);
       border-radius: var(--radius);
+      z-index: var(--z-toast);
     }
 
     :host([opened]) {
