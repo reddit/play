@@ -194,13 +194,14 @@ export class PlayEditor extends LitElement {
         tsxLanguage,
         EditorView.lineWrapping,
         linter((_view: EditorView): Diagnostic[] => {
+          // This is for presenting type-checking errors.
           const diagnostics = this.env.languageService.getSemanticDiagnostics(
             appEntrypointFilename
           )
           return diagnostics.map(tsDiagnosticToMirrorDiagnostic)
         }),
-        tsAutocomplete(this.env),
-        tsHoverTip(this.env)
+        codeCompletion(this.env),
+        typingHoverTip(this.env)
       ]
     })
     this.#editor = new EditorView({
@@ -247,12 +248,12 @@ function tsDiagnosticToMirrorDiagnostic(diagnostic: ts.Diagnostic): Diagnostic {
     from: diagnostic.start ?? 0,
     to: (diagnostic.start ?? 0) + (diagnostic.length ?? 0),
     severity,
-    message: String(diagnostic.messageText),
+    message: ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n'),
     source: diagnostic.source ?? ''
   }
 }
 
-function tsHoverTip(env: VirtualTypeScriptEnvironment): Extension {
+function typingHoverTip(env: VirtualTypeScriptEnvironment): Extension {
   return hoverTooltip((_editor, pos) => {
     const info = env.languageService.getQuickInfoAtPosition(
       appEntrypointFilename,
@@ -271,7 +272,7 @@ function tsHoverTip(env: VirtualTypeScriptEnvironment): Extension {
   })
 }
 
-function tsAutocomplete(env: VirtualTypeScriptEnvironment): Extension {
+function codeCompletion(env: VirtualTypeScriptEnvironment): Extension {
   return autocompletion({
     override: [
       ctx => {
