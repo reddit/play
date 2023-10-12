@@ -172,7 +172,8 @@ export class PlayNewPenButton extends LitElement {
           <play-list-item
             label="More examples"
             endIcon="external-outline"
-            @click=${() => openURL('https://developers.reddit.com/docs')}
+            @click=${() =>
+              openURL('https://developers.reddit.com/docs/play/examples')}
           ></play-list-item>
         </div>
       </play-dropdown-menu>
