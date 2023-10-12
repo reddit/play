@@ -32,6 +32,7 @@ import {
   highlightSpecialChars,
   hoverTooltip,
   keymap,
+  lineNumbers,
   rectangularSelection
 } from '@codemirror/view'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
@@ -161,6 +162,7 @@ export class PlayEditor extends LitElement {
       extensions: [
         // Mostly https://github.com/codemirror/basic-setup extension with
         // [shift]-tab indenting.
+        lineNumbers(),
         highlightActiveLineGutter(),
         highlightSpecialChars(),
         history(),
