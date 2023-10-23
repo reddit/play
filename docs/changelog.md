@@ -2,7 +2,21 @@
 
 :play is [semantically versioned](https://semver.org).
 
-## v0.0.17 (unreleased)
+## v0.0.18 (unreleased)
+
+## v0.0.17
+
+- b9a3bba Upgrade dependencies
+- a4d8b43 [DX-4146] Update examples link
+- 4271509 Fix type-check tips
+- 0e8699f Fix line numbers
+- 0259937 [DX-4077] Restore share button
+- 09fdbb7 Fix property
+- c6cc954 Fix attribute type
+- ee901c3 [DX-4174] Add export
+- 800613a Add missed super call
+- af2ab4c Don't record hash changes in browsing history
+- abdecc7 [DX-4186] Re-enable CodeMirror search
 
 ## v0.0.16
 
