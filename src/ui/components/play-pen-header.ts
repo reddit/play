@@ -65,45 +65,45 @@ export class PlayPenHeader extends LitElement {
 
   protected override render() {
     return html`<header>
-      <div class="titling">
-        <play-logo></play-logo>
-        <play-resizable-text-input
-          @edit-text=${(ev: CustomEvent<string>) =>
-            this.dispatchEvent(Bubble('edit-name', ev.detail))}
-          placeholder="Untitled pen"
-          .text=${this.name}
-        ></play-resizable-text-input>
-      </div>
-      <div class="actions">
-        <play-new-pen-button
-          size="small"
-          .srcByLabel=${this.srcByLabel}
-        ></play-new-pen-button
-        ><play-button
-          appearance="orangered"
-          size="small"
-          icon="share-new-outline"
-          title="Copy Program URL to Clipboard"
-          label="Share"
-          @click=${() => this.dispatchEvent(Bubble('share', undefined))}
-        ></play-button
-        ><play-button
-          appearance="bordered"
-          size="small"
-          title="Export Pen"
-          label="Export"
-          @click=${() => this._export.open()}
-        ></play-button
-        ><play-export-dialog url=${this.url}></play-export-dialog
-        ><play-button
-          appearance="bordered"
-          size="small"
-          icon="external-outline"
-          title="Open Documentation"
-          label="Docs"
-          @click=${() => openURL('https://developers.reddit.com/docs')}
-        ></play-button>
-      </div>
-    </header>`
+        <div class="titling">
+          <play-logo></play-logo>
+          <play-resizable-text-input
+            @edit-text=${(ev: CustomEvent<string>) =>
+              this.dispatchEvent(Bubble('edit-name', ev.detail))}
+            placeholder="Untitled pen"
+            .text=${this.name}
+          ></play-resizable-text-input>
+        </div>
+        <div class="actions">
+          <play-new-pen-button
+            size="small"
+            .srcByLabel=${this.srcByLabel}
+          ></play-new-pen-button
+          ><play-button
+            appearance="orangered"
+            size="small"
+            icon="share-new-outline"
+            title="Copy Program URL to Clipboard"
+            label="Share"
+            @click=${() => this.dispatchEvent(Bubble('share', undefined))}
+          ></play-button
+          ><play-button
+            appearance="bordered"
+            size="small"
+            title="Export Pen"
+            label="Export"
+            @click=${() => this._export.open()}
+          ></play-button
+          ><play-button
+            appearance="bordered"
+            size="small"
+            icon="external-outline"
+            title="Open Documentation"
+            label="Docs"
+            @click=${() => openURL('https://developers.reddit.com/docs')}
+          ></play-button>
+        </div>
+      </header>
+      <play-export-dialog url=${this.url}></play-export-dialog>`
   }
 }
