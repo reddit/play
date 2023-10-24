@@ -200,7 +200,7 @@ export class PlayPen extends LitElement {
           src=${ifDefined(this._src)}
           @edit=${(ev: CustomEvent<string>) => this.#setSrc(ev.detail, true)}
           @edit-template=${(ev: CustomEvent<string>) => {
-            this.srcByLabel = {['Default']: ev.detail, ...this.srcByLabel}
+            this.srcByLabel = {...this.srcByLabel, ['Default']: ev.detail}
             if (!this.#template) return
             // If no source was restored, use the template.
             this.#setSrc(ev.detail, false)
