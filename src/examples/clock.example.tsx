@@ -16,7 +16,7 @@ Devvit.addCustomPostType({
     context.useInterval(tick, 1000).start()
 
     return (
-      <vstack alignment='center middle' height={100}>
+      <vstack alignment='center middle' height='100%'>
         <text size='xxlarge'>{time}</text>
       </vstack>
     )

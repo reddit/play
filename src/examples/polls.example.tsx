@@ -51,6 +51,7 @@ const Footer = (props: {children?: Devvit.ElementChildren}) => (
 
 Devvit.addCustomPostType({
   name: 'Polls Example',
+  height: 'tall',
   render: context => {
     const [selection, setSelection] = context.useState('')
     const [hasVoted, setHasVoted] = context.useState(false)
@@ -89,10 +90,10 @@ Devvit.addCustomPostType({
         {tallies.map(([option, value]) => {
           const percentage = Math.round((value / total) * 100)
           return (
-            <zstack width={100}>
+            <zstack width='100%'>
               <hstack
-                height={100}
-                width={percentage}
+                height='100%'
+                width={`${percentage}%`}
                 backgroundColor={
                   winningOption[0] === option
                     ? 'rgba(255,0,0,0.2)'
