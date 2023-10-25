@@ -34,18 +34,16 @@ export class PlayPreview extends LitElement {
         min-height: 320px;
         box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
 
-        /* to-do: adjust these colors to the theme. */
         /* When the background is visible, the preview is loading. */
-        background-color: #f8f9fa;
-        background: #f8f9fa
-          repeating-linear-gradient(
-            -45deg,
-            #f8f9fa,
-            #f8f9fa 18px,
-            #eaecf080 18px,
-            #eaecf080 32px
-          )
-          0 / 200%;
+        background-color: var(--color-interactive-background);
+        background-image: repeating-linear-gradient(
+          -45deg,
+          var(--color-interactive-background),
+          var(--color-interactive-background) 18px,
+          var(--color-interactive-background-disabled) 18px,
+          var(--color-interactive-background-disabled) 32px
+        );
+        background-position: 0 / 200%;
         min-width: 288px;
         transition-duration: 0.2s;
         transition-property: width;

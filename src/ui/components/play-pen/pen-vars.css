@@ -37,6 +37,7 @@
   --color-secondary-background: var(--color-dark-gray);
   --color-secondary-background-pressed: var(--color-cool-gray-325);
   --color-secondary-onBackground: var(--color-black);
+  --color-interactive-background: var(--color-cool-gray-50);
   --color-interactive-content-disabled: var(--shade-25);
   --color-interactive-background-disabled: var(--shade-5);
 
