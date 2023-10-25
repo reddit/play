@@ -4,7 +4,7 @@
 import {LitElement, css, html} from 'lit'
 import {customElement} from 'lit/decorators.js'
 
-import './play-pen.js'
+import './play-pen/play-pen.js'
 
 declare global {
   interface HTMLElementTagNameMap {

@@ -1,0 +1,34 @@
+:host {
+  /* Global z-index definitions. */
+  --z-toast: 100;
+  --z-menu: 10;
+  --z-base: 1;
+
+  /* Global color definitions. */
+  --color-orangered-100: #ffede5;
+  --color-orangered-500: #d93a00;
+
+  /* Light mode color definitions. */
+  --color-background: #fffcf0;
+  --color-neutral-content-weak: #576f76;
+  --color-neutral-content: #2a3c42;
+  --color-neutral-content-strong: #0f1a1c;
+  --color-neutral-background: #ffffff;
+  --color-neutral-background-hovered: #f9fafa;
+  --color-neutral-border: rgba(0, 0, 0, 0.2);
+  --color-brand-background: #d93a00;
+  --color-brand-background-hovered: #962900;
+  --color-brand-background-pressed: #7e2200;
+  --color-brand-onBackground: #ffffff;
+  --color-secondary-plain: #0f1a1c;
+  --color-secondary-background: #eaedef;
+  --color-secondary-background-hovered: #e2e7e9;
+  --color-secondary-background-pressed: #bec2c4;
+  --color-secondary-onBackground: #000000;
+  --color-interactive-content-disabled: rgba(0, 0, 0, 0.25);
+  --color-interactive-background-disabled: rgba(0, 0, 0, 0.05);
+
+  --space: 16px;
+  --radius: 16px;
+  --border-width: 1px;
+}

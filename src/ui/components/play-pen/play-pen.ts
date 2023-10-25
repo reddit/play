@@ -1,6 +1,6 @@
 import type {LinkedBundle} from '@devvit/protos'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
-import {LitElement, css, html} from 'lit'
+import {LitElement, css, html, unsafeCSS} from 'lit'
 import {customElement, property, query, state} from 'lit/decorators.js'
 import {ifDefined} from 'lit/directives/if-defined.js'
 import {
@@ -8,28 +8,29 @@ import {
   compile,
   newTSEnv,
   setSource
-} from '../../bundler/compiler.js'
-import {link} from '../../bundler/linker.js'
-import clock from '../../examples/clock.example.js'
-import defaultExample from '../../examples/default.example.js'
-import helloBlocks from '../../examples/hello-blocks.example.js'
-import polls from '../../examples/polls.example.js'
-import progressBar from '../../examples/progress-bar.example.js'
-import type {ColorScheme} from '../../types/color-scheme.js'
-import type {Diagnostics} from '../../types/diagnostics.js'
-import {PenSave, loadPen, penToHash, savePen} from '../../types/pen-save.js'
-import type {PreviewError} from '../../types/preview-error.js'
-import type {OpenLine} from './play-console.js'
-import type {PlayEditor} from './play-editor/play-editor.js'
-import type {PlayPreview} from './play-preview.js'
-import type {PlayToast} from './play-toast.js'
+} from '../../../bundler/compiler.js'
+import {link} from '../../../bundler/linker.js'
+import clock from '../../../examples/clock.example.js'
+import defaultExample from '../../../examples/default.example.js'
+import helloBlocks from '../../../examples/hello-blocks.example.js'
+import polls from '../../../examples/polls.example.js'
+import progressBar from '../../../examples/progress-bar.example.js'
+import type {ColorScheme} from '../../../types/color-scheme.js'
+import type {Diagnostics} from '../../../types/diagnostics.js'
+import {PenSave, loadPen, penToHash, savePen} from '../../../types/pen-save.js'
+import type {PreviewError} from '../../../types/preview-error.js'
+import type {OpenLine} from '../play-console.js'
+import type {PlayEditor} from '../play-editor/play-editor.js'
+import type {PlayPreview} from '../play-preview.js'
+import type {PlayToast} from '../play-toast.js'
+import penVars from './pen-vars.css'
 
-import './play-editor/play-editor.js'
-import './play-pen-footer.js'
-import './play-pen-header.js'
-import './play-preview-controls.js'
-import './play-preview.js'
-import './play-toast.js'
+import '../play-editor/play-editor.js'
+import '../play-pen-footer.js'
+import '../play-pen-header.js'
+import '../play-preview-controls.js'
+import '../play-preview.js'
+import '../play-toast.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -46,40 +47,9 @@ declare global {
 @customElement('play-pen')
 export class PlayPen extends LitElement {
   static override styles = css`
+    ${unsafeCSS(penVars)}
+
     :host {
-      /* Global z-index definitions. */
-      --z-toast: 100;
-      --z-menu: 10;
-      --z-base: 1;
-
-      /* Global color definitions. */
-      --color-orangered-100: #ffede5;
-      --color-orangered-500: #d93a00;
-
-      /* Light mode color definitions. */
-      --color-background: #fffcf0;
-      --color-neutral-content-weak: #576f76;
-      --color-neutral-content: #2a3c42;
-      --color-neutral-content-strong: #0f1a1c;
-      --color-neutral-background: #ffffff;
-      --color-neutral-background-hovered: #f9fafa;
-      --color-neutral-border: rgba(0, 0, 0, 0.2);
-      --color-brand-background: #d93a00;
-      --color-brand-background-hovered: #962900;
-      --color-brand-background-pressed: #7e2200;
-      --color-brand-onBackground: #ffffff;
-      --color-secondary-plain: #0f1a1c;
-      --color-secondary-background: #eaedef;
-      --color-secondary-background-hovered: #e2e7e9;
-      --color-secondary-background-pressed: #bec2c4;
-      --color-secondary-onBackground: #000000;
-      --color-interactive-content-disabled: rgba(0, 0, 0, 0.25);
-      --color-interactive-background-disabled: rgba(0, 0, 0, 0.05);
-
-      --space: 16px;
-      --radius: 16px;
-      --border-width: 1px;
-
       /* Light mode. */
       color: #213547;
       background-color: var(--color-background);

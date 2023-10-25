@@ -106,7 +106,9 @@ if (watch) {
     }),
     esbuild.build({
       ...opts,
-      entryPoints: [path.join('src', 'ui', 'components', 'play-pen.ts')],
+      entryPoints: [
+        path.join('src', 'ui', 'components', 'play-pen', 'play-pen.ts')
+      ],
       outdir: 'dist'
     })
   ])
