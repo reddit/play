@@ -51,7 +51,7 @@ export class PlayPen extends LitElement {
 
     :host {
       /* Light mode. */
-      color: #213547;
+      color: var(--color-foreground);
       background-color: var(--color-background);
 
       width: 100%;

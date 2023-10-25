@@ -1,32 +1,49 @@
 :host {
-  /* Global z-index definitions. */
-  --z-toast: 100;
-  --z-menu: 10;
-  --z-base: 1;
-
-  /* Global color definitions. */
+  /* Palette. */
+  --color-black: #000000;
+  --color-cool-gray-50: #f9fafa;
+  /* --color-cool-gray-200: #e2e7e9; */
+  /* to-do: Not a recognized hue but confusingly close. Knut to rename. */
+  --color-cool-gray-325: #bec2c4;
+  --color-cool-gray-525: #576f76;
+  --color-cool-gray-650: #2a3c42;
+  --color-cool-gray-850: #0f1a1c;
   --color-orangered-100: #ffede5;
   --color-orangered-500: #d93a00;
+  --color-orangered-600: #962900;
+  --color-white: #ffffff;
+  --color-dark-blue: #213547;
+  --color-dark-brown: #7e2200;
+  --color-dark-gray: #020202;
+  --color-light-yellow: #fffcf0;
+  --shade-5: rgba(0, 0, 0, 0.05);
+  --shade-20: rgba(0, 0, 0, 0.2);
+  --shade-25: rgba(0, 0, 0, 0.25);
 
   /* Light mode color definitions. */
-  --color-background: #fffcf0;
-  --color-neutral-content-weak: #576f76;
-  --color-neutral-content: #2a3c42;
-  --color-neutral-content-strong: #0f1a1c;
-  --color-neutral-background: #ffffff;
-  --color-neutral-background-hovered: #f9fafa;
-  --color-neutral-border: rgba(0, 0, 0, 0.2);
-  --color-brand-background: #d93a00;
-  --color-brand-background-hovered: #962900;
-  --color-brand-background-pressed: #7e2200;
-  --color-brand-onBackground: #ffffff;
-  --color-secondary-plain: #0f1a1c;
-  --color-secondary-background: #eaedef;
-  --color-secondary-background-hovered: #e2e7e9;
-  --color-secondary-background-pressed: #bec2c4;
-  --color-secondary-onBackground: #000000;
-  --color-interactive-content-disabled: rgba(0, 0, 0, 0.25);
-  --color-interactive-background-disabled: rgba(0, 0, 0, 0.05);
+  --color-background: var(--color-light-yellow);
+  --color-foreground: var(--color-dark-blue);
+  --color-neutral-content-weak: var(--color-cool-gray-525);
+  --color-neutral-content: var(--color-cool-gray-650);
+  --color-neutral-content-strong: var(--color-cool-gray-850);
+  --color-neutral-background: var(--color-white);
+  --color-neutral-background-hovered: var(--color-cool-gray-50);
+  --color-neutral-border: var(--shade-20);
+  --color-brand-background: var(--color-orangered-500);
+  --color-brand-background-hovered: var(--color-orangered-600);
+  --color-brand-background-pressed: var(--color-dark-brown);
+  --color-brand-onBackground: var(--color-white);
+  --color-secondary-plain: var(--color-cool-gray-850);
+  --color-secondary-background: var(--color-dark-gray);
+  --color-secondary-background-pressed: var(--color-cool-gray-325);
+  --color-secondary-onBackground: var(--color-black);
+  --color-interactive-content-disabled: var(--shade-25);
+  --color-interactive-background-disabled: var(--shade-5);
+
+  /* Global z-index definitions. */
+  --z-base: 1;
+  --z-menu: 10;
+  --z-toast: 100;
 
   --space: 16px;
   --radius: 16px;
