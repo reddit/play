@@ -168,7 +168,7 @@ function previewErrRow(err: PreviewError): TemplateResult<1> {
       ? 'Unsupported plugin: ' +
         `${err.err.cause?.method ? `${err.err.cause.method} ` : ''}API call ` +
         'unavailable. This program may run correctly on reddit.com but most ' +
-        'Context APIs are currently unavailable in the playground.'
+        'Context and other Devvit APIs are not yet supported in the playground.'
       : ''
   if (!isErrorLike(err.err))
     return html`<tr>
