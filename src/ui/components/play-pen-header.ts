@@ -70,7 +70,7 @@ export class PlayPenHeader extends LitElement {
           <play-resizable-text-input
             @edit-text=${(ev: CustomEvent<string>) =>
               this.dispatchEvent(Bubble('edit-name', ev.detail))}
-            placeholder="Untitled pen"
+            placeholder="Untitled"
             .text=${this.name}
           ></play-resizable-text-input>
         </div>
