@@ -29,6 +29,11 @@ export class PlayButton extends LitElement {
   @property({type: Number}) badge = 0
 
   static override styles = css`
+    :host {
+      width: fit-content;
+      display: inline-block;
+    }
+
     /* Default button styles. Medium size. */
     button {
       display: flex;
