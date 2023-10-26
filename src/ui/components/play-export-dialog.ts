@@ -18,6 +18,7 @@ export class PlayExportDialog extends LitElement {
       float: right;
     }
     dialog {
+      background-color: var(--color-interactive-background);
       border-bottom-left-radius: var(--radius);
       border-bottom-right-radius: var(--radius);
       border-top-left-radius: var(--radius);
@@ -48,7 +49,7 @@ export class PlayExportDialog extends LitElement {
       word-break: break-all;
       white-space: pre-line;
       max-height: 160px;
-      background-color: var(--color-secondary-background);
+      background-color: var(--color-background);
       border-bottom-left-radius: var(--radius);
       border-bottom-right-radius: var(--radius);
       border-top-left-radius: var(--radius);
@@ -108,10 +109,11 @@ export class PlayExportDialog extends LitElement {
               this._toast.open()
             }}
             >Copy to Clipboard</play-button
-          ><play-toast>Command copied to clipboard.</play-toast>
+          >
         </li>
         <li>Paste the command into a terminal and press enter.</li>
       </ol>
+      <play-toast>Command copied to clipboard.</play-toast>
     </dialog>`
   }
 }

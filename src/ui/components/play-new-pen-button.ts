@@ -30,7 +30,8 @@ export class PlayNewPenButton extends LitElement {
       column-gap: 0;
       justify-content: space-between;
       align-items: center;
-      box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
+      box-shadow: inset 0px 0px 0px var(--border-width)
+        var(--color-secondary-border);
       border-radius: 9001px;
     }
 
@@ -103,12 +104,12 @@ export class PlayNewPenButton extends LitElement {
 
     .new-pen:hover,
     .new-from-template:hover {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--color-secondary-background-hovered);
     }
 
     .new-pen:active,
     .new-from-template:active {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: var(--color-secondary-background-active);
     }
 
     .new-pen:focus,
@@ -118,7 +119,7 @@ export class PlayNewPenButton extends LitElement {
 
     .divider {
       width: 1px;
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: var(--color-secondary-background-decor);
     }
 
     :host([size='small']) .divider {

@@ -44,7 +44,7 @@ export class PlayConsole extends LitElement {
     }
 
     tbody tr:hover {
-      background-color: var(--color-orangered-100);
+      background-color: var(--color-info-background);
     }
 
     th,
@@ -60,10 +60,10 @@ export class PlayConsole extends LitElement {
 
     /* Zebra striping. */
     tbody > tr:nth-child(odd) {
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: var(--color-info-background-hovered);
     }
     tbody > tr:nth-child(odd):hover {
-      background-color: var(--color-orangered-100);
+      background-color: var(--color-info-background);
     }
 
     /* Initial / minimum size to avoid distracting resizing between errors and

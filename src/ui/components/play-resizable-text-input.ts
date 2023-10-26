@@ -63,7 +63,7 @@ export class PlayResizableTextInput extends LitElement {
       outline-width: 2px;
       outline-style: solid;
       outline-color: var(--color-brand-background);
-      color: var(--color-neutral-content-strong);
+      color: var(--color-secondary-plain);
     }
 
     input:focus + .label {
@@ -77,7 +77,7 @@ export class PlayResizableTextInput extends LitElement {
     }
 
     input::selection {
-      color: var(--color-brand-onBackground);
+      color: var(--color-brand-foreground);
       background-color: var(--color-brand-background);
     }
   `

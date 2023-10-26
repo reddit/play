@@ -27,12 +27,12 @@ export class PlayPreview extends LitElement {
       .preview {
         /* Hide overflow on corners */
         overflow: hidden;
-        border-width: 1px;
+        border-width: var(--border-width);
         border-style: solid;
         border-color: var(--color-neutral-border);
         border-radius: 16px;
         min-height: 320px;
-        box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 1px 2px 0px var(--color-shade-25);
 
         /* When the background is visible, the preview is loading. */
         background-color: var(--color-interactive-background);
@@ -43,7 +43,8 @@ export class PlayPreview extends LitElement {
           var(--color-interactive-background-disabled) 18px,
           var(--color-interactive-background-disabled) 32px
         );
-        background-position: 0 / 200%;
+        background-position-x: 0;
+        background-position-y: 200%;
         min-width: 288px;
         transition-duration: 0.2s;
         transition-property: width;

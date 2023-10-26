@@ -21,13 +21,16 @@ export class PlayToast extends LitElement {
       transition-property: opacity;
       transition-duration: 0.1s;
       transition-timing-function: ease-in-out;
-      background-color: var(--color-secondary-background);
+      background-color: var(--color-interactive-background);
       padding-left: var(--space);
       padding-right: var(--space);
       padding-bottom: var(--space);
       padding-top: var(--space);
       border-radius: var(--radius);
       z-index: var(--z-toast);
+      border-width: var(--border-width);
+      border-style: solid;
+      border-color: var(--color-secondary-border);
     }
 
     :host([opened]) {

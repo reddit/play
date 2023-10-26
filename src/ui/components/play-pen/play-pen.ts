@@ -59,7 +59,8 @@ export class PlayPen extends LitElement {
       display: flex;
       flex-direction: column;
 
-      color-scheme: light;
+      /* Dark and light schemes are supported. */
+      color-scheme: dark light;
     }
 
     play-editor {

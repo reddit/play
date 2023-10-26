@@ -37,7 +37,7 @@ export class PlayListItem extends LitElement {
 
     li:hover {
       background-color: var(--color-neutral-background-hovered);
-      color: var(--color-secondary-onBackground);
+      color: var(--color-secondary-foreground);
     }
   `
 

@@ -87,15 +87,16 @@ export class PlayButton extends LitElement {
     :host([appearance='bordered']) button {
       color: var(--color-secondary-plain);
       background-color: transparent;
-      box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 0.2);
+      box-shadow: inset 0px 0px 0px var(--border-width)
+        var(--color-secondary-border);
     }
     :host([appearance='bordered']:hover) button {
-      color: var(--color-secondary-onBackground);
-      background-color: rgba(0, 0, 0, 0.1);
+      color: var(--color-secondary-foreground);
+      background-color: var(--color-secondary-background-hovered);
     }
     :host([appearance='bordered']:active) button {
-      color: var(--color-secondary-onBackground);
-      background-color: rgba(0, 0, 0, 0.3);
+      color: var(--color-secondary-foreground);
+      background-color: var(--color-secondary-background-active);
     }
     :host([appearance='bordered']) button:disabled {
       color: var(--color-interactive-content-disabled);
@@ -105,7 +106,7 @@ export class PlayButton extends LitElement {
 
     /* Appearance: "orangered" */
     :host([appearance='orangered']) button {
-      color: var(--color-brand-onBackground);
+      color: var(--color-brand-foreground);
       background-color: var(--color-brand-background);
     }
     :host([appearance='orangered']:hover) button {
@@ -122,14 +123,14 @@ export class PlayButton extends LitElement {
 
     /* Appearance: "plain"  */
     :host([appearance='plain']) button {
-      color: var(--color-secondary-onBackground);
+      color: var(--color-secondary-foreground);
       background-color: transparent;
     }
     :host([appearance='plain']:hover) button {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: var(--color-secondary-background-hovered);
     }
     :host([appearance='plain']:active) button {
-      background-color: rgba(0, 0, 0, 0.3);
+      background-color: var(--color-secondary-background-active);
     }
     :host([appearance='plain']) button:disabled {
       color: var(--color-interactive-content-disabled);
@@ -139,7 +140,7 @@ export class PlayButton extends LitElement {
 
     /* Appearance: "inverted"  */
     :host([appearance='inverted']) button {
-      color: var(--color-neutral-background);
+      color: var(--color-neutral-foreground);
       background-color: var(--color-neutral-content-weak);
     }
     :host([appearance='inverted']:hover) button {
@@ -149,8 +150,8 @@ export class PlayButton extends LitElement {
       background-color: var(--color-neutral-content-strong);
     }
     :host([appearance='inverted']) button:disabled {
-      color: rgba(255, 255, 255, 0.25);
-      background-color: rgba(255, 255, 255, 0.05);
+      color: var(--color-neutral-disabled);
+      background-color: var(--color-neutral-background-disabled);
       cursor: unset;
     }
 
@@ -159,9 +160,9 @@ export class PlayButton extends LitElement {
     }
 
     .badge {
-      color: var(--color-neutral-background);
+      color: var(--color-notification-foreground);
       border-radius: 9001px;
-      background-color: var(--color-orangered-500);
+      background-color: var(--color-notification-background);
       padding-top: 0px;
       padding-right: 4px;
       padding-bottom: 0px;
@@ -172,7 +173,7 @@ export class PlayButton extends LitElement {
       line-height: 16px;
       outline-width: 2px;
       outline-style: solid;
-      outline-color: var(--color-orangered-500);
+      outline-color: var(--color-notification-background);
     }
   `
 
