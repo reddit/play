@@ -165,9 +165,10 @@ function previewErrRow(err: PreviewError): TemplateResult<1> {
       ? 'Unhandled promise rejection; `await` asynchronous execution and ' +
         'catch errors.'
       : isCircuitBreaker(err.err)
-      ? `${err.err.cause?.method ? `${err.err.cause.method} ` : ''}API call ` +
-        'unsupported; this program may run correctly on reddit.com but most ' +
-        'APIs are currently unavailable in the playground.'
+      ? 'Unsupported plugin: ' +
+        `${err.err.cause?.method ? `${err.err.cause.method} ` : ''}API call ` +
+        'unavailable. This program may run correctly on reddit.com but most ' +
+        'Context APIs are currently unavailable in the playground.'
       : ''
   if (!isErrorLike(err.err))
     return html`<tr>
