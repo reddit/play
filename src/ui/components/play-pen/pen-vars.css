@@ -64,6 +64,7 @@
   --color-notification-foreground: var(--color-white);
 
   /* to-do: use the app palette only. */
+  --color-editor-highlight-cursor: var(--color-dark-gray);
   --color-editor-panel-background: #f5f5f5;
   --color-editor-highlight-background: var(--color-orangered-100);
   --color-editor-decor: var(--color-orangered-500);
@@ -124,6 +125,7 @@
     /* --color-notification-background: var(--color-orangered-500); */
     /* --color-notification-foreground: var(--color-white); */
 
+    --color-editor-highlight-cursor: #ffd635;
     --color-editor-panel-background: #222222;
     --color-editor-highlight-background: #2f231d;
     /* --color-editor-decor: var(--color-orangered-500); */

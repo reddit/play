@@ -28,6 +28,10 @@ const editorTheme: Extension = EditorView.theme({
     font: 'inherit'
   },
 
+  '.cm-cursor, .cm-dropCursor': {
+    borderLeftColor: 'var(--color-editor-highlight-cursor)'
+  },
+
   ['&.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground,' +
   '.cm-scroller .cm-selectionBackground,' +
   '.cm-scroller .cm-content ::selection']: {
