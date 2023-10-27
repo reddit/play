@@ -36,54 +36,6 @@ export class PlayEditor extends LitElement {
     .cm-editor {
       height: 100%;
       overflow: hidden;
-      font-family: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
-        'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
-        'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .cm-editor .cm-scroller {
-      font: inherit;
-    }
-
-    .cm-editor.cm-focused {
-      outline: none;
-    }
-    .cm-editor .cm-gutters {
-      background-color: transparent;
-      color: var(--color-orangered-500);
-      border-right: none;
-    }
-
-    .cm-editor .cm-line {
-      padding-left: 16px;
-    }
-
-    .cm-editor .cm-lineNumbers .cm-activeLineGutter {
-      background-color: var(--color-orangered-100);
-      border-top-left-radius: 4px;
-      border-bottom-left-radius: 4px;
-    }
-    .cm-editor .cm-foldGutter .cm-activeLineGutter {
-      background-color: var(--color-orangered-100);
-    }
-    .cm-editor .cm-activeLine {
-      background-color: var(--color-orangered-100);
-      border-top-right-radius: 4px;
-      border-bottom-right-radius: 4px;
-    }
-
-    .cm-editor .cm-selectionBackground,
-    .cm-editor .cm-content ::selection {
-      background-color: var(--color-secondary-background-pressed) !important;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .cm-editor .cm-selectionBackground,
-      .cm-editor .cm-content ::selection {
-        background-color: rgba(255, 255, 255, 0.5) !important;
-      }
     }
   `
 

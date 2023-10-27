@@ -14,11 +14,9 @@ import {
 import {tsxLanguage} from '@codemirror/lang-javascript'
 import {
   bracketMatching,
-  defaultHighlightStyle,
   foldGutter,
   foldKeymap,
-  indentOnInput,
-  syntaxHighlighting
+  indentOnInput
 } from '@codemirror/language'
 import {lintKeymap, linter, type Diagnostic} from '@codemirror/lint'
 import {highlightSelectionMatches, searchKeymap} from '@codemirror/search'
@@ -40,6 +38,7 @@ import {EditorView} from 'codemirror'
 import ts from 'typescript'
 import {appEntrypointFilename} from '../../../bundler/compiler.js'
 import {PlayEditorTip} from '../play-editor-tip.js'
+import {editorThemeExtension} from './editor-theme.js'
 
 export function newEditorState(
   env: VirtualTypeScriptEnvironment,
@@ -59,8 +58,7 @@ export function newEditorState(
       dropCursor(),
       EditorState.allowMultipleSelections.of(true),
       indentOnInput(),
-      // @ts-expect-error
-      syntaxHighlighting(defaultHighlightStyle, {fallback: true}),
+      editorThemeExtension,
       bracketMatching(),
       closeBrackets(),
       autocompletion(),

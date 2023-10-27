@@ -15,9 +15,9 @@
   --color-dark-blue: #213547;
   --color-darkest-brown: #2f231d;
   --color-dark-brown: #7e2200;
-  --color-dark-gray: #020202;
-  --color-darkest-gray: #1f1f1f;
-  --color-dark-red: #121212;
+  --color-darkest-gray: #020202;
+  --color-mid-gray: #1f1f1f;
+  --color-dark-gray: #121212;
   --color-dark-yellow: #1f1e15;
   --color-light-blue: #f3ffff;
   --color-light-yellow: #fffcf0;
@@ -49,7 +49,7 @@
   --color-brand-foreground: var(--color-white);
   --color-secondary-border: var(--color-shade-20);
   --color-secondary-plain: var(--color-cool-gray-850);
-  --color-secondary-background: var(--color-dark-gray);
+  --color-secondary-background: var(--color-darkest-gray);
   --color-secondary-background-active: var(--color-shade-25);
   --color-secondary-background-decor: var(--color-shade-20);
   --color-secondary-background-hovered: var(--color-shade-10);
@@ -62,6 +62,24 @@
   --color-info-background-hovered: var(--color-shade-5);
   --color-notification-background: var(--color-orangered-500);
   --color-notification-foreground: var(--color-white);
+
+  /* to-do: use the app palette only. */
+  --color-editor-panel-background: #f5f5f5;
+  --color-editor-highlight-background: var(--color-orangered-100);
+  --color-editor-decor: var(--color-orangered-500);
+  --color-editor-selection-background: var(--color-cool-gray-325);
+  --color-editor-text-invalid: #f00;
+  --color-editor-text-keyword: #708;
+  --color-editor-text-literal: #164;
+  --color-editor-text-string: var(--color-orangered-500);
+  --color-editor-text-regexp: var(--color-dark-brown);
+  --color-editor-text-var-name: #00f;
+  --color-editor-text-local-var-name: #30a;
+  --color-editor-text-type-name: #085;
+  --color-editor-text-class-name: #167;
+  --color-editor-text-prop-name: var(--color-dark-blue);
+  --color-editor-text-comment: var(--color-cool-gray-525);
+  --color-editor-text-constant: #219;
 
   /* Global z-index definitions. */
   --z-base: 1;
@@ -80,9 +98,9 @@
     /* --color-neutral-content-weak: var(--color-cool-gray-525); */
     /* --color-neutral-content: var(--color-cool-gray-650); */
     --color-neutral-content-strong: var(--color-dark-blue);
-    --color-neutral-background: var(--color-dark-red);
+    --color-neutral-background: var(--color-dark-gray);
     /* --color-neutral-foreground: var(--color-white); */
-    --color-neutral-background-hovered: var(--color-darkest-gray);
+    --color-neutral-background-hovered: var(--color-mid-gray);
     --color-neutral-background-disabled: var(--color-shade-5);
     --color-neutral-border: var(--color-tint-20);
     --color-neutral-disabled: var(--color-shade-25);
@@ -92,18 +110,35 @@
     /* --color-brand-foreground: var(--color-white); */
     --color-secondary-border: var(--color-tint-20);
     --color-secondary-plain: var(--color-light-blue);
-    /* --color-secondary-background: var(--color-dark-gray); */
+    /* --color-secondary-background: var(--color-darkest-gray); */
     --color-secondary-background-active: var(--color-tint-25);
     --color-secondary-background-decor: var(--color-tint-20);
     --color-secondary-background-hovered: var(--color-tint-10);
     --color-secondary-background-pressed: var(--color-tint-50);
     --color-secondary-foreground: var(--color-white);
-    --color-interactive-background: var(--color-darkest-gray);
+    --color-interactive-background: var(--color-mid-gray);
     --color-interactive-content-disabled: var(--color-tint-25);
     --color-interactive-background-disabled: var(--color-tint-5);
     --color-info-background: var(--color-darkest-brown);
     --color-info-background-hovered: var(--color-tint-5);
     /* --color-notification-background: var(--color-orangered-500); */
     /* --color-notification-foreground: var(--color-white); */
+
+    --color-editor-panel-background: #222222;
+    --color-editor-highlight-background: #2f231d;
+    /* --color-editor-decor: var(--color-orangered-500); */
+    --color-editor-selection-background: var(--color-tint-10);
+    --color-editor-text-invalid: #f00;
+    --color-editor-text-keyword: #f49af4;
+    --color-editor-text-literal: var(--color-orangered-100);
+    --color-editor-text-string: var(--color-orangered-500);
+    --color-editor-text-regexp: #ffab7d;
+    --color-editor-text-var-name: #c78ae5;
+    --color-editor-text-local-var-name: #dc98ff;
+    --color-editor-text-type-name: #339e6a;
+    --color-editor-text-class-name: #167;
+    --color-editor-text-prop-name: #cde2f9;
+    /* --color-editor-text-comment: var(--color-cool-gray-525); */
+    --color-editor-text-constant: #fdcbff;
   }
 }
