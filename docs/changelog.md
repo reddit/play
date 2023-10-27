@@ -2,7 +2,11 @@
 
 :play is [semantically versioned](https://semver.org).
 
-## v0.0.18 (unreleased)
+## v0.0.19
+
+83b1b4b [DX-4144] Fix dark mode cursor color
+
+## v0.0.18
 
 - bb907cc [DX-4144] Add primitive editor dark mode
 - e19a511 [DX-4144] Add primitive dark mode for non-editor UI
