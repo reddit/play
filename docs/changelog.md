@@ -4,6 +4,23 @@
 
 ## v0.0.18 (unreleased)
 
+- bb907cc [DX-4144] Add primitive editor dark mode
+- e19a511 [DX-4144] Add primitive dark mode for non-editor UI
+- bb45d07 Upgrade dependencies
+- e919627 Fix export copy button width
+- 5b7ec05 Tweak CircuitBreakerError messaging further
+- 2814fc8 Improve CircuitBreakerError messaging
+- 60e4da4 Hide pen terminology
+- 573adc9 [DX-4144] Fix preview load to use palette
+- bf54fd4 [DX-4144] Extract palette
+- cc8872c [DX-4144] Extract pen CSS variables
+- a641dc7 [DX-4144] Extract editor state from component
+- 2c62ae8 Switch to fixed dimensions for templates and height tall to polls
+  (#32)
+- da4534d Upgrade dependencies
+- 84a1290 Fix passing template by slot
+- 52bf444 Fix header button gaps
+
 ## v0.0.17
 
 - b9a3bba Upgrade dependencies
