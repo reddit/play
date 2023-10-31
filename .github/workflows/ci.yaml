@@ -1,0 +1,70 @@
+# https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  checkout:
+    steps:
+    - uses: actions/checkout@v3
+  install:
+    needs: checkout
+    runs-on: ubuntu-latest
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18.17.0
+      cache: 'npm'
+    - run: npm ci --no-fund
+  test_format:
+    name: test:format
+    needs: install
+    runs-on: ubuntu-latest
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18.17.0
+      cache: 'npm'
+    steps:
+    - run: npm run test:format
+  test_types:
+    name: test:types:ui
+    needs: install
+    runs-on: ubuntu-latest
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18.17.0
+      cache: 'npm'
+    steps:
+    - run: npm run test:types:ui
+  test_unit:
+    name: test:unit
+    needs: install
+    runs-on: ubuntu-latest
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18.17.0
+      cache: 'npm'
+    steps:
+    - run: npm run test:unit
+  build:
+    needs: install
+    runs-on: ubuntu-latest
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18.17.0
+      cache: 'npm'
+    steps:
+    - run: npm run build
+  test_size:
+    name: test:size
+    needs: build
+    runs-on: ubuntu-latest
+    uses: actions/setup-node@v3
+    with:
+      node-version: 18.17.0
+      cache: 'npm'
+    steps:
+    - run: npm run test:size
