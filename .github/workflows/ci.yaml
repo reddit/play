@@ -1,6 +1,6 @@
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 name: CI
-#
+
 on:
   push:
     branches: ['main']
@@ -19,7 +19,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.17.0
+          node-version-file: 'package.json'
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
       - run: npm ci --no-fund
   test_format:
     name: test:format
@@ -29,7 +31,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.17.0
+          node-version-file: 'package.json'
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
       - run: npm run test:format
   test_types:
     name: test:types:ui
@@ -39,7 +43,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.17.0
+          node-version-file: 'package.json'
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
       - run: npm run test:types:ui
   test_unit:
     name: test:unit
@@ -49,7 +55,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.17.0
+          node-version-file: 'package.json'
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
       - run: npm run test:unit
   build:
     needs: install
@@ -58,7 +66,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.17.0
+          node-version-file: 'package.json'
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
       - run: npm run build
   test_size:
     name: test:size
@@ -68,5 +78,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18.17.0
+          node-version-file: 'package.json'
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
       - run: npm run test:size
