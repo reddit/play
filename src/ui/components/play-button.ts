@@ -34,6 +34,9 @@ export class PlayButton extends LitElement {
       display: inline-block;
     }
 
+    /* to-do: consolidate to buttonish.css use in new template button and
+       .cm-button. */
+
     /* Default button styles. Medium size. */
     button {
       display: flex;
@@ -159,6 +162,7 @@ export class PlayButton extends LitElement {
       outline-color: var(--color-brand-background);
     }
 
+    /* to-do: extract to component. */
     .badge {
       color: var(--color-notification-foreground);
       border-radius: 9001px;

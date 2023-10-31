@@ -22,8 +22,8 @@ git commit -m 'Version changelog'
 VERSION_TYPE=patch tools/publish-stable.bash
 
 # Upload the play-*.html artifact. Click "generate release notes". Append
-# `[**Repo changelog**](https://github.com/reddit/devvit-play/blob/main/docs/changelog.md)`.
-open https://github.com/reddit/devvit-play/releases/new
+# `[**Repo changelog**](https://github.com/reddit/play/blob/main/docs/changelog.md)`.
+open https://github.com/reddit/play/releases/new
 ```
 
 ## Unstable Development Release (`@next`)

@@ -1,6 +1,6 @@
 {
   "author": "Reddit",
-  "bugs": "https://github.com/reddit/devvit-play/issues",
+  "bugs": "https://github.com/reddit/play/issues",
   "description": "Devvit app :playground.",
   "devDependencies": {
     "@ampproject/filesize": "4.3.0",
@@ -60,7 +60,7 @@
       ]
     }
   },
-  "homepage": "https://github.com/reddit/devvit-play",
+  "homepage": "https://github.com/reddit/play",
   "keywords": [
     "devvit",
     "playground"
@@ -79,7 +79,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/reddit/devvit-play.git"
+    "url": "https://github.com/reddit/play.git"
   },
   "scripts": {
     "build": "tools/build.js && tsc --build",
