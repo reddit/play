@@ -2,6 +2,13 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.20
+
+- 94687c7 Upgrade dependencies
+- 2555125 Fix references to devvit-play
+- fc07d1a Remove Drone
+- 560ae62 Add GitHub Actions (#1)
+
 ## v0.0.19
 
 83b1b4b [DX-4144] Fix dark mode cursor color
