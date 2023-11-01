@@ -2,19 +2,22 @@ import {LitElement, html, nothing} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {styleMap} from 'lit/directives/style-map.js'
 import {unsafeHTML} from 'lit/directives/unsafe-html.js'
+
 import addOutline from '../assets/icons/add-outline.svg'
 import caretDownOutline from '../assets/icons/caret-down-outline.svg'
 import caretUpOutline from '../assets/icons/caret-up-outline.svg'
 import communityOutline from '../assets/icons/community-outline.svg'
 import dayOutline from '../assets/icons/day-outline.svg'
+import downloadOutline from '../assets/icons/download-outline.svg'
 import externalOutline from '../assets/icons/external-outline.svg'
 import infoOutline from '../assets/icons/info-outline.svg'
 import nightOutline from '../assets/icons/night-outline.svg'
 import overflowHorizontalOutline from '../assets/icons/overflow-horizontal-outline.svg'
+import readingOutline from '../assets/icons/reading-outline.svg'
 import reportOutline from '../assets/icons/report-outline.svg'
 import resizeHorizontalOutline from '../assets/icons/resize-horizontal-outline.svg'
-import shareNewOutline from '../assets/icons/share-new-outline.svg'
 import restartOutline from '../assets/icons/restart-outline.svg'
+import shareNewOutline from '../assets/icons/share-new-outline.svg'
 import closeOutline from '../assets/icons/close-outline.svg'
 import copyClipboardOutline from '../assets/icons/copy-clipboard-outline.svg'
 
@@ -26,14 +29,16 @@ const icons = {
   'caret-up-outline': caretUpOutline,
   'community-outline': communityOutline,
   'day-outline': dayOutline,
+  'download-outline': downloadOutline,
   'external-outline': externalOutline,
   'info-outline': infoOutline,
   'night-outline': nightOutline,
   'overflow-horizontal-outline': overflowHorizontalOutline,
+  'reading-outline': readingOutline,
   'report-outline': reportOutline,
   'resize-horizontal-outline': resizeHorizontalOutline,
-  'share-new-outline': shareNewOutline,
   'restart-outline': restartOutline,
+  'share-new-outline': shareNewOutline,
   'close-outline': closeOutline,
   'copy-clipboard-outline': copyClipboardOutline
 }

@@ -80,27 +80,28 @@ export class PlayPenHeader extends LitElement {
             .srcByLabel=${this.srcByLabel}
           ></play-new-pen-button
           ><play-button
+            appearance="bordered"
+            size="small"
+            icon="reading-outline"
+            title="Open Documentation"
+            label="Docs"
+            @click=${() => openURL('https://developers.reddit.com/docs')}
+          ></play-button
+          ><play-button
+            appearance="bordered"
+            size="small"
+            icon="download-outline"
+            title="Export Pen"
+            label="Export"
+            @click=${() => this._export.open()}
+          ></play-button
+          ><play-button
             appearance="orangered"
             size="small"
             icon="share-new-outline"
             title="Copy Program URL to Clipboard"
             label="Share"
             @click=${() => this.dispatchEvent(Bubble('share', undefined))}
-          ></play-button
-          ><play-button
-            appearance="bordered"
-            size="small"
-            title="Export Pen"
-            label="Export"
-            @click=${() => this._export.open()}
-          ></play-button
-          ><play-button
-            appearance="bordered"
-            size="small"
-            icon="external-outline"
-            title="Open Documentation"
-            label="Docs"
-            @click=${() => openURL('https://developers.reddit.com/docs')}
           ></play-button>
         </div>
       </header>
