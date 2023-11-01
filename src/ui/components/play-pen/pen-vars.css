@@ -1,12 +1,22 @@
 :host {
   /* Palette. */
   --color-black: #000000;
+  --color-alien-blue-300: #A7CCFF;
+  --color-alien-blue-400: #629FFF;
+  --color-alien-blue-600: #0045AC;
+  --color-alien-blue-700: #003584;
   --color-cool-gray-50: #f9fafa;
+  --color-cool-gray-100: #F2F4F5;
+  --color-cool-gray-150: #EAEDEF;
   /* --color-cool-gray-200: #e2e7e9; */
   /* to-do: Not a recognized hue but confusingly close. Knut to rename. */
   --color-cool-gray-325: #bec2c4;
+  --color-cool-gray-350: #B8C5C9;
+  --color-cool-gray-450: #82959B;
   --color-cool-gray-525: #576f76;
   --color-cool-gray-650: #2a3c42;
+  --color-cool-gray-700: #223237;
+  --color-cool-gray-750: #1A282D;
   --color-cool-gray-850: #0f1a1c;
   --color-orangered-100: #ffede5;
   --color-orangered-500: #d93a00;
@@ -25,6 +35,7 @@
   --color-shade-10: rgba(0, 0, 0, 0.1);
   --color-shade-20: rgba(0, 0, 0, 0.2);
   --color-shade-25: rgba(0, 0, 0, 0.25);
+  --color-shade-60: rgba(0, 0, 0, 0.6);
   --color-tint-5: rgba(255, 255, 255, 0.05);
   --color-tint-10: rgba(255, 255, 255, 0.1);
   --color-tint-20: rgba(255, 255, 255, 0.2);
@@ -36,7 +47,6 @@
   --color-foreground: var(--color-dark-blue);
   --color-neutral-content-weak: var(--color-cool-gray-525);
   --color-neutral-content: var(--color-cool-gray-650);
-  --color-neutral-content-strong: var(--color-cool-gray-850);
   --color-neutral-background: var(--color-white);
   --color-neutral-foreground: var(--color-white);
   --color-neutral-background-hovered: var(--color-cool-gray-50);
@@ -49,12 +59,14 @@
   --color-brand-foreground: var(--color-white);
   --color-secondary-border: var(--color-shade-20);
   --color-secondary-plain: var(--color-cool-gray-850);
-  --color-secondary-background: var(--color-darkest-gray);
+  --color-secondary-background: var(--color-cool-gray-150);
   --color-secondary-background-active: var(--color-shade-25);
   --color-secondary-background-decor: var(--color-shade-20);
   --color-secondary-background-hovered: var(--color-shade-10);
   --color-secondary-background-pressed: var(--color-cool-gray-325);
   --color-secondary-foreground: var(--color-black);
+  --color-link: var(--color-alien-blue-600);
+  --color-link-hovered: var(--color-alien-blue-700);
   --color-interactive-background: var(--color-cool-gray-50);
   --color-interactive-content-disabled: var(--color-shade-25);
   --color-interactive-background-disabled: var(--color-shade-5);
@@ -88,6 +100,7 @@
   --z-toast: 100;
 
   --space: 16px;
+  --space-small: 8px;
   --radius: 16px;
   --border-width: 1px;
 }
@@ -96,9 +109,9 @@
   :host {
     --color-background: var(--color-dark-yellow);
     --color-foreground: var(--color-white);
-    /* --color-neutral-content-weak: var(--color-cool-gray-525); */
-    /* --color-neutral-content: var(--color-cool-gray-650); */
-    --color-neutral-content-strong: var(--color-dark-blue);
+    --color-neutral-content-weak: var(--color-cool-gray-450);
+    --color-neutral-content: var(--color-cool-gray-350);
+    --color-neutral-content-strong: var(--color-cool-gray-100);
     --color-neutral-background: var(--color-dark-gray);
     /* --color-neutral-foreground: var(--color-white); */
     --color-neutral-background-hovered: var(--color-mid-gray);
@@ -111,12 +124,14 @@
     /* --color-brand-foreground: var(--color-white); */
     --color-secondary-border: var(--color-tint-20);
     --color-secondary-plain: var(--color-light-blue);
-    /* --color-secondary-background: var(--color-darkest-gray); */
+    --color-secondary-background: var(--color-cool-gray-700);
     --color-secondary-background-active: var(--color-tint-25);
     --color-secondary-background-decor: var(--color-tint-20);
     --color-secondary-background-hovered: var(--color-tint-10);
     --color-secondary-background-pressed: var(--color-tint-50);
     --color-secondary-foreground: var(--color-white);
+    --color-link: var(--color-alien-blue-400);
+    --color-link-hovered: var(--color-alien-blue-300);
     --color-interactive-background: var(--color-mid-gray);
     --color-interactive-content-disabled: var(--color-tint-25);
     --color-interactive-background-disabled: var(--color-tint-5);

@@ -14,52 +14,121 @@ declare global {
 @customElement('play-export-dialog')
 export class PlayExportDialog extends LitElement {
   static override styles = css`
-    .close {
-      float: right;
-    }
     dialog {
-      background-color: var(--color-interactive-background);
+      color: var(--color-neutral-content);
+      background-color: var(--color-neutral-background);
+
       border-bottom-left-radius: var(--radius);
       border-bottom-right-radius: var(--radius);
       border-top-left-radius: var(--radius);
       border-top-right-radius: var(--radius);
-      border-width: var(--border-width);
-      border-color: var(--color-neutral-border);
 
-      /* Add gap between viewport. */
-      margin-top: var(--space);
+      padding-top: var(--space);
+      padding-bottom: var(--space);
+      padding-left: var(--space);
+      padding-right: var(--space);
 
-      /* h2 has enough spacing. */
-      padding-top: 0;
+      /* RPL/Shadow/Medium */
+      box-shadow:
+        0px 4px 8px 0px var(--color-shade-10),
+        0px 6px 12px 0px var(--color-shade-25);
+
+      /* No border needed. Dialog background has sufficient contrast against the scrim. */
+      border-width: 0;
 
       /* to-do: breakpoints */
       width: 480px;
+      max-width: 90vw;
     }
-    h2 {
-      /* No spacing needed from horizontal rule. */
+
+    dialog::backdrop {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      row-gap: var(--space);
+    }
+
+    h1 {
+      color: var(--color-neutral-content-strong);
+
+      /* No margins needed for composition. */
+      margin-top: 0;
       margin-bottom: 0;
+
+      /* RPL/Heading Bold/24-HeadingBold */
+      font-family: inherit;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 28px;
+      letter-spacing: 0.2px;
     }
+
+    ol {
+      margin-bottom: 0;
+      padding-left: 0;
+
+      /* Moves the numbers inside the element */
+      list-style-position: inside;
+    }
+
     li {
       margin-top: var(--space);
     }
+
     pre {
       overflow-y: auto;
       margin-top: var(--space);
       margin-bottom: var(--space);
       word-break: break-all;
       white-space: pre-line;
-      max-height: 160px;
-      background-color: var(--color-background);
+      max-height: 100px;
+      font-family: ui-monospace, 'Menlo', 'Monaco', 'Cascadia Mono',
+        'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace',
+        'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New',
+        'monospace';
+      font-size: 14px;
+      line-height: 1.5;
+      background-color: var(--color-secondary-background);
+      color: inherit;
+
       border-bottom-left-radius: var(--radius);
       border-bottom-right-radius: var(--radius);
       border-top-left-radius: var(--radius);
       border-top-right-radius: var(--radius);
+
       padding-left: var(--space);
       padding-top: var(--space);
       padding-right: var(--space);
       padding-bottom: var(--space);
+
       margin-top: var(--space);
       margin-bottom: var(--space);
+    }
+
+    p,
+    li {
+      color: inherit;
+      /* RPL/Body Regular/14-BodyReg */
+      font-family: inherit;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px;
+    }
+
+    a,
+    a:visited {
+      color: var(--color-link);
+    }
+
+    a:hover {
+      color: var(--color-link-hovered);
     }
   `
 
@@ -78,17 +147,17 @@ export class PlayExportDialog extends LitElement {
   protected override render() {
     const cmd = `npx devvit new --template='${this.url}'`
     return html`<dialog>
-      <h2>
-        Export<play-button
+      <header>
+        <h1>Export project</h1>
+        <play-button
           appearance="plain"
-          class="close"
+          icon="close-outline"
           @click=${this.close}
           size="small"
           title="Close"
-          >🞪</play-button
-        >
-      </h2>
-      <hr />
+        ></play-button>
+      </header>
+
       <p>Start a new project from this pen:</p>
       <ol>
         <li>
@@ -104,12 +173,13 @@ export class PlayExportDialog extends LitElement {
           <play-button
             appearance="bordered"
             size="small"
+            icon="copy-clipboard-outline"
+            label="Copy to clipboard"
             @click=${async () => {
               await navigator.clipboard.writeText(cmd)
               this._toast.open()
             }}
-            >Copy to Clipboard</play-button
-          >
+          ></play-button>
         </li>
         <li>Paste the command into a terminal and press enter.</li>
       </ol>

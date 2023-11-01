@@ -15,6 +15,8 @@ import reportOutline from '../assets/icons/report-outline.svg'
 import resizeHorizontalOutline from '../assets/icons/resize-horizontal-outline.svg'
 import shareNewOutline from '../assets/icons/share-new-outline.svg'
 import restartOutline from '../assets/icons/restart-outline.svg'
+import closeOutline from '../assets/icons/close-outline.svg'
+import copyClipboardOutline from '../assets/icons/copy-clipboard-outline.svg'
 
 export type PlayIconSVG = keyof typeof icons
 
@@ -31,7 +33,9 @@ const icons = {
   'report-outline': reportOutline,
   'resize-horizontal-outline': resizeHorizontalOutline,
   'share-new-outline': shareNewOutline,
-  'restart-outline': restartOutline
+  'restart-outline': restartOutline,
+  'close-outline': closeOutline,
+  'copy-clipboard-outline': copyClipboardOutline
 }
 
 declare global {
