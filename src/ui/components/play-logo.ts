@@ -33,7 +33,7 @@ export class PlayLogo extends LitElement {
     this.addEventListener('click', () => console.log('Quack!'))
   }
 
-  protected override render() {
+  protected override render(): unknown {
     return unsafeHTML(logo)
   }
 }
