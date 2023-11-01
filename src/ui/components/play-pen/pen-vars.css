@@ -1,22 +1,22 @@
 :host {
   /* Palette. */
   --color-black: #000000;
-  --color-alien-blue-300: #A7CCFF;
-  --color-alien-blue-400: #629FFF;
-  --color-alien-blue-600: #0045AC;
+  --color-alien-blue-300: #a7ccff;
+  --color-alien-blue-400: #629fff;
+  --color-alien-blue-600: #0045ac;
   --color-alien-blue-700: #003584;
   --color-cool-gray-50: #f9fafa;
-  --color-cool-gray-100: #F2F4F5;
-  --color-cool-gray-150: #EAEDEF;
+  --color-cool-gray-100: #f2f4f5;
+  --color-cool-gray-150: #eaedef;
   /* --color-cool-gray-200: #e2e7e9; */
   /* to-do: Not a recognized hue but confusingly close. Knut to rename. */
   --color-cool-gray-325: #bec2c4;
-  --color-cool-gray-350: #B8C5C9;
-  --color-cool-gray-450: #82959B;
+  --color-cool-gray-350: #b8c5c9;
+  --color-cool-gray-450: #82959b;
   --color-cool-gray-525: #576f76;
   --color-cool-gray-650: #2a3c42;
   --color-cool-gray-700: #223237;
-  --color-cool-gray-750: #1A282D;
+  --color-cool-gray-750: #1a282d;
   --color-cool-gray-850: #0f1a1c;
   --color-orangered-100: #ffede5;
   --color-orangered-500: #d93a00;
