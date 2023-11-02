@@ -49,7 +49,7 @@ export class PlayButton extends LitElement {
       user-select: none;
       white-space: nowrap;
       border: none;
-      border-radius: 9001px;
+      border-radius: var(--radius-full);
     }
 
     /* Size: "Small" */
@@ -165,7 +165,7 @@ export class PlayButton extends LitElement {
     /* to-do: extract to component. */
     .badge {
       color: var(--color-notification-foreground);
-      border-radius: 9001px;
+      border-radius: var(--radius-full);
       background-color: var(--color-notification-background);
       padding-top: 0px;
       padding-right: 4px;

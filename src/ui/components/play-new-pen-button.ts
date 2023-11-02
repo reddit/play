@@ -32,7 +32,7 @@ export class PlayNewPenButton extends LitElement {
       align-items: center;
       box-shadow: inset 0px 0px 0px var(--border-width)
         var(--color-secondary-border);
-      border-radius: 9001px;
+      border-radius: var(--radius-full);
     }
 
     button {

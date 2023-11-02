@@ -1,5 +1,6 @@
 import {LitElement, css, html} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
+import './play-icon.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -12,30 +13,46 @@ declare global {
 export class PlayToast extends LitElement {
   static override styles = css`
     :host {
+      display: flex;
+      flex-direction: column;
+      row-gap: var(--space);
+      align-items: center;
       visibility: hidden;
-      opacity: 0;
       position: fixed;
-      bottom: var(--space);
+      top: 50%;
       left: 50%;
-      transform: translateX(-50%);
-      transition-property: opacity;
-      transition-duration: 0.1s;
-      transition-timing-function: ease-in-out;
-      background-color: var(--color-interactive-background);
+      transform: translate(-50%, -50%);
+      background-color: var(--color-neutral-content-strong);
+      color: var(--color-neutral-background);
       padding-left: var(--space);
       padding-right: var(--space);
       padding-bottom: var(--space);
       padding-top: var(--space);
-      border-radius: var(--radius);
+      border-radius: var(--radius-large);
       z-index: var(--z-toast);
-      border-width: var(--border-width);
-      border-style: solid;
-      border-color: var(--color-secondary-border);
+      box-shadow: var(--shadow-s);
+      user-select: none;
+
+      /* These are the initial opacity and margin values before we animate */
+      opacity: 0;
+      margin-top: var(--space);
+      transition-property: margin opacity;
+      transition-duration: 0.1s;
+      transition-timing-function: ease-out;
+
+      /* RPL/Body Regular/14-BodyReg */
+      font-family: var(--font-family-sans);
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: -0.2px;
     }
 
     :host([opened]) {
       visibility: visible;
       opacity: 1;
+      margin-top: 0;
     }
   `
 
@@ -48,10 +65,11 @@ export class PlayToast extends LitElement {
     this.#timeout = globalThis.setTimeout(() => {
       this.opened = false
       this.#timeout = undefined
-    }, 3000)
+    }, 2000)
   }
 
   protected override render() {
-    return html`<slot></slot>`
+    return html`<play-icon size="24px" icon="checkmark-fill"></play-icon
+      ><slot></slot>`
   }
 }
