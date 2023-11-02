@@ -103,12 +103,12 @@
 
   /* Font families. */
   --font-family-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-  Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-  'Segoe UI Symbol';
+    Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
   --font-family-mono: ui-monospace, 'Menlo', 'Monaco', 'Cascadia Mono',
-  'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace',
-  'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New',
-  'monospace';
+    'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace',
+    'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New',
+    'monospace';
 
   /* Global z-index definitions. */
   --z-base: 1;
