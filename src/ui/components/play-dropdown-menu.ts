@@ -23,9 +23,7 @@ export class PlayDropdownMenu extends LitElement {
       right: 0;
       background-color: var(--color-neutral-background);
       border-radius: 8px;
-      box-shadow:
-        0px 4px 8px 0px var(--color-shade-10),
-        0px 6px 12px 0px var(--color-shade-25);
+      box-shadow: var(--shadow-m);
       display: flex;
       flex-direction: column;
       margin: 0;

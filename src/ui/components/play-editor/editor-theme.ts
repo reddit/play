@@ -10,11 +10,7 @@ import {tags} from '@lezer/highlight'
 
 const editorTheme: Extension = EditorView.theme({
   '&': {
-    fontFamily:
-      "ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono', " +
-      "'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', " +
-      "'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New', " +
-      'monospace',
+    fontFamily: 'var(--font-family-mono)',
     fontSize: '14px',
     lineHeight: '1.5'
   },

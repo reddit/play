@@ -36,7 +36,7 @@ export class PlayNewPenButton extends LitElement {
     }
 
     button {
-      font-family: inherit;
+      font-family: var(--font-family-sans);
       color: var(--color-secondary-plain);
       background-color: transparent;
       border: none;

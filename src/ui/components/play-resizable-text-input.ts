@@ -16,11 +16,6 @@ export class PlayResizableTextInput extends LitElement {
       position: relative;
       width: 100%;
       flex-shrink: 1;
-      font-family: inherit;
-      font-size: 24px;
-      font-style: normal;
-      font-weight: 400;
-      line-height: 28px;
     }
 
     .label {
@@ -35,8 +30,6 @@ export class PlayResizableTextInput extends LitElement {
     }
 
     input {
-      font: inherit;
-      line-height: inherit;
       margin: 0;
       color: transparent;
       background-color: transparent;
@@ -47,6 +40,12 @@ export class PlayResizableTextInput extends LitElement {
 
     input,
     .label {
+      font-family: var(--font-family-sans);
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 28px;
+
       width: 100%;
       padding-top: 2px;
       padding-right: 8px;

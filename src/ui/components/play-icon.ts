@@ -6,7 +6,9 @@ import {unsafeHTML} from 'lit/directives/unsafe-html.js'
 import addOutline from '../assets/icons/add-outline.svg'
 import caretDownOutline from '../assets/icons/caret-down-outline.svg'
 import caretUpOutline from '../assets/icons/caret-up-outline.svg'
+import closeOutline from '../assets/icons/close-outline.svg'
 import communityOutline from '../assets/icons/community-outline.svg'
+import copyClipboardOutline from '../assets/icons/copy-clipboard-outline.svg'
 import dayOutline from '../assets/icons/day-outline.svg'
 import downloadOutline from '../assets/icons/download-outline.svg'
 import externalOutline from '../assets/icons/external-outline.svg'
@@ -25,7 +27,9 @@ const icons = {
   'add-outline': addOutline,
   'caret-down-outline': caretDownOutline,
   'caret-up-outline': caretUpOutline,
+  'close-outline': closeOutline,
   'community-outline': communityOutline,
+  'copy-clipboard-outline': copyClipboardOutline,
   'day-outline': dayOutline,
   'download-outline': downloadOutline,
   'external-outline': externalOutline,
