@@ -6,6 +6,7 @@ import {unsafeHTML} from 'lit/directives/unsafe-html.js'
 import addOutline from '../assets/icons/add-outline.svg'
 import caretDownOutline from '../assets/icons/caret-down-outline.svg'
 import caretUpOutline from '../assets/icons/caret-up-outline.svg'
+import checkmarkFill from '../assets/icons/checkmark-fill.svg'
 import closeOutline from '../assets/icons/close-outline.svg'
 import communityOutline from '../assets/icons/community-outline.svg'
 import copyClipboardOutline from '../assets/icons/copy-clipboard-outline.svg'
@@ -27,6 +28,7 @@ const icons = {
   'add-outline': addOutline,
   'caret-down-outline': caretDownOutline,
   'caret-up-outline': caretUpOutline,
+  'checkmark-fill': checkmarkFill,
   'close-outline': closeOutline,
   'community-outline': communityOutline,
   'copy-clipboard-outline': copyClipboardOutline,

@@ -151,7 +151,7 @@ export class PlayPen extends LitElement {
   }
 
   protected override render() {
-    return html`<play-toast>URL copied to clipboard.</play-toast
+    return html`<play-toast>Copied the URL!</play-toast
       ><play-pen-header
         name=${this._name}
         .srcByLabel=${this.srcByLabel}

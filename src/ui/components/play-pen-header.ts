@@ -99,7 +99,7 @@ export class PlayPenHeader extends LitElement {
             appearance="orangered"
             size="small"
             icon="share-new-outline"
-            title="Copy Program URL to Clipboard"
+            title="Copy URL to Clipboard"
             label="Share"
             @click=${() => this.dispatchEvent(Bubble('share', undefined))}
           ></play-button>

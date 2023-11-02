@@ -33,8 +33,10 @@
   --color-light-yellow: #fffcf0;
   --color-shade-5: rgba(0, 0, 0, 0.05);
   --color-shade-10: rgba(0, 0, 0, 0.1);
+  --color-shade-15: rgba(0, 0, 0, 0.15);
   --color-shade-20: rgba(0, 0, 0, 0.2);
   --color-shade-25: rgba(0, 0, 0, 0.25);
+  --color-shade-33: rgba(0, 0, 0, 0.33);
   --color-shade-50: rgba(0, 0, 0, 0.5);
   --color-shade-60: rgba(0, 0, 0, 0.6);
   --color-shade-67: rgba(0, 0, 0, 0.67);
@@ -49,6 +51,7 @@
   --color-foreground: var(--color-dark-blue);
   --color-neutral-content-weak: var(--color-cool-gray-525);
   --color-neutral-content: var(--color-cool-gray-650);
+  --color-neutral-content-strong: var(--color-cool-gray-850);
   --color-neutral-background: var(--color-white);
   --color-neutral-foreground: var(--color-white);
   --color-neutral-background-hovered: var(--color-cool-gray-50);
@@ -78,7 +81,10 @@
   --color-notification-foreground: var(--color-white);
   --color-scrim-background: var(--color-shade-60);
 
+  /* Shadows */
   --shadow-xs: 0px 1px 2px 0px var(--color-shade-25);
+  --shadow-s: 0px 1px 4px 0px var(--color-shade-15),
+    0px 4px 4px 0px var(--color-shade-15);
   --shadow-m: 0px 4px 8px 0px var(--color-shade-10),
     0px 6px 12px 0px var(--color-shade-25);
 
@@ -117,6 +123,8 @@
 
   --space: 16px;
   --radius: 16px;
+  --radius-large: 24px;
+  --radius-full: 9001px;
   --border-width: 1px;
 }
 
@@ -173,7 +181,10 @@
     /* --color-editor-text-comment: var(--color-cool-gray-525); */
     --color-editor-text-constant: #fdcbff;
 
+    /* Shadows */
     --shadow-xs: 0px 1px 2px 0px var(--color-shade-67);
+    --shadow-s: 0px 1px 4px 0px var(--color-shade-33),
+      0px 4px 4px 0px var(--color-shade-33);
     --shadow-m: 0px 4px 8px 0px var(--color-shade-20),
       0px 6px 12px 0px var(--color-shade-50);
   }

@@ -180,7 +180,7 @@ export class PlayExportDialog extends LitElement {
         </li>
         <li>Paste the command into a terminal and press enter.</li>
       </ol>
-      <play-toast>Command copied to clipboard.</play-toast>
+      <play-toast>Copied the command!</play-toast>
     </dialog>`
   }
 }
