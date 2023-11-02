@@ -45,7 +45,7 @@ export class PlayButton extends LitElement {
       align-items: center;
       height: min-content;
       cursor: pointer;
-      font-family: inherit;
+      font-family: var(--font-family-sans);
       user-select: none;
       white-space: nowrap;
       border: none;

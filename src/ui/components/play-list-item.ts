@@ -25,7 +25,7 @@ export class PlayListItem extends LitElement {
       padding-right: 16px;
       padding-bottom: 14px;
       padding-left: 22px;
-      font-family: inherit;
+      font-family: var(--font-family-sans);
       font-size: 16px;
       font-style: normal;
       font-weight: 400;

@@ -17,7 +17,7 @@ export class PlayExportDialog extends LitElement {
     dialog {
       color: var(--color-neutral-content);
       background-color: var(--color-neutral-background);
-      box-shadow: var(--shadow-medium);
+      box-shadow: var(--shadow-m);
 
       border-bottom-left-radius: var(--radius);
       border-bottom-right-radius: var(--radius);
@@ -61,7 +61,7 @@ export class PlayExportDialog extends LitElement {
       margin-bottom: 0;
 
       /* RPL/Heading Bold/24-HeadingBold */
-      font-family: inherit;
+      font-family: var(--font-family-sans);
       font-size: 24px;
       font-style: normal;
       font-weight: 700;
@@ -88,10 +88,7 @@ export class PlayExportDialog extends LitElement {
       word-break: break-all;
       white-space: pre-line;
       max-height: 100px;
-      font-family: ui-monospace, 'Menlo', 'Monaco', 'Cascadia Mono',
-        'Segoe UI Mono', 'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace',
-        'Source Code Pro', 'Fira Mono', 'Droid Sans Mono', 'Courier New',
-        'monospace';
+      font-family: var(--font-family-mono);
       font-size: 14px;
       line-height: 1.5;
       background-color: var(--color-secondary-background);
@@ -115,7 +112,7 @@ export class PlayExportDialog extends LitElement {
     li {
       color: inherit;
       /* RPL/Body Regular/14-BodyReg */
-      font-family: inherit;
+      font-family: var(--font-family-sans);
       font-size: 16px;
       font-style: normal;
       font-weight: 400;

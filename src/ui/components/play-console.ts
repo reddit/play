@@ -33,6 +33,7 @@ export class PlayConsole extends LitElement {
       display: block;
       overflow: auto;
       background-color: var(--color-background);
+      font-family: var(--font-family-sans);
     }
     table {
       height: 100%;
