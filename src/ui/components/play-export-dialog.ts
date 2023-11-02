@@ -17,6 +17,7 @@ export class PlayExportDialog extends LitElement {
     dialog {
       color: var(--color-neutral-content);
       background-color: var(--color-neutral-background);
+      box-shadow: var(--shadow-medium);
 
       border-bottom-left-radius: var(--radius);
       border-bottom-right-radius: var(--radius);
@@ -28,11 +29,6 @@ export class PlayExportDialog extends LitElement {
       padding-left: var(--space);
       padding-right: var(--space);
 
-      /* RPL/Shadow/Medium */
-      box-shadow:
-        0px 4px 8px 0px var(--color-shade-10),
-        0px 6px 12px 0px var(--color-shade-25);
-
       /* No border needed. Dialog background has sufficient contrast against the scrim. */
       border-width: 0;
 
@@ -42,6 +38,10 @@ export class PlayExportDialog extends LitElement {
     }
 
     dialog::backdrop {
+      /* to-do: Update to css variable --color-shade-60 once supported by Chromium and Safari.
+      https://bugs.webkit.org/show_bug.cgi?id=263834
+      https://bugs.chromium.org/p/chromium/issues/detail?id=827397
+      https://stackoverflow.com/a/77393321 */
       background-color: rgba(0, 0, 0, 0.6);
     }
 
