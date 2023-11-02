@@ -2,6 +2,13 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.21
+
+- 71967c1 Upgrade dependencies
+- d25c6f4 Export dialog styling (#3)
+- bbb0846 Add social banner
+- 8b6c4e6 Rearranged the header buttons and adjusted their icons (#2)
+
 ## v0.0.20
 
 - 94687c7 Upgrade dependencies
