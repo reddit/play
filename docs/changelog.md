@@ -2,6 +2,13 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.22
+
+- 62cd273 Upgrade dependencies
+- d554bba [DX-4154] Update manifest theme colors
+- 71128f8 Updated the Toast appearance and positioning (#5)
+- b863c8b Social preview asset update (#4)
+
 ## v0.0.21
 
 - 71967c1 Upgrade dependencies
