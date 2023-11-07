@@ -1,0 +1,16 @@
+import {expect, test} from 'vitest'
+import {throttle} from './throttle.js'
+
+test('a throttled function is invoked with the latest arguments', async () => {
+  let out = {val: 0}
+  const fn = throttle((val: number) => (out.val = val), 5)
+  fn(1)
+  expect(out.val).toBe(0)
+  await new Promise(resolve => setTimeout(resolve, 0))
+  expect(out.val).toBe(1)
+  fn(2)
+  await new Promise(resolve => setTimeout(resolve, 0))
+  expect(out.val).toBe(1)
+  await new Promise(resolve => setTimeout(resolve, 5))
+  expect(out.val).toBe(2)
+})

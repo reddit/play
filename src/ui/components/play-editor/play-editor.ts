@@ -9,7 +9,6 @@ import {
   query,
   queryAssignedElements
 } from 'lit/decorators.js'
-import {throttle} from '../../../utils/throttle.js'
 import {unindent} from '../../../utils/unindent.js'
 import {Bubble} from '../../bubble.js'
 import {newEditorState} from './editor-state.js'
@@ -78,7 +77,7 @@ export class PlayEditor extends LitElement {
 
         if (transaction.docChanged) {
           const src = transaction.state.doc.sliceString(0)
-          this.#dispatchThrottledSourceChangedEvent(src)
+          this.dispatchEvent(Bubble('edit', src))
         }
       },
       parent: this._root,
@@ -98,9 +97,4 @@ export class PlayEditor extends LitElement {
     src = unindent(src ?? '')
     this.dispatchEvent(Bubble('edit-template', src))
   }
-
-  #dispatchThrottledSourceChangedEvent: (src: string) => void = throttle(
-    (src: string) => this.dispatchEvent(Bubble('edit', src)),
-    500
-  )
 }

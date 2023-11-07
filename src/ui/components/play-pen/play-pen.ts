@@ -19,6 +19,7 @@ import type {ColorScheme} from '../../../types/color-scheme.js'
 import type {Diagnostics} from '../../../types/diagnostics.js'
 import {PenSave, loadPen, penToHash, savePen} from '../../../types/pen-save.js'
 import type {PreviewError} from '../../../types/preview-error.js'
+import {throttle} from '../../../utils/throttle.js'
 import type {OpenLine} from '../play-console.js'
 import type {PlayEditor} from '../play-editor/play-editor.js'
 import type {PlayPreview} from '../play-preview.js'
@@ -251,10 +252,14 @@ export class PlayPen extends LitElement {
         appEntrypointFilename
       )
     }
-    // Skip blank source.
-    if (!/^\s*$/.test(src)) this._bundle = link(compile(this.#env))
-    if (save) this.#save()
+    this.#setSrcSideEffects(save)
   }
+
+  /** Throttled changes after updating sources. */
+  #setSrcSideEffects = throttle((save: boolean) => {
+    this._bundle = link(compile(this.#env))
+    if (save) this.#save()
+  }, 500)
 
   /** Recompute the current hash regardless of the location bar state. */
   #shareURL(): URL {
