@@ -1,6 +1,6 @@
 # ![:play](src/ui/assets/favicon/favicon48.png) :play
 
-Devvit app :playground.
+A little playground for building apps on Reddit.
 
 ## Installation
 

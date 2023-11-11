@@ -1,6 +1,6 @@
 {
   "background_color": "#fffcf0",
-  "description": "Devvit app :playground.",
+  "description": "A little playground for building apps on Reddit.",
   "display": "standalone",
   "icons": [
     {"src": "favicon/favicon.png", "sizes": "32x32", "type": "image/png"},
