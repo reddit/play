@@ -2,6 +2,13 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.24
+
+- c231ac3 [DX-4389] Improve polls example dark mode contrast
+- 85dd5e1 Upgrade dependencies
+- 62bbbe9 Update description
+- 58e1128 [DX-4321] Don't throttle completion UI
+
 ## v0.0.23
 
 - 83d54aa Fix examples link
