@@ -166,11 +166,13 @@ function previewErrRow(err: PreviewError): TemplateResult<1> {
       ? 'Unhandled promise rejection; `await` asynchronous execution and ' +
         'catch errors.'
       : isCircuitBreaker(err.err)
-      ? 'Unsupported plugin: ' +
-        `${err.err.cause?.method ? `${err.err.cause.method} ` : ''}API call ` +
-        'unavailable. This program may run correctly on reddit.com but most ' +
-        'Context and other Devvit APIs are not yet supported in the playground.'
-      : ''
+        ? 'Unsupported plugin: ' +
+          `${
+            err.err.cause?.method ? `${err.err.cause.method} ` : ''
+          }API call ` +
+          'unavailable. This program may run correctly on reddit.com but most ' +
+          'Context and other Devvit APIs are not yet supported in the playground.'
+        : ''
   if (!isErrorLike(err.err))
     return html`<tr>
       <td>Execution</td>
