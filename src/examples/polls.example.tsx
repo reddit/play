@@ -36,7 +36,7 @@ const Header = () => (
         5.6k votes
       </text>
     </hstack>
-    <hstack height='1px' backgroundColor='neutral-border-weak' />
+    <hstack height='1px' />
   </vstack>
 )
 
@@ -71,13 +71,10 @@ Devvit.addCustomPostType({
                   ? 'radio-button-fill'
                   : 'radio-button-outline'
               }
-              color={
-                selection === option ? 'secondary-plain' : 'secondary-weak'
-              }
             />
             <spacer size='small' />
             <spacer size='xsmall' />
-            <text color='secondary-plain'>{option}</text>
+            <text>{option}</text>
           </hstack>
         ))}
       </vstack>
@@ -94,7 +91,7 @@ Devvit.addCustomPostType({
               <hstack
                 height='100%'
                 width={`${percentage}%`}
-                backgroundColor={
+                borderColor={
                   winningOption[0] === option
                     ? 'rgba(255,0,0,0.2)'
                     : 'secondary-background'
@@ -102,12 +99,10 @@ Devvit.addCustomPostType({
                 cornerRadius='small'
               />
               <zstack gap='small' alignment='middle' padding='small'>
-                <text color='neutral-content-strong' weight='bold'>
-                  {value}
-                </text>
+                <text weight='bold'>{value}</text>
                 <hstack>
                   <spacer width='56px' />
-                  <text color='neutral-content-strong'>{option}</text>
+                  <text>{option}</text>
                 </hstack>
               </zstack>
             </zstack>
