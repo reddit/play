@@ -71,7 +71,10 @@ await fs.writeFile(
 /** @type {esbuild.BuildOptions} */
 const opts = {
   bundle: true,
-  define: {'globalThis.version': `'${pkg.version}'`},
+  define: {
+    'globalThis.version': `'${pkg.version}'`,
+    'globalThis.devvitVersion': `'${pkg.devDependencies['@devvit/public-api']}'`
+  },
   format: 'esm',
   // Bundle templates for loading in pens and bundle pen worker as text so it
   // can be loaded in a worker.

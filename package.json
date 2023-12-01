@@ -44,7 +44,7 @@
   ],
   "filesize": {
     "dist/play.js": {
-      "gzip": "3.4 KB"
+      "gzip": "3.5 KB"
     },
     "dist/play-pen.js": {
       "gzip": "2.9 MB"
