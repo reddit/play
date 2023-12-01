@@ -1,7 +1,14 @@
 import penWorker from '@devvit/previews/dist/pen.worker.min.js'
 import type {LinkedBundle, Metadata} from '@devvit/protos'
 import {BrowserLiteClient} from '@devvit/runtime-lite/BrowserLiteClient.js'
-import {LitElement, css, html, type PropertyValues} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type PropertyValues,
+  type TemplateResult
+} from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import {Bubble} from '../bubble.js'
@@ -22,52 +29,50 @@ declare global {
  */
 @customElement('play-preview')
 export class PlayPreview extends LitElement {
-  static override get styles() {
-    return css`
-      .preview {
-        /* Hide overflow on corners */
-        overflow: hidden;
-        border-width: var(--border-width);
-        border-style: solid;
-        border-color: var(--color-neutral-border);
-        border-radius: 16px;
-        min-height: 320px;
-        box-shadow: var(--shadow-xs);
+  static override styles: CSSResultGroup = css`
+    .preview {
+      /* Hide overflow on corners */
+      overflow: hidden;
+      border-width: var(--border-width);
+      border-style: solid;
+      border-color: var(--color-neutral-border);
+      border-radius: 16px;
+      min-height: 320px;
+      box-shadow: var(--shadow-xs);
 
-        /* When the background is visible, the preview is loading. */
-        background-color: var(--color-interactive-background);
-        background-image: repeating-linear-gradient(
-          -45deg,
-          var(--color-interactive-background),
-          var(--color-interactive-background) 18px,
-          var(--color-interactive-background-disabled) 18px,
-          var(--color-interactive-background-disabled) 32px
-        );
-        background-position-x: 0;
-        background-position-y: 200%;
-        min-width: 288px;
-        transition-duration: 0.2s;
-        transition-property: width;
-        transition-timing-function: ease-out;
-      }
+      /* When the background is visible, the preview is loading. */
+      background-color: var(--color-interactive-background);
+      background-image: repeating-linear-gradient(
+        -45deg,
+        var(--color-interactive-background),
+        var(--color-interactive-background) 18px,
+        var(--color-interactive-background-disabled) 18px,
+        var(--color-interactive-background-disabled) 32px
+      );
+      background-position-x: 0;
+      background-position-y: 200%;
+      min-width: 288px;
+      transition-duration: 0.2s;
+      transition-property: width;
+      transition-timing-function: ease-out;
+    }
 
-      :host([previewWidth='288']) .preview {
-        width: 288px;
-      }
-      :host([previewWidth='343']) .preview {
-        width: 343px;
-      }
-      :host([previewWidth='400']) .preview {
-        width: 400px;
-      }
-      :host([previewWidth='512']) .preview {
-        width: 512px;
-      }
-      :host([previewWidth='718']) .preview {
-        width: 718px;
-      }
-    `
-  }
+    :host([previewWidth='288']) .preview {
+      width: 288px;
+    }
+    :host([previewWidth='343']) .preview {
+      width: 343px;
+    }
+    :host([previewWidth='400']) .preview {
+      width: 400px;
+    }
+    :host([previewWidth='512']) .preview {
+      width: 512px;
+    }
+    :host([previewWidth='718']) .preview {
+      width: 718px;
+    }
+  `
 
   @property({attribute: false}) bundle: Readonly<LinkedBundle> | undefined
   @property({type: Number}) previewWidth?: number
@@ -102,7 +107,7 @@ export class PlayPreview extends LitElement {
     super.disconnectedCallback()
   }
 
-  protected override render() {
+  protected override render(): TemplateResult {
     // to-do: don't override toaster's --rem16 to offset the toast. Upstream a
     // variable.
     return html`<div class="preview">

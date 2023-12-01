@@ -1,7 +1,13 @@
 import {EditorSelection} from '@codemirror/state'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
 import {EditorView} from 'codemirror'
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {
   customElement,
   eventOptions,
@@ -27,7 +33,7 @@ declare global {
 /** Accepts a slotted template. */
 @customElement('play-editor')
 export class PlayEditor extends LitElement {
-  static override readonly styles = css`
+  static override readonly styles: CSSResultGroup = css`
     .editor {
       height: 100%;
       width: 100%;
@@ -85,7 +91,7 @@ export class PlayEditor extends LitElement {
     })
   }
 
-  protected override render(): unknown {
+  protected override render(): TemplateResult {
     return html`<div class="editor"></div>
       <slot @slotchange=${this._onSlotChange}></slot>`
   }

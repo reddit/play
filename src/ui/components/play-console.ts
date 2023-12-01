@@ -1,5 +1,11 @@
 import {isCircuitBreaker} from '@devvit/runtime-lite/CircuitBreaker.js'
-import {LitElement, css, html, type TemplateResult} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostic} from 'typescript'
 import ts from 'typescript'
@@ -25,7 +31,7 @@ export type OpenLine = {
 export class PlayConsole extends LitElement {
   @property({attribute: false}) diagnostics?: Diagnostics
 
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     :host {
       height: 100%;
       padding-left: 16px;
@@ -103,7 +109,7 @@ export class PlayConsole extends LitElement {
     }
   `
 
-  protected override render(): TemplateResult<1> {
+  protected override render(): TemplateResult {
     const previewErrs = []
     for (const err of this.diagnostics?.previewErrs ?? [])
       previewErrs.push(previewErrRow(err))

@@ -1,4 +1,4 @@
-import {LitElement, css} from 'lit'
+import {LitElement, css, type CSSResultGroup} from 'lit'
 import {customElement} from 'lit/decorators.js'
 import {unsafeHTML} from 'lit/directives/unsafe-html.js'
 import logo from '../assets/logo.svg'
@@ -11,7 +11,7 @@ declare global {
 
 @customElement('play-logo')
 export class PlayLogo extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     svg {
       display: block;
       width: 40px;

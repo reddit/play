@@ -1,4 +1,10 @@
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
 
 declare global {
@@ -17,7 +23,7 @@ export class PlayDropdownMenu extends LitElement {
   @property({type: String}) direction?: 'down' | 'up' = 'up'
   @state() private isOpen = false
 
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     :host ol {
       position: absolute;
       right: 0;
@@ -86,15 +92,15 @@ export class PlayDropdownMenu extends LitElement {
     }
   `
 
-  #toggleMenu() {
+  #toggleMenu(): void {
     this.isOpen = !this.isOpen
   }
 
-  #closeMenu() {
+  #closeMenu(): void {
     this.isOpen = false
   }
 
-  protected override render() {
+  protected override render(): TemplateResult {
     return html` <div @click=${this.#toggleMenu}>
         <slot name="trigger"></slot>
       </div>

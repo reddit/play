@@ -1,4 +1,10 @@
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import type {PlayIconSVG} from './play-icon.js'
 
@@ -28,7 +34,7 @@ export class PlayButton extends LitElement {
   @property({type: String}) label = ''
   @property({type: Number}) badge = 0
 
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     :host {
       width: fit-content;
       display: inline-block;
@@ -181,7 +187,7 @@ export class PlayButton extends LitElement {
     }
   `
 
-  protected override render() {
+  protected override render(): TemplateResult {
     const iconOnly = this.icon && !this.label && !this.endIcon
     return html`<button
       ?disabled=${this.disabled}

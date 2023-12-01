@@ -1,4 +1,11 @@
-import {LitElement, css, html, nothing} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  nothing,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import ts, {displayPartsToString} from 'typescript'
 import type {Diagnostics} from '../../types/diagnostics.js'
@@ -13,7 +20,7 @@ declare global {
 export class PlayEditorTip extends LitElement {
   @property({attribute: false}) diagnostics?: Diagnostics
 
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     :host {
       display: block;
       max-width: 640px;
@@ -28,7 +35,7 @@ export class PlayEditorTip extends LitElement {
 
   @property({attribute: false}) info?: ts.QuickInfo
 
-  protected override render() {
+  protected override render(): TemplateResult | typeof nothing {
     if (!this.info) return nothing
     const text = displayPartsToString(this.info.displayParts)
     const docs = []

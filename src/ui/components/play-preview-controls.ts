@@ -1,4 +1,10 @@
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import {Bubble} from '../bubble.js'
@@ -28,7 +34,7 @@ declare global {
  */
 @customElement('play-preview-controls')
 export class PlayPreviewControls extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     :host {
       display: flex;
       flex-direction: row;
@@ -43,7 +49,7 @@ export class PlayPreviewControls extends LitElement {
     ? 'dark'
     : 'light'
 
-  protected override render() {
+  protected override render(): TemplateResult {
     return html`
       <play-button
         appearance="plain"

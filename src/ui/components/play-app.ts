@@ -1,7 +1,13 @@
 // Portable playground. Imported by ui/assets/index.html and built by
 // tools/build.js. Defines play-app component.
 
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement} from 'lit/decorators.js'
 
 import './play-pen/play-pen.js'
@@ -14,7 +20,7 @@ declare global {
 
 @customElement('play-app')
 export class PlayApp extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     :host {
       /* Allow height to be specified. */
       display: block;
@@ -30,7 +36,7 @@ export class PlayApp extends LitElement {
     console.log(`:play v${globalThis.version}`)
   }
 
-  protected override render() {
+  protected override render(): TemplateResult {
     return html`<play-pen allow-storage allow-url>
       <script lang="tsx" type="application/devvit">
         console.log('Hello World!')

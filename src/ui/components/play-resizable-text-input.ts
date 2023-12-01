@@ -1,4 +1,11 @@
-import {LitElement, css, html, type PropertyValues} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type PropertyValues,
+  type TemplateResult
+} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {Bubble} from '../bubble.js'
 
@@ -11,7 +18,7 @@ declare global {
 /** @fires {string} edit-text */
 @customElement('play-resizable-text-input')
 export class PlayResizableTextInput extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     :host {
       position: relative;
       width: 100%;
@@ -84,7 +91,7 @@ export class PlayResizableTextInput extends LitElement {
   @property({attribute: false}) text: string = ''
   @property() placeholder: string = ''
 
-  protected override render() {
+  protected override render(): TemplateResult {
     return html`
       <div>
         <input

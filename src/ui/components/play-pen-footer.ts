@@ -1,4 +1,11 @@
-import {LitElement, css, html, nothing} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  nothing,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import {openURL} from '../../utils/open-url.js'
@@ -16,7 +23,7 @@ declare global {
 
 @customElement('play-pen-footer')
 export class PlayPenFooter extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     footer {
       background-color: var(--color-neutral-content-weak);
     }
@@ -54,7 +61,7 @@ export class PlayPenFooter extends LitElement {
   @property({attribute: false}) diagnostics?: Readonly<Diagnostics>
   @state() private _open?: boolean
 
-  protected override render() {
+  protected override render(): TemplateResult {
     const errsLen =
       (this.diagnostics?.previewErrs.length ?? 0) +
       (this.diagnostics?.tsErrs.length ?? 0)

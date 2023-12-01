@@ -1,4 +1,10 @@
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
 import type {PlayToast} from './play-toast.js'
 
@@ -13,7 +19,7 @@ declare global {
 
 @customElement('play-export-dialog')
 export class PlayExportDialog extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     dialog {
       color: var(--color-neutral-content);
       background-color: var(--color-neutral-background);
@@ -141,7 +147,7 @@ export class PlayExportDialog extends LitElement {
     this._dialog.close()
   }
 
-  protected override render() {
+  protected override render(): TemplateResult {
     const cmd = `npx devvit new --template='${this.url}'`
     return html`<dialog>
       <header>

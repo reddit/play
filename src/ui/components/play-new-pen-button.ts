@@ -1,4 +1,10 @@
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {repeat} from 'lit/directives/repeat.js'
 import {openURL} from '../../utils/open-url.js'
@@ -23,7 +29,7 @@ declare global {
 /** @fires {string} edit-src */
 @customElement('play-new-pen-button')
 export class PlayNewPenButton extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     .container {
       display: flex;
       flex-direction: row;
@@ -134,7 +140,7 @@ export class PlayNewPenButton extends LitElement {
   @property({attribute: false}) srcByLabel?: Readonly<{[key: string]: string}>
   @property() size: SizeOptions = 'medium'
 
-  protected override render() {
+  protected override render(): TemplateResult {
     return html`<div class="container">
       <button
         class="new-pen"

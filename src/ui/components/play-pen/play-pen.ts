@@ -1,6 +1,13 @@
 import type {LinkedBundle} from '@devvit/protos'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
-import {LitElement, css, html, unsafeCSS} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  unsafeCSS,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property, query, state} from 'lit/decorators.js'
 import {ifDefined} from 'lit/directives/if-defined.js'
 import {
@@ -47,7 +54,7 @@ declare global {
  */
 @customElement('play-pen')
 export class PlayPen extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     ${unsafeCSS(penVars)}
 
     :host {
@@ -151,7 +158,7 @@ export class PlayPen extends LitElement {
     this.#setName(pen.name, false)
   }
 
-  protected override render() {
+  protected override render(): TemplateResult {
     return html`<play-toast>Copied the URL!</play-toast
       ><play-pen-header
         name=${this._name}

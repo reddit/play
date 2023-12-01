@@ -1,4 +1,4 @@
-import {LitElement, html, nothing} from 'lit'
+import {LitElement, html, nothing, type TemplateResult} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {styleMap} from 'lit/directives/style-map.js'
 import {unsafeHTML} from 'lit/directives/unsafe-html.js'
@@ -57,7 +57,7 @@ export class PlayIcon extends LitElement {
   @property({type: String}) color = 'currentColor'
   @property({type: String}) icon?: PlayIconSVG
 
-  protected override render() {
+  protected override render(): TemplateResult | typeof nothing {
     const style = {
       width: this.size,
       height: this.size,

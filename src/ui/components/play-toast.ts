@@ -1,4 +1,10 @@
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import './play-icon.js'
 
@@ -11,7 +17,7 @@ declare global {
 /** @slot - Toast content. */
 @customElement('play-toast')
 export class PlayToast extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     :host {
       display: flex;
       flex-direction: column;
@@ -68,7 +74,7 @@ export class PlayToast extends LitElement {
     }, 2000)
   }
 
-  protected override render() {
+  protected override render(): TemplateResult {
     return html`<play-icon size="24px" icon="checkmark-fill"></play-icon
       ><slot></slot>`
   }

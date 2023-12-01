@@ -1,4 +1,10 @@
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import type {PlayIconSVG} from './play-icon.js'
 
@@ -16,7 +22,7 @@ export class PlayListItem extends LitElement {
   @property() icon?: PlayIconSVG
   @property() endIcon?: PlayIconSVG
 
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     li {
       display: flex;
       flex-direction: row;
@@ -41,7 +47,7 @@ export class PlayListItem extends LitElement {
     }
   `
 
-  protected override render() {
+  protected override render(): TemplateResult {
     return html`<li>
       ${this.icon &&
       html`<play-icon size="20px" icon=${this.icon}></play-icon>`}

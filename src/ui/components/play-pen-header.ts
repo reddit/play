@@ -1,4 +1,10 @@
-import {LitElement, css, html} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
 import {openURL} from '../../utils/open-url.js'
 import {Bubble} from '../bubble.js'
@@ -23,7 +29,7 @@ declare global {
  */
 @customElement('play-pen-header')
 export class PlayPenHeader extends LitElement {
-  static override styles = css`
+  static override styles: CSSResultGroup = css`
     header {
       padding-top: 16px;
       padding-right: 16px;
@@ -63,7 +69,7 @@ export class PlayPenHeader extends LitElement {
   @property() url: string = ''
   @query('play-export-dialog') private _export!: PlayExportDialog
 
-  protected override render() {
+  protected override render(): TemplateResult {
     return html`<header>
         <div class="titling">
           <play-logo></play-logo>
