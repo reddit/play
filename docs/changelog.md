@@ -2,6 +2,12 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.25
+
+- 163e62b Export Devvit version
+- 0419098 Add some missed typing
+- c79aa52 Upgrade dependencies
+
 ## v0.0.24
 
 - c231ac3 [DX-4389] Improve polls example dark mode contrast
