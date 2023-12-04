@@ -10,10 +10,10 @@
     "@codemirror/lint": "6.4.2",
     "@codemirror/state": "6.3.2",
     "@codemirror/view": "6.22.1",
-    "@devvit/previews": "0.10.10-next-2023-11-30-d75fd147d.0",
-    "@devvit/protos": "0.10.10-next-2023-11-30-d75fd147d.0",
-    "@devvit/public-api": "0.10.10-next-2023-11-30-d75fd147d.0",
-    "@devvit/runtime-lite": "0.10.10-next-2023-11-30-d75fd147d.0",
+    "@devvit/previews": "0.10.10-next-2023-12-04-1cbb11cb4.0",
+    "@devvit/protos": "0.10.10-next-2023-12-04-1cbb11cb4.0",
+    "@devvit/public-api": "0.10.10-next-2023-12-04-1cbb11cb4.0",
+    "@devvit/runtime-lite": "0.10.10-next-2023-12-04-1cbb11cb4.0",
     "@typescript/vfs": "1.5.0",
     "codemirror": "6.0.1",
     "esbuild": "0.19.5",
@@ -22,7 +22,7 @@
     "lz-string": "1.5.0",
     "prettier": "3.1.0",
     "typescript": "5.3.2",
-    "vitest": "0.34.6"
+    "vitest": "1.0.1"
   },
   "engines": {
     "node": ">=18.17.0"
