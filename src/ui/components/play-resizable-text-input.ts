@@ -10,12 +10,14 @@ import {customElement, property} from 'lit/decorators.js'
 import {Bubble} from '../bubble.js'
 
 declare global {
+  interface HTMLElementEventMap {
+    'edit-text': string
+  }
   interface HTMLElementTagNameMap {
     'play-resizable-text-input': PlayResizableTextInput
   }
 }
 
-/** @fires {string} edit-text */
 @customElement('play-resizable-text-input')
 export class PlayResizableTextInput extends LitElement {
   static override styles: CSSResultGroup = css`

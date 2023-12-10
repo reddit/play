@@ -18,15 +18,15 @@ import './play-new-pen-button.js'
 import './play-resizable-text-input.js'
 
 declare global {
+  interface HTMLElementEventMap {
+    'edit-name': string
+    share: undefined
+  }
   interface HTMLElementTagNameMap {
     'play-pen-header': PlayPenHeader
   }
 }
 
-/**
- * @fires {string} edit-name
- * @fires {undefined} share
- */
 @customElement('play-pen-header')
 export class PlayPenHeader extends LitElement {
   static override styles: CSSResultGroup = css`

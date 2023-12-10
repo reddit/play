@@ -23,15 +23,15 @@ const sizes: readonly [width: number, label: string][] = [
 ]
 
 declare global {
+  interface HTMLElementEventMap {
+    'preview-scheme': ColorScheme
+    'preview-width': number
+  }
   interface HTMLElementTagNameMap {
     'play-preview-controls': PlayPreviewControls
   }
 }
 
-/**
- * @fires {ColorScheme} preview-scheme
- * @fires {number} preview-width
- */
 @customElement('play-preview-controls')
 export class PlayPreviewControls extends LitElement {
   static override styles: CSSResultGroup = css`

@@ -14,19 +14,20 @@ import type {ColorScheme} from '../../types/color-scheme.js'
 import {Bubble} from '../bubble.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
+import type {PreviewError} from '../../types/preview-error.js'
 
 declare global {
+  interface HTMLElementEventMap {
+    error: PreviewError
+    'clear-errors': undefined
+    'devvit-ui-error': unknown
+  }
   interface HTMLElementTagNameMap {
     'play-preview': PlayPreview
   }
 }
 
-/**
- * The rendered output of Devvit program under various parameters.
- * @fires {PreviewError} error
- * @fires {undefined} clear-errors
- * @fires {unknown} devvit-ui-error
- */
+/** The rendered output of Devvit program under various parameters. */
 @customElement('play-preview')
 export class PlayPreview extends LitElement {
   static override styles: CSSResultGroup = css`

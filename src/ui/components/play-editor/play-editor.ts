@@ -20,17 +20,16 @@ import {Bubble} from '../../bubble.js'
 import {newEditorState} from './editor-state.js'
 
 declare global {
+  interface HTMLElementEventMap {
+    edit: string
+    'edit-template': string
+  }
   interface HTMLElementTagNameMap {
     'play-editor': PlayEditor
   }
 }
 
-/**
- * @fires {string} edit
- * @fires {string} edit-template
- * @slot - Optional template.
- */
-/** Accepts a slotted template. */
+/** @slot - Optional template. */
 @customElement('play-editor')
 export class PlayEditor extends LitElement {
   static override readonly styles: CSSResultGroup = css`

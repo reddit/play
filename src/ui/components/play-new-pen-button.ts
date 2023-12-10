@@ -21,12 +21,14 @@ const iconSizes: {[key in SizeOptions]: string} = {
 }
 
 declare global {
+  interface HTMLElementEventMap {
+    'edit-src': string
+  }
   interface HTMLElementTagNameMap {
     'play-new-pen-button': PlayNewPenButton
   }
 }
 
-/** @fires {string} edit-src */
 @customElement('play-new-pen-button')
 export class PlayNewPenButton extends LitElement {
   static override styles: CSSResultGroup = css`

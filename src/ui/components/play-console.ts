@@ -14,6 +14,9 @@ import type {PreviewError} from '../../types/preview-error.js'
 import {Bubble} from '../bubble.js'
 
 declare global {
+  interface HTMLElementEventMap {
+    'open-line': OpenLine
+  }
   interface HTMLElementTagNameMap {
     'play-console': PlayConsole
   }
@@ -26,7 +29,6 @@ export type OpenLine = {
   char: number
 }
 
-/** @fires {OpenLine} open-line */
 @customElement('play-console')
 export class PlayConsole extends LitElement {
   @property({attribute: false}) diagnostics?: Diagnostics
