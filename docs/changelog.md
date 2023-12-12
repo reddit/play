@@ -2,6 +2,11 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.27
+
+- 9e1bacb Match Devvit engine and upgrade dependencies
+- 42a513a Replace @fires JSDocs with HTMLElementEventMap
+
 ## v0.0.26
 
 - 917ef4a Upgrade dependencies
