@@ -22,6 +22,7 @@ import defaultExample from '../../../examples/default.example.js'
 import helloBlocks from '../../../examples/hello-blocks.example.js'
 import polls from '../../../examples/polls.example.js'
 import progressBar from '../../../examples/progress-bar.example.js'
+import svg from '../../../examples/svg.example.js'
 import type {ColorScheme} from '../../../types/color-scheme.js'
 import type {Diagnostics} from '../../../types/diagnostics.js'
 import {PenSave, loadPen, penToHash, savePen} from '../../../types/pen-save.js'
@@ -122,7 +123,8 @@ export class PlayPen extends LitElement {
       'Hello Blocks!': helloBlocks,
       'Progress Bar': progressBar,
       Clock: clock,
-      Polls: polls
+      Polls: polls,
+      SVG: svg
     }
 
   /** Program executable. */
