@@ -2,6 +2,10 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.28
+
+- 76a0e57 Upgrade dependencies
+
 ## v0.0.27
 
 - 9e1bacb Match Devvit engine and upgrade dependencies
