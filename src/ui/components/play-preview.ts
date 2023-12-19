@@ -18,9 +18,9 @@ import type {PreviewError} from '../../types/preview-error.js'
 
 declare global {
   interface HTMLElementEventMap {
-    error: PreviewError
-    'clear-errors': undefined
-    'devvit-ui-error': unknown
+    error: CustomEvent<PreviewError>
+    'clear-errors': CustomEvent<undefined>
+    'devvit-ui-error': CustomEvent<unknown>
   }
   interface HTMLElementTagNameMap {
     'play-preview': PlayPreview

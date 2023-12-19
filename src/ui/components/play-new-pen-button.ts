@@ -22,7 +22,7 @@ const iconSizes: {[key in SizeOptions]: string} = {
 
 declare global {
   interface HTMLElementEventMap {
-    'edit-src': string
+    'edit-src': CustomEvent<string>
   }
   interface HTMLElementTagNameMap {
     'play-new-pen-button': PlayNewPenButton

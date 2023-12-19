@@ -19,8 +19,8 @@ import './play-resizable-text-input.js'
 
 declare global {
   interface HTMLElementEventMap {
-    'edit-name': string
-    share: undefined
+    'edit-name': CustomEvent<string>
+    share: CustomEvent<undefined>
   }
   interface HTMLElementTagNameMap {
     'play-pen-header': PlayPenHeader

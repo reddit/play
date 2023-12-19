@@ -11,7 +11,7 @@ import {Bubble} from '../bubble.js'
 
 declare global {
   interface HTMLElementEventMap {
-    'edit-text': string
+    'edit-text': CustomEvent<string>
   }
   interface HTMLElementTagNameMap {
     'play-resizable-text-input': PlayResizableTextInput

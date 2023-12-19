@@ -15,7 +15,7 @@ import {Bubble} from '../bubble.js'
 
 declare global {
   interface HTMLElementEventMap {
-    'open-line': OpenLine
+    'open-line': CustomEvent<OpenLine>
   }
   interface HTMLElementTagNameMap {
     'play-console': PlayConsole

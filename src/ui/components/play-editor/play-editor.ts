@@ -21,8 +21,8 @@ import {newEditorState} from './editor-state.js'
 
 declare global {
   interface HTMLElementEventMap {
-    edit: string
-    'edit-template': string
+    edit: CustomEvent<string>
+    'edit-template': CustomEvent<string>
   }
   interface HTMLElementTagNameMap {
     'play-editor': PlayEditor

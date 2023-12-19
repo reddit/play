@@ -24,8 +24,8 @@ const sizes: readonly [width: number, label: string][] = [
 
 declare global {
   interface HTMLElementEventMap {
-    'preview-scheme': ColorScheme
-    'preview-width': number
+    'preview-scheme': CustomEvent<ColorScheme>
+    'preview-width': CustomEvent<number>
   }
   interface HTMLElementTagNameMap {
     'play-preview-controls': PlayPreviewControls
