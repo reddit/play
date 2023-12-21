@@ -39,10 +39,12 @@ export class PlayApp extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    return html`<play-pen allow-storage allow-url>
-      <script lang="tsx" type="application/devvit">
-        console.log('Hello World!')
-      </script>
-    </play-pen>`
+    return html`
+      <play-pen allow-storage allow-url>
+        <script lang="tsx" type="application/devvit">
+          console.log('Hello World!')
+        </script>
+      </play-pen>
+    `
   }
 }

@@ -189,23 +189,26 @@ export class PlayButton extends LitElement {
 
   protected override render(): TemplateResult {
     const iconOnly = this.icon && !this.label && !this.endIcon
-    return html`<button
-      ?disabled=${this.disabled}
-      class=${iconOnly ? 'icon-button' : ''}
-    >
-      ${this.icon &&
-      html`<play-icon
-        size=${this.size === 'small' ? '16px' : '20px'}
-        icon=${this.icon}
-      ></play-icon>`}
-      <slot></slot>
-      ${this.label && html`<span>${this.label}</span>`}
-      ${this.badge > 0 ? html`<span class="badge">${this.badge}</span>` : ''}
-      ${this.endIcon &&
-      html`<play-icon
-        size=${this.size === 'small' ? '16px' : '20px'}
-        icon=${this.endIcon}
-      ></play-icon>`}
-    </button>`
+    return html`
+      <button ?disabled=${this.disabled} class=${iconOnly ? 'icon-button' : ''}>
+        ${this.icon &&
+        html`
+          <play-icon
+            size=${this.size === 'small' ? '16px' : '20px'}
+            icon=${this.icon}
+          ></play-icon>
+        `}
+        <slot></slot>
+        ${this.label && html`<span>${this.label}</span>`}
+        ${this.badge > 0 ? html`<span class="badge">${this.badge}</span>` : ''}
+        ${this.endIcon &&
+        html`
+          <play-icon
+            size=${this.size === 'small' ? '16px' : '20px'}
+            icon=${this.endIcon}
+          ></play-icon>
+        `}
+      </button>
+    `
   }
 }

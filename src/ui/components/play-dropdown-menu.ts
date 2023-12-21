@@ -101,7 +101,8 @@ export class PlayDropdownMenu extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    return html` <div @click=${this.#toggleMenu}>
+    return html`
+      <div @click=${this.#toggleMenu}>
         <slot name="trigger"></slot>
       </div>
       <div class="menu ${this.isOpen ? 'open' : ''}">
@@ -109,6 +110,7 @@ export class PlayDropdownMenu extends LitElement {
         <ol @click=${this.#closeMenu}>
           <slot name="menu"></slot>
         </ol>
-      </div>`
+      </div>
+    `
   }
 }

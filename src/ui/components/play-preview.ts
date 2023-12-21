@@ -111,17 +111,23 @@ export class PlayPreview extends LitElement {
   protected override render(): TemplateResult {
     // to-do: don't override toaster's --rem16 to offset the toast. Upstream a
     // variable.
-    return html`<div class="preview">
-      ${this.bundle &&
-      html`<devvit-preview
-        @devvit-ui-error=${(ev: CustomEvent<unknown>) =>
-          this.dispatchEvent(Bubble('error', {type: 'Error', err: ev.detail}))}
-        .meta="${this.#meta}"
-        .client=${this._client}
-        .scheme=${this.scheme}
-        style="--rem16: 50px;"
-      ></devvit-preview>`}
-    </div>`
+    return html`
+      <div class="preview">
+        ${this.bundle &&
+        html`
+          <devvit-preview
+            @devvit-ui-error=${(ev: CustomEvent<unknown>) =>
+              this.dispatchEvent(
+                Bubble('error', {type: 'Error', err: ev.detail})
+              )}
+            .meta="${this.#meta}"
+            .client=${this._client}
+            .scheme=${this.scheme}
+            style="--rem16: 50px;"
+          ></devvit-preview>
+        `}
+      </div>
+    `
   }
 
   protected override async willUpdate(

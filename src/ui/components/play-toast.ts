@@ -75,7 +75,8 @@ export class PlayToast extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    return html`<play-icon size="24px" icon="checkmark-fill"></play-icon
-      ><slot></slot>`
+    return html`
+      <play-icon size="24px" icon="checkmark-fill"></play-icon><slot></slot>
+    `
   }
 }

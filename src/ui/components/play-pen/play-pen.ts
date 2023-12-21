@@ -161,7 +161,8 @@ export class PlayPen extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    return html`<play-toast>Copied the URL!</play-toast
+    return html`
+      <play-toast>Copied the URL!</play-toast
       ><play-pen-header
         name=${this._name}
         .srcByLabel=${this.srcByLabel}
@@ -217,7 +218,8 @@ export class PlayPen extends LitElement {
           (this._scheme = ev.detail)}
         @open-line=${(ev: CustomEvent<OpenLine>) =>
           this._editor.openLine(ev.detail.line, ev.detail.char)}
-      ></play-pen-footer>`
+      ></play-pen-footer>
+    `
   }
 
   #appendPreviewError(err: PreviewError): void {

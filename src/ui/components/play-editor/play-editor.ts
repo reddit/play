@@ -91,8 +91,10 @@ export class PlayEditor extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    return html`<div class="editor"></div>
-      <slot @slotchange=${this._onSlotChange}></slot>`
+    return html`
+      <div class="editor"></div>
+      <slot @slotchange=${this._onSlotChange}></slot>
+    `
   }
 
   @eventOptions({once: true}) private _onSlotChange(): void {

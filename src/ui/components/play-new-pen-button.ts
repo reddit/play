@@ -143,49 +143,55 @@ export class PlayNewPenButton extends LitElement {
   @property() size: SizeOptions = 'medium'
 
   protected override render(): TemplateResult {
-    return html`<div class="container">
-      <button
-        class="new-pen"
-        @click=${() =>
-          this.dispatchEvent(
-            Bubble('edit-src', this.srcByLabel?.Default || '')
-          )}
-        title="New pen"
-      >
-        <play-icon size=${iconSizes[this.size]} icon="add-outline"></play-icon>
-        <span>New</span>
-      </button>
-      <div class="divider"></div>
-      <play-dropdown-menu direction="down">
-        <div slot="trigger">
-          <button class="new-from-template" title="New pen from template">
-            <play-icon
-              size=${iconSizes[this.size]}
-              icon="caret-down-outline"
-            ></play-icon>
-          </button>
-        </div>
-        <div slot="menu">
-          ${repeat(
-            Object.entries(this.srcByLabel ?? {}),
-            ([label]) => label,
-            ([label, src]) =>
-              html`<play-list-item
-                label=${label}
-                @click=${() => {
-                  this.dispatchEvent(Bubble('edit-src', src))
-                }}
-                >${label}</play-list-item
-              >`
-          )}
-          <play-list-item
-            label="More examples"
-            endIcon="external-outline"
-            @click=${() =>
-              openURL('https://developers.reddit.com/docs/playground')}
-          ></play-list-item>
-        </div>
-      </play-dropdown-menu>
-    </div>`
+    return html`
+      <div class="container">
+        <button
+          class="new-pen"
+          @click=${() =>
+            this.dispatchEvent(
+              Bubble('edit-src', this.srcByLabel?.Default || '')
+            )}
+          title="New pen"
+        >
+          <play-icon
+            size=${iconSizes[this.size]}
+            icon="add-outline"
+          ></play-icon>
+          <span>New</span>
+        </button>
+        <div class="divider"></div>
+        <play-dropdown-menu direction="down">
+          <div slot="trigger">
+            <button class="new-from-template" title="New pen from template">
+              <play-icon
+                size=${iconSizes[this.size]}
+                icon="caret-down-outline"
+              ></play-icon>
+            </button>
+          </div>
+          <div slot="menu">
+            ${repeat(
+              Object.entries(this.srcByLabel ?? {}),
+              ([label]) => label,
+              ([label, src]) => html`
+                <play-list-item
+                  label=${label}
+                  @click=${() => {
+                    this.dispatchEvent(Bubble('edit-src', src))
+                  }}
+                  >${label}</play-list-item
+                >
+              `
+            )}
+            <play-list-item
+              label="More examples"
+              endIcon="external-outline"
+              @click=${() =>
+                openURL('https://developers.reddit.com/docs/playground')}
+            ></play-list-item>
+          </div>
+        </play-dropdown-menu>
+      </div>
+    `
   }
 }

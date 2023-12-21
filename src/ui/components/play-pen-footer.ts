@@ -65,50 +65,54 @@ export class PlayPenFooter extends LitElement {
     const errsLen =
       (this.diagnostics?.previewErrs.length ?? 0) +
       (this.diagnostics?.tsErrs.length ?? 0)
-    return html`<footer>
-      <div class="footer-buttons">
-        <play-button
-          appearance="inverted"
-          size="small"
-          endIcon="${this._open ? 'caret-down-outline' : 'caret-up-outline'}"
-          title="Toggle console"
-          @click=${() => (this._open = !this._open)}
-          badge=${errsLen}
-          label="Console"
-        ></play-button>
-        <div class="actions">
-          <play-dropdown-menu direction="up">
-            <div slot="trigger">
-              <play-button
-                appearance="inverted"
-                size="small"
-                icon="overflow-horizontal-outline"
-                title="Additional options"
-              ></play-button>
-            </div>
-            <div slot="menu">
-              <play-list-item
-                icon="report-outline"
-                label="Report a bug"
-                @click=${() =>
-                  openURL(
-                    'https://discord.com/channels/1050224141732687912/1115441897079574620'
-                  )}
-              ></play-list-item>
-              <play-list-item
-                icon="community-outline"
-                label="Devvit community"
-                @click=${() => openURL('https://www.reddit.com/r/devvit')}
-              ></play-list-item>
-            </div>
-          </play-dropdown-menu>
+    return html`
+      <footer>
+        <div class="footer-buttons">
+          <play-button
+            appearance="inverted"
+            size="small"
+            endIcon="${this._open ? 'caret-down-outline' : 'caret-up-outline'}"
+            title="Toggle console"
+            @click=${() => (this._open = !this._open)}
+            badge=${errsLen}
+            label="Console"
+          ></play-button>
+          <div class="actions">
+            <play-dropdown-menu direction="up">
+              <div slot="trigger">
+                <play-button
+                  appearance="inverted"
+                  size="small"
+                  icon="overflow-horizontal-outline"
+                  title="Additional options"
+                ></play-button>
+              </div>
+              <div slot="menu">
+                <play-list-item
+                  icon="report-outline"
+                  label="Report a bug"
+                  @click=${() =>
+                    openURL(
+                      'https://discord.com/channels/1050224141732687912/1115441897079574620'
+                    )}
+                ></play-list-item>
+                <play-list-item
+                  icon="community-outline"
+                  label="Devvit community"
+                  @click=${() => openURL('https://www.reddit.com/r/devvit')}
+                ></play-list-item>
+              </div>
+            </play-dropdown-menu>
+          </div>
         </div>
-      </div>
-      <div class=${`console-container ${this._open ? 'open' : 'closed'}`}>
-        ${this._open
-          ? html`<play-console .diagnostics=${this.diagnostics}></play-console>`
-          : nothing}
-      </div>
-    </footer>`
+        <div class=${`console-container ${this._open ? 'open' : 'closed'}`}>
+          ${this._open
+            ? html`
+                <play-console .diagnostics=${this.diagnostics}></play-console>
+              `
+            : nothing}
+        </div>
+      </footer>
+    `
   }
 }

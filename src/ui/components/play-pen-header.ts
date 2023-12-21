@@ -70,7 +70,8 @@ export class PlayPenHeader extends LitElement {
   @query('play-export-dialog') private _export!: PlayExportDialog
 
   protected override render(): TemplateResult {
-    return html`<header>
+    return html`
+      <header>
         <div class="titling">
           <play-logo></play-logo>
           <play-resizable-text-input
@@ -111,6 +112,7 @@ export class PlayPenHeader extends LitElement {
           ></play-button>
         </div>
       </header>
-      <play-export-dialog url=${this.url}></play-export-dialog>`
+      <play-export-dialog url=${this.url}></play-export-dialog>
+    `
   }
 }

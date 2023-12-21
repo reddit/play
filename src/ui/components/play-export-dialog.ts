@@ -149,44 +149,46 @@ export class PlayExportDialog extends LitElement {
 
   protected override render(): TemplateResult {
     const cmd = `npx devvit new --template='${this.url}'`
-    return html`<dialog>
-      <header>
-        <h1>Export project</h1>
-        <play-button
-          appearance="plain"
-          icon="close-outline"
-          @click=${this.close}
-          size="small"
-          title="Close"
-        ></play-button>
-      </header>
-
-      <p>Start a new project from this pen:</p>
-      <ol>
-        <li>
-          <a
-            href="https://developers.reddit.com/docs/quickstart"
-            target="_blank"
-            >Install Node.js and the Devvit command-line tool.</a
-          >
-        </li>
-        <li>
-          Copy the new project command:
-          <pre>${cmd}</pre>
+    return html`
+      <dialog>
+        <header>
+          <h1>Export project</h1>
           <play-button
-            appearance="bordered"
+            appearance="plain"
+            icon="close-outline"
+            @click=${this.close}
             size="small"
-            icon="copy-clipboard-outline"
-            label="Copy to clipboard"
-            @click=${async () => {
-              await navigator.clipboard.writeText(cmd)
-              this._toast.open()
-            }}
+            title="Close"
           ></play-button>
-        </li>
-        <li>Paste the command into a terminal and press enter.</li>
-      </ol>
-      <play-toast>Copied the command!</play-toast>
-    </dialog>`
+        </header>
+
+        <p>Start a new project from this pen:</p>
+        <ol>
+          <li>
+            <a
+              href="https://developers.reddit.com/docs/quickstart"
+              target="_blank"
+              >Install Node.js and the Devvit command-line tool.</a
+            >
+          </li>
+          <li>
+            Copy the new project command:
+            <pre>${cmd}</pre>
+            <play-button
+              appearance="bordered"
+              size="small"
+              icon="copy-clipboard-outline"
+              label="Copy to clipboard"
+              @click=${async () => {
+                await navigator.clipboard.writeText(cmd)
+                this._toast.open()
+              }}
+            ></play-button>
+          </li>
+          <li>Paste the command into a terminal and press enter.</li>
+        </ol>
+        <play-toast>Copied the command!</play-toast>
+      </dialog>
+    `
   }
 }

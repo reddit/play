@@ -118,19 +118,21 @@ export class PlayConsole extends LitElement {
     const tsErrs = []
     for (const err of this.diagnostics?.tsErrs ?? [])
       tsErrs.push(this.tsErrRow(err))
-    return html`<table>
-      <thead>
-        <tr>
-          <th class="type"><div class="resize">Type</div></th>
-          <th class="name"><div class="resize">Name</div></th>
-          <th class="message"><div class="resize">Message</div></th>
-          <th class="details">Details</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${tsErrs}${previewErrs}
-      </tbody>
-    </table>`
+    return html`
+      <table>
+        <thead>
+          <tr>
+            <th class="type"><div class="resize">Type</div></th>
+            <th class="name"><div class="resize">Name</div></th>
+            <th class="message"><div class="resize">Message</div></th>
+            <th class="details">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${tsErrs}${previewErrs}
+        </tbody>
+      </table>
+    `
   }
 
   tsErrRow(err: Diagnostic): TemplateResult<1> {
@@ -141,22 +143,26 @@ export class PlayConsole extends LitElement {
       err.start == null
         ? undefined
         : err.file?.getLineAndCharacterOfPosition(err.start)
-    return html`<tr>
-      <td>Compile</td>
-      <td>${type}</td>
-      <td>
-        ${line == null
-          ? ''
-          : html`<a
-              @click=${() =>
-                this.dispatchEvent(
-                  OpenLineEvent(line.line + 1, line.character)
-                )}
-              >Line ${line.line + 1}</a
-            >`}
-      </td>
-      <td>${ts.flattenDiagnosticMessageText(err.messageText, '\n')}</td>
-    </tr>`
+    return html`
+      <tr>
+        <td>Compile</td>
+        <td>${type}</td>
+        <td>
+          ${line == null
+            ? ''
+            : html`
+                <a
+                  @click=${() =>
+                    this.dispatchEvent(
+                      OpenLineEvent(line.line + 1, line.character)
+                    )}
+                  >Line ${line.line + 1}</a
+                >
+              `}
+        </td>
+        <td>${ts.flattenDiagnosticMessageText(err.messageText, '\n')}</td>
+      </tr>
+    `
   }
 }
 
@@ -182,21 +188,25 @@ function previewErrRow(err: PreviewError): TemplateResult<1> {
           'Context and other Devvit APIs are not yet supported in the playground.'
         : ''
   if (!isErrorLike(err.err))
-    return html`<tr>
+    return html`
+      <tr>
+        <td>Execution</td>
+        <td></td>
+        <td>${String(err.err)}</td>
+        <td>${detail}</td>
+      </tr>
+    `
+  return html`
+    <tr>
       <td>Execution</td>
-      <td></td>
-      <td>${String(err.err)}</td>
-      <td>${detail}</td>
-    </tr>`
-  return html`<tr>
-    <td>Execution</td>
-    <td>${err.err.name}</td>
-    <td>${err.err.message}</td>
-    <td>
-      ${detail}
-      <pre>${err.err.stack}</pre>
-    </td>
-  </tr>`
+      <td>${err.err.name}</td>
+      <td>${err.err.message}</td>
+      <td>
+        ${detail}
+        <pre>${err.err.stack}</pre>
+      </td>
+    </tr>
+  `
 }
 
 // BrowserLiteWorker may report objects that are Error-like but that aren't

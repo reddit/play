@@ -48,12 +48,14 @@ export class PlayListItem extends LitElement {
   `
 
   protected override render(): TemplateResult {
-    return html`<li>
-      ${this.icon &&
-      html`<play-icon size="20px" icon=${this.icon}></play-icon>`}
-      ${this.label}
-      ${this.endIcon &&
-      html`<play-icon size="20px" icon=${this.endIcon}></play-icon>`}
-    </li>`
+    return html`
+      <li>
+        ${this.icon &&
+        html`<play-icon size="20px" icon=${this.icon}></play-icon>`}
+        ${this.label}
+        ${this.endIcon &&
+        html`<play-icon size="20px" icon=${this.endIcon}></play-icon>`}
+      </li>
+    `
   }
 }

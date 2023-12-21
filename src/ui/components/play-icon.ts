@@ -64,9 +64,9 @@ export class PlayIcon extends LitElement {
       fill: this.color
     }
     return this.icon
-      ? html`<div style=${styleMap(style)}>
-          ${unsafeHTML(icons[this.icon])}
-        </div>`
+      ? html`
+          <div style=${styleMap(style)}>${unsafeHTML(icons[this.icon])}</div>
+        `
       : nothing
   }
 }

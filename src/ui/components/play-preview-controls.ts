@@ -72,12 +72,13 @@ export class PlayPreviewControls extends LitElement {
         </div>
         <div slot="menu">
           ${sizes.map(
-            ([width, label]) =>
-              html` <play-list-item
+            ([width, label]) => html`
+              <play-list-item
                 label=${label}
                 @click=${() =>
                   this.dispatchEvent(Bubble('preview-width', width))}
-              ></play-list-item>`
+              ></play-list-item>
+            `
           )}
         </div>
       </play-dropdown-menu>
