@@ -43,9 +43,8 @@ export class PlayPreviewControls extends LitElement {
   `
 
   @property({type: Number}) previewWidth = 718
-  @property() scheme: ColorScheme = globalThis.matchMedia(
-    '(prefers-color-scheme: dark)'
-  ).matches
+  @property() scheme: ColorScheme = matchMedia('(prefers-color-scheme: dark)')
+    .matches
     ? 'dark'
     : 'light'
 

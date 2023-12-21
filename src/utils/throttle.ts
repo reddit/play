@@ -8,7 +8,7 @@ export function throttle<T extends unknown[]>(
   let nextArgs: T | undefined
   return function (this: unknown, ...args: T): () => void {
     nextArgs = args
-    timeout ??= globalThis.setTimeout(
+    timeout ??= setTimeout(
       () => {
         prev = Date.now()
         timeout = undefined
@@ -19,7 +19,7 @@ export function throttle<T extends unknown[]>(
       Math.max(0, period - (Date.now() - prev))
     )
     return () => {
-      if (timeout != null) globalThis.clearTimeout(timeout)
+      if (timeout != null) clearTimeout(timeout)
       timeout = undefined
       nextArgs = undefined
     }

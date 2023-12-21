@@ -66,9 +66,9 @@ export class PlayToast extends LitElement {
   #timeout: ReturnType<typeof setTimeout> | undefined
 
   open(): void {
-    if (this.#timeout != null) globalThis.clearTimeout(this.#timeout)
+    if (this.#timeout != null) clearTimeout(this.#timeout)
     this.opened = true
-    this.#timeout = globalThis.setTimeout(() => {
+    this.#timeout = setTimeout(() => {
       this.opened = false
       this.#timeout = undefined
     }, 2000)

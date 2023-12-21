@@ -149,8 +149,8 @@ export class PlayPen extends LitElement {
     super.connectedCallback()
 
     let pen
-    if (this.allowURL) pen = loadPen(globalThis.location)
-    if (this.allowStorage) pen ??= loadPen(globalThis.localStorage)
+    if (this.allowURL) pen = loadPen(location)
+    if (this.allowStorage) pen ??= loadPen(localStorage)
     if (!pen) {
       this.#template = true
       this.#setSrc(helloBlocks, false)
@@ -242,8 +242,8 @@ export class PlayPen extends LitElement {
   /** Save to LocalStorage and URL as allowed. */
   #save(): void {
     savePen(
-      this.allowURL ? globalThis.location : undefined,
-      this.allowStorage ? globalThis.localStorage : undefined,
+      this.allowURL ? location : undefined,
+      this.allowStorage ? localStorage : undefined,
       PenSave(this._name, this._src ?? '')
     )
   }
@@ -274,7 +274,7 @@ export class PlayPen extends LitElement {
 
   /** Recompute the current hash regardless of the location bar state. */
   #shareURL(): URL {
-    const url = new URL(globalThis.location.toString())
+    const url = new URL(location.toString())
     url.hash = penToHash(PenSave(this._name, this._src ?? ''))
     return url
   }
