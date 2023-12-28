@@ -202,7 +202,7 @@ export class PlayPen extends LitElement {
           <play-preview-controls
             previewWidth=${this._previewWidth}
             scheme=${ifDefined(this._scheme)}
-            @reset=${() => this._preview.reset()}
+            @preview-reset=${() => this._preview.reset()}
             @preview-width=${(ev: CustomEvent<number>) =>
               (this._previewWidth = ev.detail)}
             @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>

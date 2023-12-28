@@ -20,7 +20,6 @@ declare global {
   interface HTMLElementEventMap {
     error: CustomEvent<PreviewError>
     'clear-errors': CustomEvent<undefined>
-    'devvit-ui-error': CustomEvent<unknown>
   }
   interface HTMLElementTagNameMap {
     'play-preview': PlayPreview
@@ -81,7 +80,8 @@ export class PlayPreview extends LitElement {
 
   @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
     new Blob([penWorker], {type: 'text/javascript'}),
-    (type, err) => this.dispatchEvent(Bubble('error', {type, err}))
+    (type, err) =>
+      this.dispatchEvent(Bubble<PreviewError>('error', {type, err}))
   )
   #meta: Metadata = {
     'devvit-app-user': {values: ['t2_appuser']},
@@ -92,11 +92,11 @@ export class PlayPreview extends LitElement {
   async reset(): Promise<void> {
     if (!this.bundle) return
     this._client.quit()
-    this.dispatchEvent(Bubble('clear-errors', undefined))
+    this.dispatchEvent(Bubble<undefined>('clear-errors', undefined))
     try {
       await this._client.loadBundle(this.bundle)
     } catch (err) {
-      this.dispatchEvent(Bubble('error', {type: 'Error', err}))
+      this.dispatchEvent(Bubble<PreviewError>('error', {type: 'Error', err}))
     }
     // Re-render the preview.
     this.#meta = {...this.#meta}
@@ -118,7 +118,7 @@ export class PlayPreview extends LitElement {
           <devvit-preview
             @devvit-ui-error=${(ev: CustomEvent<unknown>) =>
               this.dispatchEvent(
-                Bubble('error', {type: 'Error', err: ev.detail})
+                Bubble<PreviewError>('error', {type: 'Error', err: ev.detail})
               )}
             .meta="${this.#meta}"
             .client=${this._client}

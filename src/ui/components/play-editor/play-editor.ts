@@ -82,7 +82,7 @@ export class PlayEditor extends LitElement {
 
         if (transaction.docChanged) {
           const src = transaction.state.doc.sliceString(0)
-          this.dispatchEvent(Bubble('edit', src))
+          this.dispatchEvent(Bubble<string>('edit', src))
         }
       },
       parent: this._root,
@@ -102,6 +102,6 @@ export class PlayEditor extends LitElement {
     let src = this._scripts[0]?.innerText
     if (src == null) return
     src = unindent(src ?? '')
-    this.dispatchEvent(Bubble('edit-template', src))
+    this.dispatchEvent(Bubble<string>('edit-template', src))
   }
 }

@@ -149,7 +149,7 @@ export class PlayNewPenButton extends LitElement {
           class="new-pen"
           @click=${() =>
             this.dispatchEvent(
-              Bubble('edit-src', this.srcByLabel?.Default || '')
+              Bubble<string>('edit-src', this.srcByLabel?.Default || '')
             )}
           title="New pen"
         >
@@ -177,7 +177,7 @@ export class PlayNewPenButton extends LitElement {
                 <play-list-item
                   label=${label}
                   @click=${() => {
-                    this.dispatchEvent(Bubble('edit-src', src))
+                    this.dispatchEvent(Bubble<string>('edit-src', src))
                   }}
                   >${label}</play-list-item
                 >

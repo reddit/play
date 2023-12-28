@@ -113,7 +113,7 @@ export class PlayResizableTextInput extends LitElement {
   }
 
   #onInput(ev: InputEvent & {currentTarget: HTMLInputElement}): void {
-    this.dispatchEvent(Bubble('edit-text', ev.currentTarget.value))
+    this.dispatchEvent(Bubble<string>('edit-text', ev.currentTarget.value))
   }
 
   #resizeInput(input: HTMLInputElement): void {

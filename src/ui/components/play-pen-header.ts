@@ -76,7 +76,7 @@ export class PlayPenHeader extends LitElement {
           <play-logo></play-logo>
           <play-resizable-text-input
             @edit-text=${(ev: CustomEvent<string>) =>
-              this.dispatchEvent(Bubble('edit-name', ev.detail))}
+              this.dispatchEvent(Bubble<string>('edit-name', ev.detail))}
             placeholder="Untitled"
             .text=${this.name}
           ></play-resizable-text-input>
@@ -108,7 +108,8 @@ export class PlayPenHeader extends LitElement {
             icon="share-new-outline"
             title="Copy URL to Clipboard"
             label="Share"
-            @click=${() => this.dispatchEvent(Bubble('share', undefined))}
+            @click=${() =>
+              this.dispatchEvent(Bubble<undefined>('share', undefined))}
           ></play-button>
         </div>
       </header>

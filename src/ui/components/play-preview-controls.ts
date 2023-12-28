@@ -24,6 +24,7 @@ const sizes: readonly [width: number, label: string][] = [
 
 declare global {
   interface HTMLElementEventMap {
+    'preview-reset': CustomEvent<undefined>
     'preview-scheme': CustomEvent<ColorScheme>
     'preview-width': CustomEvent<number>
   }
@@ -56,7 +57,7 @@ export class PlayPreviewControls extends LitElement {
         icon="restart-outline"
         title="Restart the preview"
         label="Restart"
-        @click=${() => this.dispatchEvent(Bubble('reset', true))}
+        @click=${() => this.dispatchEvent(Bubble<undefined>('preview-reset', undefined))}
       ></play-button>
 
       <play-dropdown-menu direction="up">
@@ -75,7 +76,7 @@ export class PlayPreviewControls extends LitElement {
               <play-list-item
                 label=${label}
                 @click=${() =>
-                  this.dispatchEvent(Bubble('preview-width', width))}
+                  this.dispatchEvent(Bubble<number>('preview-width', width))}
               ></play-list-item>
             `
           )}
@@ -90,7 +91,10 @@ export class PlayPreviewControls extends LitElement {
         label=${this.scheme === 'dark' ? 'Dark' : 'Light'}
         @click=${() =>
           this.dispatchEvent(
-            Bubble('preview-scheme', this.scheme === 'dark' ? 'light' : 'dark')
+            Bubble<ColorScheme>(
+              'preview-scheme',
+              this.scheme === 'dark' ? 'light' : 'dark'
+            )
           )}
       ></play-button>
     `

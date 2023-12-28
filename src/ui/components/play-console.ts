@@ -154,7 +154,10 @@ export class PlayConsole extends LitElement {
                 <a
                   @click=${() =>
                     this.dispatchEvent(
-                      OpenLineEvent(line.line + 1, line.character)
+                      Bubble<OpenLine>('open-line', {
+                        line: line.line + 1,
+                        char: line.character
+                      })
                     )}
                   >Line ${line.line + 1}</a
                 >
@@ -164,14 +167,6 @@ export class PlayConsole extends LitElement {
       </tr>
     `
   }
-}
-
-/** @arg line One-based index. */
-export function OpenLineEvent(
-  line: number,
-  char: number
-): CustomEvent<OpenLine> {
-  return Bubble('open-line', {line, char})
 }
 
 function previewErrRow(err: PreviewError): TemplateResult<1> {
