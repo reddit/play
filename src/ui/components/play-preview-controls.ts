@@ -57,7 +57,8 @@ export class PlayPreviewControls extends LitElement {
         icon="restart-outline"
         title="Restart the preview"
         label="Restart"
-        @click=${() => this.dispatchEvent(Bubble<undefined>('preview-reset', undefined))}
+        @click=${() =>
+          this.dispatchEvent(Bubble<undefined>('preview-reset', undefined))}
       ></play-button>
 
       <play-dropdown-menu direction="up">
