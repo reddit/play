@@ -71,6 +71,7 @@ await fs.writeFile(
 /** @type {esbuild.BuildOptions} */
 const opts = {
   bundle: true,
+  conditions: watch ? ['development'] : [], // Lit
   define: {
     'globalThis.version': `'${pkg.version}'`,
     'globalThis.devvitVersion': `'${pkg.devDependencies['@devvit/public-api']}'`
