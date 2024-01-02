@@ -96,4 +96,4 @@ See [supplemental development notes](docs/development.md).
   improvement, the code only gets better.
 - Smaller patches get better reviews.
 
-## [License (BSD-3-Clause)](docs/license.md)
+## [License (BSD-3-Clause)](license.md)
