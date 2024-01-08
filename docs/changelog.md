@@ -2,6 +2,20 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.29
+
+- ddbd98a Upgrade dependencies
+- 412a62c Move license to root for GitHub detection
+- e750371 Extract vitest config
+- ad0835d Fix lint
+- 0e703a9 Enable Lit development mode
+- a4d84ec Move typing to Bubble calls
+- ad2fc40 Omit redundant globalThis usages
+- e2cbb8b Format HTML tagged template literals
+- 298e2db Test missing component imports
+- 8b01bfe Fix event types
+- f404854 Add SVG example
+
 ## v0.0.28
 
 - 76a0e57 Upgrade dependencies
