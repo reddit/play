@@ -2,6 +2,10 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.30
+
+- 871e6b2 Fix type in example
+
 ## v0.0.29
 
 - ddbd98a Upgrade dependencies
