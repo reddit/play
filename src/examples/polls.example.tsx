@@ -42,7 +42,7 @@ const Header = () => (
 
 const Footer = (props: {children?: Devvit.ElementChildren}) => (
   <hstack gap='small' alignment='middle' padding='medium' height='32px'>
-    {props.children}
+    {props.children ?? null}
     <text color='neutral-content-weak' size='small'>
       15 hours 11 minutes left
     </text>
