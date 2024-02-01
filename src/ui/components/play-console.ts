@@ -1,4 +1,4 @@
-import {isCircuitBreaker} from '@devvit/runtime-lite/CircuitBreaker.js'
+import {isCircuitBreaker} from '@devvit/runtime-lite/types/CircuitBreaker.js'
 import {
   LitElement,
   css,

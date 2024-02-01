@@ -1,6 +1,6 @@
 import penWorker from '@devvit/previews/dist/pen.worker.min.js'
 import type {LinkedBundle, Metadata} from '@devvit/protos'
-import {BrowserLiteClient} from '@devvit/runtime-lite/BrowserLiteClient.js'
+import {BrowserLiteClient} from '@devvit/runtime-lite/client/BrowserLiteClient.js'
 import {
   LitElement,
   css,
