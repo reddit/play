@@ -34,6 +34,8 @@ import type {PlayPreview} from '../play-preview.js'
 import type {PlayToast} from '../play-toast.js'
 import penVars from './pen-vars.css'
 
+import '../play-demo.js'
+import type {FancyClick} from '../play-demo.js'
 import '../play-editor/play-editor.js'
 import '../play-pen-footer.js'
 import '../play-pen-header.js'
@@ -162,7 +164,7 @@ export class PlayPen extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
-      <play-toast>Copied the URL!</play-toast
+      <play-toast>Copied the URL2!</play-toast
       ><play-pen-header
         name=${this._name}
         .srcByLabel=${this.srcByLabel}
@@ -191,6 +193,10 @@ export class PlayPen extends LitElement {
           ><slot></slot
         ></play-editor>
         <div class="preview">
+          <play-demo
+            @fancy-click=${(ev: CustomEvent<FancyClick>) =>
+              this._editor.setSrc(ev.detail.num.toString())}
+          ></play-demo>
           <play-preview
             .bundle=${this._bundle}
             previewWidth=${this._previewWidth}

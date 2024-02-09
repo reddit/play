@@ -120,6 +120,8 @@ export class PlayPreview extends LitElement {
               this.dispatchEvent(
                 Bubble<PreviewError>('error', {type: 'Error', err: ev.detail})
               )}
+            @devvit-ui-logs=${(ev: CustomEvent<unknown>) =>
+              console.log('got some logs', ev.detail)}
             .meta="${this.#meta}"
             .client=${this._client}
             .scheme=${this.scheme}
