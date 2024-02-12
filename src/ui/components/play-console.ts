@@ -1,4 +1,3 @@
-import type {DevvitUIError} from '@devvit/previews/dist/devvit-blocks-preview.js'
 import {isCircuitBreaker} from '@devvit/runtime-lite/types/CircuitBreaker.js'
 import {
   LitElement,
@@ -11,6 +10,7 @@ import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostic} from 'typescript'
 import ts from 'typescript'
 import type {Diagnostics} from '../../types/diagnostics.js'
+import type {PreviewError} from '../../types/preview-error.js'
 import {Bubble} from '../bubble.js'
 
 declare global {
@@ -169,7 +169,7 @@ export class PlayConsole extends LitElement {
   }
 }
 
-function previewErrRow(err: DevvitUIError): TemplateResult<1> {
+function previewErrRow(err: PreviewError): TemplateResult<1> {
   const detail =
     err.type === 'UnhandledRejection'
       ? 'Unhandled promise rejection; `await` asynchronous execution and ' +

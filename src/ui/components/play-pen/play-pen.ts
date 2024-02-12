@@ -26,13 +26,13 @@ import svg from '../../../examples/svg.example.js'
 import type {ColorScheme} from '../../../types/color-scheme.js'
 import type {Diagnostics} from '../../../types/diagnostics.js'
 import {PenSave, loadPen, penToHash, savePen} from '../../../types/pen-save.js'
+import type {PreviewError} from '../../../types/preview-error.js'
 import {throttle} from '../../../utils/throttle.js'
 import type {OpenLine} from '../play-console.js'
 import type {PlayEditor} from '../play-editor/play-editor.js'
 import type {PlayPreview} from '../play-preview.js'
 import type {PlayToast} from '../play-toast.js'
 import penVars from './pen-vars.css'
-import type {DevvitUIError} from '@devvit/previews/dist/devvit-blocks-preview.js'
 
 import '../play-editor/play-editor.js'
 import '../play-pen-footer.js'
@@ -196,7 +196,7 @@ export class PlayPen extends LitElement {
             previewWidth=${this._previewWidth}
             scheme=${ifDefined(this._scheme)}
             @clear-errors=${() => this.#clearPreviewErrors()}
-            @devvit-ui-error=${(ev: CustomEvent<DevvitUIError>) =>
+            @error=${(ev: CustomEvent<PreviewError>) =>
               this.#appendPreviewError(ev.detail)}
           ></play-preview>
           <play-preview-controls
@@ -222,7 +222,7 @@ export class PlayPen extends LitElement {
     `
   }
 
-  #appendPreviewError(err: DevvitUIError): void {
+  #appendPreviewError(err: PreviewError): void {
     this._diagnostics = {
       ...this._diagnostics,
       previewErrs: [...this._diagnostics.previewErrs, err]

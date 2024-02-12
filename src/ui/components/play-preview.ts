@@ -1,24 +1,24 @@
 import penWorker from '@devvit/previews/dist/pen.worker.min.js'
 import type {LinkedBundle, Metadata} from '@devvit/protos'
+import {BrowserLiteClient} from '@devvit/runtime-lite/client/BrowserLiteClient.js'
 import {
   LitElement,
   css,
   html,
-  nothing,
   type CSSResultGroup,
   type PropertyValues,
   type TemplateResult
 } from 'lit'
-import {customElement, property} from 'lit/decorators.js'
+import {customElement, property, state} from 'lit/decorators.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import {Bubble} from '../bubble.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
-
-const localRuntimeCode: Blob = new Blob([penWorker], {type: 'text/javascript'})
+import type {PreviewError} from '../../types/preview-error.js'
 
 declare global {
   interface HTMLElementEventMap {
+    error: CustomEvent<PreviewError>
     'clear-errors': CustomEvent<undefined>
   }
   interface HTMLElementTagNameMap {
@@ -78,17 +78,34 @@ export class PlayPreview extends LitElement {
   @property({type: Number}) previewWidth?: number
   @property() scheme?: ColorScheme
 
+  @state() private readonly _client: BrowserLiteClient = new BrowserLiteClient(
+    new Blob([penWorker], {type: 'text/javascript'}),
+    (type, err) =>
+      this.dispatchEvent(Bubble<PreviewError>('error', {type, err}))
+  )
   #meta: Metadata = {
     'devvit-app-user': {values: ['t2_appuser']},
-    'devvit-subreddit': {values: ['t5_sub']},
+    'devvit-subreddit': {values: ['t5_devvit']},
     'devvit-user': {values: ['t2_user']}
   }
 
   async reset(): Promise<void> {
     if (!this.bundle) return
+    this._client.quit()
     this.dispatchEvent(Bubble<undefined>('clear-errors', undefined))
-    this.bundle = {...this.bundle}
+    try {
+      await this._client.loadBundle(this.bundle)
+    } catch (err) {
+      this.dispatchEvent(Bubble<PreviewError>('error', {type: 'Error', err}))
+    }
+    // Re-render the preview.
     this.#meta = {...this.#meta}
+    this.requestUpdate()
+  }
+
+  override disconnectedCallback(): void {
+    this._client.quit()
+    super.disconnectedCallback()
   }
 
   protected override render(): TemplateResult {
@@ -96,18 +113,19 @@ export class PlayPreview extends LitElement {
     // variable.
     return html`
       <div class="preview">
-        ${this.bundle
-          ? html`
-              <devvit-preview
-                .bundle=${this.bundle}
-                .localRuntimeCode=${localRuntimeCode}
-                .metadata=${this.#meta}
-                .scheme=${this.scheme}
-                style="--rem16: 50px;"
-                ?useExperimentalBlocks=${true}
-              ></devvit-preview>
-            `
-          : nothing}
+        ${this.bundle &&
+        html`
+          <devvit-preview
+            @devvit-ui-error=${(ev: CustomEvent<unknown>) =>
+              this.dispatchEvent(
+                Bubble<PreviewError>('error', {type: 'Error', err: ev.detail})
+              )}
+            .meta="${this.#meta}"
+            .client=${this._client}
+            .scheme=${this.scheme}
+            style="--rem16: 50px;"
+          ></devvit-preview>
+        `}
       </div>
     `
   }
@@ -115,8 +133,7 @@ export class PlayPreview extends LitElement {
   protected override async willUpdate(
     props: PropertyValues<this>
   ): Promise<void> {
-    super.willUpdate(props)
-    if (props.has('bundle'))
-      this.dispatchEvent(Bubble<undefined>('clear-errors', undefined))
+    if (props.has('bundle')) await this.reset()
+    else this.requestUpdate()
   }
 }
