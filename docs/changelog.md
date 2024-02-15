@@ -2,6 +2,13 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.32
+
+- 5f3fc92 Upgrade dependencies
+- 3ad1e51 [DX-5712] Upgrade to Devvit 0.10.15-next-2024-02-01-b904edfe7.0
+- f5e4a1f Revert "[DX-5712] Upgrade to Devvit 0.10.15-next"
+- 1d7e631 [DX-5712] Upgrade to Devvit 0.10.15-next
+
 ## v0.0.31
 
 - 298752f Upgrade dependencies
