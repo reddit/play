@@ -39,7 +39,7 @@ Add a pen to your HTML markup:
 
 Published releases include:
 
-- **play-.\*.html**: portable playground.
+- **play-.\*.html**: portable playground (Firefox only since v0.0.32).
 - **play-pen.js**: `play-pen` element.
 - **play.js**: library utilities.
 

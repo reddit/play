@@ -9,7 +9,7 @@ import {
   type PropertyValues,
   type TemplateResult
 } from 'lit'
-import {customElement, property} from 'lit/decorators.js'
+import {customElement, property, state} from 'lit/decorators.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import {Bubble} from '../bubble.js'
 
@@ -78,6 +78,8 @@ export class PlayPreview extends LitElement {
   @property({type: Number}) previewWidth?: number
   @property() scheme?: ColorScheme
 
+  @state() private _err = false
+
   #meta: Metadata = {
     'devvit-app-user': {values: ['t2_appuser']},
     'devvit-subreddit': {values: ['t5_sub']},
@@ -89,6 +91,7 @@ export class PlayPreview extends LitElement {
     this.dispatchEvent(Bubble<undefined>('clear-errors', undefined))
     this.bundle = {...this.bundle}
     this.#meta = {...this.#meta}
+    this._err = false
   }
 
   protected override render(): TemplateResult {
@@ -96,7 +99,7 @@ export class PlayPreview extends LitElement {
     // variable.
     return html`
       <div class="preview">
-        ${this.bundle
+        ${this.bundle && !this._err
           ? html`
               <devvit-preview
                 .bundle=${this.bundle}
@@ -104,7 +107,9 @@ export class PlayPreview extends LitElement {
                 .metadata=${this.#meta}
                 .scheme=${this.scheme}
                 style="--rem16: 50px;"
-                ?useExperimentalBlocks=${true}
+                ?use-experimental-blocks=${true}
+                ?use-sandbox=${false}
+                @devvit-ui-error=${() => (this._err = true)}
               ></devvit-preview>
             `
           : nothing}
@@ -116,7 +121,9 @@ export class PlayPreview extends LitElement {
     props: PropertyValues<this>
   ): Promise<void> {
     super.willUpdate(props)
-    if (props.has('bundle'))
+    if (props.has('bundle')) {
+      this._err = false
       this.dispatchEvent(Bubble<undefined>('clear-errors', undefined))
+    }
   }
 }

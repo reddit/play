@@ -1,5 +1,5 @@
-import type {DevvitUIError} from '@devvit/previews/dist/devvit-blocks-preview.js'
 import {isCircuitBreaker} from '@devvit/runtime-lite/types/CircuitBreaker.js'
+import type {DevvitUIError} from '@devvit/ui-renderer/client/devvit-custom-post.js'
 import {
   LitElement,
   css,

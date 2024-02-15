@@ -1,4 +1,4 @@
-import type {DevvitUIError} from '@devvit/previews/dist/devvit-blocks-preview.js'
+import type {DevvitUIError} from '@devvit/ui-renderer/client/devvit-custom-post.js'
 import type {Diagnostic} from 'typescript'
 
 export type Diagnostics = {

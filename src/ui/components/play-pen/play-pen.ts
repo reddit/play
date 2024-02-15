@@ -1,4 +1,5 @@
 import type {LinkedBundle} from '@devvit/protos'
+import type {DevvitUIError} from '@devvit/ui-renderer/client/devvit-custom-post.js'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
 import {
   LitElement,
@@ -32,7 +33,6 @@ import type {PlayEditor} from '../play-editor/play-editor.js'
 import type {PlayPreview} from '../play-preview.js'
 import type {PlayToast} from '../play-toast.js'
 import penVars from './pen-vars.css'
-import type {DevvitUIError} from '@devvit/previews/dist/devvit-blocks-preview.js'
 
 import '../play-editor/play-editor.js'
 import '../play-pen-footer.js'
