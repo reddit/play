@@ -2,6 +2,11 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.33
+
+- 98d3cf5 Fix reset
+- 5307109 Normalize repository URL
+
 ## v0.0.32
 
 - 5f3fc92 Upgrade dependencies
