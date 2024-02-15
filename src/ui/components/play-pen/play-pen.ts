@@ -30,7 +30,6 @@ import {PenSave, loadPen, penToHash, savePen} from '../../../types/pen-save.js'
 import {throttle} from '../../../utils/throttle.js'
 import type {OpenLine} from '../play-console.js'
 import type {PlayEditor} from '../play-editor/play-editor.js'
-import type {PlayPreview} from '../play-preview.js'
 import type {PlayToast} from '../play-toast.js'
 import penVars from './pen-vars.css'
 
@@ -133,7 +132,6 @@ export class PlayPen extends LitElement {
   @state() private _previewWidth: number = 288
   @state() private _diagnostics: Diagnostics = {previewErrs: [], tsErrs: []}
   @query('play-editor') private _editor!: PlayEditor
-  @query('play-preview') private _preview!: PlayPreview
   @query('play-toast') private _toast!: PlayToast
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
 
@@ -202,7 +200,9 @@ export class PlayPen extends LitElement {
           <play-preview-controls
             previewWidth=${this._previewWidth}
             scheme=${ifDefined(this._scheme)}
-            @preview-reset=${() => this._preview.reset()}
+            @preview-reset=${() => {
+              if (this._bundle) this._bundle = {...this._bundle}
+            }}
             @preview-width=${(ev: CustomEvent<number>) =>
               (this._previewWidth = ev.detail)}
             @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>

@@ -22,7 +22,8 @@ npm link \
   ~/work/reddit/src/devvit/packages/previews \
   ~/work/reddit/src/devvit/packages/protos \
   ~/work/reddit/src/devvit/packages/public-api \
-  ~/work/reddit/src/devvit/packages/runtime-lite
+  ~/work/reddit/src/devvit/packages/runtime-lite \
+  ~/work/reddit/src/devvit/packages/ui-renderer
 ```
 
 </details>

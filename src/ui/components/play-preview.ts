@@ -86,14 +86,6 @@ export class PlayPreview extends LitElement {
     'devvit-user': {values: ['t2_user']}
   }
 
-  async reset(): Promise<void> {
-    if (!this.bundle) return
-    this.dispatchEvent(Bubble<undefined>('clear-errors', undefined))
-    this.bundle = {...this.bundle}
-    this.#meta = {...this.#meta}
-    this._err = false
-  }
-
   protected override render(): TemplateResult {
     // to-do: don't override toaster's --rem16 to offset the toast. Upstream a
     // variable.
