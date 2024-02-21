@@ -5,16 +5,16 @@
   "devDependencies": {
     "@ampproject/filesize": "4.3.0",
     "@codemirror/autocomplete": "6.12.0",
-    "@codemirror/lang-javascript": "6.2.1",
+    "@codemirror/lang-javascript": "6.2.2",
     "@codemirror/language": "6.10.1",
     "@codemirror/lint": "6.5.0",
-    "@codemirror/state": "6.4.0",
-    "@codemirror/view": "6.24.0",
-    "@devvit/previews": "0.10.15-next-2024-02-15-53cf05522.0",
-    "@devvit/protos": "0.10.15-next-2024-02-15-53cf05522.0",
-    "@devvit/public-api": "0.10.15-next-2024-02-15-53cf05522.0",
-    "@devvit/runtime-lite": "0.10.15-next-2024-02-15-53cf05522.0",
-    "@devvit/ui-renderer": "0.10.15-next-2024-02-15-53cf05522.0",
+    "@codemirror/state": "6.4.1",
+    "@codemirror/view": "6.24.1",
+    "@devvit/previews": "0.10.16-next-2024-02-21-dec8960f2.0",
+    "@devvit/protos": "0.10.16-next-2024-02-21-dec8960f2.0",
+    "@devvit/public-api": "0.10.16-next-2024-02-21-dec8960f2.0",
+    "@devvit/runtime-lite": "0.10.16-next-2024-02-21-dec8960f2.0",
+    "@devvit/ui-renderer": "0.10.16-next-2024-02-21-dec8960f2.0",
     "@typescript/vfs": "1.5.0",
     "codemirror": "6.0.1",
     "esbuild": "0.19.5",
@@ -23,7 +23,7 @@
     "lz-string": "1.5.0",
     "prettier": "3.2.5",
     "typescript": "5.3.3",
-    "vitest": "1.2.2"
+    "vitest": "1.3.1"
   },
   "engines": {
     "node": ">=18"
