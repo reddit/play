@@ -92,6 +92,7 @@ const opts = {
 const appOpts = {
   ...opts,
   entryPoints: [path.join('src', 'ui', 'components', 'play-app.ts')],
+  external: ['path'], // @typescript/vfs requires path.
   minify: !watch,
   outdir: 'dist',
   plugins: [plugin],

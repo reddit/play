@@ -17,7 +17,7 @@
     "@devvit/ui-renderer": "0.10.16-next-2024-02-21-dec8960f2.0",
     "@typescript/vfs": "1.5.0",
     "codemirror": "6.0.1",
-    "esbuild": "0.19.5",
+    "esbuild": "0.20.1",
     "lit": "3.1.2",
     "lit-analyzer": "2.0.3",
     "lz-string": "1.5.0",
