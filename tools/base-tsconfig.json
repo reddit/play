@@ -8,6 +8,7 @@
 
     // Maximize type checking.
     "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "exactOptionalPropertyTypes": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
@@ -17,6 +18,9 @@
     "resolveJsonModule": true,
     "strict": true,
 
+    // Projects add types needed.
+    "types": [],
+
     // Improve compatibility with compilers that aren't type system aware.
     "isolatedModules": true,
 
@@ -24,8 +28,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
 
-    // to-do: this shouldn't be needed. It's set in the Devvit polyrepo's base
-    // config though which suggests an upstream issue.
+    // Assume libraries are correct.
     "skipLibCheck": true,
 
     "sourceMap": true,

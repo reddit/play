@@ -1,3 +1,4 @@
+// TypeScript config for all production code.
 {
   "extends": "../tools/base-tsconfig.json",
   "compilerOptions": {

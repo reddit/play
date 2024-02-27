@@ -1,8 +1,9 @@
-// TypeScript config for test code under src/**/*.test.ts and src/test/**/*.
+// TypeScript config for test code under src/**/*.test.ts and src/test/**/*
+// except elements.
 {
   "extends": "../../tools/base-tsconfig.json",
   "compilerOptions": {
-    "lib": ["DOM", "ES2022"],
+    "lib": ["DOM", "ES2023"],
 
     // tsc is only used for type-checking.
     "noEmit": true,
@@ -10,5 +11,6 @@
     "rootDir": ".."
   },
   "include": ["**/*", "../**/*.test.ts"],
+  "exclude": ["../elements/**/*.test.ts"],
   "references": [{"path": ".."}]
 }

@@ -8,8 +8,7 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import type {Diagnostic} from 'typescript'
-import ts from 'typescript'
+import * as ts from 'typescript'
 import type {Diagnostics} from '../types/diagnostics.js'
 import {Bubble} from '../utils/bubble.js'
 
@@ -135,7 +134,7 @@ export class PlayConsole extends LitElement {
     `
   }
 
-  tsErrRow(err: Diagnostic): TemplateResult<1> {
+  tsErrRow(err: ts.Diagnostic): TemplateResult<1> {
     const type = {0: 'Warning', 1: 'Error', 2: 'Suggestion', 3: 'Message'}[
       err.category
     ]

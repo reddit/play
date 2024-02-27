@@ -1,0 +1,16 @@
+// TypeScript config for test code under src/elements/**/*.test.ts and
+// src/elements/test/**/*.
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    // tsc is only used for type-checking.
+    "noEmit": true,
+
+    "rootDir": "..",
+
+    "types": ["mocha"]
+  },
+  "include": ["**/*", "../**/*.test.ts"],
+  "exclude": [],
+  "references": [{"path": "../.."}]
+}
