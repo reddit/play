@@ -15,8 +15,8 @@ import {
   query,
   queryAssignedElements
 } from 'lit/decorators.js'
-import {unindent} from '../../../utils/unindent.js'
-import {Bubble} from '../../bubble.js'
+import {Bubble} from '../../utils/bubble.js'
+import {unindent} from '../../utils/unindent.js'
 import {newEditorState} from './editor-state.js'
 
 declare global {

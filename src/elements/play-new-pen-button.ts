@@ -7,8 +7,8 @@ import {
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {repeat} from 'lit/directives/repeat.js'
-import {openURL} from '../../utils/open-url.js'
-import {Bubble} from '../bubble.js'
+import {Bubble} from '../utils/bubble.js'
+import {openURL} from '../utils/open-url.js'
 
 import './play-dropdown-menu.js'
 import './play-icon.js'

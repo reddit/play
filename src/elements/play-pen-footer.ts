@@ -7,8 +7,8 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
-import type {Diagnostics} from '../../types/diagnostics.js'
-import {openURL} from '../../utils/open-url.js'
+import type {Diagnostics} from '../types/diagnostics.js'
+import {openURL} from '../utils/open-url.js'
 
 import './play-button.js'
 import './play-console.js'

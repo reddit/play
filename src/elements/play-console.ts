@@ -10,8 +10,8 @@ import {
 import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostic} from 'typescript'
 import ts from 'typescript'
-import type {Diagnostics} from '../../types/diagnostics.js'
-import {Bubble} from '../bubble.js'
+import type {Diagnostics} from '../types/diagnostics.js'
+import {Bubble} from '../utils/bubble.js'
 
 declare global {
   interface HTMLElementEventMap {

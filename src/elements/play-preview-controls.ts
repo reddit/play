@@ -6,8 +6,8 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import type {ColorScheme} from '../../types/color-scheme.js'
-import {Bubble} from '../bubble.js'
+import type {ColorScheme} from '../types/color-scheme.js'
+import {Bubble} from '../utils/bubble.js'
 
 import './play-button.js'
 import './play-dropdown-menu.js'

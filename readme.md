@@ -1,4 +1,4 @@
-# ![:play](src/ui/assets/favicon/favicon48.png) :play
+# ![:play](src/assets/favicon/favicon48.png) :play
 
 A little playground for building apps on Reddit.
 

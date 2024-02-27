@@ -34,7 +34,7 @@
       "import": "./dist/play.js"
     },
     "./pen": {
-      "types": "./dist/ui/components/play-pen.d.ts",
+      "types": "./dist/elements/play-pen.d.ts",
       "import": "./dist/play-pen.js"
     }
   },
@@ -57,7 +57,7 @@
         "./dist/index.d.ts"
       ],
       "pen": [
-        "./dist/ui/components/play-pen.d.ts"
+        "./dist/elements/play-pen.d.ts"
       ]
     }
   },

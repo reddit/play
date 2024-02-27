@@ -6,8 +6,8 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
-import {openURL} from '../../utils/open-url.js'
-import {Bubble} from '../bubble.js'
+import {Bubble} from '../utils/bubble.js'
+import {openURL} from '../utils/open-url.js'
 import type {PlayExportDialog} from './play-export-dialog.js'
 
 import './play-button.js'

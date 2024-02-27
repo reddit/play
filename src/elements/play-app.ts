@@ -1,6 +1,3 @@
-// Portable playground. Imported by ui/assets/index.html and built by
-// tools/build.js. Defines play-app component.
-
 import {
   LitElement,
   css,

@@ -8,7 +8,7 @@ import {
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import ts, {displayPartsToString} from 'typescript'
-import type {Diagnostics} from '../../types/diagnostics.js'
+import type {Diagnostics} from '../types/diagnostics.js'
 
 declare global {
   interface HTMLElementTagNameMap {

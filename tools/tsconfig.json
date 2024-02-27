@@ -11,5 +11,5 @@
 
     "rootDir": ".."
   },
-  "include": ["**/*", "../package.json", "../src/ui/assets/manifest.json"]
+  "include": ["**/*", "../package.json", "../src/assets/manifest.json"]
 }

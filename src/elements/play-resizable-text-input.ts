@@ -7,7 +7,7 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import {Bubble} from '../bubble.js'
+import {Bubble} from '../utils/bubble.js'
 
 declare global {
   interface HTMLElementEventMap {

@@ -10,8 +10,8 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
-import type {ColorScheme} from '../../types/color-scheme.js'
-import {Bubble} from '../bubble.js'
+import type {ColorScheme} from '../types/color-scheme.js'
+import {Bubble} from '../utils/bubble.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
 
