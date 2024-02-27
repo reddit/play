@@ -3,7 +3,8 @@ import {esbuildConfig} from './esbuild-config.js'
 
 const base = esbuildConfig('0.0.0', '0.0.1-next-2000-01-01-abcdef123.4')
 
-export default {
+/** @type {import('@web/test-runner').TestRunnerConfig} */
+const config = {
   files: ['src/elements/**/*.test.ts'],
   nodeResolve: true,
   plugins: [
@@ -24,3 +25,4 @@ export default {
     }
   }
 }
+export default config
