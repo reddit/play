@@ -5,7 +5,7 @@ declare module '*.css' {
   export = text
 }
 
-declare module '*.example.js' {
+declare module '*.example.tsx' {
   const text: string
   export = text
 }
@@ -16,6 +16,6 @@ declare module '*.svg' {
 }
 
 declare module '*.worker.min.js' {
-  const text: string
-  export = text
+  // This import must be wildcarded for @web/dev-server-esbuild.
+  export = {default: string}
 }

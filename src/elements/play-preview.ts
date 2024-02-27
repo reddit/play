@@ -1,4 +1,6 @@
-import penWorker from '@devvit/previews/dist/pen.worker.min.js'
+// @ts-expect-error
+import * as penWorker from '@devvit/previews/dist/pen.worker.min.js'
+
 import type {LinkedBundle, Metadata} from '@devvit/protos'
 import {
   LitElement,
@@ -15,7 +17,9 @@ import {Bubble} from '../utils/bubble.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
 
-const localRuntimeCode: Blob = new Blob([penWorker], {type: 'text/javascript'})
+const localRuntimeCode: Blob = new Blob([penWorker.default], {
+  type: 'text/javascript'
+})
 
 declare global {
   interface HTMLElementEventMap {
