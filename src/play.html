@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <title>:play</title>
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" href="{favicon}" />
-    <link rel="manifest" href="{manifest}" />
+    <link rel="icon" type="image/png" href="favicon/favicon.png" />
+    <link rel="manifest" href="manifest.json" />
     <style>
       :root {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
@@ -14,14 +14,14 @@
       }
 
       body {
-        /* Any elements rendered are full-bleed. */
         margin: 0;
+        height: 100vh;
+        width: 100vw;
       }
     </style>
   </head>
   <body>
-    <!-- prettier-ignore -->
-    <script type="module">{js}</script>
+    <script src="elements/play-app.ts" type="module"></script>
     <play-app></play-app>
   </body>
 </html>

@@ -1,42 +1,58 @@
 #!/usr/bin/env -S node --no-warnings
 // Bundles sources into a single HTML file for distribution and development.
 //
-// --watch: run development server. Serve on http://localhost:1234 and reload on
+// --watch  Run development server. Serve on http://localhost:1234 and reload on
 //          code change.
 //
 // --no-warnings shebang works around JSON import warnings. See
-// https://github.com/nodejs/node/issues/27355.
-
+// https://github.com/nodejs/node/issues/27355 and
+// https://github.com/nodejs/node/issues/40940.
 import esbuild from 'esbuild'
+import {JSDOM} from 'jsdom'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import pkg from '../package.json' assert {type: 'json'}
-import manifest from '../src/manifest.json' assert {type: 'json'}
 import {readTSDs} from './tsd.js'
 
 const watch = process.argv.includes('--watch')
-
-/** @type {esbuild.Plugin} */
-const plugin = {
-  name: 'Play',
-  setup(build) {
-    build.onEnd(pluginOnEnd)
-  }
-}
+const inFilename = 'src/play.html'
+const doc = new JSDOM(await fs.readFile(inFilename, 'utf8')).window.document
+let srcFilename = /** @type {HTMLScriptElement|null} */ (
+  doc.querySelector('script[type="module"][src]')
+)?.src
+if (!srcFilename) throw Error('missing script source')
+srcFilename = `${path.dirname(inFilename)}/${srcFilename}`
 
 /** @type {Parameters<esbuild.PluginBuild['onEnd']>[0]} */
 async function pluginOnEnd(result) {
-  const manifestCopy = structuredClone(manifest)
-  for (const icon of manifestCopy.icons) {
-    const file = await fs.readFile(path.join('src', icon.src))
-    icon.src = `data:${icon.type};base64,${file.toString('base64')}`
+  const copy = /** @type {Document} */ (doc.cloneNode(true))
+  const manifestEl = /** @type {HTMLLinkElement|null} */ (
+    copy.querySelector('link[href][rel="manifest"]')
+  )
+  if (manifestEl) {
+    const manifestFilename = `${path.dirname(inFilename)}/${manifestEl.href}`
+    const manifest = JSON.parse(await fs.readFile(manifestFilename, 'utf8'))
+    for (const icon of manifest.icons) {
+      if (!icon.src) throw Error('missing manifest icon src')
+      if (!icon.type) throw Error('missing manifest icon type')
+      const file = await fs.readFile(
+        `${path.dirname(manifestFilename)}/${icon.src}`
+      )
+      icon.src = `data:${icon.type};base64,${file.toString('base64')}`
+    }
+    if (watch) manifest.start_url = 'http://localhost:1234' // Suppress warning.
+    manifest.version = pkg.version
+    manifestEl.href = `data:application/json,${encodeURIComponent(
+      JSON.stringify(manifest)
+    )}`
   }
-  if (watch)
-    delete (/** @type {{start_url?: string}} */ (manifestCopy).start_url) // Suppress warning.
-  manifestCopy.version = pkg.version
-  const manifestURI = `data:application/json,${encodeURIComponent(
-    JSON.stringify(manifestCopy)
-  )}`
+  const iconEl = /** @type {HTMLLinkElement|null} */ (
+    copy.querySelector('link[href][rel="icon"][type]')
+  )
+  if (iconEl) {
+    const file = await fs.readFile(`${path.dirname(inFilename)}/${iconEl.href}`)
+    iconEl.href = `data:${iconEl.type};base64,${file.toString('base64')}`
+  }
 
   let js =
     result.outputFiles
@@ -44,20 +60,23 @@ async function pluginOnEnd(result) {
       .map(file => file.text)
       .join('') ?? ''
   if (watch)
-    js += `new EventSource('/esbuild').addEventListener('change', () => location.reload());`
+    js +=
+      "new EventSource('/esbuild').addEventListener('change', () => location.reload());"
 
-  let html = await fs.readFile(path.join('src', 'play.html'), 'utf8')
-  html = html
-    .replace('{favicon}', () => manifestCopy.icons[0]?.src ?? '')
-    .replace('{manifest}', () => manifestURI)
-    .replace('{js}', () => js)
-
-  await fs.mkdir('dist', {recursive: true})
-  const outFilename = path.join(
-    'dist',
-    watch ? 'index.html' : `play-${pkg.version}.html`
+  const scriptEl = /** @type {HTMLScriptElement|null} */ (
+    copy.querySelector('script[type="module"][src]')
   )
-  await fs.writeFile(outFilename, html)
+  if (!scriptEl) throw Error('missing script')
+  scriptEl.removeAttribute('src')
+  scriptEl.textContent = js
+  const outFilename = `dist/${
+    watch ? 'index' : `${path.basename(inFilename, '.html')}-v${pkg.version}`
+  }.html`
+  await fs.mkdir(path.dirname(outFilename), {recursive: true})
+  await fs.writeFile(
+    outFilename,
+    `<!doctype html>${copy.documentElement.outerHTML}`
+  )
 }
 
 await fs.writeFile(
@@ -79,8 +98,10 @@ const opts = {
     '.css': 'text',
     // Bundle templates for loading in pens and bundle pen worker as text so it
     // can be loaded in a worker.
-    '.example.tsx': 'text',
-    '.svg': 'text',
+    // Bundle templates for loading in pens and bundle pen worker as text so it
+    // can be loaded in a worker.
+    '.example.tsx': 'text', // should be dataurl + loaders.d.ts
+    '.svg': 'text', // should this be data url?
     '.worker.min.js': 'text'
   },
   logLevel: `info`, // Print the port and build demarcations.
@@ -89,10 +110,10 @@ const opts = {
 }
 const appOpts = {
   ...opts,
-  entryPoints: [path.join('src', 'elements', 'play-app.ts')],
+  entryPoints: [srcFilename],
   minify: !watch,
   outdir: 'dist',
-  plugins: [plugin],
+  plugins: [{name: 'Play', setup: build => build.onEnd(pluginOnEnd)}],
   write: false // Written by plugin.
 }
 if (watch) {

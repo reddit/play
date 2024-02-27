@@ -13,5 +13,5 @@
 
     "types": ["node"]
   },
-  "include": ["**/*", "../package.json", "../src/manifest.json"]
+  "include": ["**/*", "../package.json"]
 }
