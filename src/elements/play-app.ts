@@ -31,7 +31,7 @@ export class PlayApp extends LitElement {
   constructor() {
     super()
     console.log(
-      `:play v${globalThis.version} with Devvit v${globalThis.devvitVersion}`
+      `:play v${globalThis.playVersion} with Devvit v${globalThis.devvitVersion}`
     )
   }
 

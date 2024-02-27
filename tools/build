@@ -70,14 +70,15 @@ const opts = {
   bundle: true,
   conditions: watch ? ['development'] : [], // Lit
   define: {
-    'globalThis.version': `'${pkg.version}'`,
+    'globalThis.playVersion': `'${pkg.version}'`,
     'globalThis.devvitVersion': `'${pkg.devDependencies['@devvit/public-api']}'`
-  },
+  }, // See defines.d.ts.
+  external: ['path'], // @typescript/vfs requires path.
   format: 'esm',
-  // Bundle templates for loading in pens and bundle pen worker as text so it
-  // can be loaded in a worker.
   loader: {
     '.css': 'text',
+    // Bundle templates for loading in pens and bundle pen worker as text so it
+    // can be loaded in a worker.
     '.example.tsx': 'text',
     '.svg': 'text',
     '.worker.min.js': 'text'
@@ -89,7 +90,6 @@ const opts = {
 const appOpts = {
   ...opts,
   entryPoints: [path.join('src', 'elements', 'play-app.ts')],
-  external: ['path'], // @typescript/vfs requires path.
   minify: !watch,
   outdir: 'dist',
   plugins: [plugin],
