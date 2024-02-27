@@ -76,7 +76,7 @@ export class PlayEditor extends LitElement {
     })
   }
 
-  protected override firstUpdated(props: PropertyValues<this>): void {
+  protected override firstUpdated(_props: PropertyValues<this>): void {
     if (this.env) {
       const init = newEditorState(this.env, this.src ?? '')
       this.#editor = new EditorView({
