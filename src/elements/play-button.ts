@@ -6,9 +6,9 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import type {PlayIconSVG} from './play-icon.js'
+import type {PlayIconSVG} from './play-icon/play-icon.js'
 
-import './play-icon.js'
+import './play-icon/play-icon.js'
 
 export type PlayButtonAppearance =
   | 'bordered'

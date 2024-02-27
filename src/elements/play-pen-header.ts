@@ -12,8 +12,8 @@ import type {PlayExportDialog} from './play-export-dialog.js'
 
 import './play-button.js'
 import './play-export-dialog.js'
-import './play-icon.js'
-import './play-logo.js'
+import './play-icon/play-icon.js'
+import './play-logo/play-logo.js'
 import './play-new-pen-button.js'
 import './play-resizable-text-input.js'
 

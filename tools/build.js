@@ -11,7 +11,7 @@ import esbuild from 'esbuild'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import pkg from '../package.json' assert {type: 'json'}
-import manifest from '../src/assets/manifest.json' assert {type: 'json'}
+import manifest from '../src/manifest.json' assert {type: 'json'}
 import {readTSDs} from './tsd.js'
 
 const watch = process.argv.includes('--watch')
@@ -28,7 +28,7 @@ const plugin = {
 async function pluginOnEnd(result) {
   const manifestCopy = structuredClone(manifest)
   for (const icon of manifestCopy.icons) {
-    const file = await fs.readFile(path.join('src', 'assets', icon.src))
+    const file = await fs.readFile(path.join('src', icon.src))
     icon.src = `data:${icon.type};base64,${file.toString('base64')}`
   }
   if (watch)
@@ -46,7 +46,7 @@ async function pluginOnEnd(result) {
   if (watch)
     js += `new EventSource('/esbuild').addEventListener('change', () => location.reload());`
 
-  let html = await fs.readFile(path.join('src', 'assets', 'play.html'), 'utf8')
+  let html = await fs.readFile(path.join('src', 'play.html'), 'utf8')
   html = html
     .replace('{favicon}', () => manifestCopy.icons[0]?.src ?? '')
     .replace('{manifest}', () => manifestURI)

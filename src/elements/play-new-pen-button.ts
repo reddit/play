@@ -11,7 +11,7 @@ import {Bubble} from '../utils/bubble.js'
 import {openURL} from '../utils/open-url.js'
 
 import './play-dropdown-menu.js'
-import './play-icon.js'
+import './play-icon/play-icon.js'
 import './play-list-item.js'
 
 export type SizeOptions = 'small' | 'medium'

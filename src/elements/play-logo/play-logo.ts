@@ -1,7 +1,7 @@
 import {LitElement, css, type CSSResultGroup} from 'lit'
 import {customElement} from 'lit/decorators.js'
 import {unsafeHTML} from 'lit/directives/unsafe-html.js'
-import logo from '../assets/logo.svg'
+import logo from './logo.svg'
 
 declare global {
   interface HTMLElementTagNameMap {

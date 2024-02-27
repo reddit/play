@@ -6,7 +6,7 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import './play-icon.js'
+import './play-icon/play-icon.js'
 
 declare global {
   interface HTMLElementTagNameMap {
