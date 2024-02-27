@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Test Size
-      - run: npm run test:size
+        run: npm run test:size
       - name: Type-check UI
         run: npm run test:types:ui
       - name: Test UI
