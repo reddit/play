@@ -1,5 +1,4 @@
-// esbuild is configured to use the text-loader for examples and worker imports.
-// See tools/build.js
+// tools/build configures esbuild loaders for these extensions.
 
 declare module '*.css' {
   const text: string
