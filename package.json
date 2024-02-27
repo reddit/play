@@ -87,13 +87,13 @@
     "url": "git+https://github.com/reddit/play.git"
   },
   "scripts": {
-    "build": "tools/build.js && tsc --build",
+    "build": "tools/build && tsc --build",
     "clean": "rm -rf dist src/bundler/tsd.json",
     "format": "npm run formatter -- --write",
     "formatter": "prettier --cache --log-level warn './**/*.{css,html,js,json,md,ts,yaml}'",
     "preversion": "[ -z \"$(git status -z)\" ]",
     "prepublishOnly": "! git symbolic-ref --quiet HEAD || git push --follow-tags origin \"$(git branch --show-current)\"",
-    "start": "tools/build.js --watch",
+    "start": "tools/build --watch",
     "test:format": "npm run formatter -- --check",
     "test:size": "filesize",
     "test:types:ui": "lit-analyzer --maxWarnings=0 --rules.no-invalid-css=off --rules.no-missing-element-type-definition --rules.no-unknown-event --rules.no-unknown-attribute=false --strict",
