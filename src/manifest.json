@@ -1,7 +1,9 @@
 {
+  "author": "Reddit",
   "background_color": "#fffcf0",
   "description": "A little playground for building apps on Reddit.",
   "display": "standalone",
+  "homepage_url": "https://developers.reddit.com",
   "icons": [
     {"src": "favicon/favicon.png", "sizes": "32x32", "type": "image/png"},
     {"src": "favicon/favicon48.png", "sizes": "48x48", "type": "image/png"},
@@ -13,7 +15,8 @@
   "manifest_version": 3,
   "name": ":play",
   "orientation": "any",
-  "start_url": "/",
+  "short_name": "play",
+  "start_url": "https://developers.reddit.com/play/",
   "theme_color": "#fffcf0",
   "version": "0.0.0"
 }
