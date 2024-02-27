@@ -12,6 +12,7 @@ import {JSDOM} from 'jsdom'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import pkg from '../package.json' assert {type: 'json'}
+import {esbuildConfig} from './esbuild-config.js'
 import {readTSDs} from './tsd.js'
 
 const watch = process.argv.includes('--watch')
@@ -86,24 +87,11 @@ await fs.writeFile(
 
 /** @type {esbuild.BuildOptions} */
 const opts = {
+  ...esbuildConfig(pkg.version, pkg.devDependencies['@devvit/public-api']),
   bundle: true,
   conditions: watch ? ['development'] : [], // Lit
-  define: {
-    'globalThis.playVersion': `'${pkg.version}'`,
-    'globalThis.devvitVersion': `'${pkg.devDependencies['@devvit/public-api']}'`
-  }, // See defines.d.ts.
   external: ['path'], // @typescript/vfs requires path.
   format: 'esm',
-  loader: {
-    '.css': 'text',
-    // Bundle templates for loading in pens and bundle pen worker as text so it
-    // can be loaded in a worker.
-    // Bundle templates for loading in pens and bundle pen worker as text so it
-    // can be loaded in a worker.
-    '.example.tsx': 'text', // should be dataurl + loaders.d.ts
-    '.svg': 'text', // should this be data url?
-    '.worker.min.js': 'text'
-  },
   logLevel: `info`, // Print the port and build demarcations.
   sourcemap: 'linked',
   target: 'es2022' // https://esbuild.github.io/content-types/#tsconfig-json
