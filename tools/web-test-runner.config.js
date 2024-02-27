@@ -18,6 +18,9 @@ const config = {
       tsconfig: 'src/elements/test/tsconfig.json'
     })
   ],
+  filterBrowserLogs: log =>
+    typeof log.args[0] !== 'string' ||
+    !log.args[0].includes('Lit is in dev mode.'),
   testFramework: {
     // https://mochajs.org/api/mocha
     config: {
