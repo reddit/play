@@ -64,7 +64,7 @@ See [supplemental development notes](docs/development.md).
 - `run test:unit`: run the unit tests. Pass `--update` to update all test
   snapshots.
 - `run test:ui`: run the user interface integration tests. Pass `--manual` to
-  inspect browser.
+  inspect browser and / or a filename to filter.
 - `run format`: apply lint fixes automatically where available.
 - `run build`: compile source inputs to artifacts under `dist/`.
 

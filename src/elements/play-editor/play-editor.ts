@@ -6,6 +6,7 @@ import {
   css,
   html,
   type CSSResultGroup,
+  type PropertyValues,
   type TemplateResult
 } from 'lit'
 import {
@@ -43,7 +44,7 @@ export class PlayEditor extends LitElement {
     }
   `
 
-  @property({attribute: false}) env!: VirtualTypeScriptEnvironment
+  @property({attribute: false}) env?: VirtualTypeScriptEnvironment
   @property() src: string | undefined
 
   @query('div') private _root!: HTMLDivElement
@@ -53,13 +54,14 @@ export class PlayEditor extends LitElement {
     selector: 'script[type="application/devvit"]'
   })
   private _scripts!: HTMLScriptElement[]
-  #editor!: EditorView
+  #editor?: EditorView
 
   /**
    * @arg line One-based index.
    * @arg char Zero-based index.
    */
   openLine(line: number, char: number): void {
+    if (!this.#editor) return
     const info = this.#editor.state.doc.line(line)
     const selection = EditorSelection.create([
       EditorSelection.cursor(info.from + char)
@@ -69,25 +71,27 @@ export class PlayEditor extends LitElement {
   }
 
   setSrc(src: string): void {
-    this.#editor.dispatch({
+    this.#editor?.dispatch({
       changes: {from: 0, to: this.#editor.state.doc.length, insert: src}
     })
   }
 
-  protected override firstUpdated(): void {
-    const init = newEditorState(this.env, this.src ?? '')
-    this.#editor = new EditorView({
-      dispatch: transaction => {
-        this.#editor.update([transaction])
+  protected override firstUpdated(props: PropertyValues<this>): void {
+    if (this.env) {
+      const init = newEditorState(this.env, this.src ?? '')
+      this.#editor = new EditorView({
+        dispatch: transaction => {
+          this.#editor!.update([transaction])
 
-        if (transaction.docChanged) {
-          const src = transaction.state.doc.sliceString(0)
-          this.dispatchEvent(Bubble<string>('edit', src))
-        }
-      },
-      parent: this._root,
-      state: init
-    })
+          if (transaction.docChanged) {
+            const src = transaction.state.doc.sliceString(0)
+            this.dispatchEvent(Bubble<string>('edit', src))
+          }
+        },
+        parent: this._root,
+        state: init
+      })
+    }
   }
 
   protected override render(): TemplateResult {
