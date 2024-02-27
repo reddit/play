@@ -1,5 +1,5 @@
 import {esbuildPlugin} from '@web/dev-server-esbuild'
-import {esbuildConfig} from './tools/esbuild-config.js'
+import {esbuildConfig} from './esbuild-config.js'
 
 const base = esbuildConfig('0.0.0', '0.0.1-next-2000-01-01-abcdef123.4')
 
@@ -9,7 +9,9 @@ export default {
   plugins: [
     esbuildPlugin({
       ...base,
-      loaders: base.loader,
+      loaders: /** @type {{[ext: string]: import('esbuild').Loader}} */ (
+        base.loader
+      ),
       target: 'auto',
       ts: true,
       tsconfig: 'src/elements/test/tsconfig.json'

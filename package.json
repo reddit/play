@@ -99,8 +99,8 @@
     "test:format": "npm run formatter -- --check",
     "test:size": "filesize",
     "test:types:ui": "lit-analyzer --maxWarnings=0 --rules.no-invalid-css=off --rules.no-missing-element-type-definition --rules.no-unknown-event --rules.no-unknown-attribute=false --strict",
-    "test:ui": "wtr",
-    "test:unit": "vitest run",
+    "test:ui": "wtr --config=tools/web-test-runner.config.js",
+    "test:unit": "vitest --config=tools/vitest.config.ts run",
     "test": "npm run test:format && npm run test:unit && npm run build && npm run test:size && npm run test:types:ui && npm run test:ui",
     "version": "npm test"
   },
