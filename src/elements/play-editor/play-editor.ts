@@ -13,8 +13,8 @@ import {
   customElement,
   eventOptions,
   property,
-  query,
-  queryAssignedElements
+  queryAssignedElements,
+  queryAsync
 } from 'lit/decorators.js'
 import {Bubble} from '../../utils/bubble.js'
 import {unindent} from '../../utils/unindent.js'
@@ -45,9 +45,9 @@ export class PlayEditor extends LitElement {
   `
 
   @property({attribute: false}) env?: VirtualTypeScriptEnvironment
-  @property() src: string | undefined
+  @property() src: string = ''
 
-  @query('div') private _root!: HTMLDivElement
+  @queryAsync('.editor') private _editorEl!: Promise<HTMLDivElement>
 
   @queryAssignedElements({
     flatten: true,
@@ -76,19 +76,21 @@ export class PlayEditor extends LitElement {
     })
   }
 
-  protected override firstUpdated(_props: PropertyValues<this>): void {
-    if (this.env) {
-      const init = newEditorState(this.env, this.src ?? '')
+  protected override async willUpdate(
+    props: PropertyValues<this>
+  ): Promise<void> {
+    if (props.has('env') && this.env && !this.#editor) {
+      const el = await this._editorEl
+      const init = newEditorState(this.env, this.src)
       this.#editor = new EditorView({
         dispatch: transaction => {
           this.#editor!.update([transaction])
-
           if (transaction.docChanged) {
             const src = transaction.state.doc.sliceString(0)
             this.dispatchEvent(Bubble<string>('edit', src))
           }
         },
-        parent: this._root,
+        parent: el,
         state: init
       })
     }

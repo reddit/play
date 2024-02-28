@@ -1,5 +1,5 @@
 import * as tsvfs from '@typescript/vfs'
-import * as ts from 'typescript'
+import ts from '../typescript/typescript.js'
 import tsd from './tsd.json' assert {type: 'json'}
 
 export const appEntrypointFilename = '/src/main.tsx'

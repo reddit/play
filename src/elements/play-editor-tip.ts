@@ -7,8 +7,8 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import * as ts from 'typescript'
 import type {Diagnostics} from '../types/diagnostics.js'
+import ts from '../typescript/typescript.js'
 
 declare global {
   interface HTMLElementTagNameMap {

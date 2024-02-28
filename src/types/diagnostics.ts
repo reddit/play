@@ -1,9 +1,9 @@
 import type {DevvitUIError} from '@devvit/ui-renderer/client/devvit-custom-post.js'
-import type {Diagnostic} from 'typescript'
+import ts from '../typescript/typescript.js'
 
 export type Diagnostics = {
   // to-do: unhandled promise rejections.
   /** Uncaught errors thrown when executing the pen program. */
   previewErrs: DevvitUIError[]
-  tsErrs: Diagnostic[]
+  tsErrs: ts.Diagnostic[]
 }

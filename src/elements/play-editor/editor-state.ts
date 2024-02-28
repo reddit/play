@@ -35,8 +35,8 @@ import {
 } from '@codemirror/view'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
 import {EditorView} from 'codemirror'
-import * as ts from 'typescript'
 import {appEntrypointFilename} from '../../bundler/compiler.js'
+import ts from '../../typescript/typescript.js'
 import {PlayEditorTip} from '../play-editor-tip.js'
 import {editorThemeExtension} from './editor-theme.js'
 

@@ -80,10 +80,19 @@ async function pluginOnEnd(result) {
   )
 }
 
-await fs.writeFile(
-  path.join('src', 'bundler', 'tsd.json'),
-  JSON.stringify(await readTSDs(), null, 2)
-)
+await Promise.all([
+  fs.writeFile(
+    'src/bundler/tsd.json', // move?
+    JSON.stringify(await readTSDs(), null, 2)
+  ),
+  esbuild.build({
+    bundle: true,
+    entryPoints: ['node_modules/typescript/lib/typescript.js'],
+    external: ['fs', 'inspector', 'os'],
+    format: 'esm',
+    outfile: 'src/typescript/typescript.js'
+  })
+])
 
 /** @type {esbuild.BuildOptions} */
 const opts = {
@@ -112,12 +121,12 @@ if (watch) {
     esbuild.build(appOpts),
     esbuild.build({
       ...opts,
-      entryPoints: [path.join('src', 'index.ts')],
-      outfile: path.join('dist', 'play.js')
+      entryPoints: ['src/index.ts'],
+      outfile: 'dist/play.js'
     }),
     esbuild.build({
       ...opts,
-      entryPoints: [path.join('src', 'elements', 'play-pen', 'play-pen.ts')],
+      entryPoints: ['src/elements/play-pen/play-pen.ts'],
       outdir: 'dist'
     })
   ])
