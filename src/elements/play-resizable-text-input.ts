@@ -128,6 +128,7 @@ export class PlayResizableTextInput extends LitElement {
     span.style.fontSize = '24px'
     span.style.fontStyle = 'normal'
     span.style.fontWeight = '400'
+    span.style.padding = '12px'
     document.body.appendChild(span)
     input.style.maxWidth = `${span.offsetWidth}px`
     document.body.removeChild(span)
