@@ -81,10 +81,13 @@ async function pluginOnEnd(result) {
 }
 
 await Promise.all([
+  // Generate typing information.
   fs.writeFile(
-    'src/bundler/tsd.json', // move?
+    'src/bundler/tsd.json',
     JSON.stringify(await readTSDs(), null, 2)
   ),
+
+  // Repackage typescript as an ESM module for the UI tests.
   esbuild.build({
     bundle: true,
     entryPoints: ['node_modules/typescript/lib/typescript.js'],
