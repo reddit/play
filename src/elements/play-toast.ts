@@ -6,6 +6,7 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
+import {cssReset} from '../utils/css-reset.js'
 import './play-icon/play-icon.js'
 
 declare global {
@@ -17,7 +18,9 @@ declare global {
 /** @slot - Toast content. */
 @customElement('play-toast')
 export class PlayToast extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     :host {
       display: flex;
       flex-direction: column;

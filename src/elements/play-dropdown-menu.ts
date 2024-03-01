@@ -6,6 +6,7 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
+import {cssReset} from '../utils/css-reset.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -20,10 +21,9 @@ declare global {
  */
 @customElement('play-dropdown-menu')
 export class PlayDropdownMenu extends LitElement {
-  @property({type: String}) direction?: 'down' | 'up' = 'up'
-  @state() private isOpen = false
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
 
-  static override styles: CSSResultGroup = css`
     :host ol {
       position: absolute;
       right: 0;
@@ -91,6 +91,9 @@ export class PlayDropdownMenu extends LitElement {
       display: block;
     }
   `
+
+  @property({type: String}) direction?: 'down' | 'up' = 'up'
+  @state() private isOpen = false
 
   #toggleMenu(): void {
     this.isOpen = !this.isOpen

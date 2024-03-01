@@ -17,6 +17,7 @@ import {
   queryAsync
 } from 'lit/decorators.js'
 import {Bubble} from '../../utils/bubble.js'
+import {cssReset} from '../../utils/css-reset.js'
 import {unindent} from '../../utils/unindent.js'
 import {newEditorState} from './editor-state.js'
 
@@ -34,6 +35,8 @@ declare global {
 @customElement('play-editor')
 export class PlayEditor extends LitElement {
   static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     .editor {
       height: 100%;
       width: 100%;

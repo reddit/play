@@ -10,6 +10,7 @@ import {customElement, property, state} from 'lit/decorators.js'
 import type {Diagnostics} from '../types/diagnostics.js'
 import {openURL} from '../utils/open-url.js'
 
+import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-console.js'
 import './play-dropdown-menu.js'
@@ -23,7 +24,9 @@ declare global {
 
 @customElement('play-pen-footer')
 export class PlayPenFooter extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     footer {
       background-color: var(--color-neutral-content-weak);
     }

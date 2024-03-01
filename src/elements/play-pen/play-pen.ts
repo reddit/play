@@ -33,6 +33,7 @@ import type {PlayEditor} from '../play-editor/play-editor.js'
 import type {PlayToast} from '../play-toast.js'
 import penVars from './pen-vars.css'
 
+import {cssReset} from '../../utils/css-reset.js'
 import '../play-editor/play-editor.js'
 import '../play-pen-footer.js'
 import '../play-pen-header.js'
@@ -54,7 +55,9 @@ declare global {
  */
 @customElement('play-pen')
 export class PlayPen extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     ${unsafeCSS(penVars)}
 
     :host {

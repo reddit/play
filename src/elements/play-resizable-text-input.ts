@@ -8,6 +8,7 @@ import {
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {Bubble} from '../utils/bubble.js'
+import {cssReset} from '../utils/css-reset.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -20,7 +21,9 @@ declare global {
 
 @customElement('play-resizable-text-input')
 export class PlayResizableTextInput extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     :host {
       position: relative;
       width: 100%;

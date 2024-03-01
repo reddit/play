@@ -7,6 +7,7 @@ import {
 } from 'lit'
 import {customElement} from 'lit/decorators.js'
 
+import {cssReset} from '../utils/css-reset.js'
 import './play-pen/play-pen.js'
 
 declare global {
@@ -17,7 +18,9 @@ declare global {
 
 @customElement('play-app')
 export class PlayApp extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     :host {
       /* Allow height to be specified. */
       display: block;

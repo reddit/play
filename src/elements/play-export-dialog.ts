@@ -8,6 +8,7 @@ import {
 import {customElement, property, query} from 'lit/decorators.js'
 import type {PlayToast} from './play-toast.js'
 
+import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-toast.js'
 
@@ -19,7 +20,9 @@ declare global {
 
 @customElement('play-export-dialog')
 export class PlayExportDialog extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     dialog {
       color: var(--color-neutral-content);
       background-color: var(--color-neutral-background);

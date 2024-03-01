@@ -8,6 +8,7 @@ import {
 import {customElement, property} from 'lit/decorators.js'
 import type {PlayIconSVG} from './play-icon/play-icon.js'
 
+import {cssReset} from '../utils/css-reset.js'
 import './play-icon/play-icon.js'
 
 export type PlayButtonAppearance =
@@ -26,15 +27,9 @@ declare global {
 /** @slot - Contents. */
 @customElement('play-button')
 export class PlayButton extends LitElement {
-  @property() appearance: PlayButtonAppearance = 'plain'
-  @property({type: Boolean}) disabled?: boolean
-  @property() endIcon?: PlayIconSVG
-  @property() icon?: PlayIconSVG
-  @property() size: PlayButtonSize = 'medium'
-  @property({type: String}) label = ''
-  @property({type: Number}) badge = 0
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
 
-  static override styles: CSSResultGroup = css`
     :host {
       width: fit-content;
       display: inline-block;
@@ -186,6 +181,14 @@ export class PlayButton extends LitElement {
       outline-color: var(--color-notification-background);
     }
   `
+
+  @property() appearance: PlayButtonAppearance = 'plain'
+  @property({type: Boolean}) disabled?: boolean
+  @property() endIcon?: PlayIconSVG
+  @property() icon?: PlayIconSVG
+  @property() size: PlayButtonSize = 'medium'
+  @property({type: String}) label = ''
+  @property({type: Number}) badge = 0
 
   protected override render(): TemplateResult {
     const iconOnly = this.icon && !this.label && !this.endIcon

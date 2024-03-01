@@ -8,6 +8,7 @@ import {
 import {customElement, property} from 'lit/decorators.js'
 import type {PlayIconSVG} from './play-icon/play-icon.js'
 
+import {cssReset} from '../utils/css-reset.js'
 import './play-icon/play-icon.js'
 
 declare global {
@@ -18,11 +19,9 @@ declare global {
 
 @customElement('play-list-item')
 export class PlayListItem extends LitElement {
-  @property() label: String = ''
-  @property() icon?: PlayIconSVG
-  @property() endIcon?: PlayIconSVG
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
 
-  static override styles: CSSResultGroup = css`
     li {
       display: flex;
       flex-direction: row;
@@ -46,6 +45,10 @@ export class PlayListItem extends LitElement {
       color: var(--color-secondary-foreground);
     }
   `
+
+  @property() label: String = ''
+  @property() icon?: PlayIconSVG
+  @property() endIcon?: PlayIconSVG
 
   protected override render(): TemplateResult {
     return html`

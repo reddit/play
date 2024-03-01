@@ -10,6 +10,7 @@ import {Bubble} from '../utils/bubble.js'
 import {openURL} from '../utils/open-url.js'
 import type {PlayExportDialog} from './play-export-dialog.js'
 
+import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-export-dialog.js'
 import './play-icon/play-icon.js'
@@ -29,7 +30,9 @@ declare global {
 
 @customElement('play-pen-header')
 export class PlayPenHeader extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     header {
       padding-top: 16px;
       padding-right: 16px;

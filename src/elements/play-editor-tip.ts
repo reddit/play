@@ -9,6 +9,7 @@ import {
 import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostics} from '../types/diagnostics.js'
 import ts from '../typescript/typescript.js'
+import {cssReset} from '../utils/css-reset.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -18,9 +19,9 @@ declare global {
 
 @customElement('play-editor-tip')
 export class PlayEditorTip extends LitElement {
-  @property({attribute: false}) diagnostics?: Diagnostics
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
 
-  static override styles: CSSResultGroup = css`
     :host {
       display: block;
       max-width: 640px;
@@ -33,6 +34,7 @@ export class PlayEditorTip extends LitElement {
     }
   `
 
+  @property({attribute: false}) diagnostics?: Diagnostics
   @property({attribute: false}) info?: ts.QuickInfo
 
   protected override render(): TemplateResult | typeof nothing {

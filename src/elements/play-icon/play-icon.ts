@@ -1,8 +1,16 @@
-import {LitElement, html, nothing, type TemplateResult} from 'lit'
+import {
+  LitElement,
+  css,
+  html,
+  nothing,
+  type CSSResultGroup,
+  type TemplateResult
+} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
 import {styleMap} from 'lit/directives/style-map.js'
 import {unsafeHTML} from 'lit/directives/unsafe-html.js'
 
+import {cssReset} from '../../utils/css-reset.js'
 import addOutline from './icons/add-outline.svg'
 import caretDownOutline from './icons/caret-down-outline.svg'
 import caretUpOutline from './icons/caret-up-outline.svg'
@@ -53,6 +61,10 @@ declare global {
 
 @customElement('play-icon')
 export class PlayIcon extends LitElement {
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+  `
+
   @property({type: String}) size = '16px'
   @property({type: String}) color = 'currentColor'
   @property({type: String}) icon?: PlayIconSVG

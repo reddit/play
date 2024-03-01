@@ -1,6 +1,7 @@
 import {LitElement, css, type CSSResultGroup} from 'lit'
 import {customElement} from 'lit/decorators.js'
 import {unsafeHTML} from 'lit/directives/unsafe-html.js'
+import {cssReset} from '../../utils/css-reset.js'
 import logo from './logo.svg'
 
 declare global {
@@ -11,7 +12,9 @@ declare global {
 
 @customElement('play-logo')
 export class PlayLogo extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     svg {
       display: block;
       width: 40px;

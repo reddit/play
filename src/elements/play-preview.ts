@@ -16,6 +16,7 @@ import type {ColorScheme} from '../types/color-scheme.js'
 import {Bubble} from '../utils/bubble.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
+import {cssReset} from '../utils/css-reset.js'
 
 const localRuntimeCode: Blob = new Blob([penWorker.default], {
   type: 'text/javascript'
@@ -33,7 +34,9 @@ declare global {
 /** The rendered output of Devvit program under various parameters. */
 @customElement('play-preview')
 export class PlayPreview extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     .preview {
       /* Hide overflow on corners */
       overflow: hidden;

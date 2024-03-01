@@ -10,6 +10,7 @@ import {repeat} from 'lit/directives/repeat.js'
 import {Bubble} from '../utils/bubble.js'
 import {openURL} from '../utils/open-url.js'
 
+import {cssReset} from '../utils/css-reset.js'
 import './play-dropdown-menu.js'
 import './play-icon/play-icon.js'
 import './play-list-item.js'
@@ -31,7 +32,9 @@ declare global {
 
 @customElement('play-new-pen-button')
 export class PlayNewPenButton extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     .container {
       display: flex;
       flex-direction: row;

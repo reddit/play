@@ -9,6 +9,7 @@ import {customElement, property} from 'lit/decorators.js'
 import type {ColorScheme} from '../types/color-scheme.js'
 import {Bubble} from '../utils/bubble.js'
 
+import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-dropdown-menu.js'
 import './play-list-item.js'
@@ -35,7 +36,9 @@ declare global {
 
 @customElement('play-preview-controls')
 export class PlayPreviewControls extends LitElement {
-  static override styles: CSSResultGroup = css`
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
+
     :host {
       display: flex;
       flex-direction: row;

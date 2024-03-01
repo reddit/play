@@ -11,6 +11,7 @@ import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostics} from '../types/diagnostics.js'
 import ts from '../typescript/typescript.js'
 import {Bubble} from '../utils/bubble.js'
+import {cssReset} from '../utils/css-reset.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -30,9 +31,9 @@ export type OpenLine = {
 
 @customElement('play-console')
 export class PlayConsole extends LitElement {
-  @property({attribute: false}) diagnostics?: Diagnostics
+  static override readonly styles: CSSResultGroup = css`
+    ${cssReset}
 
-  static override styles: CSSResultGroup = css`
     :host {
       height: 100%;
       padding-left: 16px;
@@ -109,6 +110,8 @@ export class PlayConsole extends LitElement {
       text-decoration: underline;
     }
   `
+
+  @property({attribute: false}) diagnostics?: Diagnostics
 
   protected override render(): TemplateResult {
     const previewErrs = []
