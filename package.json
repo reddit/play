@@ -46,8 +46,7 @@
   },
   "files": [
     "dist",
-    "!dist/tsconfig.json",
-    "!dist/tsconfig.tsbuildinfo"
+    "!dist/**/tsconfig.tsbuildinfo"
   ],
   "filesize": {
     "dist/play.js": {
