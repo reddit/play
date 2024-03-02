@@ -108,6 +108,7 @@ const opts = {
   sourcemap: 'linked',
   target: 'es2022' // https://esbuild.github.io/content-types/#tsconfig-json
 }
+/** @type {esbuild.BuildOptions} */
 const appOpts = {
   ...opts,
   entryPoints: [srcFilename],

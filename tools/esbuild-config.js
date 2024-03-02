@@ -4,7 +4,7 @@
  * uses `loader` whereas @web/dev-server-esbuild uses `loaders`.
  * @arg {string} playVersion
  * @arg {string} devvitVersion
- * @ret {import('esbuild').BuildOptions}
+ * @return {import('esbuild').BuildOptions}
  */
 export function esbuildConfig(playVersion, devvitVersion) {
   return {

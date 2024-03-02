@@ -1,6 +1,7 @@
 import {esbuildPlugin} from '@web/dev-server-esbuild'
 import {esbuildConfig} from './esbuild-config.js'
 
+/** @type {any} */
 const base = esbuildConfig('0.0.0', '0.0.1-next-2000-01-01-abcdef123.4')
 
 /** @type {import('@web/test-runner').TestRunnerConfig} */
@@ -9,7 +10,7 @@ const config = {
   nodeResolve: true,
   plugins: [
     esbuildPlugin({
-      ...base,
+      define: base.define,
       loaders: /** @type {{[ext: string]: import('esbuild').Loader}} */ (
         base.loader
       ),
