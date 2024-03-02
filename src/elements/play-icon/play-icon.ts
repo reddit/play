@@ -29,6 +29,7 @@ import reportOutline from './icons/report-outline.svg'
 import resizeHorizontalOutline from './icons/resize-horizontal-outline.svg'
 import restartOutline from './icons/restart-outline.svg'
 import shareNewOutline from './icons/share-new-outline.svg'
+import sendOutline from './icons/send-outline.svg'
 
 export type PlayIconSVG = keyof typeof icons
 
@@ -50,7 +51,8 @@ const icons = {
   'report-outline': reportOutline,
   'resize-horizontal-outline': resizeHorizontalOutline,
   'restart-outline': restartOutline,
-  'share-new-outline': shareNewOutline
+  'share-new-outline': shareNewOutline,
+  'send-outline': sendOutline,
 }
 
 declare global {

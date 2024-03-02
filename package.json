@@ -105,5 +105,8 @@
   },
   "type": "module",
   "types": "dist/index.d.ts",
-  "version": "0.0.34"
+  "version": "0.0.34",
+  "dependencies": {
+    "@google/generative-ai": "^0.2.1"
+  }
 }

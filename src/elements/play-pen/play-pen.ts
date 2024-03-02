@@ -40,6 +40,7 @@ import '../play-pen-header.js'
 import '../play-preview-controls.js'
 import '../play-preview.js'
 import '../play-toast.js'
+import '../play-ai.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -213,6 +214,13 @@ export class PlayPen extends LitElement {
           ></play-preview-controls>
         </div>
       </main>
+      <play-ai
+      @ai-update=${(ev: CustomEvent<string>) => {
+        console.log(`Ai update received: code ${JSON.stringify(ev.detail)}`);
+        this._editor.setSrc(ev.detail);
+          }
+          }
+      ></play-ai>
       <play-pen-footer
         .diagnostics=${this._diagnostics}
         @preview-width=${(ev: CustomEvent<number>) =>
