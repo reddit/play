@@ -69,7 +69,7 @@ const tslibFilenames = [
 /**
  * Generates a map of TypeScript filenames to definitions in
  * src/bundler/tsd.json.
- * @ret {Promise<{[filename: string]: string}>}
+ * @return {Promise<{[filename: string]: string}>}
  */
 export async function readTSDs() {
   /** @type {{[filename: string]: string}} */
