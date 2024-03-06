@@ -1,4 +1,4 @@
-import type {LinkedBundle} from '@devvit/protos'
+import type {Empty, LinkedBundle} from '@devvit/protos'
 import {throttle} from '@devvit/shared-types/throttle.js'
 import type {DevvitUIError} from '@devvit/ui-renderer/client/devvit-custom-post.js'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
@@ -8,6 +8,7 @@ import {
   html,
   unsafeCSS,
   type CSSResultGroup,
+  type PropertyValues,
   type TemplateResult
 } from 'lit'
 import {customElement, property, query, state} from 'lit/decorators.js'
@@ -25,9 +26,16 @@ import helloBlocks from '../../examples/hello-blocks.example.tsx'
 import polls from '../../examples/polls.example.tsx'
 import progressBar from '../../examples/progress-bar.example.tsx'
 import svg from '../../examples/svg.example.tsx'
+import {BundleStore} from '../../runtime/bundle-store.js'
+import {PenSave, loadPen, penToHash, savePen} from '../../storage/pen-save.js'
+import {
+  defaultSettings,
+  loadSettings,
+  saveSettings
+} from '../../storage/settings-save.js'
 import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
-import {PenSave, loadPen, penToHash, savePen} from '../../types/pen-save.js'
+import {newHostname} from '../../utils/compute-util.js'
 import {cssReset} from '../../utils/css-reset.js'
 import type {OpenLine} from '../play-console.js'
 import type {PlayEditor} from '../play-editor/play-editor.js'
@@ -132,11 +140,21 @@ export class PlayPen extends LitElement {
   /** Program executable. */
   @state() private _bundle?: Readonly<LinkedBundle> | undefined
   /** Execution preview widths. */
-  @state() private _previewWidth: number = 288
   @state() private _diagnostics: Diagnostics = {previewErrs: [], tsErrs: []}
+  @state() private _openConsole: boolean = false
+  @state() private _previewWidth: number = 288
+  @state() private _remoteRuntimeOrigin: string =
+    defaultSettings.remoteRuntimeOrigin
+  @state() private _useExperimentalBlocks: boolean = false
+  @state() private _useLocalRuntime: boolean = false
+  @state() private _useRemoteRuntime: boolean = false
   @query('play-editor') private _editor!: PlayEditor
   @query('play-toast') private _toast!: PlayToast
+  #bundleStore?: BundleStore | undefined
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
+  @state() _uploaded: Promise<Empty> = Promise.resolve({})
+  /** Try to ensure the bundle hostname is unique. See compute-util. */
+  #version: number = Date.now()
 
   /** Program title. */ @state() private _name: string = ''
   /** Execution color scheme. */ @state() private _scheme:
@@ -148,6 +166,19 @@ export class PlayPen extends LitElement {
 
   override connectedCallback(): void {
     super.connectedCallback()
+
+    const settings =
+      (this.allowStorage ? loadSettings(localStorage) : undefined) ??
+      defaultSettings
+    if (settings) {
+      this._openConsole = settings.openConsole
+      this._remoteRuntimeOrigin = settings.remoteRuntimeOrigin
+      this._useExperimentalBlocks = settings.useExperimentalBlocks
+      this._useLocalRuntime = settings.useLocalRuntime
+      this._useRemoteRuntime = settings.useRemoteRuntime
+      // If remote is enabled, #bundleStore is initialized in willUpdate() and
+      // bundle is loaded.
+    }
 
     let pen
     if (this.allowURL) pen = loadPen(location)
@@ -165,9 +196,14 @@ export class PlayPen extends LitElement {
     return html`
       <play-toast>Copied the URL!</play-toast
       ><play-pen-header
+        ?allow-storage=${this.allowStorage}
         name=${this._name}
         .srcByLabel=${this.srcByLabel}
+        remote-runtime-origin=${this._remoteRuntimeOrigin}
         url=${this.#shareURL().toString()}
+        ?use-experimental-blocks=${this._useExperimentalBlocks}
+        ?use-local-runtime=${this._useLocalRuntime}
+        ?use-remote-runtime=${this._useRemoteRuntime}
         @edit-name=${(ev: CustomEvent<string>) =>
           this.#setName(ev.detail, true)}
         @edit-src=${(ev: CustomEvent<string>) => {
@@ -175,6 +211,14 @@ export class PlayPen extends LitElement {
           this.#setName('', false)
           this._editor.setSrc(ev.detail)
         }}
+        @use-experimental-blocks=${(ev: CustomEvent<boolean>) =>
+          (this._useExperimentalBlocks = ev.detail)}
+        @use-local-runtime=${(ev: CustomEvent<boolean>) =>
+          (this._useLocalRuntime = ev.detail)}
+        @use-remote-runtime=${(ev: CustomEvent<boolean>) =>
+          (this._useRemoteRuntime = ev.detail)}
+        @edit-remote-runtime-origin=${(ev: CustomEvent<string>) =>
+          (this._remoteRuntimeOrigin = ev.detail)}
         @share=${this.#onShare}
       ></play-pen-header>
       <main>
@@ -195,7 +239,12 @@ export class PlayPen extends LitElement {
           <play-preview
             .bundle=${this._bundle}
             previewWidth=${this._previewWidth}
+            remote-runtime-origin=${this._remoteRuntimeOrigin}
             scheme=${ifDefined(this._scheme)}
+            .uploaded=${this._uploaded}
+            ?use-experimental-blocks=${this._useExperimentalBlocks}
+            ?use-local-runtime=${this._useLocalRuntime}
+            ?use-remote-runtime=${this._useRemoteRuntime}
             @clear-errors=${() => this.#clearPreviewErrors()}
             @devvit-ui-error=${(ev: CustomEvent<DevvitUIError>) =>
               this.#appendPreviewError(ev.detail)}
@@ -215,6 +264,9 @@ export class PlayPen extends LitElement {
       </main>
       <play-pen-footer
         .diagnostics=${this._diagnostics}
+        ?open-console=${this._openConsole}
+        @open-console=${(ev: CustomEvent<boolean>) =>
+          (this._openConsole = ev.detail)}
         @preview-width=${(ev: CustomEvent<number>) =>
           (this._previewWidth = ev.detail)}
         @preview-scheme=${(ev: CustomEvent<ColorScheme | undefined>) =>
@@ -223,6 +275,42 @@ export class PlayPen extends LitElement {
           this._editor.openLine(ev.detail.line, ev.detail.char)}
       ></play-pen-footer>
     `
+  }
+
+  protected override async willUpdate(
+    props: PropertyValues<this> &
+      PropertyValues<{
+        _openConsole: boolean
+        _useExperimentalBlocks: boolean
+        _useLocalRuntime: boolean
+        _useRemoteRuntime: boolean
+        _remoteRuntimeOrigin: string
+      }>
+  ): Promise<void> {
+    super.willUpdate(props)
+
+    if (
+      this.allowStorage &&
+      (props.has('_openConsole') ||
+        props.has('_useExperimentalBlocks') ||
+        props.has('_remoteRuntimeOrigin') ||
+        props.has('_useLocalRuntime') ||
+        props.has('_useRemoteRuntime'))
+    )
+      saveSettings(localStorage, {
+        openConsole: this._openConsole,
+        useExperimentalBlocks: this._useExperimentalBlocks,
+        useLocalRuntime: this._useLocalRuntime,
+        useRemoteRuntime: this._useRemoteRuntime,
+        remoteRuntimeOrigin: this._remoteRuntimeOrigin,
+        version: 1
+      })
+
+    if (props.has('_remoteRuntimeOrigin'))
+      this.#bundleStore = BundleStore(this._remoteRuntimeOrigin)
+
+    if (props.has('_useRemoteRuntime') || props.has('_remoteRuntimeOrigin'))
+      this.#upload()
   }
 
   #appendPreviewError(err: DevvitUIError): void {
@@ -270,9 +358,14 @@ export class PlayPen extends LitElement {
   }
 
   /** Throttled changes after updating sources. */
-  #setSrcSideEffects = throttle((save: boolean) => {
-    this._bundle = link(compile(this.#env))
+  #setSrcSideEffects = throttle((save: boolean): void => {
+    this.#version++
+    this._bundle = link(
+      compile(this.#env),
+      newHostname(this._name, this.#version)
+    )
     if (save) this.#save()
+    this.#upload()
   }, 500)
 
   /** Recompute the current hash regardless of the location bar state. */
@@ -280,5 +373,13 @@ export class PlayPen extends LitElement {
     const url = new URL(location.toString())
     url.hash = penToHash(PenSave(this._name, this._src ?? ''))
     return url
+  }
+
+  #upload(): void {
+    // Unlike production, bundles are first available locally and then remotely.
+    // Upload failures appear in the execution of RemoteApp.
+    if (this._useRemoteRuntime && this._bundle)
+      this._uploaded =
+        this.#bundleStore?.upload(this._bundle) ?? Promise.resolve({})
   }
 }
