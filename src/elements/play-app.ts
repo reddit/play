@@ -33,9 +33,7 @@ export class PlayApp extends LitElement {
 
   constructor() {
     super()
-    console.log(
-      `:play v${globalThis.playVersion} with Devvit v${globalThis.devvitVersion}`
-    )
+    console.log(`:play v${playVersion} with Devvit v${devvitVersion}`)
   }
 
   protected override render(): TemplateResult {

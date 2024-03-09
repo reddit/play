@@ -15,6 +15,9 @@ set -${V:+x}
 # local-only commit to revise the changelog.
 git pull
 
+echo 'changes since last release'
+git log "$(git describe --tags --abbrev=0)..@" --oneline
+
 read -p 'commit changelog; <enter> to continue, <ctrl-c> to abort: '
 
 # Clear outdated artifacts.
@@ -32,4 +35,4 @@ read -p "ready to publish v${version}; <enter> to continue, <ctrl-c> to abort: "
 
 npm publish
 
-read -p 'upload dist/play-*.html artifact; <enter> to continue: '
+read -p 'publish a new release and upload dist artifacts; <enter> to continue: '

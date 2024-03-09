@@ -1,4 +1,4 @@
-/** globalThis.* defines that are replaced with constants by esbuild. */
+// Constants set by tools/build.
 
 /**
  * The version of Devvit play uses. Eg, '1.2.3' or

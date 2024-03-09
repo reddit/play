@@ -8,17 +8,20 @@
  */
 export function esbuildConfig(playVersion, devvitVersion) {
   return {
+    // See defines.d.ts.
     define: {
-      'globalThis.playVersion': `'${playVersion}'`,
-      'globalThis.devvitVersion': `'${devvitVersion}'`
-    }, // See defines.d.ts.
+      devvitVersion: `'${devvitVersion}'`,
+      playVersion: `'${playVersion}'`
+    },
+    // See loaders.d.ts.
     loader: {
-      '.css': 'text',
       // Bundle templates for loading in pens and bundle pen worker as text so it
       // can be loaded in a worker.
       '.example.tsx': 'text',
-      '.svg': 'text',
-      '.worker.min.js': 'text'
+      '.worker.min.js': 'text',
+
+      '.css': 'text',
+      '.svg': 'text'
     }
   }
 }

@@ -1,5 +1,5 @@
 import {assert, expect} from '@esm-bundle/chai'
-import {html, render} from 'lit'
+import {LitElement, html, render, type TemplateResult} from 'lit'
 import {newTSEnv} from '../../bundler/compiler.js'
 import {PlayEditor} from './play-editor.js'
 
@@ -9,36 +9,33 @@ test('tag is defined', () => {
 })
 
 test('a slotted template emits an edit-template event', async () => {
-  render(
-    html`
-      <play-editor>
-        <script lang="tsx" type="application/devvit">
-          console.log('Hello World!')
-        </script>
-      </play-editor>
-    `,
-    document.body
-  )
-  const el = document.querySelector<PlayEditor>('play-editor')!
-
   const edit = await new Promise<CustomEvent<string>>(async resolve => {
-    el.addEventListener('edit-template', resolve)
+    document.body.addEventListener('edit-template', resolve)
+    using _el = await fixture(
+      'play-editor',
+      html`
+        <play-editor>
+          <script lang="tsx" type="application/devvit">
+            console.log('Hello World!')
+          </script>
+        </play-editor>
+      `
+    )
   })
   expect(edit.detail).equal("console.log('Hello World!')")
 })
 
 test('setSrc() replaces a template', async () => {
-  render(
+  using el = await fixture(
+    'play-editor',
     html`
       <play-editor .env=${newTSEnv()}>
         <script lang="tsx" type="application/devvit">
           'abc'
         </script>
       </play-editor>
-    `,
-    document.body
+    `
   )
-  const el = document.querySelector<PlayEditor>('play-editor')!
   await new Promise(resolve => requestAnimationFrame(resolve))
   const edit = await new Promise<CustomEvent<string>>(resolve => {
     el.addEventListener('edit', resolve)
@@ -47,3 +44,17 @@ test('setSrc() replaces a template', async () => {
 
   expect(edit.detail).equal("'def'")
 })
+
+async function fixture<T extends keyof HTMLElementTagNameMap>(
+  tag: T,
+  template: TemplateResult
+): Promise<HTMLElementTagNameMap[T] & Disposable> {
+  const root = document.createElement('div')
+  document.body.append(root)
+  render(template, root)
+  const el = root.getElementsByTagName<T>(tag)[0]!
+  if (el == null) throw Error(`no element tagged "${tag}"`)
+  if (el instanceof LitElement) await el.updateComplete
+  ;(<Disposable>(<unknown>el))[Symbol.dispose] = () => root.remove()
+  return <HTMLElementTagNameMap[T] & Disposable>el
+}
