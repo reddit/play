@@ -2,6 +2,45 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.35
+
+- d01679b Upgrade dependencies
+- f551c8a Simplify UI test scaffolding
+- ea9fa5f Upgrade dependencies
+- 5517834 Update CustomPost and UIEventHandler SerializableServiceDefinitions
+- fd778e4 Upgrade dependencies
+- b02f29b Remove CI config for Node.js
+- 2124c76 Fix type
+- 2a5b076 Fix extension issue on Node
+- ee3e610 Fix untitled width
+- 4aff069 Add CSS reset
+- a0d5b2c Document pre-build
+- bc614c8 Publish tsconfigs
+- 8bddf23 Skip TS lib type-checking
+- 15137db Set Node.js version and caching in CI
+- f7a71ad Support play-editor tests
+- f76916b Remove unused arg
+- 225f7b0 Add a play-editor test
+- 2ff63f9 Filter out Lit dev mode warnings from tests
+- 1d52412 Type-check @web/test-runner config
+- 4265da4 Add UI tests for most elements
+- 340b1b7 Fix tool config type-checking
+- e4d8465 Share esbuild config with UI tests
+- 6fbc833 Improve HTML interpolation
+- 3d473e5 Rename version global
+- 46c24fc Remove extension from build tool
+- 0377e4f Rename loader
+- 930246b Tweak manifest
+- e815577 Fix CI size test
+- c3da0cc Upgrade CI workflow and add UI tests
+- fbeae9c Scaffold UI testing
+- 0439a13 Configure VSCode to use local TS
+- 5b9bd25 Remove old # tag
+- fbe3ae0 Colocate assets
+- 27052a5 Move src/ui/\* up
+- 8eb5377 Upgrade dependencies
+- 5301fac Upgrade esbuild to v0.20.1
+
 ## v0.0.34
 
 - 5f64e8e Upgrade dependencies
