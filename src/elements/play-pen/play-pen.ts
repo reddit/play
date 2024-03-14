@@ -216,7 +216,7 @@ export class PlayPen extends LitElement {
       </main>
       <play-ai
       @ai-update=${(ev: CustomEvent<string>) => {
-        // console.log(`Ai update received: code ${JSON.stringify(ev.detail)}`);
+        console.log(`Ai update received: code ${JSON.stringify(ev.detail)}`);
         this._editor.setSrc(ev.detail);
           }
           }
