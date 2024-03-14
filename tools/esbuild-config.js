@@ -10,8 +10,8 @@ export function esbuildConfig(playVersion, devvitVersion) {
   return {
     // See defines.d.ts.
     define: {
-      devvitVersion: `'${devvitVersion}'`,
-      playVersion: `'${playVersion}'`
+      'globalThis.devvitVersion': `'${devvitVersion}'`,
+      'globalThis.playVersion': `'${playVersion}'`
     },
     // See loaders.d.ts.
     loader: {

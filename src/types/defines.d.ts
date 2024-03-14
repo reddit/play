@@ -1,4 +1,4 @@
-// Constants set by tools/build.
+// Constants set by tools/build.js. Reference as globalThis.*.
 
 /**
  * The version of Devvit play uses. Eg, '1.2.3' or
