@@ -9,7 +9,7 @@ import {
 import {customElement, property, query, state} from 'lit/decorators.js'
 import './play-icon/play-icon.js'
 import './play-button.js'
-import { context } from '../utils/ai-prompt.js';
+import { og_mixed_context, code_only } from '../utils/ai-prompt.js';
 
 // import type {Diagnostic} from 'typescript'
 // import ts from 'typescript'
@@ -28,6 +28,8 @@ import {
 const MODEL_NAME = "gemini-pro";
 const API_KEY = key;
 
+const context = og_mixed_context; // Choose prompt here.
+
 declare global {
   interface HTMLElementEventMap {
     'ai-update': CustomEvent<AiUpdate>
@@ -37,11 +39,17 @@ declare global {
   }
 }
 
+export enum AiUpdateType {
+  start = 'start',
+  end = 'end',
+  update = 'update'
+} 
+
 export type AiUpdate = {
   /** Code to be placed in Editor */
   code: string
   /** Description */
-  description: string
+  type: AiUpdateType
 }
 
 @customElement('play-ai')
@@ -101,7 +109,7 @@ export class PlayAi extends LitElement {
       left: 25%;
       background-color: white;
       width: 50%;
-      height: 50%;
+      height: 25%;
       visibility: visible;
       display: block;
       border-radius: 32px;
@@ -148,19 +156,33 @@ export class PlayAi extends LitElement {
       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
     },
   ];
-  
-  const parts : Part[] = [context[0] ?? {text :''}, {text: this.text}];
 
-  const result = await model.generateContent({
+  const parts : Part[] = [context[0] ?? {text :''}, {text: this.text}];
+  
+
+  // const result = await model.generateContent({
+  //   contents: [{ role: "user", parts }],
+  //   generationConfig,
+  //   safetySettings,
+  // });
+  
+  const result = await model.generateContentStream({
     contents: [{ role: "user", parts }],
     generationConfig,
     safetySettings,
   });
+    
+    // const response = this.#cleanResponse(result.response.text());
+
+  let text = '';
+  for await (const chunk of result.stream) {
+    const chunkText = chunk.text();
+    console.log(chunkText);
+    text += this.#cleanResponse(chunkText);
+    this.dispatchEvent(Bubble<string>('ai-update', text));
+  }
   
-  const response = this.#cleanResponse(result.response.text());
-  
-  console.log(response);
-  this.dispatchEvent(Bubble<string>('ai-update', response));
+  // console.log(response);
   this._loading = false;
 }
 
