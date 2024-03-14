@@ -1,0 +1,1 @@
+export const key = "YOUR_GEMINI_KEY_HERE"

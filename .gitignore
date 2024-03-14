@@ -5,4 +5,4 @@ tsconfig.tsbuildinfo
 /dist/
 /src/bundler/tsd.json
 /src/typescript/typescript.js
-/src/utils/secrets.js
+/src/.DS_Store
