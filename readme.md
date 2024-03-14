@@ -35,6 +35,14 @@ Add a pen to your HTML markup:
 </play-pen>
 ```
 
+### Enable AI Code Generation
+
+This version integrates with Google's Gemini LLM. 
+
+ - Create a [Gemini API key](https://ai.google.dev/?gad_source=1&gclid=Cj0KCQjwwMqvBhCtARIsAIXsZpakG1TG_E5gfVoWdTKCJ5idEQ0KDQ0GMO4GeTISWjNWuKdFqpQDJuYaArsBEALw_wcB) 
+ - Place your key in ```src/utils/secrets.ts```
+ - Code for AI integration is in ```src/elements/play-ai.ts``` and several prompt context files are included in ```src/utils/ai-prompts.ts```
+
 ### Artifacts
 
 Published releases include:
