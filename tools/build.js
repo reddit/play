@@ -55,14 +55,18 @@ async function pluginOnEnd(result) {
     iconEl.href = `data:${iconEl.type};base64,${file.toString('base64')}`
   }
 
-  let js =
-    result.outputFiles
-      ?.filter(file => file.path.endsWith('.js'))
-      .map(file => file.text)
-      .join('') ?? ''
+  let js = ''
   if (watch)
     js +=
-      "new EventSource('/esbuild').addEventListener('change', () => location.reload());"
+      // Use globalThis to avoid conflict with EventSource in protos which are
+      // dumped in module scope because esbuild doesn't know the standard
+      // EventSource is used.
+      "new globalThis.EventSource('/esbuild').addEventListener('change', () => globalThis.location.reload());"
+
+  const outFiles =
+    result.outputFiles?.filter(file => file.path.endsWith('.js')) ?? []
+  if (outFiles.length > 1) throw Error('cannot concatenate JavaScript files')
+  if (outFiles[0]) js += outFiles[0].text
 
   const scriptEl = /** @type {HTMLScriptElement|null} */ (
     copy.querySelector('script[type="module"][src]')
@@ -84,7 +88,8 @@ await Promise.all([
   // Generate typing information.
   fs.writeFile(
     'src/bundler/tsd.json',
-    JSON.stringify(await readTSDs(), null, 2)
+    JSON.stringify(await readTSDs(), undefined, 2),
+    'utf8'
   ),
 
   // Repackage typescript as an ESM module for the UI tests.
@@ -120,8 +125,8 @@ const appOpts = {
 if (watch) {
   const ctx = await esbuild.context(appOpts)
   await Promise.race([ctx.watch(), ctx.serve({port: 1234, servedir: 'dist'})])
-} else
-  await Promise.all([
+} else {
+  const [, , {metafile}] = await Promise.all([
     esbuild.build(appOpts),
     esbuild.build({
       ...opts,
@@ -131,6 +136,9 @@ if (watch) {
     esbuild.build({
       ...opts,
       entryPoints: ['src/elements/play-pen/play-pen.ts'],
+      metafile: true,
       outdir: 'dist'
     })
   ])
+  await fs.writeFile('dist/play-pen.meta.json', JSON.stringify(metafile))
+}
