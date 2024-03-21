@@ -13,6 +13,5 @@
     "types": ["mocha"]
   },
   "include": ["**/*", "../**/*.test.ts"],
-  "exclude": [],
   "references": [{"path": "../.."}]
 }
