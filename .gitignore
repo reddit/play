@@ -1,7 +1,5 @@
 /node_modules/
 
-tsconfig.tsbuildinfo
-
 /dist/
 /src/bundler/tsd.json
 /src/typescript/typescript.js

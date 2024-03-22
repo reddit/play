@@ -10,7 +10,9 @@
 
     "lib": ["DOM", "ES2022"],
 
-    "outDir": "../dist"
+    "outDir": "../dist",
+
+    "tsBuildInfoFile": "../dist/tsconfig.tsbuildinfo"
   },
   // https://github.com/Microsoft/TypeScript/issues/25636
   "include": ["**/*", "**/*.json"],

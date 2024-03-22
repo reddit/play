@@ -8,6 +8,8 @@
     "lib": ["ES2022", "WebWorker"],
 
     // tsc is only used for type-checking.
-    "noEmit": true
+    "noEmit": true,
+
+    "tsBuildInfoFile": "../../dist/examples/tsconfig.tsbuildinfo"
   }
 }
