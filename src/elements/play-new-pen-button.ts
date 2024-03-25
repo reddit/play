@@ -142,7 +142,7 @@ export class PlayNewPenButton extends LitElement {
     }
   `
 
-  @property({attribute: false}) srcByLabel?: Readonly<{[key: string]: string}>
+  @property({attribute: false}) srcByLabel?: {readonly [key: string]: string}
   @property() size: SizeOptions = 'medium'
 
   protected override render(): TemplateResult {

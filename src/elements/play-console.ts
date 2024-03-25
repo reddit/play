@@ -208,7 +208,7 @@ function previewErrRow(err: DevvitUIError): TemplateResult<1> {
 
 // BrowserLiteWorker may report objects that are Error-like but that aren't
 // instances of Error.
-function isErrorLike(err: unknown): err is Error & Record<never, never> {
+function isErrorLike(err: unknown): err is Error & object {
   return (
     err != null &&
     typeof err === 'object' &&

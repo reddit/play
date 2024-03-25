@@ -52,9 +52,11 @@
   ],
   "filesize": {
     "dist/play.js": {
+      "none": "20.4 KB",
       "gzip": "3.5 KB"
     },
     "dist/play-pen.js": {
+      "none": "26308.2 KB",
       "gzip": "4.0 MB"
     }
   },
@@ -97,12 +99,12 @@
     "preversion": "[ -z \"$(git status -z)\" ]",
     "prepublishOnly": "! git symbolic-ref --quiet HEAD || git push --follow-tags origin \"$(git branch --show-current)\"",
     "start": "tools/build.js --watch",
+    "test": "npm run test:format && npm run test:unit && npm run build && npm run test:size && npm run test:types:ui && npm run test:ui",
     "test:format": "npm run formatter -- --check",
     "test:size": "filesize",
     "test:types:ui": "lit-analyzer --maxWarnings=0 --rules.no-invalid-css=off --rules.no-missing-element-type-definition --rules.no-unknown-event --rules.no-unknown-attribute=false --strict",
     "test:ui": "wtr --config=tools/web-test-runner.config.js",
     "test:unit": "vitest --config=tools/vitest.config.ts run",
-    "test": "npm run test:format && npm run test:unit && npm run build && npm run test:size && npm run test:types:ui && npm run test:ui",
     "version": "npm test"
   },
   "type": "module",

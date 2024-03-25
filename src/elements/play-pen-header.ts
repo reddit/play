@@ -73,7 +73,7 @@ export class PlayPenHeader extends LitElement {
   @property({attribute: 'allow-storage', type: Boolean}) allowStorage: boolean =
     false
   @property() name: string = ''
-  @property({attribute: false}) srcByLabel?: Readonly<{[key: string]: string}>
+  @property({attribute: false}) srcByLabel?: {readonly [key: string]: string}
   @property({attribute: 'remote-runtime-origin'}) remoteRuntimeOrigin: string =
     defaultSettings.remoteRuntimeOrigin
   @property() url: string = ''
