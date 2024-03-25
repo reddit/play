@@ -6,17 +6,21 @@ import {
   type CSSResultGroup,
   type TemplateResult
 } from 'lit'
-import {customElement, property, state} from 'lit/decorators.js'
+import {customElement, property} from 'lit/decorators.js'
 import type {Diagnostics} from '../types/diagnostics.js'
+import {Bubble} from '../utils/bubble.js'
+import {cssReset} from '../utils/css-reset.js'
 import {openURL} from '../utils/open-url.js'
 
-import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-console.js'
 import './play-dropdown-menu.js'
 import './play-list-item.js'
 
 declare global {
+  interface HTMLElementEventMap {
+    'open-console': CustomEvent<boolean>
+  }
   interface HTMLElementTagNameMap {
     'play-pen-footer': PlayPenFooter
   }
@@ -62,7 +66,7 @@ export class PlayPenFooter extends LitElement {
   `
 
   @property({attribute: false}) diagnostics?: Readonly<Diagnostics>
-  @state() private _open?: boolean
+  @property({attribute: 'open-console', type: Boolean}) openConsole?: boolean
 
   protected override render(): TemplateResult {
     const errsLen =
@@ -74,9 +78,14 @@ export class PlayPenFooter extends LitElement {
           <play-button
             appearance="inverted"
             size="small"
-            endIcon="${this._open ? 'caret-down-outline' : 'caret-up-outline'}"
+            endIcon="${this.openConsole
+              ? 'caret-down-outline'
+              : 'caret-up-outline'}"
             title="Toggle console"
-            @click=${() => (this._open = !this._open)}
+            @click=${() =>
+              this.dispatchEvent(
+                Bubble<boolean>('open-console', !this.openConsole)
+              )}
             badge=${errsLen}
             label="Console"
           ></play-button>
@@ -108,8 +117,10 @@ export class PlayPenFooter extends LitElement {
             </play-dropdown-menu>
           </div>
         </div>
-        <div class=${`console-container ${this._open ? 'open' : 'closed'}`}>
-          ${this._open
+        <div
+          class=${`console-container ${this.openConsole ? 'open' : 'closed'}`}
+        >
+          ${this.openConsole
             ? html`
                 <play-console .diagnostics=${this.diagnostics}></play-console>
               `

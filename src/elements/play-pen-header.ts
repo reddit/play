@@ -6,17 +6,20 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
+import {defaultSettings} from '../storage/settings-save.js'
 import {Bubble} from '../utils/bubble.js'
+import {cssReset} from '../utils/css-reset.js'
 import {openURL} from '../utils/open-url.js'
 import type {PlayExportDialog} from './play-export-dialog.js'
+import type {PlaySettingsDialog} from './play-settings-dialog.js'
 
-import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-export-dialog.js'
 import './play-icon/play-icon.js'
 import './play-logo/play-logo.js'
 import './play-new-pen-button.js'
 import './play-resizable-text-input.js'
+import './play-settings-dialog.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -67,10 +70,21 @@ export class PlayPenHeader extends LitElement {
     }
   `
 
+  @property({attribute: 'allow-storage', type: Boolean}) allowStorage: boolean =
+    false
   @property() name: string = ''
   @property({attribute: false}) srcByLabel?: Readonly<{[key: string]: string}>
+  @property({attribute: 'remote-runtime-origin'}) remoteRuntimeOrigin: string =
+    defaultSettings.remoteRuntimeOrigin
   @property() url: string = ''
+  @property({attribute: 'use-experimental-blocks', type: Boolean})
+  useExperimentalBlocks: boolean = false
+  @property({attribute: 'use-local-runtime', type: Boolean})
+  useLocalRuntime: boolean = false
+  @property({attribute: 'use-remote-runtime', type: Boolean})
+  useRemoteRuntime: boolean = false
   @query('play-export-dialog') private _export!: PlayExportDialog
+  @query('play-settings-dialog') private _settings!: PlaySettingsDialog
 
   protected override render(): TemplateResult {
     return html`
@@ -106,6 +120,13 @@ export class PlayPenHeader extends LitElement {
             @click=${() => this._export.open()}
           ></play-button
           ><play-button
+            appearance="bordered"
+            size="small"
+            title=":play Settings"
+            label="Settings"
+            @click=${() => this._settings.open()}
+          ></play-button
+          ><play-button
             appearance="orangered"
             size="small"
             icon="share-new-outline"
@@ -117,6 +138,13 @@ export class PlayPenHeader extends LitElement {
         </div>
       </header>
       <play-export-dialog url=${this.url}></play-export-dialog>
+      <play-settings-dialog
+        ?allow-storage=${this.allowStorage}
+        remote-runtime-origin=${this.remoteRuntimeOrigin}
+        ?use-experimental-blocks=${this.useExperimentalBlocks}
+        ?use-local-runtime=${this.useLocalRuntime}
+        ?use-remote-runtime=${this.useRemoteRuntime}
+      ></play-settings-dialog>
     `
   }
 }

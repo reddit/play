@@ -1,7 +1,7 @@
 // @ts-expect-error
 import * as penWorker from '@devvit/previews/dist/pen.worker.min.js'
 
-import type {LinkedBundle, Metadata} from '@devvit/protos'
+import type {Empty, LinkedBundle, Metadata} from '@devvit/protos'
 import {
   LitElement,
   css,
@@ -12,11 +12,13 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
+import {RemoteApp} from '../runtime/remote-app.js'
+import {defaultSettings} from '../storage/settings-save.js'
 import type {ColorScheme} from '../types/color-scheme.js'
 import {Bubble} from '../utils/bubble.js'
+import {cssReset} from '../utils/css-reset.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
-import {cssReset} from '../utils/css-reset.js'
 
 const localRuntimeCode: Blob = new Blob([penWorker.default], {
   type: 'text/javascript'
@@ -83,15 +85,31 @@ export class PlayPreview extends LitElement {
 
   @property({attribute: false}) bundle: Readonly<LinkedBundle> | undefined
   @property({type: Number}) previewWidth?: number
+  @property({attribute: 'remote-runtime-origin'}) remoteRuntimeOrigin: string =
+    defaultSettings.remoteRuntimeOrigin
   @property() scheme?: ColorScheme
+  @property({attribute: false}) uploaded: Promise<Empty> | undefined
+  @property({attribute: 'use-experimental-blocks', type: Boolean})
+  useExperimentalBlocks: boolean = false
+  @property({attribute: 'use-local-runtime', type: Boolean})
+  useLocalRuntime: boolean = false
+  @property({attribute: 'use-remote-runtime', type: Boolean})
+  useRemoteRuntime: boolean = false
 
   @state() private _err = false
 
   #meta: Metadata = {
-    'devvit-app-user': {values: ['t2_appuser']},
-    'devvit-subreddit': {values: ['t5_sub']},
-    'devvit-user': {values: ['t2_user']}
+    'actor-id': {values: []}, // Set in willUpdate().
+    'devvit-actor': {values: ['main']},
+    'devvit-app': {values: ['pen']},
+    'devvit-app-user': {values: ['t2_123']},
+    'devvit-r2-host': {values: ['oauth.reddit.com']},
+    'devvit-installation': {values: ['123']},
+    'devvit-subreddit': {values: ['t5_123']},
+    'devvit-user': {values: ['t2_123']},
+    'devvit-user-agent': {values: ['play']}
   }
+  #remote: RemoteApp | undefined
 
   protected override render(): TemplateResult {
     // to-do: don't override toaster's --rem16 to offset the toast. Upstream a
@@ -102,11 +120,15 @@ export class PlayPreview extends LitElement {
           ? html`
               <devvit-preview
                 .bundle=${this.bundle}
-                .localRuntimeCode=${localRuntimeCode}
+                .localRuntimeCode=${this.useLocalRuntime
+                  ? localRuntimeCode
+                  : undefined}
                 .metadata=${this.#meta}
+                .remote=${this.useRemoteRuntime ? this.#remote : undefined}
                 .scheme=${this.scheme}
+                post-id="t3_123"
                 style="--rem16: 50px;"
-                ?use-experimental-blocks=${true}
+                ?use-experimental-blocks=${this.useExperimentalBlocks}
                 ?use-sandbox=${false}
                 @devvit-ui-error=${() => (this._err = true)}
               ></devvit-preview>
@@ -122,7 +144,13 @@ export class PlayPreview extends LitElement {
     super.willUpdate(props)
     if (props.has('bundle')) {
       this._err = false
+      if (this.bundle) this.#meta['actor-id']!.values = [this.bundle.hostname]
       this.dispatchEvent(Bubble<undefined>('clear-errors', undefined))
     }
+    if (props.has('remoteRuntimeOrigin'))
+      this.#remote = RemoteApp.new(
+        this.remoteRuntimeOrigin,
+        () => this.uploaded ?? Promise.resolve({})
+      )
   }
 }
