@@ -48,6 +48,8 @@ export class PlayPreview extends LitElement {
       border-radius: 16px;
       min-height: 320px;
       box-shadow: var(--shadow-xs);
+      /* Prevents the border from throwing off the context.dimensions calculation */
+      box-sizing: content-box;
 
       /* When the background is visible, the preview is loading. */
       background-color: var(--color-interactive-background);
@@ -66,21 +68,20 @@ export class PlayPreview extends LitElement {
       transition-timing-function: ease-out;
     }
 
-    /* We want the width to be precisely correct since Devvitors get dimension information from context! */
     :host([previewWidth='288']) .preview {
-      width: calc(288px + (var(--border-width) * 2));
+      width: 288px;
     }
     :host([previewWidth='343']) .preview {
-      width: calc(343px + (var(--border-width) * 2));
+      width: 343px;
     }
     :host([previewWidth='400']) .preview {
-      width: calc(400px + (var(--border-width) * 2));
+      width: 400px;
     }
     :host([previewWidth='512']) .preview {
-      width: calc(512px + (var(--border-width) * 2));
+      width: 512px;
     }
     :host([previewWidth='718']) .preview {
-      width: calc(718px + (var(--border-width) * 2));
+      width: 718px;
     }
   `
 
