@@ -66,20 +66,21 @@ export class PlayPreview extends LitElement {
       transition-timing-function: ease-out;
     }
 
+    /* We want the width to be precisely correct since Devvitors get dimension information from context! */
     :host([previewWidth='288']) .preview {
-      width: 288px;
+      width: calc(288px + (var(--border-width) * 2));
     }
     :host([previewWidth='343']) .preview {
-      width: 343px;
+      width: calc(343px + (var(--border-width) * 2));
     }
     :host([previewWidth='400']) .preview {
-      width: 400px;
+      width: calc(400px + (var(--border-width) * 2));
     }
     :host([previewWidth='512']) .preview {
-      width: 512px;
+      width: calc(512px + (var(--border-width) * 2));
     }
     :host([previewWidth='718']) .preview {
-      width: 718px;
+      width: calc(718px + (var(--border-width) * 2));
     }
   `
 
