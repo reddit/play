@@ -48,6 +48,8 @@ export class PlayPreview extends LitElement {
       border-radius: 16px;
       min-height: 320px;
       box-shadow: var(--shadow-xs);
+      /* Prevents the border from throwing off the context.dimensions calculation */
+      box-sizing: content-box;
 
       /* When the background is visible, the preview is loading. */
       background-color: var(--color-interactive-background);
