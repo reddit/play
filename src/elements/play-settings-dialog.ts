@@ -14,10 +14,12 @@ import './play-button.js'
 
 declare global {
   interface HTMLElementEventMap {
+    'edit-remote-runtime-origin': CustomEvent<string>
+    'runtime-debug-logging': CustomEvent<boolean>
+    'sandbox-app': CustomEvent<boolean>
     'use-experimental-blocks': CustomEvent<boolean>
     'use-local-runtime': CustomEvent<boolean>
     'use-remote-runtime': CustomEvent<boolean>
-    'edit-remote-runtime-origin': CustomEvent<string>
   }
   interface HTMLElementTagNameMap {
     'play-settings-dialog': PlaySettingsDialog
@@ -109,6 +111,10 @@ export class PlaySettingsDialog extends LitElement {
     false
   @property({attribute: 'remote-runtime-origin'}) remoteRuntimeOrigin: string =
     defaultSettings.remoteRuntimeOrigin
+  @property({attribute: 'runtime-debug-logging', type: Boolean})
+  runtimeDebugLogging: boolean = false
+  @property({attribute: 'sandbox-app', type: Boolean})
+  sandboxApp: boolean = false
   @property({attribute: 'use-experimental-blocks', type: Boolean})
   useExperimentalBlocks: boolean = false
   @property({attribute: 'use-local-runtime', type: Boolean})
@@ -157,6 +163,34 @@ export class PlaySettingsDialog extends LitElement {
             />
             Use local runtime. Execute apps locally whenever possible. Default:
             ${onOff(defaultSettings.useLocalRuntime)}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.sandboxApp}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>('sandbox-app', ev.currentTarget.checked)
+                )}
+            />
+            Sandbox app execution. Sandboxing is slower but may be more
+            production-like. Default: ${onOff(defaultSettings.sandboxApp)}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.runtimeDebugLogging}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>(
+                    'runtime-debug-logging',
+                    ev.currentTarget.checked
+                  )
+                )}
+            />
+            Enable runtime debug logging. May also require enabling verbose
+            DevTools console logs. Default:
+            ${onOff(defaultSettings.runtimeDebugLogging)}.
           </label>
           <label>
             <input
