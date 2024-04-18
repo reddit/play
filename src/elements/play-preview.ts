@@ -152,9 +152,7 @@ export class PlayPreview extends LitElement {
     `
   }
 
-  protected override async willUpdate(
-    props: PropertyValues<this>
-  ): Promise<void> {
+  protected override willUpdate(props: PropertyValues<this>): void {
     super.willUpdate(props)
     if (props.has('bundle')) {
       this._err = false
