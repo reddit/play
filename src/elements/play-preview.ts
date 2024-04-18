@@ -12,7 +12,7 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
-import {RemoteApp} from '../runtime/remote-app.js'
+import {RemoteApp} from '@devvit/ui-renderer/client/remote-app.js'
 import {defaultSettings} from '../storage/settings-save.js'
 import type {ColorScheme} from '../types/color-scheme.js'
 import {Bubble} from '../utils/bubble.js'
@@ -149,10 +149,11 @@ export class PlayPreview extends LitElement {
       if (this.bundle) this.#meta['actor-id']!.values = [this.bundle.hostname]
       this.dispatchEvent(Bubble<undefined>('clear-errors', undefined))
     }
+
     if (props.has('remoteRuntimeOrigin'))
-      this.#remote = RemoteApp.new(
-        this.remoteRuntimeOrigin,
-        () => this.uploaded ?? Promise.resolve({})
-      )
+      this.#remote = RemoteApp.new(this.remoteRuntimeOrigin, {
+        installation: this.#meta['devvit-installation']?.values[0] ?? '',
+        actor: this.#meta['devvit-actor']?.values[0] ?? ''
+      })
   }
 }
