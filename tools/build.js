@@ -43,9 +43,7 @@ async function pluginOnEnd(result) {
     }
     if (watch) manifest.start_url = 'http://localhost:1234' // Suppress warning.
     manifest.version = pkg.version
-    manifestEl.href = `data:application/json,${encodeURIComponent(
-      JSON.stringify(manifest)
-    )}`
+    manifestEl.href = `data:application/json,${encodeURIComponent(JSON.stringify(manifest))}`
   }
   const iconEl = /** @type {HTMLLinkElement|null} */ (
     copy.querySelector('link[href][rel="icon"][type]')
