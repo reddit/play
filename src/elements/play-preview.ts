@@ -1,5 +1,7 @@
 // @ts-expect-error
-import * as penWorker from '@devvit/previews/dist/pen.worker.min.js'
+import * as sandboxedRuntimeScript from '@devvit/previews/dist/sandboxed-pen.worker.min.js'
+// @ts-expect-error
+import * as unsandboxedRuntimeScript from '@devvit/previews/dist/unsandboxed-pen.worker.min.js'
 
 import type {Empty, LinkedBundle, Metadata} from '@devvit/protos'
 import {
@@ -20,9 +22,13 @@ import {cssReset} from '../utils/css-reset.js'
 
 import '@devvit/previews/dist/devvit-preview.js'
 
-const localRuntimeCode: Blob = new Blob([penWorker.default], {
+const sandboxedRuntimeBlob: Blob = new Blob([sandboxedRuntimeScript.default], {
   type: 'text/javascript'
 })
+const unsandboxedRuntimeBlob: Blob = new Blob(
+  [unsandboxedRuntimeScript.default],
+  {type: 'text/javascript'}
+)
 
 declare global {
   interface HTMLElementEventMap {
@@ -48,6 +54,8 @@ export class PlayPreview extends LitElement {
       border-radius: 16px;
       min-height: 320px;
       box-shadow: var(--shadow-xs);
+      /* Prevents the border from throwing off the context.dimensions calculation */
+      box-sizing: content-box;
 
       /* When the background is visible, the preview is loading. */
       background-color: var(--color-interactive-background);
@@ -87,6 +95,10 @@ export class PlayPreview extends LitElement {
   @property({type: Number}) previewWidth?: number
   @property({attribute: 'remote-runtime-origin'}) remoteRuntimeOrigin: string =
     defaultSettings.remoteRuntimeOrigin
+  @property({attribute: 'runtime-debug-logging', type: Boolean})
+  runtimeDebugLogging: boolean = false
+  @property({attribute: 'sandbox-app', type: Boolean})
+  sandboxApp: boolean = false
   @property() scheme?: ColorScheme
   @property({attribute: false}) uploaded: Promise<Empty> | undefined
   @property({attribute: 'use-experimental-blocks', type: Boolean})
@@ -121,15 +133,17 @@ export class PlayPreview extends LitElement {
               <devvit-preview
                 .bundle=${this.bundle}
                 .localRuntimeCode=${this.useLocalRuntime
-                  ? localRuntimeCode
+                  ? this.sandboxApp
+                    ? sandboxedRuntimeBlob
+                    : unsandboxedRuntimeBlob
                   : undefined}
                 .metadata=${this.#meta}
                 .remote=${this.useRemoteRuntime ? this.#remote : undefined}
                 .scheme=${this.scheme}
                 post-id="t3_123"
+                ?runtime-debug-logging=${this.runtimeDebugLogging}
                 style="--rem16: 50px;"
                 ?use-experimental-blocks=${this.useExperimentalBlocks}
-                ?use-sandbox=${false}
                 @devvit-ui-error=${() => (this._err = true)}
               ></devvit-preview>
             `
@@ -138,9 +152,7 @@ export class PlayPreview extends LitElement {
     `
   }
 
-  protected override async willUpdate(
-    props: PropertyValues<this>
-  ): Promise<void> {
+  protected override willUpdate(props: PropertyValues<this>): void {
     super.willUpdate(props)
     if (props.has('bundle')) {
       this._err = false

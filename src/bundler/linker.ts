@@ -19,12 +19,27 @@ export function link(es: string, hostname: string): LinkedBundle {
 
 function provides(): SerializableServiceDefinition[] {
   // Assume the app provides CustomPost and UIEventHandler services to avoid an
-  // evaluation phase. These are generated like:
+  // evaluation phase. Also, Hello for internal tests. These are generated like:
   //   devvit new foo --template=custom-post
   //   cd foo
   //   devvit actor bundle main
   //   node -pe 'JSON.stringify(JSON.parse(require("fs").readFileSync(0, "utf8")).dependencies.provides, null, 2)' < dist/main.bundle.json
   return [
+    {
+      fullName: 'devvit.actor.hello.Hello',
+      methods: [
+        {
+          fullName: '/devvit.actor.hello.Hello/Ping',
+          name: 'Ping',
+          requestStream: false,
+          responseStream: false,
+          requestType: 'devvit.actor.hello.PingMessage',
+          responseType: 'devvit.actor.hello.PingMessage'
+        }
+      ],
+      name: 'Hello',
+      version: ''
+    },
     {
       fullName: 'devvit.reddit.custom_post.v1alpha.CustomPost',
       methods: [

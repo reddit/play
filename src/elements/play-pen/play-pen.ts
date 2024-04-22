@@ -145,6 +145,8 @@ export class PlayPen extends LitElement {
   @state() private _previewWidth: number = 288
   @state() private _remoteRuntimeOrigin: string =
     defaultSettings.remoteRuntimeOrigin
+  @state() private _runtimeDebugLogging: boolean = false
+  @state() private _sandboxApp: boolean = false
   @state() private _useExperimentalBlocks: boolean = false
   @state() private _useLocalRuntime: boolean = false
   @state() private _useRemoteRuntime: boolean = false
@@ -173,6 +175,8 @@ export class PlayPen extends LitElement {
     if (settings) {
       this._openConsole = settings.openConsole
       this._remoteRuntimeOrigin = settings.remoteRuntimeOrigin
+      this._runtimeDebugLogging = settings.runtimeDebugLogging
+      this._sandboxApp = settings.sandboxApp
       this._useExperimentalBlocks = settings.useExperimentalBlocks
       this._useLocalRuntime = settings.useLocalRuntime
       this._useRemoteRuntime = settings.useRemoteRuntime
@@ -198,8 +202,10 @@ export class PlayPen extends LitElement {
       ><play-pen-header
         ?allow-storage=${this.allowStorage}
         name=${this._name}
-        .srcByLabel=${this.srcByLabel}
         remote-runtime-origin=${this._remoteRuntimeOrigin}
+        ?runtime-debug-logging=${this._runtimeDebugLogging}
+        ?sandbox-app=${this._sandboxApp}
+        .srcByLabel=${this.srcByLabel}
         url=${this.#shareURL().toString()}
         ?use-experimental-blocks=${this._useExperimentalBlocks}
         ?use-local-runtime=${this._useLocalRuntime}
@@ -211,6 +217,10 @@ export class PlayPen extends LitElement {
           this.#setName('', false)
           this._editor.setSrc(ev.detail)
         }}
+        @runtime-debug-logging=${(ev: CustomEvent<boolean>) =>
+          (this._runtimeDebugLogging = ev.detail)}
+        @sandbox-app=${(ev: CustomEvent<boolean>) =>
+          (this._sandboxApp = ev.detail)}
         @use-experimental-blocks=${(ev: CustomEvent<boolean>) =>
           (this._useExperimentalBlocks = ev.detail)}
         @use-local-runtime=${(ev: CustomEvent<boolean>) =>
@@ -240,6 +250,8 @@ export class PlayPen extends LitElement {
             .bundle=${this._bundle}
             previewWidth=${this._previewWidth}
             remote-runtime-origin=${this._remoteRuntimeOrigin}
+            ?runtime-debug-logging=${this._runtimeDebugLogging}
+            ?sandbox-app=${this._sandboxApp}
             scheme=${ifDefined(this._scheme)}
             .uploaded=${this._uploaded}
             ?use-experimental-blocks=${this._useExperimentalBlocks}
@@ -281,6 +293,8 @@ export class PlayPen extends LitElement {
     props: PropertyValues<this> &
       PropertyValues<{
         _openConsole: boolean
+        _runtimeDebugLogging: boolean
+        _sandboxApp: boolean
         _useExperimentalBlocks: boolean
         _useLocalRuntime: boolean
         _useRemoteRuntime: boolean
@@ -292,6 +306,8 @@ export class PlayPen extends LitElement {
     if (
       this.allowStorage &&
       (props.has('_openConsole') ||
+        props.has('_runtimeDebugLogging') ||
+        props.has('_sandboxApp') ||
         props.has('_useExperimentalBlocks') ||
         props.has('_remoteRuntimeOrigin') ||
         props.has('_useLocalRuntime') ||
@@ -299,6 +315,8 @@ export class PlayPen extends LitElement {
     )
       saveSettings(localStorage, {
         openConsole: this._openConsole,
+        runtimeDebugLogging: this._runtimeDebugLogging,
+        sandboxApp: this._sandboxApp,
         useExperimentalBlocks: this._useExperimentalBlocks,
         useLocalRuntime: this._useLocalRuntime,
         useRemoteRuntime: this._useRemoteRuntime,

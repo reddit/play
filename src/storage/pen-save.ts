@@ -44,9 +44,7 @@ export function savePen(
 }
 
 export function penToHash(pen: Readonly<PenSave>): string {
-  return `${fragmentPrefix}${lzstring.compressToEncodedURIComponent(
-    JSON.stringify(pen)
-  )}`
+  return `${fragmentPrefix}${lzstring.compressToEncodedURIComponent(JSON.stringify(pen))}`
 }
 
 /**

@@ -10,7 +10,7 @@ import {
   type UIRequest,
   type UIResponse
 } from '@devvit/protos'
-import type {UIApp} from '@devvit/ui-renderer/client/ui-app.js'
+import type {UIApp} from '@devvit/ui-renderer/client/remote-app.js'
 import {
   Metadata as NiceMeta,
   createChannel,

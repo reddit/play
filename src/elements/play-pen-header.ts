@@ -76,6 +76,10 @@ export class PlayPenHeader extends LitElement {
   @property({attribute: false}) srcByLabel?: {readonly [key: string]: string}
   @property({attribute: 'remote-runtime-origin'}) remoteRuntimeOrigin: string =
     defaultSettings.remoteRuntimeOrigin
+  @property({attribute: 'runtime-debug-logging', type: Boolean})
+  runtimeDebugLogging: boolean = false
+  @property({attribute: 'sandbox-app', type: Boolean})
+  sandboxApp: boolean = false
   @property() url: string = ''
   @property({attribute: 'use-experimental-blocks', type: Boolean})
   useExperimentalBlocks: boolean = false
@@ -141,6 +145,8 @@ export class PlayPenHeader extends LitElement {
       <play-settings-dialog
         ?allow-storage=${this.allowStorage}
         remote-runtime-origin=${this.remoteRuntimeOrigin}
+        ?runtime-debug-logging=${this.runtimeDebugLogging}
+        ?sandbox-app=${this.sandboxApp}
         ?use-experimental-blocks=${this.useExperimentalBlocks}
         ?use-local-runtime=${this.useLocalRuntime}
         ?use-remote-runtime=${this.useRemoteRuntime}

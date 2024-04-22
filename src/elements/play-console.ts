@@ -178,9 +178,7 @@ function previewErrRow(err: DevvitUIError): TemplateResult<1> {
         'catch errors.'
       : isCircuitBreaker(err.err)
         ? 'Unsupported plugin: ' +
-          `${
-            err.err.cause?.method ? `${err.err.cause.method} ` : ''
-          }API call ` +
+          `${err.err.cause?.method ? `${err.err.cause.method} ` : ''}API call ` +
           'unavailable. This program may run correctly on reddit.com but most ' +
           'Context and other Devvit APIs are not yet supported in the playground.'
         : ''
