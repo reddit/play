@@ -7,7 +7,7 @@ export type SettingsSave = {
   useLocalRuntime: boolean
   /** Enable remote runtime. Upload often and execute apps remotely as needed. */
   useRemoteRuntime: boolean
-  /** Probably the devenv compute address. Eg, http://localhost:7777. */
+  /** Probably the devenv compute address. Eg, http://localhost:7788. */
   remoteRuntimeOrigin: string
   /**
    * Settings version recorded at save time. Used for unpacking old data if
@@ -23,7 +23,7 @@ export const defaultSettings: Readonly<SettingsSave> = {
   useExperimentalBlocks: false,
   useLocalRuntime: true,
   useRemoteRuntime: false,
-  remoteRuntimeOrigin: 'http://localhost:7777',
+  remoteRuntimeOrigin: 'http://localhost:7788',
   version: 1
 }
 
