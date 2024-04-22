@@ -2,7 +2,7 @@
 export type SettingsSave = {
   /** Most recent console open state. */
   openConsole: boolean
-  /** Probably the devenv compute address. Eg, http://localhost:7777. */
+  /** Probably the devenv compute address. Eg, http://localhost:7788. */
   remoteRuntimeOrigin: string
   runtimeDebugLogging: boolean
   /** When local runtime is enabled, use SandboxedRuntimeLite. */
@@ -23,7 +23,7 @@ const storageKey = 'playSettings'
 
 export const defaultSettings: Readonly<SettingsSave> = {
   openConsole: false,
-  remoteRuntimeOrigin: 'http://localhost:7777',
+  remoteRuntimeOrigin: 'http://localhost:7788',
   runtimeDebugLogging: false,
   sandboxApp: false,
   useExperimentalBlocks: false,
