@@ -9,10 +9,12 @@ require publishing. The workflow is usually:
 
 1. `npm install` (if not already done).
 2. `npm link <local dep1> <local dep2> <local dep3>...` (must specify all
-   linkage in one command).
+   linkage in one command). @devvit/previews is required. Verify symbolic links
+   to your local folders with `ls -l node_modules/@devvit`.
 3. `npm start` development server.
 4. Edit and build dependencies as needed.
 5. Cleanup; unlink all play dependencies by re-running `npm install`.
+   `npm link --save` if you want links to persist past install.
 
 <details markdown>
 <summary>@devvit polyrepo example…</summary>
