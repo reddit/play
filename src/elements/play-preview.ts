@@ -148,6 +148,7 @@ export class PlayPreview extends LitElement {
                 ?use-experimental-blocks=${this.useExperimentalBlocks}
                 ?use-ui-request=${this.useUIRequest}
                 @devvit-ui-error=${() => (this._err = true)}
+                @devvit-image-upload=${this.mockImageUpload}
               ></devvit-preview>
             `
           : nothing}
@@ -169,4 +170,23 @@ export class PlayPreview extends LitElement {
         this.#meta
       )
   }
+
+  private mockImageUpload = (event: CustomEvent<{blob: Blob, uploadResponse: null | Promise<UploadResponse>}>) : void => {
+    event.detail.uploadResponse = new Promise((resolve) => {
+      window.setTimeout(()=> {
+        resolve({
+          url: 'https://i.redd.it/m04iwd26jbpc1.png',
+          mediaId: 'm04iwd26jbpc1',
+          // error:'Whoops!' // uncomment to emulate the error response
+        })
+      }, 4000);
+    })
+  }
+}
+
+
+type UploadResponse = {
+  url?: string;
+  mediaId?: string;
+  error?: string;
 }
