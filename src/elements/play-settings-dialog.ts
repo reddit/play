@@ -121,6 +121,8 @@ export class PlaySettingsDialog extends LitElement {
   useLocalRuntime: boolean = false
   @property({attribute: 'use-remote-runtime', type: Boolean})
   useRemoteRuntime: boolean = false
+  @property({attribute: 'use-ui-request', type: Boolean})
+  useUIRequest: boolean = false
   @query('dialog') private _dialog!: HTMLDialogElement
 
   open(): void {
@@ -236,6 +238,18 @@ export class PlaySettingsDialog extends LitElement {
             />
             Use experimental blocks. Default:
             ${onOff(defaultSettings.useExperimentalBlocks)}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.useUIRequest}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>('use-ui-request', ev.currentTarget.checked)
+                )}
+            />
+            Use UI Request (multithreading). Default:
+            ${onOff(defaultSettings.useUIRequest)}.
           </label>
         </fieldset>
       </dialog>

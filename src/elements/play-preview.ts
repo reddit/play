@@ -107,6 +107,8 @@ export class PlayPreview extends LitElement {
   useLocalRuntime: boolean = false
   @property({attribute: 'use-remote-runtime', type: Boolean})
   useRemoteRuntime: boolean = false
+  @property({attribute: 'use-ui-request', type: Boolean})
+  useUIRequest: boolean = false
 
   @state() private _err = false
 
@@ -144,6 +146,7 @@ export class PlayPreview extends LitElement {
                 ?runtime-debug-logging=${this.runtimeDebugLogging}
                 style="--rem16: 50px;"
                 ?use-experimental-blocks=${this.useExperimentalBlocks}
+                ?use-ui-request=${this.useUIRequest}
                 @devvit-ui-error=${() => (this._err = true)}
               ></devvit-preview>
             `
