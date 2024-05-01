@@ -20,6 +20,7 @@ declare global {
     'use-experimental-blocks': CustomEvent<boolean>
     'use-local-runtime': CustomEvent<boolean>
     'use-remote-runtime': CustomEvent<boolean>
+    'use-ui-request': CustomEvent<boolean>
   }
   interface HTMLElementTagNameMap {
     'play-settings-dialog': PlaySettingsDialog
