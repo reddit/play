@@ -171,22 +171,26 @@ export class PlayPreview extends LitElement {
       )
   }
 
-  private mockImageUpload = (event: CustomEvent<{blob: Blob, uploadResponse: null | Promise<UploadResponse>}>) : void => {
-    event.detail.uploadResponse = new Promise((resolve) => {
-      window.setTimeout(()=> {
+  private mockImageUpload = (
+    event: CustomEvent<{
+      blob: Blob
+      uploadResponse: null | Promise<UploadResponse>
+    }>
+  ): void => {
+    event.detail.uploadResponse = new Promise(resolve => {
+      window.setTimeout(() => {
         resolve({
           url: 'https://i.redd.it/m04iwd26jbpc1.png',
-          mediaId: 'm04iwd26jbpc1',
+          mediaId: 'm04iwd26jbpc1'
           // error:'Whoops!' // uncomment to emulate the error response
         })
-      }, 4000);
+      }, 4000)
     })
   }
 }
 
-
 type UploadResponse = {
-  url?: string;
-  mediaId?: string;
-  error?: string;
+  url?: string
+  mediaId?: string
+  error?: string
 }
