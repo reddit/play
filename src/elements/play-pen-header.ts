@@ -83,6 +83,8 @@ export class PlayPenHeader extends LitElement {
   @property() url: string = ''
   @property({attribute: 'use-experimental-blocks', type: Boolean})
   useExperimentalBlocks: boolean = false
+  @property({attribute: 'use-ui-request', type: Boolean})
+  useUIRequest: boolean = false
   @property({attribute: 'use-local-runtime', type: Boolean})
   useLocalRuntime: boolean = false
   @property({attribute: 'use-remote-runtime', type: Boolean})
@@ -148,6 +150,7 @@ export class PlayPenHeader extends LitElement {
         ?runtime-debug-logging=${this.runtimeDebugLogging}
         ?sandbox-app=${this.sandboxApp}
         ?use-experimental-blocks=${this.useExperimentalBlocks}
+        ?use-ui-request=${this.useUIRequest}
         ?use-local-runtime=${this.useLocalRuntime}
         ?use-remote-runtime=${this.useRemoteRuntime}
       ></play-settings-dialog>
