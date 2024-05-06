@@ -38,6 +38,11 @@ All JavaScript and CSS build product gzipped sizes are tracked and tested with
 (configured in package.json) just above the actual size so that it's easy to
 track commit cost.
 
+The underlying tool, `bundlesize`, does not report failures well for large
+bundles. To get the actual uncompressed size to set in the package.json, use
+stat, divide by 1024, and round up to the nearest 10th of a kibibyte like
+`stat -c "%s" dist/protos.min.js|numfmt --to-unit=Ki --format=%.1f`.
+
 The contents of each bundle generated can be evaluated through its source map.
 [source-map-explorer](https://github.com/danvk/source-map-explorer) and
 [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview) can be used
