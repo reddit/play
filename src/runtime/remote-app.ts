@@ -51,29 +51,46 @@ type UIEventHandlerNiceClient = {
 
 export class RemoteApp implements UIApp {
   /** @arg uploaded Callback to test whether remote bundle is available. */
-  static new(gatewayOrigin: string, uploaded: () => Promise<Empty>): RemoteApp {
+  static new(
+    gatewayOrigin: string,
+    uploaded: () => Promise<Empty>,
+    meta: Readonly<Metadata>
+  ): RemoteApp {
     const channel = createChannel(gatewayOrigin)
     const customPost = createClient(CustomPostDefinition, channel)
     const uiEventHandler = createClient(UIEventHandlerDefinition, channel)
     return new RemoteApp(
       <CustomPostNiceClient>(<unknown>customPost),
       <UIEventHandlerNiceClient>(<unknown>uiEventHandler),
-      uploaded
+      uploaded,
+      meta
     )
   }
 
   #customPost: CustomPostNiceClient
   #uiEventHandler: UIEventHandlerNiceClient
+  #meta: Metadata
   #uploaded: () => Promise<Empty>
 
   constructor(
     customPost: CustomPostNiceClient,
     uiEventHandler: UIEventHandlerNiceClient,
-    uploaded: () => Promise<Empty>
+    uploaded: () => Promise<Empty>,
+    meta: Readonly<Metadata>
   ) {
     this.#customPost = customPost
     this.#uiEventHandler = uiEventHandler
     this.#uploaded = uploaded
+    this.#meta = meta
+  }
+
+  #newNiceMeta(meta: Readonly<Metadata> | undefined): NiceMeta {
+    return new NiceMeta(
+      Object.entries({...this.#meta, ...meta}).map(([key, {values}]) => [
+        key,
+        values.join()
+      ])
+    )
   }
 
   async HandleUIEvent(
@@ -82,7 +99,7 @@ export class RemoteApp implements UIApp {
   ): Promise<HandleUIEventResponse> {
     await this.#uploaded()
     return this.#uiEventHandler.handleUIEvent(req, {
-      metadata: newNiceMeta(meta)
+      metadata: this.#newNiceMeta(meta)
     })
   }
 
@@ -92,7 +109,7 @@ export class RemoteApp implements UIApp {
   ): Promise<RenderPostResponse> {
     await this.#uploaded()
     return this.#customPost.renderPost(req, {
-      metadata: newNiceMeta(meta)
+      metadata: this.#newNiceMeta(meta)
     })
   }
 
@@ -102,7 +119,7 @@ export class RemoteApp implements UIApp {
   ): Promise<UIResponse> {
     await this.#uploaded()
     return this.#customPost.renderPostContent(req, {
-      metadata: newNiceMeta(meta)
+      metadata: this.#newNiceMeta(meta)
     })
   }
 
@@ -112,13 +129,7 @@ export class RemoteApp implements UIApp {
   ): Promise<UIResponse> {
     await this.#uploaded()
     return this.#customPost.renderPostComposer(req, {
-      metadata: newNiceMeta(meta)
+      metadata: this.#newNiceMeta(meta)
     })
   }
-}
-
-function newNiceMeta(meta: Readonly<Metadata> | undefined): NiceMeta {
-  return new NiceMeta(
-    Object.entries(meta ?? {}).map(([key, {values}]) => [key, values.join()])
-  )
 }

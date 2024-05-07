@@ -165,7 +165,8 @@ export class PlayPreview extends LitElement {
     if (props.has('remoteRuntimeOrigin'))
       this.#remote = RemoteApp.new(
         this.remoteRuntimeOrigin,
-        () => this.uploaded ?? Promise.resolve({})
+        () => this.uploaded ?? Promise.resolve({}),
+        this.#meta
       )
   }
 }
