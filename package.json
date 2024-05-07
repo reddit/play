@@ -117,7 +117,8 @@
     "test:types:ui": "lit-analyzer --maxWarnings=0 --rules.no-invalid-css=off --rules.no-missing-element-type-definition --rules.no-unknown-event --rules.no-unknown-attribute=false --strict",
     "test:ui": "wtr --config=tools/web-test-runner.config.js",
     "test:unit": "vitest --config=tools/vitest.config.ts run",
-    "version": "npm test"
+    "version": "npm test",
+    "install:npmjs": "npm install --registry=https://registry.npmjs.org"
   },
   "type": "module",
   "types": "dist/index.d.ts",
