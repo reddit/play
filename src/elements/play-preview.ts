@@ -174,10 +174,10 @@ export class PlayPreview extends LitElement {
   private mockImageUpload = (
     event: CustomEvent<{
       blob: Blob
-      uploadResponse: null | Promise<UploadResponse>
+      uploadRequest: null | Promise<UploadResponse>
     }>
   ): void => {
-    event.detail.uploadResponse = new Promise(resolve => {
+    event.detail.uploadRequest = new Promise(resolve => {
       window.setTimeout(() => {
         resolve({
           url: 'https://i.redd.it/m04iwd26jbpc1.png',
