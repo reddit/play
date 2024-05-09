@@ -133,7 +133,7 @@ function uses(): LinkedBundle[] {
               responseStream: false
             }
           ],
-          name: 'HTTP',
+          name: 'Logger',
           version: ''
         }
       ],
