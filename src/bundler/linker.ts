@@ -97,6 +97,54 @@ function uses(): LinkedBundle[] {
   return [
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
+      hostname: 'logger.plugins.local',
+      provides: [
+        {
+          fullName: 'devvit.plugin.logger.Logger',
+          methods: [
+            {
+              fullName: '/devvit.plugin.logger.Logger/Error',
+              name: 'Error',
+              requestType: 'devvit.plugin.logger.LogErrorMessage',
+              responseType: 'devvit.plugin.logger.LogErrorResponse',
+              requestStream: false,
+              responseStream: false
+            },
+            {
+              fullName: '/devvit.plugin.logger.Logger/Event',
+              name: 'Event',
+              requestType: 'devvit.plugin.logger.LogEventMessage',
+              responseType: 'devvit.plugin.logger.LogEventResponse',
+              requestStream: false,
+              responseStream: false
+            },
+            {
+              fullName: '/devvit.plugin.logger.Logger/Log',
+              name: 'Log',
+              requestType: 'devvit.plugin.logger.LogMessage',
+              responseType: 'devvit.plugin.logger.LogResponse',
+              requestStream: false,
+              responseStream: false
+            },
+            {
+              fullName: '/devvit.plugin.logger.Logger/LogBatch',
+              name: 'LogBatch',
+              requestType: 'devvit.plugin.logger.LogMessages',
+              responseType: 'devvit.plugin.logger.LogResponse',
+              requestStream: false,
+              responseStream: false
+            }
+          ],
+          name: 'Logger',
+          version: ''
+        }
+      ],
+      code: '',
+      uses: [],
+      assets: {}
+    },
+    {
+      actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
       hostname: 'http.plugins.local',
       provides: [
         {
