@@ -3,3 +3,4 @@
 /dist/
 /src/bundler/tsd.json
 /src/typescript/typescript.js
+/.idea/
