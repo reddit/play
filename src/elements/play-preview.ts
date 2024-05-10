@@ -148,7 +148,7 @@ export class PlayPreview extends LitElement {
                 ?use-experimental-blocks=${this.useExperimentalBlocks}
                 ?use-ui-request=${this.useUIRequest}
                 @devvit-ui-error=${() => (this._err = true)}
-                @devvit-image-upload=${this.mockImageUpload}
+                @devvit-image-upload=${mockImageUpload}
               ></devvit-preview>
             `
           : nothing}
@@ -170,23 +170,18 @@ export class PlayPreview extends LitElement {
         this.#meta
       )
   }
+}
 
-  private mockImageUpload = (
-    event: CustomEvent<{
-      blob: Blob
-      uploadRequest: null | Promise<UploadResponse>
-    }>
-  ): void => {
-    event.detail.uploadRequest = new Promise(resolve => {
-      window.setTimeout(() => {
-        resolve({
-          url: 'https://i.redd.it/m04iwd26jbpc1.png',
-          mediaId: 'm04iwd26jbpc1'
-          // error:'Whoops!' // uncomment to emulate the error response
-        })
-      }, 4000)
-    })
-  }
+const mockImageUpload = (event: CustomEvent<{blob: Blob; uploadRequest: Promise<UploadResponse> | null}>): void => {
+  event.detail.uploadRequest = new Promise(resolve => {
+    setTimeout(() => {
+      resolve({
+        url: 'https://i.redd.it/m04iwd26jbpc1.png',
+        mediaId: 'm04iwd26jbpc1'
+        // error:'Whoops!' // uncomment to emulate the error response
+      })
+    }, 2000)
+  })
 }
 
 type UploadResponse = {
