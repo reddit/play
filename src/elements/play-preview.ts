@@ -172,7 +172,12 @@ export class PlayPreview extends LitElement {
   }
 }
 
-const mockImageUpload = (event: CustomEvent<{blob: Blob; uploadRequest: Promise<UploadResponse> | null}>): void => {
+const mockImageUpload = (
+  event: CustomEvent<{
+    blob: Blob
+    uploadRequest: Promise<UploadResponse> | null
+  }>
+): void => {
   event.detail.uploadRequest = new Promise(resolve => {
     setTimeout(() => {
       resolve({
