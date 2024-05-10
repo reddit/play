@@ -33,6 +33,6 @@ npm version "$VERSION_TYPE"
 version="$(node --print --eval='require("./package").version')"
 read -p "ready to publish v${version}; <enter> to continue, <ctrl-c> to abort: "
 
-npm publish
+npm publish --registry=https://registry.npmjs.org
 
 read -p 'publish a new release and upload dist artifacts; <enter> to continue: '
