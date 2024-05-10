@@ -2,6 +2,30 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.36
+
+- e101845 Revert "replace bundle size test dependency (#16)"
+- 6ceb08b Logging (#18)
+- 87b66e5 Emulate image upload (#14)
+- 26d83bb pass meta to fix remote runtime (#17)
+- 2d24117 Use UI Request Flag (#15)
+- 68f2eac replace bundle size test dependency (#16)
+- 242e675 Add some tips on NPM linking (#13)
+- 0e6af72 Updates local compute port from :7777 to :7788. (#12)
+- b0b1318 [DX-6014] Add sandboxed runtime and runtime logging support (#10)
+- c7c0acd Fix layout width calculations (#9)
+- 3e48614 Changes generated hostname for compute-go bundles (#8)
+- 474a3d2 Upgrade dependencies
+- 53e0f0c Support Hello
+- 10c5d76 Check uncompressed size
+- cc4bbf0 [DX-5796][DX-5797] Support remote execution (#7)
+- 32467fc Fix tsbuildinfo paths
+- e2bdf3c Fix a couple build issues and add meta
+- cf3579c Tidy tsconfig
+- d3d0d95 Upgrade dependencies
+- 7e1a3a7 Fix versions again
+- f9bf568 Fix versions
+
 ## v0.0.35
 
 - d01679b Upgrade dependencies

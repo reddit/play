@@ -10,7 +10,7 @@ git checkout main && git pull
 git log "$(git describe --tags --abbrev=0)..@" --oneline
 
 # Document changes since the last release.
-vim changelog.md
+vim docs/changelog.md
 
 # Stage the changelog.
 git add docs/changelog.md
