@@ -1,30 +1,9 @@
 {
   "author": "Reddit",
   "bugs": "https://github.com/reddit/play/issues",
-  "bundlesize": [
-    {
-      "compression": "gzip",
-      "maxSize": "3.5 KB",
-      "path": "dist/play.js"
-    },
-    {
-      "compression": "none",
-      "maxSize": "20.4 KB",
-      "path": "dist/play.js"
-    },
-    {
-      "compression": "gzip",
-      "maxSize": "5.1 MB",
-      "path": "dist/play-pen.js"
-    },
-    {
-      "compression": "none",
-      "maxSize": "33.6 MB",
-      "path": "dist/play-pen.js"
-    }
-  ],
   "description": "A little playground for building apps on Reddit.",
   "devDependencies": {
+    "@ampproject/filesize": "4.3.0",
     "@codemirror/autocomplete": "6.16.0",
     "@codemirror/lang-javascript": "6.2.2",
     "@codemirror/language": "6.10.1",
@@ -43,7 +22,6 @@
     "@typescript/vfs": "1.5.0",
     "@web/dev-server-esbuild": "1.0.2",
     "@web/test-runner": "0.18.1",
-    "bundlesize": "0.18.2",
     "codemirror": "6.0.1",
     "esbuild": "0.20.2",
     "jsdom": "24.0.0",
@@ -72,6 +50,16 @@
     "dist",
     "!dist/**/tsconfig.tsbuildinfo"
   ],
+  "filesize": {
+    "dist/play.js": {
+      "none": "20.4 KB",
+      "gzip": "3.5 KB"
+    },
+    "dist/play-pen.js": {
+      "none": "35000 KB",
+      "gzip": "5200 KB"
+    }
+  },
   "typesVersions": {
     "*": {
       ".": [
@@ -113,7 +101,7 @@
     "start": "tools/build.js --watch",
     "test": "npm run test:format && npm run test:unit && npm run build && npm run test:size && npm run test:types:ui && npm run test:ui",
     "test:format": "npm run formatter -- --check",
-    "test:size": "bundlesize",
+    "test:size": "filesize",
     "test:types:ui": "lit-analyzer --maxWarnings=0 --rules.no-invalid-css=off --rules.no-missing-element-type-definition --rules.no-unknown-event --rules.no-unknown-attribute=false --strict",
     "test:ui": "wtr --config=tools/web-test-runner.config.js",
     "test:unit": "vitest --config=tools/vitest.config.ts run",
