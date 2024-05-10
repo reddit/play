@@ -52,7 +52,8 @@ function provides(): SerializableServiceDefinition[] {
           responseType: 'devvit.reddit.custom_post.v1alpha.RenderPostResponse'
         },
         {
-          fullName: '/devvit.reddit.custom_post.v1alpha.CustomPost/RenderPostContent',
+          fullName:
+            '/devvit.reddit.custom_post.v1alpha.CustomPost/RenderPostContent',
           name: 'RenderPostContent',
           requestStream: false,
           responseStream: false,
@@ -60,7 +61,8 @@ function provides(): SerializableServiceDefinition[] {
           responseType: 'devvit.ui.block_kit.v1beta.UIResponse'
         },
         {
-          fullName: '/devvit.reddit.custom_post.v1alpha.CustomPost/RenderPostComposer',
+          fullName:
+            '/devvit.reddit.custom_post.v1alpha.CustomPost/RenderPostComposer',
           name: 'RenderPostComposer',
           requestStream: false,
           responseStream: false,
@@ -565,9 +567,11 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.redditapi.flair.Flair',
           methods: [
             {
-              fullName: '/devvit.plugin.redditapi.flair.Flair/ClearFlairTemplates',
+              fullName:
+                '/devvit.plugin.redditapi.flair.Flair/ClearFlairTemplates',
               name: 'ClearFlairTemplates',
-              requestType: 'devvit.plugin.redditapi.flair.ClearFlairTemplatesRequest',
+              requestType:
+                'devvit.plugin.redditapi.flair.ClearFlairTemplatesRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
@@ -581,9 +585,11 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.flair.Flair/DeleteFlairTemplate',
+              fullName:
+                '/devvit.plugin.redditapi.flair.Flair/DeleteFlairTemplate',
               name: 'DeleteFlairTemplate',
-              requestType: 'devvit.plugin.redditapi.flair.DeleteFlairTemplateRequest',
+              requestType:
+                'devvit.plugin.redditapi.flair.DeleteFlairTemplateRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
@@ -597,9 +603,11 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.flair.Flair/FlairTemplateOrder',
+              fullName:
+                '/devvit.plugin.redditapi.flair.Flair/FlairTemplateOrder',
               name: 'FlairTemplateOrder',
-              requestType: 'devvit.plugin.redditapi.flair.FlairTemplateOrderRequest',
+              requestType:
+                'devvit.plugin.redditapi.flair.FlairTemplateOrderRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
@@ -632,7 +640,8 @@ function uses(): LinkedBundle[] {
               fullName: '/devvit.plugin.redditapi.flair.Flair/FlairSelector',
               name: 'FlairSelector',
               requestType: 'devvit.plugin.redditapi.flair.FlairSelectorRequest',
-              responseType: 'devvit.plugin.redditapi.flair.FlairSelectorResponse',
+              responseType:
+                'devvit.plugin.redditapi.flair.FlairSelectorResponse',
               requestStream: false,
               responseStream: false
             },
@@ -663,7 +672,8 @@ function uses(): LinkedBundle[] {
             {
               fullName: '/devvit.plugin.redditapi.flair.Flair/SetFlairEnabled',
               name: 'SetFlairEnabled',
-              requestType: 'devvit.plugin.redditapi.flair.SetFlairEnabledRequest',
+              requestType:
+                'devvit.plugin.redditapi.flair.SetFlairEnabledRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
@@ -701,9 +711,11 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.graphql.GraphQL/PersistedQuery',
+              fullName:
+                '/devvit.plugin.redditapi.graphql.GraphQL/PersistedQuery',
               name: 'PersistedQuery',
-              requestType: 'devvit.plugin.redditapi.graphql.PersistedQueryRequest',
+              requestType:
+                'devvit.plugin.redditapi.graphql.PersistedQueryRequest',
               responseType: 'devvit.plugin.redditapi.graphql.QueryResponse',
               requestStream: false,
               responseStream: false
@@ -725,113 +737,144 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.redditapi.linksandcomments.LinksAndComments',
           methods: [
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Comment',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Comment',
               name: 'Comment',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.CommentRequest',
-              responseType: 'devvit.plugin.redditapi.linksandcomments.JsonWrappedComment',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.CommentRequest',
+              responseType:
+                'devvit.plugin.redditapi.linksandcomments.JsonWrappedComment',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Del',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Del',
               name: 'Del',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/EditUserText',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/EditUserText',
               name: 'EditUserText',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.CommentRequest',
-              responseType: 'devvit.plugin.redditapi.linksandcomments.JsonWrappedComment',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.CommentRequest',
+              responseType:
+                'devvit.plugin.redditapi.linksandcomments.JsonWrappedComment',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/FollowPost',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/FollowPost',
               name: 'FollowPost',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.FollowPostRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.FollowPostRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Hide',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Hide',
               name: 'Hide',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Info',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Info',
               name: 'Info',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.InfoRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.InfoRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Lock',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Lock',
               name: 'Lock',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/MarkNSFW',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/MarkNSFW',
               name: 'MarkNSFW',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/MoreChildren',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/MoreChildren',
               name: 'MoreChildren',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.MoreChildrenRequest',
-              responseType: 'devvit.plugin.redditapi.linksandcomments.JsonWrappedComment',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.MoreChildrenRequest',
+              responseType:
+                'devvit.plugin.redditapi.linksandcomments.JsonWrappedComment',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Report',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Report',
               name: 'Report',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.ReportRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.ReportRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/ReportAward',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/ReportAward',
               name: 'ReportAward',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.ReportAwardRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.ReportAwardRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Save',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Save',
               name: 'Save',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.SaveRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.SaveRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/SendReplies',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/SendReplies',
               name: 'SendReplies',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.SendRepliesRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.SendRepliesRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/SetContestMode',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/SetContestMode',
               name: 'SetContestMode',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.SetContestModeRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.SetContestModeRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
@@ -840,7 +883,8 @@ function uses(): LinkedBundle[] {
               fullName:
                 '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/SetSubredditSticky',
               name: 'SetSubredditSticky',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.SetSubredditStickyRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.SetSubredditStickyRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
@@ -849,71 +893,89 @@ function uses(): LinkedBundle[] {
               fullName:
                 '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/SetSuggestedSort',
               name: 'SetSuggestedSort',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.SetSuggestedSortRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.SetSuggestedSortRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Spoiler',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Spoiler',
               name: 'Spoiler',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Submit',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Submit',
               name: 'Submit',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.SubmitRequest',
-              responseType: 'devvit.plugin.redditapi.linksandcomments.SubmitResponse',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.SubmitRequest',
+              responseType:
+                'devvit.plugin.redditapi.linksandcomments.SubmitResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Unhide',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Unhide',
               name: 'Unhide',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Unlock',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Unlock',
               name: 'Unlock',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/UnmarkNSFW',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/UnmarkNSFW',
               name: 'UnmarkNSFW',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Unsave',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Unsave',
               name: 'Unsave',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Unspoiler',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Unspoiler',
               name: 'Unspoiler',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.BasicIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Vote',
+              fullName:
+                '/devvit.plugin.redditapi.linksandcomments.LinksAndComments/Vote',
               name: 'Vote',
-              requestType: 'devvit.plugin.redditapi.linksandcomments.VoteRequest',
+              requestType:
+                'devvit.plugin.redditapi.linksandcomments.VoteRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
@@ -953,7 +1015,8 @@ function uses(): LinkedBundle[] {
             {
               fullName: '/devvit.plugin.redditapi.listings.Listings/Comments',
               name: 'Comments',
-              requestType: 'devvit.plugin.redditapi.listings.GetCommentsRequest',
+              requestType:
+                'devvit.plugin.redditapi.listings.GetCommentsRequest',
               responseType: 'devvit.plugin.redditapi.listings.ListingResponse',
               requestStream: false,
               responseStream: false
@@ -961,7 +1024,8 @@ function uses(): LinkedBundle[] {
             {
               fullName: '/devvit.plugin.redditapi.listings.Listings/Duplicates',
               name: 'Duplicates',
-              requestType: 'devvit.plugin.redditapi.listings.GetDuplicatesRequest',
+              requestType:
+                'devvit.plugin.redditapi.listings.GetDuplicatesRequest',
               responseType: 'devvit.plugin.redditapi.listings.ListingResponse',
               requestStream: false,
               responseStream: false
@@ -1015,113 +1079,141 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.redditapi.moderation.Moderation',
           methods: [
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/AboutLog',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/AboutLog',
               name: 'AboutLog',
               requestType: 'devvit.plugin.redditapi.moderation.AboutLogRequest',
-              responseType: 'devvit.plugin.redditapi.moderation.AboutLogResponse',
+              responseType:
+                'devvit.plugin.redditapi.moderation.AboutLogResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/AboutLocation',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/AboutLocation',
               name: 'AboutLocation',
-              requestType: 'devvit.plugin.redditapi.moderation.AboutLocationRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.AboutLocationRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/AboutReports',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/AboutReports',
               name: 'AboutReports',
-              requestType: 'devvit.plugin.redditapi.moderation.AboutLocationRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.AboutLocationRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/AboutSpam',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/AboutSpam',
               name: 'AboutSpam',
-              requestType: 'devvit.plugin.redditapi.moderation.AboutLocationRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.AboutLocationRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/AboutModqueue',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/AboutModqueue',
               name: 'AboutModqueue',
-              requestType: 'devvit.plugin.redditapi.moderation.AboutLocationRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.AboutLocationRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/AboutUnmoderated',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/AboutUnmoderated',
               name: 'AboutUnmoderated',
-              requestType: 'devvit.plugin.redditapi.moderation.AboutLocationRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.AboutLocationRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/AboutEdited',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/AboutEdited',
               name: 'AboutEdited',
-              requestType: 'devvit.plugin.redditapi.moderation.AboutLocationRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.AboutLocationRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/AcceptModeratorInvite',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/AcceptModeratorInvite',
               name: 'AcceptModeratorInvite',
-              requestType: 'devvit.plugin.redditapi.moderation.AcceptModeratorInviteRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.AcceptModeratorInviteRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/Approve',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/Approve',
               name: 'Approve',
-              requestType: 'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/Distinguish',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/Distinguish',
               name: 'Distinguish',
-              requestType: 'devvit.plugin.redditapi.moderation.DistinguishRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.DistinguishRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonRedditObjects',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/IgnoreReports',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/IgnoreReports',
               name: 'IgnoreReports',
-              requestType: 'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/LeaveContributor',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/LeaveContributor',
               name: 'LeaveContributor',
-              requestType: 'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/LeaveModerator',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/LeaveModerator',
               name: 'LeaveModerator',
-              requestType: 'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/MuteMessageAuthor',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/MuteMessageAuthor',
               name: 'MuteMessageAuthor',
-              requestType: 'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
@@ -1135,57 +1227,71 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/ShowComment',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/ShowComment',
               name: 'ShowComment',
-              requestType: 'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/SnoozeReports',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/SnoozeReports',
               name: 'SnoozeReports',
-              requestType: 'devvit.plugin.redditapi.moderation.SnoozeReportsRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.SnoozeReportsRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/UnignoreReports',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/UnignoreReports',
               name: 'UnignoreReports',
-              requestType: 'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/UnmuteMessageAuthor',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/UnmuteMessageAuthor',
               name: 'UnmuteMessageAuthor',
-              requestType: 'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.BasicModerationIdRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/UnsnoozeReports',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/UnsnoozeReports',
               name: 'UnsnoozeReports',
-              requestType: 'devvit.plugin.redditapi.moderation.SnoozeReportsRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.SnoozeReportsRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/UpdateCrowdControlLevel',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/UpdateCrowdControlLevel',
               name: 'UpdateCrowdControlLevel',
-              requestType: 'devvit.plugin.redditapi.moderation.UpdateCrowdControlLevelRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.UpdateCrowdControlLevelRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.moderation.Moderation/Stylesheet',
+              fullName:
+                '/devvit.plugin.redditapi.moderation.Moderation/Stylesheet',
               name: 'Stylesheet',
-              requestType: 'devvit.plugin.redditapi.moderation.StylesheetRequest',
+              requestType:
+                'devvit.plugin.redditapi.moderation.StylesheetRequest',
               responseType: 'google.protobuf.StringValue',
               requestStream: false,
               responseStream: false
@@ -1218,7 +1324,8 @@ function uses(): LinkedBundle[] {
               fullName: '/devvit.plugin.redditapi.modnote.ModNote/DeleteNotes',
               name: 'DeleteNotes',
               requestType: 'devvit.plugin.redditapi.modnote.DeleteNotesRequest',
-              responseType: 'devvit.plugin.redditapi.modnote.DeleteNotesResponse',
+              responseType:
+                'devvit.plugin.redditapi.modnote.DeleteNotesResponse',
               requestStream: false,
               responseStream: false
             },
@@ -1226,14 +1333,17 @@ function uses(): LinkedBundle[] {
               fullName: '/devvit.plugin.redditapi.modnote.ModNote/PostNotes',
               name: 'PostNotes',
               requestType: 'devvit.plugin.redditapi.modnote.PostNotesRequest',
-              responseType: 'devvit.plugin.redditapi.modnote.PostModNotesResponse',
+              responseType:
+                'devvit.plugin.redditapi.modnote.PostModNotesResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.modnote.ModNote/PostRemovalNote',
+              fullName:
+                '/devvit.plugin.redditapi.modnote.ModNote/PostRemovalNote',
               name: 'PostRemovalNote',
-              requestType: 'devvit.plugin.redditapi.modnote.PostRemovalNoteRequest',
+              requestType:
+                'devvit.plugin.redditapi.modnote.PostRemovalNoteRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
@@ -1263,162 +1373,214 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.redditapi.newmodmail.NewModmail',
           methods: [
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/BulkReadConversations',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/BulkReadConversations',
               name: 'BulkReadConversations',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BulkReadConversationsRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.BulkReadConversationsResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BulkReadConversationsRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.BulkReadConversationsResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/GetConversations',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/GetConversations',
               name: 'GetConversations',
-              requestType: 'devvit.plugin.redditapi.newmodmail.GetConversationsRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.GetConversationsResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.GetConversationsRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.GetConversationsResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/CreateConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/CreateConversation',
               name: 'CreateConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.CreateConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.CreateConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.CreateConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.CreateConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/GetConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/GetConversation',
               name: 'GetConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.GetConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.GetConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.GetConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.GetConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/CreateConversationMessage',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/CreateConversationMessage',
               name: 'CreateConversationMessage',
-              requestType: 'devvit.plugin.redditapi.newmodmail.CreateConversationMessageRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.CreateConversationMessageResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.CreateConversationMessageRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.CreateConversationMessageResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/ApproveConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/ApproveConversation',
               name: 'ApproveConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.ApproveConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.ApproveConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/ArchiveConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/ArchiveConversation',
               name: 'ArchiveConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.ArchiveConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.ArchiveConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/DisapproveConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/DisapproveConversation',
               name: 'DisapproveConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.ApproveConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.ApproveConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/UnhighlightConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/UnhighlightConversation',
               name: 'UnhighlightConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.HighlightConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.HighlightConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/HighlightConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/HighlightConversation',
               name: 'HighlightConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.HighlightConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.HighlightConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/MuteConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/MuteConversation',
               name: 'MuteConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.MuteConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.MuteConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.MuteConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.MuteConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/TempBan',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/TempBan',
               name: 'TempBan',
               requestType: 'devvit.plugin.redditapi.newmodmail.TempBanRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.TempBanResponse',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.TempBanResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/UnarchiveConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/UnarchiveConversation',
               name: 'UnarchiveConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.ArchiveConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.ArchiveConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
               fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/Unban',
               name: 'Unban',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.TempBanResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.TempBanResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/UnmuteConversation',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/UnmuteConversation',
               name: 'UnmuteConversation',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.MuteConversationResponse',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.MuteConversationResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/UserConversations',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/UserConversations',
               name: 'UserConversations',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
-              responseType: 'devvit.plugin.redditapi.newmodmail.ConversationUserData',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationRequest',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.ConversationUserData',
               requestStream: false,
               responseStream: false
             },
             {
               fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/Read',
               name: 'Read',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationsRequest',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationsRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/Subreddits',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/Subreddits',
               name: 'Subreddits',
               requestType: 'google.protobuf.Empty',
-              responseType: 'devvit.plugin.redditapi.newmodmail.SubredditsResponse',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.SubredditsResponse',
               requestStream: false,
               responseStream: false
             },
             {
               fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/Unread',
               name: 'Unread',
-              requestType: 'devvit.plugin.redditapi.newmodmail.BasicConversationsRequest',
+              requestType:
+                'devvit.plugin.redditapi.newmodmail.BasicConversationsRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.newmodmail.NewModmail/UnreadCount',
+              fullName:
+                '/devvit.plugin.redditapi.newmodmail.NewModmail/UnreadCount',
               name: 'UnreadCount',
               requestType: 'google.protobuf.Empty',
-              responseType: 'devvit.plugin.redditapi.newmodmail.UnreadCountResponse',
+              responseType:
+                'devvit.plugin.redditapi.newmodmail.UnreadCountResponse',
               requestStream: false,
               responseStream: false
             }
@@ -1439,57 +1601,71 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.redditapi.privatemessages.PrivateMessages',
           methods: [
             {
-              fullName: '/devvit.plugin.redditapi.privatemessages.PrivateMessages/Block',
+              fullName:
+                '/devvit.plugin.redditapi.privatemessages.PrivateMessages/Block',
               name: 'Block',
-              requestType: 'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.privatemessages.PrivateMessages/CollapseMessage',
+              fullName:
+                '/devvit.plugin.redditapi.privatemessages.PrivateMessages/CollapseMessage',
               name: 'CollapseMessage',
-              requestType: 'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.privatemessages.PrivateMessages/Compose',
+              fullName:
+                '/devvit.plugin.redditapi.privatemessages.PrivateMessages/Compose',
               name: 'Compose',
-              requestType: 'devvit.plugin.redditapi.privatemessages.ComposeRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.ComposeRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.privatemessages.PrivateMessages/DelMsg',
+              fullName:
+                '/devvit.plugin.redditapi.privatemessages.PrivateMessages/DelMsg',
               name: 'DelMsg',
-              requestType: 'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.privatemessages.PrivateMessages/ReadAllMessages',
+              fullName:
+                '/devvit.plugin.redditapi.privatemessages.PrivateMessages/ReadAllMessages',
               name: 'ReadAllMessages',
-              requestType: 'devvit.plugin.redditapi.privatemessages.ReadAllMessagesRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.ReadAllMessagesRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.privatemessages.PrivateMessages/ReadMessage',
+              fullName:
+                '/devvit.plugin.redditapi.privatemessages.PrivateMessages/ReadMessage',
               name: 'ReadMessage',
-              requestType: 'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.privatemessages.PrivateMessages/UnblockSubreddit',
+              fullName:
+                '/devvit.plugin.redditapi.privatemessages.PrivateMessages/UnblockSubreddit',
               name: 'UnblockSubreddit',
-              requestType: 'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
@@ -1498,23 +1674,28 @@ function uses(): LinkedBundle[] {
               fullName:
                 '/devvit.plugin.redditapi.privatemessages.PrivateMessages/UncollapseMessage',
               name: 'UncollapseMessage',
-              requestType: 'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.privatemessages.PrivateMessages/UnreadMessage',
+              fullName:
+                '/devvit.plugin.redditapi.privatemessages.PrivateMessages/UnreadMessage',
               name: 'UnreadMessage',
-              requestType: 'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.GenericPrivateMessagesRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.privatemessages.PrivateMessages/MessageWhere',
+              fullName:
+                '/devvit.plugin.redditapi.privatemessages.PrivateMessages/MessageWhere',
               name: 'MessageWhere',
-              requestType: 'devvit.plugin.redditapi.privatemessages.MessageWhereRequest',
+              requestType:
+                'devvit.plugin.redditapi.privatemessages.MessageWhereRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
@@ -1536,153 +1717,201 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.redditapi.subreddits.Subreddits',
           methods: [
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/AboutWhere',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/AboutWhere',
               name: 'AboutWhere',
-              requestType: 'devvit.plugin.redditapi.subreddits.AboutWhereRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.AboutWhereRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/DeleteSrBanner',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/DeleteSrBanner',
               name: 'DeleteSrBanner',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/DeleteSrHeader',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/DeleteSrHeader',
               name: 'DeleteSrHeader',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/DeleteSrIcon',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/DeleteSrIcon',
               name: 'DeleteSrIcon',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/DeleteSrImg',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/DeleteSrImg',
               name: 'DeleteSrImg',
-              requestType: 'devvit.plugin.redditapi.subreddits.DeleteSrImgRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.DeleteSrImgRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SearchRedditNames',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SearchRedditNames',
               name: 'SearchRedditNames',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSearchRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SearchRedditNamesResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSearchRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SearchRedditNamesResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SearchSubreddits',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SearchSubreddits',
               name: 'SearchSubreddits',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSearchRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SearchSubredditsResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSearchRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SearchSubredditsResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SiteAdmin',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SiteAdmin',
               name: 'SiteAdmin',
-              requestType: 'devvit.plugin.redditapi.subreddits.SiteAdminRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.SiteAdminRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubmitText',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubmitText',
               name: 'SubmitText',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubmitTextResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubmitTextResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAutocomplete',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAutocomplete',
               name: 'SubredditAutocomplete',
-              requestType: 'devvit.plugin.redditapi.subreddits.SubredditAutocompleteRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditAutocompleteResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.SubredditAutocompleteRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditAutocompleteResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditStylesheet',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditStylesheet',
               name: 'SubredditStylesheet',
-              requestType: 'devvit.plugin.redditapi.subreddits.SubredditStylesheetRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.SubredditStylesheetRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/Subscribe',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/Subscribe',
               name: 'Subscribe',
-              requestType: 'devvit.plugin.redditapi.subreddits.SubscribeRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.SubscribeRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/UploadSrImg',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/UploadSrImg',
               name: 'UploadSrImg',
-              requestType: 'devvit.plugin.redditapi.subreddits.UploadSrImgRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.UploadSrImgResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.UploadSrImgRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.UploadSrImgResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditPostRequirements',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditPostRequirements',
               name: 'SubredditPostRequirements',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditPostRequirementsResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditPostRequirementsResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAbout',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAbout',
               name: 'SubredditAbout',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditAboutResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditAboutResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAboutEdit',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAboutEdit',
               name: 'SubredditAboutEdit',
-              requestType: 'devvit.plugin.redditapi.subreddits.SubredditAboutEditRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditAboutEditResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.SubredditAboutEditRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditAboutEditResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAboutRules',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAboutRules',
               name: 'SubredditAboutRules',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditAboutRulesResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditAboutRulesResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAboutTraffic',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAboutTraffic',
               name: 'SubredditAboutTraffic',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditAboutTrafficResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditAboutTrafficResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/Sidebar',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/Sidebar',
               name: 'Sidebar',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicSubredditRequest',
               responseType: 'google.protobuf.StringValue',
               requestStream: false,
               responseStream: false
@@ -1696,58 +1925,78 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditsMineWhere',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditsMineWhere',
               name: 'SubredditsMineWhere',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicWhereRequest',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicWhereRequest',
               responseType: 'devvit.plugin.redditapi.common.Listing',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditsSearch',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditsSearch',
               name: 'SubredditsSearch',
-              requestType: 'devvit.plugin.redditapi.subreddits.SubredditsSearchRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditsSearchResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.SubredditsSearchRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditsSearchResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditsWhere',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditsWhere',
               name: 'SubredditsWhere',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicWhereRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditsSearchResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicWhereRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditsSearchResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/UsersSearch',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/UsersSearch',
               name: 'UsersSearch',
-              requestType: 'devvit.plugin.redditapi.subreddits.UsersSearchRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.UserSearchResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.UsersSearchRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.UserSearchResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/UsersWhere',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/UsersWhere',
               name: 'UsersWhere',
-              requestType: 'devvit.plugin.redditapi.subreddits.BasicWhereRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditsSearchResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.BasicWhereRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditsSearchResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAddRemovalReason',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditAddRemovalReason',
               name: 'SubredditAddRemovalReason',
-              requestType: 'devvit.plugin.redditapi.subreddits.SubredditAddRemovalReasonRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditAddRemovalReasonResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.SubredditAddRemovalReasonRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditAddRemovalReasonResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditGetRemovalReasons',
+              fullName:
+                '/devvit.plugin.redditapi.subreddits.Subreddits/SubredditGetRemovalReasons',
               name: 'SubredditGetRemovalReasons',
-              requestType: 'devvit.plugin.redditapi.subreddits.SubredditGetRemovalReasonsRequest',
-              responseType: 'devvit.plugin.redditapi.subreddits.SubredditGetRemovalReasonsResponse',
+              requestType:
+                'devvit.plugin.redditapi.subreddits.SubredditGetRemovalReasonsRequest',
+              responseType:
+                'devvit.plugin.redditapi.subreddits.SubredditGetRemovalReasonsResponse',
               requestStream: false,
               responseStream: false
             }
@@ -1768,10 +2017,13 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.redditapi.postcollections.PostCollections',
           methods: [
             {
-              fullName: '/devvit.plugin.redditapi.postcollections.PostCollections/Collection',
+              fullName:
+                '/devvit.plugin.redditapi.postcollections.PostCollections/Collection',
               name: 'Collection',
-              requestType: 'devvit.plugin.redditapi.postcollections.CollectionRequest',
-              responseType: 'devvit.plugin.redditapi.postcollections.CollectionResponse',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.CollectionRequest',
+              responseType:
+                'devvit.plugin.redditapi.postcollections.CollectionResponse',
               requestStream: false,
               responseStream: false
             },
@@ -1779,63 +2031,80 @@ function uses(): LinkedBundle[] {
               fullName:
                 '/devvit.plugin.redditapi.postcollections.PostCollections/SubredditCollections',
               name: 'SubredditCollections',
-              requestType: 'devvit.plugin.redditapi.postcollections.SubredditCollectionsRequest',
-              responseType: 'devvit.plugin.redditapi.postcollections.SubredditCollectionsResponse',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.SubredditCollectionsRequest',
+              responseType:
+                'devvit.plugin.redditapi.postcollections.SubredditCollectionsResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.postcollections.PostCollections/Create',
+              fullName:
+                '/devvit.plugin.redditapi.postcollections.PostCollections/Create',
               name: 'Create',
-              requestType: 'devvit.plugin.redditapi.postcollections.CreateCollectionRequest',
-              responseType: 'devvit.plugin.redditapi.postcollections.CollectionResponse',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.CreateCollectionRequest',
+              responseType:
+                'devvit.plugin.redditapi.postcollections.CollectionResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.postcollections.PostCollections/Delete',
+              fullName:
+                '/devvit.plugin.redditapi.postcollections.PostCollections/Delete',
               name: 'Delete',
-              requestType: 'devvit.plugin.redditapi.postcollections.DeleteCollectionRequest',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.DeleteCollectionRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.postcollections.PostCollections/AddPost',
+              fullName:
+                '/devvit.plugin.redditapi.postcollections.PostCollections/AddPost',
               name: 'AddPost',
-              requestType: 'devvit.plugin.redditapi.postcollections.AddPostToCollectionRequest',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.AddPostToCollectionRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.postcollections.PostCollections/RemovePost',
+              fullName:
+                '/devvit.plugin.redditapi.postcollections.PostCollections/RemovePost',
               name: 'RemovePost',
-              requestType: 'devvit.plugin.redditapi.postcollections.RemovePostInCollectionRequest',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.RemovePostInCollectionRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.postcollections.PostCollections/Follow',
+              fullName:
+                '/devvit.plugin.redditapi.postcollections.PostCollections/Follow',
               name: 'Follow',
-              requestType: 'devvit.plugin.redditapi.postcollections.FollowCollectionRequest',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.FollowCollectionRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.postcollections.PostCollections/Reorder',
+              fullName:
+                '/devvit.plugin.redditapi.postcollections.PostCollections/Reorder',
               name: 'Reorder',
-              requestType: 'devvit.plugin.redditapi.postcollections.ReorderCollectionRequest',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.ReorderCollectionRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.postcollections.PostCollections/UpdateTitle',
+              fullName:
+                '/devvit.plugin.redditapi.postcollections.PostCollections/UpdateTitle',
               name: 'UpdateTitle',
-              requestType: 'devvit.plugin.redditapi.postcollections.UpdateCollectionTitleRequest',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.UpdateCollectionTitleRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
@@ -1903,7 +2172,8 @@ function uses(): LinkedBundle[] {
             {
               fullName: '/devvit.plugin.redditapi.users.Users/SetPermissions',
               name: 'SetPermissions',
-              requestType: 'devvit.plugin.redditapi.users.SetPermissionsRequest',
+              requestType:
+                'devvit.plugin.redditapi.users.SetPermissionsRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
@@ -1917,17 +2187,22 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.users.Users/UserDataByAccountIds',
+              fullName:
+                '/devvit.plugin.redditapi.users.Users/UserDataByAccountIds',
               name: 'UserDataByAccountIds',
-              requestType: 'devvit.plugin.redditapi.users.UserDataByAccountIdsRequest',
-              responseType: 'devvit.plugin.redditapi.users.UserDataByAccountIdsResponse',
+              requestType:
+                'devvit.plugin.redditapi.users.UserDataByAccountIdsRequest',
+              responseType:
+                'devvit.plugin.redditapi.users.UserDataByAccountIdsResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.users.Users/UsernameAvailable',
+              fullName:
+                '/devvit.plugin.redditapi.users.Users/UsernameAvailable',
               name: 'UsernameAvailable',
-              requestType: 'devvit.plugin.redditapi.users.UsernameAvailableRequest',
+              requestType:
+                'devvit.plugin.redditapi.users.UsernameAvailableRequest',
               responseType: 'google.protobuf.BoolValue',
               requestStream: false,
               responseStream: false
@@ -1941,18 +2216,23 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.users.Users/GetFriendInformation',
+              fullName:
+                '/devvit.plugin.redditapi.users.Users/GetFriendInformation',
               name: 'GetFriendInformation',
               requestType: 'devvit.plugin.redditapi.users.GenericUsersRequest',
-              responseType: 'devvit.plugin.redditapi.users.GeneralFriendResponse',
+              responseType:
+                'devvit.plugin.redditapi.users.GeneralFriendResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.users.Users/UpdateFriendRelationship',
+              fullName:
+                '/devvit.plugin.redditapi.users.Users/UpdateFriendRelationship',
               name: 'UpdateFriendRelationship',
-              requestType: 'devvit.plugin.redditapi.users.UpdateFriendRelationshipRequest',
-              responseType: 'devvit.plugin.redditapi.users.GeneralFriendResponse',
+              requestType:
+                'devvit.plugin.redditapi.users.UpdateFriendRelationshipRequest',
+              responseType:
+                'devvit.plugin.redditapi.users.GeneralFriendResponse',
               requestStream: false,
               responseStream: false
             },
@@ -1960,7 +2240,8 @@ function uses(): LinkedBundle[] {
               fullName: '/devvit.plugin.redditapi.users.Users/UserTrophies',
               name: 'UserTrophies',
               requestType: 'devvit.plugin.redditapi.users.GenericUsersRequest',
-              responseType: 'devvit.plugin.redditapi.users.UserTrophiesResponse',
+              responseType:
+                'devvit.plugin.redditapi.users.UserTrophiesResponse',
               requestStream: false,
               responseStream: false
             },
@@ -1997,57 +2278,72 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.redditapi.widgets.Widgets',
           methods: [
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/AddButtonWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/AddButtonWidget',
               name: 'AddButtonWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.AddButtonWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.AddButtonWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.ButtonWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/AddImageWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/AddImageWidget',
               name: 'AddImageWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.AddImageWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.AddImageWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.ImageWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/AddCalendarWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/AddCalendarWidget',
               name: 'AddCalendarWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.AddCalendarWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.AddCalendarWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.CalendarWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/AddTextAreaWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/AddTextAreaWidget',
               name: 'AddTextAreaWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.AddTextAreaWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.AddTextAreaWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.TextAreaWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/AddCommunityListWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/AddCommunityListWidget',
               name: 'AddCommunityListWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.AddCommunityListWidgetRequest',
-              responseType: 'devvit.plugin.redditapi.widgets.CommunityListWidget',
+              requestType:
+                'devvit.plugin.redditapi.widgets.AddCommunityListWidgetRequest',
+              responseType:
+                'devvit.plugin.redditapi.widgets.CommunityListWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/AddPostFlairWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/AddPostFlairWidget',
               name: 'AddPostFlairWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.AddPostFlairWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.AddPostFlairWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.PostFlairWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/AddCustomWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/AddCustomWidget',
               name: 'AddCustomWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.AddCustomWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.AddCustomWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.CustomWidget',
               requestStream: false,
               responseStream: false
@@ -2055,79 +2351,99 @@ function uses(): LinkedBundle[] {
             {
               fullName: '/devvit.plugin.redditapi.widgets.Widgets/DeleteWidget',
               name: 'DeleteWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.DeleteWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.DeleteWidgetRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/UpdateButtonWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/UpdateButtonWidget',
               name: 'UpdateButtonWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.UpdateButtonWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.UpdateButtonWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.ButtonWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/UpdateImageWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/UpdateImageWidget',
               name: 'UpdateImageWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.UpdateImageWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.UpdateImageWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.ImageWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/UpdateCalendarWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/UpdateCalendarWidget',
               name: 'UpdateCalendarWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.UpdateCalendarWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.UpdateCalendarWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.CalendarWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/UpdateTextAreaWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/UpdateTextAreaWidget',
               name: 'UpdateTextAreaWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.UpdateTextAreaWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.UpdateTextAreaWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.TextAreaWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/UpdateCommunityListWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/UpdateCommunityListWidget',
               name: 'UpdateCommunityListWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.UpdateCommunityListWidgetRequest',
-              responseType: 'devvit.plugin.redditapi.widgets.UpdateCommunityListWidgetResponse',
+              requestType:
+                'devvit.plugin.redditapi.widgets.UpdateCommunityListWidgetRequest',
+              responseType:
+                'devvit.plugin.redditapi.widgets.UpdateCommunityListWidgetResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/UpdatePostFlairWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/UpdatePostFlairWidget',
               name: 'UpdatePostFlairWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.UpdatePostFlairWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.UpdatePostFlairWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.PostFlairWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/UpdateCustomWidget',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/UpdateCustomWidget',
               name: 'UpdateCustomWidget',
-              requestType: 'devvit.plugin.redditapi.widgets.UpdateCustomWidgetRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.UpdateCustomWidgetRequest',
               responseType: 'devvit.plugin.redditapi.widgets.CustomWidget',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.widgets.Widgets/GetWidgetImageUploadLease',
+              fullName:
+                '/devvit.plugin.redditapi.widgets.Widgets/GetWidgetImageUploadLease',
               name: 'GetWidgetImageUploadLease',
-              requestType: 'devvit.plugin.redditapi.widgets.GetWidgetImageUploadLeaseRequest',
-              responseType: 'devvit.plugin.redditapi.widgets.GetWidgetImageUploadLeaseResponse',
+              requestType:
+                'devvit.plugin.redditapi.widgets.GetWidgetImageUploadLeaseRequest',
+              responseType:
+                'devvit.plugin.redditapi.widgets.GetWidgetImageUploadLeaseResponse',
               requestStream: false,
               responseStream: false
             },
             {
               fullName: '/devvit.plugin.redditapi.widgets.Widgets/OrderWidgets',
               name: 'OrderWidgets',
-              requestType: 'devvit.plugin.redditapi.widgets.OrderWidgetsRequest',
+              requestType:
+                'devvit.plugin.redditapi.widgets.OrderWidgetsRequest',
               responseType: 'google.protobuf.Empty',
               requestStream: false,
               responseStream: false
@@ -2136,7 +2452,8 @@ function uses(): LinkedBundle[] {
               fullName: '/devvit.plugin.redditapi.widgets.Widgets/GetWidgets',
               name: 'GetWidgets',
               requestType: 'devvit.plugin.redditapi.widgets.GetWidgetsRequest',
-              responseType: 'devvit.plugin.redditapi.widgets.GetWidgetsResponse',
+              responseType:
+                'devvit.plugin.redditapi.widgets.GetWidgetsResponse',
               requestStream: false,
               responseStream: false
             }
@@ -2181,26 +2498,34 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.wiki.Wiki/HideWikiPageRevision',
+              fullName:
+                '/devvit.plugin.redditapi.wiki.Wiki/HideWikiPageRevision',
               name: 'HideWikiPageRevision',
-              requestType: 'devvit.plugin.redditapi.wiki.HideWikiPageRevisionRequest',
-              responseType: 'devvit.plugin.redditapi.wiki.HideWikiPageRevisionResponse',
+              requestType:
+                'devvit.plugin.redditapi.wiki.HideWikiPageRevisionRequest',
+              responseType:
+                'devvit.plugin.redditapi.wiki.HideWikiPageRevisionResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.wiki.Wiki/GetWikiPageRevisions',
+              fullName:
+                '/devvit.plugin.redditapi.wiki.Wiki/GetWikiPageRevisions',
               name: 'GetWikiPageRevisions',
-              requestType: 'devvit.plugin.redditapi.wiki.GetWikiPageRevisionsRequest',
-              responseType: 'devvit.plugin.redditapi.wiki.WikiPageRevisionListing',
+              requestType:
+                'devvit.plugin.redditapi.wiki.GetWikiPageRevisionsRequest',
+              responseType:
+                'devvit.plugin.redditapi.wiki.WikiPageRevisionListing',
               requestStream: false,
               responseStream: false
             },
             {
               fullName: '/devvit.plugin.redditapi.wiki.Wiki/GetWikiRevisions',
               name: 'GetWikiRevisions',
-              requestType: 'devvit.plugin.redditapi.wiki.GetWikiRevisionsRequest',
-              responseType: 'devvit.plugin.redditapi.wiki.WikiPageRevisionListing',
+              requestType:
+                'devvit.plugin.redditapi.wiki.GetWikiRevisionsRequest',
+              responseType:
+                'devvit.plugin.redditapi.wiki.WikiPageRevisionListing',
               requestStream: false,
               responseStream: false
             },
@@ -2213,17 +2538,21 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.wiki.Wiki/GetWikiPageSettings',
+              fullName:
+                '/devvit.plugin.redditapi.wiki.Wiki/GetWikiPageSettings',
               name: 'GetWikiPageSettings',
-              requestType: 'devvit.plugin.redditapi.wiki.GetWikiPageSettingsRequest',
+              requestType:
+                'devvit.plugin.redditapi.wiki.GetWikiPageSettingsRequest',
               responseType: 'devvit.plugin.redditapi.wiki.WikiPageSettings',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapi.wiki.Wiki/UpdateWikiPageSettings',
+              fullName:
+                '/devvit.plugin.redditapi.wiki.Wiki/UpdateWikiPageSettings',
               name: 'UpdateWikiPageSettings',
-              requestType: 'devvit.plugin.redditapi.wiki.UpdateWikiPageSettingsRequest',
+              requestType:
+                'devvit.plugin.redditapi.wiki.UpdateWikiPageSettingsRequest',
               responseType: 'devvit.plugin.redditapi.wiki.WikiPageSettings',
               requestStream: false,
               responseStream: false
@@ -2253,17 +2582,22 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.redditapiv2.RedditAPIV2',
           methods: [
             {
-              fullName: '/devvit.plugin.redditapiv2.RedditAPIV2/GetSubredditCollections',
+              fullName:
+                '/devvit.plugin.redditapiv2.RedditAPIV2/GetSubredditCollections',
               name: 'GetSubredditCollections',
-              requestType: 'devvit.plugin.redditapi.postcollections.SubredditCollectionsRequest',
-              responseType: 'devvit.plugin.redditapi.postcollections.SubredditCollectionsResponse',
+              requestType:
+                'devvit.plugin.redditapi.postcollections.SubredditCollectionsRequest',
+              responseType:
+                'devvit.plugin.redditapi.postcollections.SubredditCollectionsResponse',
               requestStream: false,
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.redditapiv2.RedditAPIV2/DeleteFlairTemplate',
+              fullName:
+                '/devvit.plugin.redditapiv2.RedditAPIV2/DeleteFlairTemplate',
               name: 'DeleteFlairTemplate',
-              requestType: 'devvit.plugin.redditapi.flair.DeleteFlairTemplateRequest',
+              requestType:
+                'devvit.plugin.redditapi.flair.DeleteFlairTemplateRequest',
               responseType: 'devvit.plugin.redditapi.common.JsonStatus',
               requestStream: false,
               responseStream: false
@@ -2349,7 +2683,8 @@ function uses(): LinkedBundle[] {
           fullName: 'devvit.plugin.assetresolver.AssetResolver',
           methods: [
             {
-              fullName: '/devvit.plugin.assetresolver.AssetResolver/GetAssetURL',
+              fullName:
+                '/devvit.plugin.assetresolver.AssetResolver/GetAssetURL',
               name: 'GetAssetURL',
               requestType: 'devvit.plugin.assetresolver.GetAssetURLRequest',
               responseType: 'devvit.plugin.assetresolver.GetAssetURLResponse',
@@ -2357,10 +2692,13 @@ function uses(): LinkedBundle[] {
               responseStream: false
             },
             {
-              fullName: '/devvit.plugin.assetresolver.AssetResolver/GetAssetURLs',
+              fullName:
+                '/devvit.plugin.assetresolver.AssetResolver/GetAssetURLs',
               name: 'GetAssetURLs',
-              requestType: 'devvit.plugin.assetresolver.GetMultipleAssetURLsRequest',
-              responseType: 'devvit.plugin.assetresolver.GetMultipleAssetURLsResponse',
+              requestType:
+                'devvit.plugin.assetresolver.GetMultipleAssetURLsRequest',
+              responseType:
+                'devvit.plugin.assetresolver.GetMultipleAssetURLsResponse',
               requestStream: false,
               responseStream: false
             }
