@@ -7,6 +7,10 @@ import {when} from 'lit-html/directives/when.js'
 import {repeat} from 'lit/directives/repeat.js'
 import {AssetManager} from '../../assets/asset-manager.js'
 
+import '../play-button.js'
+import '../play-icon/play-icon.js'
+import './file-upload-dropper.js'
+
 declare global {
   interface HTMLElementEventMap {}
   interface HTMLElementTagNameMap {
@@ -272,7 +276,7 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
   private _onFiles = async (ev: CustomEvent<FilesSelectedEvent>) => {
     const files = ev.detail.files ?? ev.detail.fileHandles
     if (files) {
-      for (const index in files) {
+      for (let index = 0; index < files.length; index++) {
         const file = files[index]
         if (file) {
           await AssetManager.addVirtualAsset(file)

@@ -81,19 +81,21 @@ export class FileUploadDropper extends LitElement {
   @state()
   _accept: string | undefined
 
+  private _allowedMimes: string[] = []
   private _acceptPatterns: RegExp[] = []
 
   protected override willUpdate(changedProperties: PropertyValues) {
     if (changedProperties.has('acceptTypes')) {
       this._accept = flattenAcceptTypes(this.acceptTypes)
-      this._acceptPatterns = this.acceptTypes.flatMap(type =>
-        Object.keys(type).flatMap(mimetype => {
+      this._acceptPatterns = this.acceptTypes.flatMap(type => {
+        return Object.keys(type.accept).flatMap(mimetype => {
           if (mimetype.includes('*')) {
             return new RegExp(mimetype.split('*').join('.*'))
           }
+          this._allowedMimes.push(mimetype)
           return []
         })
-      )
+      })
     }
   }
 
@@ -106,7 +108,7 @@ export class FileUploadDropper extends LitElement {
         ?multiple="${this.multiple}"
         @change=${this._processFileInput}
       />
-      <label for="${AssetManager.hasFileAccessAPI ? undefined : 'fileInput'}">
+      <label for="${AssetManager.hasFileAccessAPI ? '' : 'fileInput'}">
         <div
           id="fileDrop"
           class="${classMap({dragenter: this._dragging})}"
@@ -171,7 +173,7 @@ export class FileUploadDropper extends LitElement {
 
     if (hasFileAccessAPI) {
       const fileHandles: FileSystemFileHandle[] = []
-      for (const index in ev.dataTransfer.items) {
+      for (let index = 0; index < ev.dataTransfer.items.length; index++) {
         const item = ev.dataTransfer.items[index]
         if (item) {
           const handle = await tryGetAsFilesystemHandle(item)
@@ -202,7 +204,7 @@ export class FileUploadDropper extends LitElement {
     this._clearError()
 
     const files: File[] = []
-    for (const index in fileList) {
+    for (let index = 0; index < fileList.length; index++) {
       const file = fileList[index]
       if (file) {
         files.push(file)
@@ -210,7 +212,7 @@ export class FileUploadDropper extends LitElement {
     }
 
     this.dispatchEvent(
-      new CustomEvent<FilesSelectedEvent>('onfiles', {detail: {files}})
+      new CustomEvent<FilesSelectedEvent>('files-selected', {detail: {files}})
     )
   }
 
@@ -250,7 +252,7 @@ export class FileUploadDropper extends LitElement {
     if (this.acceptTypes.length === 0) {
       return true
     }
-    for (const index in fileList) {
+    for (let index = 0; index < fileList.length; index++) {
       const file = fileList[index]
       if (file && !this._mimeAllowed(file.type)) {
         this._errorMessage = `Invalid file type provided: ${file.type}`
@@ -261,8 +263,7 @@ export class FileUploadDropper extends LitElement {
   }
 
   private _mimeAllowed(mimetype: string): boolean {
-    const allowedMimes = Object.keys(this.acceptTypes)
-    if (!(mimetype in allowedMimes)) {
+    if (!(mimetype in this._allowedMimes)) {
       for (let pattern of this._acceptPatterns) {
         if (pattern.test(mimetype)) {
           return true

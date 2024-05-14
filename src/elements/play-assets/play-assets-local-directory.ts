@@ -6,6 +6,8 @@ import {AssetManager} from '../../assets/asset-manager.js'
 import {when} from 'lit-html/directives/when.js'
 import {fileAccessContext} from '../../utils/file-access-api.js'
 
+import '../play-button.js'
+
 declare global {
   interface HTMLElementEventMap {}
   interface HTMLElementTagNameMap {

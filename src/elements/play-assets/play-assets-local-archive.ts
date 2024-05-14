@@ -7,6 +7,8 @@ import {cssReset} from '../../utils/css-reset.js'
 import {type FilePickerType} from '../../utils/file-access-api.js'
 import type {FilesSelectedEvent} from './file-upload-dropper.js'
 
+import '../play-button.js'
+import '../play-icon/play-icon.js'
 import './file-upload-dropper.js'
 
 declare global {
@@ -51,7 +53,7 @@ export class PlayAssetsLocalArchive extends PlayAssetManagerListener {
       {
         description: 'ZIP Archive',
         accept: {
-          'application/*zip': ['*.zip']
+          'application/*zip': ['.zip']
         }
       }
     ]
@@ -60,7 +62,7 @@ export class PlayAssetsLocalArchive extends PlayAssetManagerListener {
       <span>ZIP archive:</span>
       <file-upload-dropper
         id="archive-picker"
-        accept="${types}"
+        .acceptTypes="${types}"
         @files-selected=${this._onFiles}
       >
         <play-icon size="32px" icon="archived-outline"></play-icon>

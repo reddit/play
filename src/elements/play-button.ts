@@ -10,6 +10,7 @@ import type {PlayIconSVG} from './play-icon/play-icon.js'
 
 import {cssReset} from '../utils/css-reset.js'
 import './play-icon/play-icon.js'
+import {ifDefined} from 'lit/directives/if-defined.js'
 
 export type PlayButtonAppearance =
   | 'bordered'
@@ -200,7 +201,7 @@ export class PlayButton extends LitElement {
           <play-icon
             size=${this.size === 'small' ? '16px' : '20px'}
             icon=${this.icon}
-            color=${this.iconColor}
+            color=${ifDefined(this.iconColor)}
           ></play-icon>
         `}
         <slot></slot>
@@ -211,7 +212,7 @@ export class PlayButton extends LitElement {
           <play-icon
             size=${this.size === 'small' ? '16px' : '20px'}
             icon=${this.endIcon}
-            color=${this.iconColor}
+            color=${ifDefined(this.iconColor)}
           ></play-icon>
         `}
       </button>
