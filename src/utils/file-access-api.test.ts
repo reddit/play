@@ -3,7 +3,7 @@
  */
 
 import {expect, test} from 'vitest'
-import {FilePickerType, flattenAcceptTypes} from './file-access-api'
+import {type FilePickerType, flattenAcceptTypes} from './file-access-api.js'
 
 test('can convert from File Access API types to flat input types', () => {
   const types: FilePickerType[] = [

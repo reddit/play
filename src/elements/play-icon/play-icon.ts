@@ -36,7 +36,6 @@ import restartOutline from './icons/restart-outline.svg'
 import shareNewOutline from './icons/share-new-outline.svg'
 import unmountOutline from './icons/unmount-outline.svg'
 
-
 export type PlayIconSVG = keyof typeof icons
 
 const icons = {

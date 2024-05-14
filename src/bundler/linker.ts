@@ -8,7 +8,11 @@ import type {AssetMap} from '@devvit/shared-types/Assets.js'
  *               remote.
  * @arg assets AssetMap describing how to map project assets to URLs
  */
-export function link(es: string, hostname: string, assets?: AssetMap): LinkedBundle {
+export function link(
+  es: string,
+  hostname: string,
+  assets?: AssetMap
+): LinkedBundle {
   return {
     actor: {name: 'pen', owner: 'play', version: '0.0.0.0'},
     assets: assets ?? {},
