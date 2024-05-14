@@ -1,5 +1,6 @@
 import {esbuildPlugin} from '@web/dev-server-esbuild'
 import {esbuildConfig} from './esbuild-config.js'
+import {monkeyPatchCJS} from './wds-monkey-patch.js'
 
 const base = esbuildConfig('0.0.0', '0.0.1-next-2000-01-01-abcdef123.4')
 
@@ -8,6 +9,7 @@ const config = {
   files: ['src/elements/**/*.test.ts'],
   nodeResolve: true,
   plugins: [
+    monkeyPatchCJS(),
     esbuildPlugin({
       banner: `
         Symbol.dispose ??= Symbol('Symbol.dispose');
