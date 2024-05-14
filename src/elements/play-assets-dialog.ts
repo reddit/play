@@ -2,14 +2,15 @@ import {customElement, property, state} from 'lit/decorators.js'
 import {css, type CSSResultGroup, html, type TemplateResult} from 'lit'
 import {PlayDialog} from './play-dialog/play-dialog.js'
 import {choose} from 'lit-html/directives/choose.js'
-
-import './play-assets/play-assets-local-fs.js'
-import './play-assets/play-assets-virtual-fs.js'
 import {when} from 'lit-html/directives/when.js'
 import {
   type AssetFilesystemType,
   AssetManager
 } from '../assets/asset-manager.js'
+
+import './play-assets/play-assets-virtual-fs.js'
+import './play-assets/play-assets-local-directory.js'
+import './play-assets/play-assets-local-archive.js'
 
 declare global {
   interface HTMLElementEventMap {}
@@ -26,6 +27,12 @@ export class PlayAssetsDialog extends PlayDialog {
     fieldset {
       margin-bottom: var(--space);
     }
+
+    #localFs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
   `
 
   @property({attribute: 'enable-local-assets', type: Boolean})
@@ -37,14 +44,14 @@ export class PlayAssetsDialog extends PlayDialog {
   override connectedCallback() {
     super.connectedCallback()
 
-    AssetManager.addEventListener('change', this._updateAssetManagerState)
-    this._updateAssetManagerState()
+    AssetManager.addEventListener('change', this._updateMountState)
+    this._updateMountState()
   }
 
   override disconnectedCallback() {
     super.disconnectedCallback()
 
-    AssetManager.removeEventListener('change', this._updateAssetManagerState)
+    AssetManager.removeEventListener('change', this._updateMountState)
   }
 
   override get dialogTitle(): string {
@@ -66,7 +73,7 @@ export class PlayAssetsDialog extends PlayDialog {
             'virtual',
             () => html`<play-assets-virtual-fs></play-assets-virtual-fs>`
           ],
-          ['local', () => html`<play-assets-local-fs></play-assets-local-fs>`]
+          ['local', this._renderLocalFs]
         ])}
       </fieldset>
     `
@@ -104,11 +111,24 @@ export class PlayAssetsDialog extends PlayDialog {
     AssetManager.filesystemType = ev.currentTarget.value as AssetFilesystemType
   }
 
+  private _renderLocalFs = () => {
+    return html`
+      <div id="localFs">
+        ${when(
+          AssetManager.hasFileAccessAPI,
+          () =>
+            html`<play-assets-local-directory></play-assets-local-directory>`
+        )}
+        <play-assets-local-archive></play-assets-local-archive>
+      </div>
+    `
+  }
+
   private get _filesystemTitle(): string {
     return this._filesystem === 'virtual' ? 'Manage files' : 'Filesystem source'
   }
 
-  private _updateAssetManagerState = () => {
+  private _updateMountState = () => {
     this._filesystem = AssetManager.filesystemType
   }
 }

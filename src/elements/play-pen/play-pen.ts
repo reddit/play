@@ -196,15 +196,18 @@ export class PlayPen extends LitElement {
       // bundle is loaded.
     }
 
+    AssetManager.addEventListener('change', () => {
+      this._assetFilesystem = AssetManager.filesystemType
+      if (this._src) {
+        this.#setSrc(this._src, false)
+      }
+    })
     void AssetManager.initialize(this._assetFilesystem)
-    AssetManager.addEventListener(
-      'change',
-      () => (this._assetFilesystem = AssetManager.filesystemType)
-    )
 
     let pen
     if (this.allowURL) pen = loadPen(location)
     if (this.allowStorage) pen ??= loadPen(localStorage)
+
     if (!pen) {
       this.#template = true
       this.#setSrc(helloBlocks, false)

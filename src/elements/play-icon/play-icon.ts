@@ -22,12 +22,14 @@ import closeOutline from './icons/close-outline.svg'
 import communityOutline from './icons/community-outline.svg'
 import copyClipboardOutline from './icons/copy-clipboard-outline.svg'
 import dayOutline from './icons/day-outline.svg'
+import deleteOutline from './icons/delete-outline.svg'
 import downloadOutline from './icons/download-outline.svg'
 import externalOutline from './icons/external-outline.svg'
 import infoOutline from './icons/info-outline.svg'
 import nightOutline from './icons/night-outline.svg'
 import overflowHorizontalOutline from './icons/overflow-horizontal-outline.svg'
 import readingOutline from './icons/reading-outline.svg'
+import renameOutline from './icons/rename-outline.svg'
 import reportOutline from './icons/report-outline.svg'
 import resizeHorizontalOutline from './icons/resize-horizontal-outline.svg'
 import restartOutline from './icons/restart-outline.svg'
@@ -48,18 +50,20 @@ const icons = {
   'community-outline': communityOutline,
   'copy-clipboard-outline': copyClipboardOutline,
   'day-outline': dayOutline,
+  'delete-outline': deleteOutline,
   'download-outline': downloadOutline,
   'external-outline': externalOutline,
   'info-outline': infoOutline,
   'night-outline': nightOutline,
   'overflow-horizontal-outline': overflowHorizontalOutline,
   'reading-outline': readingOutline,
+  'rename-outline': renameOutline,
   'report-outline': reportOutline,
   'resize-horizontal-outline': resizeHorizontalOutline,
   'restart-outline': restartOutline,
   'share-ios-outline': unmountOutline,
   'share-new-outline': shareNewOutline,
-  'topic-art-outline': assetsOutline
+  'assets-outline': assetsOutline
 }
 
 declare global {

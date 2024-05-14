@@ -133,7 +133,7 @@ export class PlayPenHeader extends LitElement {
           ><play-button
             appearance="bordered"
             size="small"
-            icon="topic-art-outline"
+            icon="assets-outline"
             title="Assets"
             label="Assets"
             @click=${() => this._assets.open()}

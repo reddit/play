@@ -1,13 +1,12 @@
 import type {AssetMap} from '@devvit/shared-types/Assets.js'
 import * as ZenFS from '@zenfs/core'
 import {FileSystem, fs} from '@zenfs/core'
-import {WebStorage, WebAccess} from '@zenfs/dom'
+import {WebAccess, WebStorage} from '@zenfs/dom'
 import {Zip} from '@zenfs/zip'
 import * as IDB from 'idb-keyval'
-import {hasFileAccessAPI} from '../elements/play-assets/file-access-api.js'
+import {hasFileAccessAPI, tryQueryPermission} from '../utils/file-access-api.js'
 
 export type AssetFilesystemType = 'virtual' | 'local'
-export type LocalSourceType = 'directory' | 'archive' | undefined
 
 const LOG_TAG = '[AssetManager]'
 
@@ -15,6 +14,10 @@ const CACHE_LAST_DIR = 'lastMountedDirectory'
 const CACHE_LAST_ZIP = 'lastMountedArchive'
 
 export class AssetManager {
+  private static _waitForInit: Promise<void> = new Promise(resolve => {
+    this._initComplete = resolve
+  })
+  private static _initComplete: () => void
   private static _filesystemType: AssetFilesystemType = 'virtual'
   private static _assetMap: AssetMap = {}
   private static _assetCount: number = 0
@@ -57,7 +60,7 @@ export class AssetManager {
   }
 
   static get assetMap(): Promise<AssetMap> {
-    const resolvedMap = () => Promise.resolve(this._assetMap)
+    const resolvedMap = () => this._waitForInit.then(() => this._assetMap)
     if (this.isDirectoryMounted) {
       return this._updateMap().then(resolvedMap)
     }
@@ -75,11 +78,30 @@ export class AssetManager {
       ])
 
       if (lastMountedDirectory) {
-        await this.mountLocalDirectory(lastMountedDirectory)
+        if (await this._verifyPermissions(lastMountedDirectory)) {
+          await this.mountLocalDirectory(lastMountedDirectory)
+        } else {
+          await IDB.del(CACHE_LAST_DIR)
+          console.debug(
+            LOG_TAG,
+            'Failed to remount the previously used directory'
+          )
+        }
       } else if (lastMountedArchive) {
-        await this.mountLocalArchive(lastMountedArchive)
+        if (await this._verifyPermissions(lastMountedArchive)) {
+          await this.mountLocalArchive(lastMountedArchive)
+        } else {
+          await IDB.del(CACHE_LAST_ZIP)
+          console.debug(
+            LOG_TAG,
+            'Failed to remount the previously used ZIP file'
+          )
+        }
+      } else {
+        this._emitChangeEvent()
       }
     }
+    this._initComplete()
   }
 
   static addEventListener(
@@ -146,6 +168,67 @@ export class AssetManager {
     this._emitChangeEvent()
   }
 
+  static async addVirtualAsset(
+    handle: File | FileSystemFileHandle
+  ): Promise<void> {
+    let file: File
+    if ('getFile' in handle) {
+      file = await handle.getFile()
+    } else {
+      file = handle
+    }
+
+    await fs.promises.writeFile(
+      file.name,
+      new Uint8Array(await file.arrayBuffer()),
+      {flush: true}
+    )
+
+    await this._updateMap()
+    this._emitChangeEvent()
+  }
+
+  static async renameVirtualAsset(
+    oldName: string,
+    newName: string
+  ): Promise<void> {
+    if (this.filesystemType !== 'virtual') {
+      return
+    }
+
+    await fs.promises.rename(oldName, newName)
+
+    await this._updateMap()
+    this._emitChangeEvent()
+  }
+
+  static async deleteVirtualAsset(name: string): Promise<void> {
+    if (this.filesystemType !== 'virtual') {
+      return
+    }
+
+    await fs.promises.unlink(name)
+
+    await this._updateMap()
+    this._emitChangeEvent()
+  }
+
+  static async clearVirtualAssets(): Promise<void> {
+    if (this.filesystemType !== 'virtual' || !this._assetMap) {
+      return
+    }
+
+    const removals = []
+    for (const name of Object.keys(this._assetMap)) {
+      removals.push(fs.promises.unlink(name))
+    }
+
+    await Promise.all(removals)
+
+    await this._updateMap()
+    this._emitChangeEvent()
+  }
+
   private static async _mountRoot(fs: FileSystem): Promise<void> {
     this._unmountRoot()
     ZenFS.mount('/', fs)
@@ -161,8 +244,7 @@ export class AssetManager {
   }
 
   private static async _updateMap(): Promise<void> {
-    this._assetMap = {}
-    this._assetCount = 0
+    this._clearAssetMap()
     if (!ZenFS.mounts.has('/')) {
       console.debug(LOG_TAG, 'Root filesystem unmounted, skipping _updateMap')
       return
@@ -185,12 +267,23 @@ export class AssetManager {
         const file = await fs.promises.open(entry)
         const buffer = await file.readFile()
         await file.close()
-        const url = window.URL.createObjectURL(new Blob([buffer]))
-        this._assetMap[name] = url
+        this._assetMap![name] = window.URL.createObjectURL(new Blob([buffer]))
         this._assetCount++
       }
     }
     console.debug(LOG_TAG, `Found ${this._assetCount} files`, this._assetMap)
+  }
+
+  private static _clearAssetMap() {
+    const assetMap = this._assetMap!
+    for (const entry of Object.keys(assetMap)) {
+      const url = assetMap[entry] ?? undefined
+      if (url) {
+        URL.revokeObjectURL(url)
+      }
+    }
+    this._assetMap = {}
+    this._assetCount = 0
   }
 
   private static async _updateCache(handles: {
@@ -205,5 +298,11 @@ export class AssetManager {
 
   private static _emitChangeEvent(): void {
     this._eventTarget.dispatchEvent(new CustomEvent('change'))
+  }
+
+  private static async _verifyPermissions(
+    handle: FileSystemHandle
+  ): Promise<boolean> {
+    return (await tryQueryPermission(handle, {mode: 'read'})) === 'granted'
   }
 }
