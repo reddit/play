@@ -1,3 +1,5 @@
+import type {AssetFilesystemType} from '../assets/asset-manager.js'
+
 /** Settings state for un/packing to/from LocalStorage. Not shareable. */
 export type SettingsSave = {
   /** Most recent console open state. */
@@ -14,6 +16,10 @@ export type SettingsSave = {
   useRemoteRuntime: boolean
   /** Enable UI request, the multithreaded renderer for blocks. */
   useUIRequest: boolean
+  /** Enable access to local file system to load assets */
+  enableLocalAssets: boolean
+  /** Which file system type to use when loading assets */
+  assetFilesystem: AssetFilesystemType
   /**
    * Settings version recorded at save time. Used for unpacking old data if
    * structural changes have been made. Independent of package.json version.
@@ -32,6 +38,8 @@ export const defaultSettings: Readonly<SettingsSave> = {
   useLocalRuntime: true,
   useRemoteRuntime: false,
   useUIRequest: false,
+  enableLocalAssets: false,
+  assetFilesystem: 'virtual',
   version: 1
 }
 

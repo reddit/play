@@ -48,6 +48,10 @@ import '../play-pen-header.js'
 import '../play-preview-controls.js'
 import '../play-preview.js'
 import '../play-toast.js'
+import {
+  type AssetFilesystemType,
+  AssetManager
+} from '../../assets/asset-manager.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -151,6 +155,8 @@ export class PlayPen extends LitElement {
   @state() private _useLocalRuntime: boolean = false
   @state() private _useRemoteRuntime: boolean = false
   @state() private _useUIRequest: boolean = false
+  @state() private _enableLocalAssets: boolean = false
+  @state() private _assetFilesystem: AssetFilesystemType = 'virtual'
   @query('play-editor') private _editor!: PlayEditor
   @query('play-toast') private _toast!: PlayToast
   #bundleStore?: BundleStore | undefined
@@ -182,9 +188,19 @@ export class PlayPen extends LitElement {
       this._useLocalRuntime = settings.useLocalRuntime
       this._useRemoteRuntime = settings.useRemoteRuntime
       this._useUIRequest = settings.useUIRequest
+      this._enableLocalAssets = settings.enableLocalAssets
+      this._assetFilesystem = !settings.enableLocalAssets
+        ? 'virtual'
+        : settings.assetFilesystem
       // If remote is enabled, #bundleStore is initialized in willUpdate() and
       // bundle is loaded.
     }
+
+    void AssetManager.initialize(this._assetFilesystem)
+    AssetManager.addEventListener(
+      'change',
+      () => (this._assetFilesystem = AssetManager.filesystemType)
+    )
 
     let pen
     if (this.allowURL) pen = loadPen(location)
@@ -213,6 +229,7 @@ export class PlayPen extends LitElement {
         ?use-local-runtime=${this._useLocalRuntime}
         ?use-remote-runtime=${this._useRemoteRuntime}
         ?use-ui-request=${this._useUIRequest}
+        ?enable-local-assets=${this._enableLocalAssets}
         @edit-name=${(ev: CustomEvent<string>) =>
           this.#setName(ev.detail, true)}
         @edit-src=${(ev: CustomEvent<string>) => {
@@ -234,6 +251,12 @@ export class PlayPen extends LitElement {
           (this._remoteRuntimeOrigin = ev.detail)}
         @use-ui-request=${(ev: CustomEvent<boolean>) =>
           (this._useUIRequest = ev.detail)}
+        @enable-local-assets=${(ev: CustomEvent<boolean>) => {
+          this._enableLocalAssets = ev.detail
+          if (!this._enableLocalAssets) {
+            AssetManager.filesystemType = 'virtual'
+          }
+        }}
         @share=${this.#onShare}
       ></play-pen-header>
       <main>
@@ -306,6 +329,8 @@ export class PlayPen extends LitElement {
         _useRemoteRuntime: boolean
         _remoteRuntimeOrigin: string
         _useUIRequest: boolean
+        _enableLocalAssets: boolean
+        _assetFilesystem: string
       }>
   ): Promise<void> {
     super.willUpdate(props)
@@ -319,7 +344,9 @@ export class PlayPen extends LitElement {
         props.has('_remoteRuntimeOrigin') ||
         props.has('_useLocalRuntime') ||
         props.has('_useRemoteRuntime') ||
-        props.has('_useUIRequest'))
+        props.has('_useUIRequest') ||
+        props.has('_enableLocalAssets') ||
+        props.has('_assetFilesystem'))
     )
       saveSettings(localStorage, {
         openConsole: this._openConsole,
@@ -330,6 +357,8 @@ export class PlayPen extends LitElement {
         useRemoteRuntime: this._useRemoteRuntime,
         remoteRuntimeOrigin: this._remoteRuntimeOrigin,
         useUIRequest: this._useUIRequest,
+        enableLocalAssets: this._enableLocalAssets,
+        assetFilesystem: this._assetFilesystem,
         version: 1
       })
 
@@ -385,11 +414,12 @@ export class PlayPen extends LitElement {
   }
 
   /** Throttled changes after updating sources. */
-  #setSrcSideEffects = throttle((save: boolean): void => {
+  #setSrcSideEffects = throttle(async (save: boolean): Promise<void> => {
     this.#version++
     this._bundle = link(
       compile(this.#env),
-      newHostname(this._name, this.#version)
+      newHostname(this._name, this.#version),
+      await AssetManager.assetMap
     )
     if (save) this.#save()
     this.#upload()

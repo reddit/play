@@ -1,15 +1,17 @@
 import type {LinkedBundle, SerializableServiceDefinition} from '@devvit/protos'
+import type {AssetMap} from '@devvit/shared-types/Assets.js'
 
 /**
  * @arg es JavaScript
  * @arg hostname Arbitrary but something unique to the window like
  *               hello-world.local may allow concurrent sessions with the
  *               remote.
+ * @arg assets AssetMap describing how to map project assets to URLs
  */
-export function link(es: string, hostname: string): LinkedBundle {
+export function link(es: string, hostname: string, assets?: AssetMap): LinkedBundle {
   return {
     actor: {name: 'pen', owner: 'play', version: '0.0.0.0'},
-    assets: {},
+    assets: assets ?? {},
     code: es,
     hostname,
     provides: provides(),

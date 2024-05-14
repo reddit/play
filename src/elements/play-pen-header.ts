@@ -12,6 +12,7 @@ import {cssReset} from '../utils/css-reset.js'
 import {openURL} from '../utils/open-url.js'
 import type {PlayExportDialog} from './play-export-dialog.js'
 import type {PlaySettingsDialog} from './play-settings-dialog.js'
+import type {PlayAssetsDialog} from './play-assets-dialog.js'
 
 import './play-button.js'
 import './play-export-dialog.js'
@@ -20,6 +21,7 @@ import './play-logo/play-logo.js'
 import './play-new-pen-button.js'
 import './play-resizable-text-input.js'
 import './play-settings-dialog.js'
+import './play-assets-dialog.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -89,8 +91,11 @@ export class PlayPenHeader extends LitElement {
   useLocalRuntime: boolean = false
   @property({attribute: 'use-remote-runtime', type: Boolean})
   useRemoteRuntime: boolean = false
+  @property({attribute: 'enable-local-assets', type: Boolean})
+  enableLocalAssets: boolean = false
   @query('play-export-dialog') private _export!: PlayExportDialog
   @query('play-settings-dialog') private _settings!: PlaySettingsDialog
+  @query('play-assets-dialog') private _assets!: PlayAssetsDialog
 
   protected override render(): TemplateResult {
     return html`
@@ -128,6 +133,14 @@ export class PlayPenHeader extends LitElement {
           ><play-button
             appearance="bordered"
             size="small"
+            icon="topic-art-outline"
+            title="Assets"
+            label="Assets"
+            @click=${() => this._assets.open()}
+          ></play-button>
+          <play-button
+            appearance="bordered"
+            size="small"
             title=":play Settings"
             label="Settings"
             @click=${() => this._settings.open()}
@@ -153,7 +166,11 @@ export class PlayPenHeader extends LitElement {
         ?use-ui-request=${this.useUIRequest}
         ?use-local-runtime=${this.useLocalRuntime}
         ?use-remote-runtime=${this.useRemoteRuntime}
+        ?enable-local-assets=${this.enableLocalAssets}
       ></play-settings-dialog>
+      <play-assets-dialog
+        ?enable-local-assets=${this.enableLocalAssets}
+      ></play-assets-dialog>
     `
   }
 }

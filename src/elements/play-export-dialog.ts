@@ -1,16 +1,9 @@
-import {
-  LitElement,
-  css,
-  html,
-  type CSSResultGroup,
-  type TemplateResult
-} from 'lit'
+import {css, type CSSResultGroup, html, type TemplateResult} from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
 import type {PlayToast} from './play-toast.js'
-
-import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-toast.js'
+import {PlayDialog} from './play-dialog/play-dialog.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -19,64 +12,9 @@ declare global {
 }
 
 @customElement('play-export-dialog')
-export class PlayExportDialog extends LitElement {
+export class PlayExportDialog extends PlayDialog {
   static override readonly styles: CSSResultGroup = css`
-    ${cssReset}
-
-    dialog {
-      color: var(--color-neutral-content);
-      background-color: var(--color-neutral-background);
-      box-shadow: var(--shadow-m);
-
-      border-bottom-left-radius: var(--radius);
-      border-bottom-right-radius: var(--radius);
-      border-top-left-radius: var(--radius);
-      border-top-right-radius: var(--radius);
-
-      padding-top: var(--space);
-      padding-bottom: var(--space);
-      padding-left: var(--space);
-      padding-right: var(--space);
-
-      /* No border needed. Dialog background has sufficient contrast against the scrim. */
-      border-width: 0;
-
-      /* to-do: breakpoints */
-      width: 480px;
-      max-width: 90vw;
-    }
-
-    dialog::backdrop {
-      /* to-do: Update to css variable --color-shade-60 once supported by Chromium and Safari.
-      https://bugs.webkit.org/show_bug.cgi?id=263834
-      https://bugs.chromium.org/p/chromium/issues/detail?id=827397
-      https://stackoverflow.com/a/77393321 */
-      background-color: rgba(0, 0, 0, 0.6);
-    }
-
-    header {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      row-gap: var(--space);
-    }
-
-    h1 {
-      color: var(--color-neutral-content-strong);
-
-      /* No margins needed for composition. */
-      margin-top: 0;
-      margin-bottom: 0;
-
-      /* RPL/Heading Bold/24-HeadingBold */
-      font-family: var(--font-family-sans);
-      font-size: 24px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 28px;
-      letter-spacing: 0.2px;
-    }
+    ${PlayDialog.styles}
 
     ol {
       margin-bottom: 0;
@@ -140,58 +78,41 @@ export class PlayExportDialog extends LitElement {
 
   @property() url: string = ''
   @query('play-toast') _toast!: PlayToast
-  @query('dialog') private _dialog!: HTMLDialogElement
 
-  open(): void {
-    this._dialog.showModal()
+  override get dialogTitle(): string {
+    return 'Export project'
   }
 
-  close(): void {
-    this._dialog.close()
+  override get dialogDescription(): string {
+    return 'Start a new project from this pen:'
   }
 
-  protected override render(): TemplateResult {
+  override dialogContent(): TemplateResult {
     const cmd = `npx devvit new --template='${this.url}'`
-    return html`
-      <dialog>
-        <header>
-          <h1>Export project</h1>
+    return html`<ol>
+        <li>
+          <a
+            href="https://developers.reddit.com/docs/quickstart"
+            target="_blank"
+            >Install Node.js and the Devvit command-line tool.</a
+          >
+        </li>
+        <li>
+          Copy the new project command:
+          <pre>${cmd}</pre>
           <play-button
-            appearance="plain"
-            icon="close-outline"
-            @click=${this.close}
+            appearance="bordered"
             size="small"
-            title="Close"
+            icon="copy-clipboard-outline"
+            label="Copy to clipboard"
+            @click=${async () => {
+              await navigator.clipboard.writeText(cmd)
+              this._toast.open()
+            }}
           ></play-button>
-        </header>
-
-        <p>Start a new project from this pen:</p>
-        <ol>
-          <li>
-            <a
-              href="https://developers.reddit.com/docs/quickstart"
-              target="_blank"
-              >Install Node.js and the Devvit command-line tool.</a
-            >
-          </li>
-          <li>
-            Copy the new project command:
-            <pre>${cmd}</pre>
-            <play-button
-              appearance="bordered"
-              size="small"
-              icon="copy-clipboard-outline"
-              label="Copy to clipboard"
-              @click=${async () => {
-                await navigator.clipboard.writeText(cmd)
-                this._toast.open()
-              }}
-            ></play-button>
-          </li>
-          <li>Paste the command into a terminal and press enter.</li>
-        </ol>
-        <play-toast>Copied the command!</play-toast>
-      </dialog>
-    `
+        </li>
+        <li>Paste the command into a terminal and press enter.</li>
+      </ol>
+      <play-toast>Copied the command!</play-toast>`
   }
 }

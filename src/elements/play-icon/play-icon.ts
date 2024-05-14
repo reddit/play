@@ -12,6 +12,9 @@ import {unsafeHTML} from 'lit/directives/unsafe-html.js'
 
 import {cssReset} from '../../utils/css-reset.js'
 import addOutline from './icons/add-outline.svg'
+import archiveOutline from './icons/archive-outline.svg'
+import assetsOutline from './icons/assets-outline.svg'
+import browseOutline from './icons/browse-outline.svg'
 import caretDownOutline from './icons/caret-down-outline.svg'
 import caretUpOutline from './icons/caret-up-outline.svg'
 import checkmarkFill from './icons/checkmark-fill.svg'
@@ -29,11 +32,15 @@ import reportOutline from './icons/report-outline.svg'
 import resizeHorizontalOutline from './icons/resize-horizontal-outline.svg'
 import restartOutline from './icons/restart-outline.svg'
 import shareNewOutline from './icons/share-new-outline.svg'
+import unmountOutline from './icons/unmount-outline.svg'
+
 
 export type PlayIconSVG = keyof typeof icons
 
 const icons = {
   'add-outline': addOutline,
+  'archived-outline': archiveOutline,
+  'browse-outline': browseOutline,
   'caret-down-outline': caretDownOutline,
   'caret-up-outline': caretUpOutline,
   'checkmark-fill': checkmarkFill,
@@ -50,7 +57,9 @@ const icons = {
   'report-outline': reportOutline,
   'resize-horizontal-outline': resizeHorizontalOutline,
   'restart-outline': restartOutline,
-  'share-new-outline': shareNewOutline
+  'share-ios-outline': unmountOutline,
+  'share-new-outline': shareNewOutline,
+  'topic-art-outline': assetsOutline
 }
 
 declare global {
@@ -73,7 +82,8 @@ export class PlayIcon extends LitElement {
     const style = {
       width: this.size,
       height: this.size,
-      fill: this.color
+      fill: this.color,
+      color: this.color
     }
     return this.icon
       ? html`
