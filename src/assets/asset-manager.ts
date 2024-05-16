@@ -13,6 +13,16 @@ const LOG_TAG = '[AssetManager]'
 const CACHE_LAST_DIR = 'lastMountedDirectory'
 const CACHE_LAST_ZIP = 'lastMountedArchive'
 
+const MIME: {[ext: string]: string} = {
+  html: 'text/html',
+  htm: 'text/html',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  png: 'image/png',
+  gif: 'image/gif'
+}
+const DEFAULT_MIME = 'application/octet-stream'
+
 export class AssetManager {
   private static _waitForInit: Promise<void> = new Promise(resolve => {
     this._initComplete = resolve
@@ -267,7 +277,12 @@ export class AssetManager {
         const file = await fs.promises.open(entry)
         const buffer = await file.readFile()
         await file.close()
-        this._assetMap![name] = window.URL.createObjectURL(new Blob([buffer]))
+        const basename = entry.split('/').at(-1)!
+        const extension = basename.split('.').at(-1)!
+        const mimetype = MIME[extension] ?? DEFAULT_MIME
+        this._assetMap![name] = window.URL.createObjectURL(
+          new Blob([buffer], {type: mimetype})
+        )
         this._assetCount++
       }
     }
