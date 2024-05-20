@@ -1,6 +1,5 @@
 import {type PropertyValues, ReactiveElement} from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import {PlayPen} from '../play-pen/play-pen.js'
 import {WebAccess, WebStorage} from '@zenfs/dom'
 import {Bubble} from '../../utils/bubble.js'
 import {Zip} from '@zenfs/zip'
@@ -38,7 +37,7 @@ const DEFAULT_MIME = 'application/octet-stream'
 
 declare global {
   interface HTMLElementTagNameMap {
-    'play-pen': PlayPen
+    'play-assets': PlayAssets
   }
   interface HTMLElementEventMap {
     'assets-updated': CustomEvent<void>
