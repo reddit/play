@@ -1,12 +1,12 @@
-import {customElement} from 'lit/decorators.js'
-import {PlayAssetManagerListener} from './play-asset-manager-listener.js'
-import {css, html, type TemplateResult} from 'lit'
+import {customElement, query, state} from 'lit/decorators.js'
+import {css, html, LitElement, type TemplateResult} from 'lit'
 import {cssReset} from '../../utils/css-reset.js'
-import {AssetManager} from '../../assets/asset-manager.js'
 import {when} from 'lit-html/directives/when.js'
 import {fileAccessContext} from '../../utils/file-access-api.js'
 
+import '../play-assets/play-assets.js'
 import '../play-button.js'
+import type {PlayAssets} from './play-assets.js'
 
 declare global {
   interface HTMLElementEventMap {}
@@ -16,7 +16,7 @@ declare global {
 }
 
 @customElement('play-assets-local-directory')
-export class PlayAssetsLocalDirectory extends PlayAssetManagerListener {
+export class PlayAssetsLocalDirectory extends LitElement {
   static override readonly styles = css`
     ${cssReset}
 
@@ -44,23 +44,34 @@ export class PlayAssetsLocalDirectory extends PlayAssetManagerListener {
       color: darkgrey;
       font-style: italic;
     }
+
+    pre {
+      margin: 0;
+    }
   `
+
+  @state()
+  private _directoryHandle: PlayAssets['directoryHandle']
+
+  @query('play-assets')
+  private _assets!: PlayAssets
 
   protected override render(): TemplateResult {
     return html`
+      <play-assets @assets-updated=${this.#assetsUpdated}></play-assets>
       <span>Local directory:</span>
       <div class="row vcenter">
         ${when(
-          this.isDirectoryMounted,
+          this._directoryHandle,
           () =>
-            html`<pre class="grow">.../${this.mountedDirectory}</pre>
+            html`<pre class="grow">.../${this._assets.directoryName}</pre>
               <play-button
                 appearance="bordered"
                 size="small"
                 icon="share-ios-outline"
                 icon-color="red"
                 title="Unmount"
-                @click=${() => AssetManager.unmount()}
+                @click=${() => this._assets.unmount()}
               ></play-button>`,
           () =>
             html`<span class="no-selection grow">No directory selected</span
@@ -68,20 +79,24 @@ export class PlayAssetsLocalDirectory extends PlayAssetManagerListener {
                 appearance="inverted"
                 size="small"
                 label="Select"
-                @click=${this._pickDirectory}
+                @click=${this.#pickDirectory}
               ></play-button>`
         )}
       </div>
     `
   }
 
-  private _pickDirectory = async () => {
+  #pickDirectory = async () => {
     const directoryHandle = await fileAccessContext.showDirectoryPicker({
       id: 'selectDirectory',
       mode: 'read'
     })
     if (directoryHandle) {
-      await AssetManager.mountLocalDirectory(directoryHandle)
+      await this._assets.mountLocalDirectory(directoryHandle)
     }
+  }
+
+  #assetsUpdated = () => {
+    this._directoryHandle = this._assets.directoryHandle
   }
 }

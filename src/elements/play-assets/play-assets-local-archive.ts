@@ -1,11 +1,11 @@
-import {customElement} from 'lit/decorators.js'
-import {css, html, type TemplateResult} from 'lit'
+import {customElement, query, state} from 'lit/decorators.js'
+import {css, html, LitElement, type TemplateResult} from 'lit'
 import {when} from 'lit-html/directives/when.js'
-import {AssetManager} from '../../assets/asset-manager.js'
-import {PlayAssetManagerListener} from './play-asset-manager-listener.js'
 import {cssReset} from '../../utils/css-reset.js'
 import {type FilePickerType} from '../../utils/file-access-api.js'
 import type {FilesSelectedEvent} from './file-upload-dropper.js'
+import {PlayAssets} from './play-assets.js'
+import {styleMap} from 'lit/directives/style-map.js'
 
 import '../play-button.js'
 import '../play-icon/play-icon.js'
@@ -18,10 +18,23 @@ declare global {
   }
 }
 
+const STYLE_VISIBLE = {visibility: 'visible'}
+const STYLE_COLLAPSED = {visibility: 'collapse'}
+
 @customElement('play-assets-local-archive')
-export class PlayAssetsLocalArchive extends PlayAssetManagerListener {
+export class PlayAssetsLocalArchive extends LitElement {
   static override readonly styles = css`
     ${cssReset}
+
+    :host {
+      display: grid;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    :host > * {
+      grid-column-start: 1;
+      grid-row-start: 1;
+    }
 
     .row {
       display: flex;
@@ -42,13 +55,23 @@ export class PlayAssetsLocalArchive extends PlayAssetManagerListener {
     }
   `
 
+  @query('play-assets')
+  private _assets?: PlayAssets
+
+  @state()
+  private _detailsStyle = STYLE_COLLAPSED
+
+  @state()
+  private _selectStyle = STYLE_VISIBLE
+
   protected override render(): TemplateResult {
-    return this.isArchiveMounted
-      ? this._renderArchiveDetails()
-      : this._renderMountArchive()
+    return html`
+      <play-assets @assets-updated=${this.#assetsUpdated}></play-assets>
+      ${this.#renderArchiveDetails()} ${this.#renderMountArchive()}
+    `
   }
 
-  private _renderMountArchive = () => {
+  #renderMountArchive = () => {
     const types: FilePickerType[] = [
       {
         description: 'ZIP Archive',
@@ -59,37 +82,39 @@ export class PlayAssetsLocalArchive extends PlayAssetManagerListener {
     ]
 
     return html`
-      <span>ZIP archive:</span>
-      <file-upload-dropper
-        id="archive-picker"
-        .acceptTypes="${types}"
-        @files-selected=${this._onFiles}
-      >
-        <play-icon size="32px" icon="archived-outline"></play-icon>
-        <span>Click to select a ZIP archive</span>
-        <span>or</span>
-        <span>Drop a ZIP file here</span>
-      </file-upload-dropper>
+      <div style="${styleMap(this._selectStyle)}">
+        <span>ZIP archive:</span>
+        <file-upload-dropper
+          id="archive-picker"
+          .acceptTypes="${types}"
+          @files-selected=${this.#onFiles}
+        >
+          <play-icon size="32px" icon="archived-outline"></play-icon>
+          <span>Click to select a ZIP archive</span>
+          <span>or</span>
+          <span>Drop a ZIP file here</span>
+        </file-upload-dropper>
+      </div>
     `
   }
 
-  private _renderArchiveDetails = () => {
+  #renderArchiveDetails = () => {
     return html`
-      <div class="row gap">
+      <div class="row gap" style="${styleMap(this._detailsStyle)}">
         <div class="column grow">
           <span>Mounted archive:</span>
-          <pre>${this.mountedArchive}</pre>
-          <span>File count: ${this.assetCount}</span>
+          <pre>${this._assets?.archiveFilename}</pre>
+          <span>File count: ${this._assets?.assetCount}</span>
         </div>
         ${when(
-          this.archiveCanRemount,
+          PlayAssets.hasFileAccessAPI,
           () =>
             html`<play-button
               appearance="bordered"
               size="small"
               icon="restart-outline"
               title="Refresh"
-              @click=${() => AssetManager.remountLocalArchive()}
+              @click=${() => this._assets?.remountLocalArchive()}
             ></play-button>`
         )}
         <play-button
@@ -98,16 +123,25 @@ export class PlayAssetsLocalArchive extends PlayAssetManagerListener {
           icon="share-ios-outline"
           icon-color="red"
           title="Unmount"
-          @click=${() => AssetManager.unmount()}
+          @click=${() => this._assets?.unmount()}
         ></play-button>
       </div>
     `
   }
 
-  private _onFiles = async (ev: CustomEvent<FilesSelectedEvent>) => {
+  #onFiles = async (ev: CustomEvent<FilesSelectedEvent>) => {
     const file = ev.detail.fileHandles?.[0] ?? ev.detail.files?.[0]
     if (file) {
-      await AssetManager.mountLocalArchive(file)
+      await this._assets?.mountLocalArchive(file)
     }
+  }
+
+  #assetsUpdated = () => {
+    this._selectStyle = this._assets?.archiveHandle
+      ? STYLE_COLLAPSED
+      : STYLE_VISIBLE
+    this._detailsStyle = this._assets?.archiveHandle
+      ? STYLE_VISIBLE
+      : STYLE_COLLAPSED
   }
 }

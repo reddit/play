@@ -1,12 +1,18 @@
 import {customElement, query, state} from 'lit/decorators.js'
-import {css, type CSSResultGroup, html, type TemplateResult} from 'lit'
+import {
+  css,
+  type CSSResultGroup,
+  html,
+  LitElement,
+  type TemplateResult
+} from 'lit'
 import {cssReset} from '../../utils/css-reset.js'
 import type {FilesSelectedEvent} from './file-upload-dropper.js'
-import {PlayAssetManagerListener} from './play-asset-manager-listener.js'
 import {when} from 'lit-html/directives/when.js'
 import {repeat} from 'lit/directives/repeat.js'
-import {AssetManager} from '../../assets/asset-manager.js'
+import type {PlayAssets} from './play-assets.js'
 
+import './play-assets.js'
 import '../play-button.js'
 import '../play-icon/play-icon.js'
 import './file-upload-dropper.js'
@@ -19,7 +25,7 @@ declare global {
 }
 
 @customElement('play-assets-virtual-fs')
-export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
+export class PlayAssetsVirtualFilesystem extends LitElement {
   static override readonly styles: CSSResultGroup = css`
     ${cssReset}
 
@@ -81,75 +87,72 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
   `
 
   @state()
-  _assetNames: string[] = []
+  private _assetNames: string[] = []
 
   @state()
-  _renameIndex: number = -1
+  private _renameIndex: number = -1
 
   @state()
-  _deleteIndex: number = -1
+  private _deleteIndex: number = -1
 
   @state()
-  _clearAll: boolean = false
+  private _clearAll: boolean = false
+
+  @query('play-assets')
+  private _assets?: PlayAssets
 
   @query('#renameAsset', false)
-  _renameInput: HTMLInputElement | undefined
+  private _renameInput: HTMLInputElement | undefined
 
-  protected override assetsUpdated() {
-    AssetManager.assetMap.then(assets => {
-      if (assets) {
-        this._assetNames = Object.keys(assets)
-      }
-    })
-    this._renameIndex = -1
-    this._deleteIndex = -1
-    this._clearAll = false
+  private get _assetCount(): number {
+    return this._assets?.assetCount ?? 0
   }
 
   protected override render(): TemplateResult {
     return html`
+      <play-assets @assets-updated=${this.#assetsUpdated}></play-assets>
       <file-upload-dropper
         id="virtualFileUpload"
         multiple
-        @files-selected=${this._onFiles}
+        @files-selected=${this.#onFiles}
       >
         <play-icon size="32px" icon="assets-outline"></play-icon>
         <span>Click to select files</span>
         <span>or</span>
         <span>Drop files here</span>
       </file-upload-dropper>
-      ${this._renderFileList()}
+      ${this.#renderFileList()}
       <div id="removeAll" class="row">
         ${when(
           this._clearAll,
-          this._renderClearAllPrompt,
-          this._renderClearAllButton
+          this.#renderClearAllPrompt,
+          this.#renderClearAllButton
         )}
       </div>
     `
   }
 
-  private _renderFileList(): TemplateResult {
+  #renderFileList(): TemplateResult {
     return html`
       <fieldset id="fileList" class="column">
-        ${when(this.assetCount > 0, this._renderFiles, this._renderNoFiles)}
+        ${when(this._assetCount > 0, this.#renderFiles, this.#renderNoFiles)}
       </fieldset>
     `
   }
 
-  private _renderFiles = () => {
-    return html` ${repeat(this._assetNames, this._renderAssetEntry)} `
+  #renderFiles = () => {
+    return html` ${repeat(this._assetNames, this.#renderAssetEntry)} `
   }
 
-  private _renderNoFiles = () => {
+  #renderNoFiles = () => {
     return html`<div id="empty" class="row">No assets added!</div>`
   }
 
-  private _renderAssetEntry = (name: string, index: number) => {
+  #renderAssetEntry = (name: string, index: number) => {
     if (index === this._renameIndex) {
-      return this._renderRenameAssetEntry(name, index)
+      return this.#renderRenameAssetEntry(name, index)
     } else if (index === this._deleteIndex) {
-      return this._renderDeleteAssetEntry(name)
+      return this.#renderDeleteAssetEntry(name)
     }
     return html`
       <div class="asset row">
@@ -173,7 +176,7 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
     `
   }
 
-  private _renderRenameAssetEntry = (name: string, index: number) => {
+  #renderRenameAssetEntry = (name: string, index: number) => {
     return html`
       <div class="asset row">
         <input
@@ -181,8 +184,8 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
           value="${name}"
           id="renameAsset"
           class="grow code"
-          @keyup=${this._renameKeyUp}
-          @keydown=${this._renameKeyDown}
+          @keyup=${this.#renameKeyUp}
+          @keydown=${this.#renameKeyDown}
         />
         <play-button
           title="Save"
@@ -190,7 +193,7 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
           icon-color="green"
           size="small"
           appearance="bordered"
-          @click=${this._rename(index)}
+          @click=${this.#rename(index)}
         ></play-button>
         <play-button
           title="Cancel"
@@ -204,7 +207,7 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
     `
   }
 
-  private _renderDeleteAssetEntry = (name: string) => {
+  #renderDeleteAssetEntry = (name: string) => {
     return html`
       <div class="asset row">
         <span class="grow">Remove <span class="bold code">${name}</span>?</span>
@@ -214,7 +217,7 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
           icon-color="red"
           size="small"
           appearance="bordered"
-          @click=${this._delete(name)}
+          @click=${this.#delete(name)}
         ></play-button>
         <play-button
           title="Cancel"
@@ -227,16 +230,16 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
     `
   }
 
-  private _renderClearAllButton = () =>
+  #renderClearAllButton = () =>
     html`<play-button
       label="Remove All"
       appearance="bordered"
       size="small"
-      ?disabled=${this.assetCount === 0}
+      ?disabled=${this._assetCount === 0}
       @click=${() => (this._clearAll = true)}
     ></play-button>`
 
-  private _renderClearAllPrompt = () => html`
+  #renderClearAllPrompt = () => html`
     <span class="grow">Remove all assets?</span>
     <play-button
       title="Confirm"
@@ -244,7 +247,7 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
       icon-color="red"
       size="small"
       appearance="bordered"
-      @click=${this._clearAllAssets}
+      @click=${this.#clearAllAssets}
     ></play-button>
     <play-button
       title="Cancel"
@@ -255,46 +258,57 @@ export class PlayAssetsVirtualFilesystem extends PlayAssetManagerListener {
     ></play-button>
   `
 
-  private _rename = (index: number) => async () => {
+  #rename = (index: number) => async () => {
     const oldName = this._assetNames[index]
     const newName = this._renameInput?.value?.trim()
     if (oldName && newName) {
-      await AssetManager.renameVirtualAsset(oldName, newName)
+      await this._assets?.renameVirtualAsset(oldName, newName)
     }
     this._renameIndex = -1
   }
 
-  private _delete = (name: string) => async () => {
-    await AssetManager.deleteVirtualAsset(name)
+  #delete = (name: string) => async () => {
+    await this._assets?.deleteVirtualAsset(name)
     this._deleteIndex = -1
   }
 
-  private _clearAllAssets = async () => {
-    await AssetManager.clearVirtualAssets()
+  #clearAllAssets = async () => {
+    await this._assets?.clearVirtualAssets()
   }
 
-  private _onFiles = async (ev: CustomEvent<FilesSelectedEvent>) => {
+  #onFiles = async (ev: CustomEvent<FilesSelectedEvent>) => {
     const files = ev.detail.files ?? ev.detail.fileHandles
     if (files) {
       for (let index = 0; index < files.length; index++) {
         const file = files[index]
         if (file) {
-          await AssetManager.addVirtualAsset(file)
+          await this._assets?.addVirtualAsset(file)
         }
       }
     }
   }
 
-  private _renameKeyDown = (ev: KeyboardEvent) => {
+  #renameKeyDown = (ev: KeyboardEvent) => {
     if (ev.key === '/' || ev.key === '\\') {
       ev.preventDefault()
       ev.stopImmediatePropagation()
     }
   }
 
-  private _renameKeyUp = (ev: KeyboardEvent) => {
+  #renameKeyUp = (ev: KeyboardEvent) => {
     if (ev.key === 'Enter') {
-      this._rename(this._renameIndex)()
+      this.#rename(this._renameIndex)()
     }
+  }
+
+  #assetsUpdated = () => {
+    this._assets?.assetMap.then(assets => {
+      if (assets) {
+        this._assetNames = Object.keys(assets)
+      }
+    })
+    this._renameIndex = -1
+    this._deleteIndex = -1
+    this._clearAll = false
   }
 }

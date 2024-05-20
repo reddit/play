@@ -1,4 +1,3 @@
-/// <reference lib="dom" />
 /**
  * Provides types for the experimental File System Access API available in Chromium-based browsers
  * See: https://wicg.github.io/file-system-access/
@@ -104,6 +103,15 @@ export async function tryQueryPermission(
     return (handle as FileHandleWithPermissions).queryPermission(options)
   }
   return 'denied'
+}
+
+export async function tryGetFile(
+  handle: FileSystemFileHandle | File
+): Promise<File> {
+  if ('getFile' in handle) {
+    return handle.getFile()
+  }
+  return handle as File
 }
 
 /**

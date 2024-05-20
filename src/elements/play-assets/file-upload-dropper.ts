@@ -6,7 +6,6 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, state} from 'lit/decorators.js'
-import {AssetManager} from '../../assets/asset-manager.js'
 import {classMap} from 'lit-html/directives/class-map.js'
 import {ifDefined} from 'lit-html/directives/if-defined.js'
 import {
@@ -17,8 +16,8 @@ import {
   tryGetAsFilesystemHandle
 } from '../../utils/file-access-api.js'
 import {cssReset} from '../../utils/css-reset.js'
-
-const LOG_TAG = 'FileUploadDropper'
+import {Bubble} from '../../utils/bubble.js'
+import {PlayAssets} from './play-assets.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -73,26 +72,26 @@ export class FileUploadDropper extends LitElement {
   multiple: boolean = false
 
   @state()
-  _dragging: boolean = false
+  private _dragging: boolean = false
 
   @state()
-  _errorMessage: string | undefined
+  private _errorMessage: string | undefined
 
   @state()
-  _accept: string | undefined
+  private _accept: string | undefined
 
-  private _allowedMimes: string[] = []
-  private _acceptPatterns: RegExp[] = []
+  #allowedMimes: string[] = []
+  #acceptPatterns: RegExp[] = []
 
   protected override willUpdate(changedProperties: PropertyValues) {
     if (changedProperties.has('acceptTypes')) {
       this._accept = flattenAcceptTypes(this.acceptTypes)
-      this._acceptPatterns = this.acceptTypes.flatMap(type => {
+      this.#acceptPatterns = this.acceptTypes.flatMap(type => {
         return Object.keys(type.accept).flatMap(mimetype => {
           if (mimetype.includes('*')) {
             return new RegExp(mimetype.split('*').join('.*'))
           }
-          this._allowedMimes.push(mimetype)
+          this.#allowedMimes.push(mimetype)
           return []
         })
       })
@@ -106,18 +105,18 @@ export class FileUploadDropper extends LitElement {
         id="fileInput"
         accept="${ifDefined(this._accept)}"
         ?multiple="${this.multiple}"
-        @change=${this._processFileInput}
+        @change=${this.#processFileInput}
       />
-      <label for="${AssetManager.hasFileAccessAPI ? '' : 'fileInput'}">
+      <label for="${PlayAssets.hasFileAccessAPI ? '' : 'fileInput'}">
         <div
           id="fileDrop"
           class="${classMap({dragenter: this._dragging})}"
-          @click=${AssetManager.hasFileAccessAPI ? this._pickFile : undefined}
-          @dragenter=${this._dragStart}
-          @dragover=${this._dragStart}
-          @dragleave=${this._dragEnd}
-          @dragend=${this._dragEnd}
-          @drop=${this._processDrop}
+          @click=${PlayAssets.hasFileAccessAPI ? this.#pickFile : undefined}
+          @dragenter=${this.#dragStart}
+          @dragover=${this.#dragStart}
+          @dragleave=${this.#dragEnd}
+          @dragend=${this.#dragEnd}
+          @drop=${this.#processDrop}
         >
           <slot></slot>
           <span id="errorMessage">${this._errorMessage}</span>
@@ -129,7 +128,7 @@ export class FileUploadDropper extends LitElement {
   /**
    * Uses File Access API to get FileSystemFileHandles
    */
-  private _pickFile = async () => {
+  #pickFile = async () => {
     const fileHandles = await fileAccessContext.showOpenFilePicker({
       ...(this.id ? {id: this.id} : {}),
       types: this.acceptTypes,
@@ -137,37 +136,32 @@ export class FileUploadDropper extends LitElement {
     })
     if (fileHandles.length > 0) {
       this.dispatchEvent(
-        new CustomEvent<FilesSelectedEvent>('files-selected', {
-          detail: {fileHandles}
-        })
+        Bubble<FilesSelectedEvent>('files-selected', {fileHandles})
       )
     } else {
-      this.dispatchEvent(new CustomEvent('cancelled'))
+      this.dispatchEvent(Bubble<void>('cancelled', undefined))
     }
   }
 
   /**
    * Handles the <input type=file> field as a fallback
    */
-  private _processFileInput = async (
+  #processFileInput = async (
     ev: InputEvent & {currentTarget: HTMLInputElement}
   ): Promise<void> => {
     if (ev.currentTarget.files) {
-      await this._processFileList(ev.currentTarget.files)
+      await this.#processFileList(ev.currentTarget.files)
     }
   }
 
   /**
    * Handles the drag'n'drop result
    */
-  private _processDrop = async (
-    ev: InputEvent & {currentTarget: HTMLInputElement}
-  ) => {
+  #processDrop = async (ev: InputEvent & {currentTarget: HTMLInputElement}) => {
     ev.preventDefault()
-    this._dragEnd()
+    this.#dragEnd()
 
-    if (!ev.dataTransfer || !this._validateFileList(ev.dataTransfer.files)) {
-      console.debug(LOG_TAG, 'No files in drop event', ev)
+    if (!ev.dataTransfer || !this.#validateFileList(ev.dataTransfer.files)) {
       return
     }
 
@@ -187,21 +181,20 @@ export class FileUploadDropper extends LitElement {
           }
         }
       }
-      console.debug(LOG_TAG, 'Dropped files:', fileHandles.length)
       this.dispatchEvent(
-        new CustomEvent('files-selected', {detail: {fileHandles}})
+        Bubble<FilesSelectedEvent>('files-selected', {fileHandles})
       )
     } else {
-      await this._processFileList(ev.dataTransfer.files)
+      await this.#processFileList(ev.dataTransfer.files)
     }
   }
 
-  private _processFileList = async (fileList: FileList): Promise<void> => {
-    if (!this._validateFileList(fileList)) {
+  #processFileList = async (fileList: FileList): Promise<void> => {
+    if (!this.#validateFileList(fileList)) {
       return
     }
 
-    this._clearError()
+    this.#clearError()
 
     const files: File[] = []
     for (let index = 0; index < fileList.length; index++) {
@@ -211,34 +204,32 @@ export class FileUploadDropper extends LitElement {
       }
     }
 
-    this.dispatchEvent(
-      new CustomEvent<FilesSelectedEvent>('files-selected', {detail: {files}})
-    )
+    this.dispatchEvent(Bubble<FilesSelectedEvent>('files-selected', {files}))
   }
 
-  private _clearError = () => {
+  #clearError = () => {
     this._errorMessage = undefined
   }
 
-  private _dragStart = (ev: Event) => {
+  #dragStart = (ev: Event) => {
     if (ev.type === 'dragover') {
       ev.preventDefault()
     }
-    this._clearError()
+    this.#clearError()
     this._dragging = true
   }
 
-  private _dragEnd = () => {
+  #dragEnd = () => {
     this._dragging = false
   }
 
-  private _validateFileList(fileList: FileList): boolean {
+  #validateFileList(fileList: FileList): boolean {
     return (
-      this._validateFileCount(fileList) && this._validateFileTypes(fileList)
+      this.#validateFileCount(fileList) && this.#validateFileTypes(fileList)
     )
   }
 
-  private _validateFileCount(fileList: FileList): boolean {
+  #validateFileCount(fileList: FileList): boolean {
     if (fileList.length > 0) {
       if (this.multiple) {
         return fileList.length >= 1
@@ -248,13 +239,13 @@ export class FileUploadDropper extends LitElement {
     return false
   }
 
-  private _validateFileTypes(fileList: FileList): boolean {
+  #validateFileTypes(fileList: FileList): boolean {
     if (this.acceptTypes.length === 0) {
       return true
     }
     for (let index = 0; index < fileList.length; index++) {
       const file = fileList[index]
-      if (file && !this._mimeAllowed(file.type)) {
+      if (file && !this.#mimeAllowed(file.type)) {
         this._errorMessage = `Invalid file type provided: ${file.type}`
         return false
       }
@@ -262,9 +253,9 @@ export class FileUploadDropper extends LitElement {
     return true
   }
 
-  private _mimeAllowed(mimetype: string): boolean {
-    if (!(mimetype in this._allowedMimes)) {
-      for (let pattern of this._acceptPatterns) {
+  #mimeAllowed(mimetype: string): boolean {
+    if (!(mimetype in this.#allowedMimes)) {
+      for (let pattern of this.#acceptPatterns) {
         if (pattern.test(mimetype)) {
           return true
         }

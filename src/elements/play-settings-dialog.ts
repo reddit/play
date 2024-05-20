@@ -1,10 +1,17 @@
-import {css, type CSSResultGroup, html, type TemplateResult} from 'lit'
-import {customElement, property} from 'lit/decorators.js'
+import {
+  css,
+  type CSSResultGroup,
+  html,
+  LitElement,
+  type TemplateResult
+} from 'lit'
+import {customElement, property, query} from 'lit/decorators.js'
 import {defaultSettings} from '../storage/settings-save.js'
 import {Bubble} from '../utils/bubble.js'
-import {PlayDialog} from './play-dialog/play-dialog.js'
+import {PlayDialog, type PlayDialogLike} from './play-dialog/play-dialog.js'
 
 import './play-button.js'
+import './play-dialog/play-dialog.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -23,7 +30,7 @@ declare global {
 }
 
 @customElement('play-settings-dialog')
-export class PlaySettingsDialog extends PlayDialog {
+export class PlaySettingsDialog extends LitElement implements PlayDialogLike {
   static override readonly styles: CSSResultGroup = css`
     ${PlayDialog.styles}
 
@@ -63,121 +70,139 @@ export class PlaySettingsDialog extends PlayDialog {
   @property({attribute: 'enable-local-assets', type: Boolean})
   enableLocalAssets: boolean = false
 
-  override get dialogTitle(): string {
-    return 'Settings'
+  @query('play-dialog', true)
+  private _dialog!: PlayDialog
+
+  open(): void {
+    this._dialog.open()
   }
 
-  override get dialogDescription(): string {
-    return `Settings are ${this.allowStorage ? 'saved and ' : ''}not shareable.`
+  close(): void {
+    this._dialog.close()
   }
 
-  override dialogContent(): TemplateResult {
-    return html`<fieldset>
-      <legend>Reddit Internal</legend>
-      <p>Runtime settings take effect on subsequent execution.</p>
-      <label>
-        <input
-          ?checked="${this.useLocalRuntime}"
-          type="checkbox"
-          @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
-            this.dispatchEvent(
-              Bubble<boolean>('use-local-runtime', ev.currentTarget.checked)
-            )}
-        />
-        Use local runtime. Execute apps locally whenever possible. Default:
-        ${onOff(defaultSettings.useLocalRuntime)}.
-      </label>
-      <label>
-        <input
-          ?checked="${this.sandboxApp}"
-          type="checkbox"
-          @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
-            this.dispatchEvent(
-              Bubble<boolean>('sandbox-app', ev.currentTarget.checked)
-            )}
-        />
-        Sandbox app execution. Sandboxing is slower but may be more
-        production-like. Default: ${onOff(defaultSettings.sandboxApp)}.
-      </label>
-      <label>
-        <input
-          ?checked="${this.runtimeDebugLogging}"
-          type="checkbox"
-          @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
-            this.dispatchEvent(
-              Bubble<boolean>('runtime-debug-logging', ev.currentTarget.checked)
-            )}
-        />
-        Enable runtime debug logging. May also require enabling verbose DevTools
-        console logs. Default: ${onOff(defaultSettings.runtimeDebugLogging)}.
-      </label>
-      <label>
-        <input
-          ?checked="${this.useRemoteRuntime}"
-          type="checkbox"
-          @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
-            this.dispatchEvent(
-              Bubble<boolean>('use-remote-runtime', ev.currentTarget.checked)
-            )}
-        />
-        Use remote runtime. Upload on every change and execute apps remotely as
-        needed. Default: ${onOff(defaultSettings.useRemoteRuntime)}.
-      </label>
-      <label>
-        <input
-          type="text"
-          value="${this.remoteRuntimeOrigin}"
-          @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
-            this.dispatchEvent(
-              Bubble<string>(
-                'edit-remote-runtime-origin',
-                ev.currentTarget.value
-              )
-            )}
-        />
-        Remote runtime origin. Destination for app uploads and remote execution.
-        Default: ${defaultSettings.remoteRuntimeOrigin}.
-      </label>
-      <label>
-        <input
-          ?checked="${this.useExperimentalBlocks}"
-          type="checkbox"
-          @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
-            this.dispatchEvent(
-              Bubble<boolean>(
-                'use-experimental-blocks',
-                ev.currentTarget.checked
-              )
-            )}
-        />
-        Use experimental blocks. Default:
-        ${onOff(defaultSettings.useExperimentalBlocks)}.
-      </label>
-      <label>
-        <input
-          ?checked="${this.useUIRequest}"
-          type="checkbox"
-          @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
-            this.dispatchEvent(
-              Bubble<boolean>('use-ui-request', ev.currentTarget.checked)
-            )}
-        />
-        Use UI Request (multithreading). Default:
-        ${onOff(defaultSettings.useUIRequest)}.
-      </label>
-      <label>
-        <input
-          ?checked="${this.enableLocalAssets}"
-          type="checkbox"
-          @change="${(ev: Event & {currentTarget: HTMLInputElement}) =>
-            this.dispatchEvent(
-              Bubble<boolean>('enable-local-assets', ev.currentTarget.checked)
-            )}"
-        />
-        Enable experimental local filesystem assets. Default:
-        ${onOff(defaultSettings.enableLocalAssets)}
-      </label>
-    </fieldset>`
+  protected override render(): TemplateResult {
+    const description = `Settings are ${this.allowStorage ? 'saved and ' : ''}not shareable.`
+    return html`
+      <play-dialog title="Settings" description="${description}">
+        <fieldset>
+          <legend>Reddit Internal</legend>
+          <p>Runtime settings take effect on subsequent execution.</p>
+          <label>
+            <input
+              ?checked="${this.useLocalRuntime}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>('use-local-runtime', ev.currentTarget.checked)
+                )}
+            />
+            Use local runtime. Execute apps locally whenever possible. Default:
+            ${onOff(defaultSettings.useLocalRuntime)}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.sandboxApp}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>('sandbox-app', ev.currentTarget.checked)
+                )}
+            />
+            Sandbox app execution. Sandboxing is slower but may be more
+            production-like. Default: ${onOff(defaultSettings.sandboxApp)}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.runtimeDebugLogging}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>(
+                    'runtime-debug-logging',
+                    ev.currentTarget.checked
+                  )
+                )}
+            />
+            Enable runtime debug logging. May also require enabling verbose
+            DevTools console logs. Default:
+            ${onOff(defaultSettings.runtimeDebugLogging)}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.useRemoteRuntime}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>(
+                    'use-remote-runtime',
+                    ev.currentTarget.checked
+                  )
+                )}
+            />
+            Use remote runtime. Upload on every change and execute apps remotely
+            as needed. Default: ${onOff(defaultSettings.useRemoteRuntime)}.
+          </label>
+          <label>
+            <input
+              type="text"
+              value="${this.remoteRuntimeOrigin}"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<string>(
+                    'edit-remote-runtime-origin',
+                    ev.currentTarget.value
+                  )
+                )}
+            />
+            Remote runtime origin. Destination for app uploads and remote
+            execution. Default: ${defaultSettings.remoteRuntimeOrigin}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.useExperimentalBlocks}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>(
+                    'use-experimental-blocks',
+                    ev.currentTarget.checked
+                  )
+                )}
+            />
+            Use experimental blocks. Default:
+            ${onOff(defaultSettings.useExperimentalBlocks)}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.useUIRequest}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>('use-ui-request', ev.currentTarget.checked)
+                )}
+            />
+            Use UI Request (multithreading). Default:
+            ${onOff(defaultSettings.useUIRequest)}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.enableLocalAssets}"
+              type="checkbox"
+              @change="${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>(
+                    'enable-local-assets',
+                    ev.currentTarget.checked
+                  )
+                )}"
+            />
+            Enable experimental local filesystem assets. Default:
+            ${onOff(defaultSettings.enableLocalAssets)}
+          </label>
+        </fieldset>
+      </play-dialog>
+    `
   }
 }
 

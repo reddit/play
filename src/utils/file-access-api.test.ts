@@ -1,6 +1,4 @@
-/**
- * @vitest-environment jsdom
- */
+// @vitest-environment jsdom
 
 import {expect, test} from 'vitest'
 import {type FilePickerType, flattenAcceptTypes} from './file-access-api.js'

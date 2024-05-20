@@ -1,4 +1,4 @@
-import {query} from 'lit/decorators.js'
+import {customElement, property, query} from 'lit/decorators.js'
 import {
   css,
   type CSSResultGroup,
@@ -6,12 +6,25 @@ import {
   LitElement,
   type TemplateResult
 } from 'lit'
-import {when} from 'lit-html/directives/when.js'
 import {cssReset} from '../../utils/css-reset.js'
 
 import '../play-button.js'
+import {when} from 'lit-html/directives/when.js'
 
-export abstract class PlayDialog extends LitElement {
+declare global {
+  interface HTMLElementEventMap {}
+  interface HTMLElementTagNameMap {
+    'play-dialog': PlayDialog
+  }
+}
+
+export interface PlayDialogLike {
+  open(): void
+  close(): void
+}
+
+@customElement('play-dialog')
+export class PlayDialog extends LitElement implements PlayDialogLike {
   static override readonly styles: CSSResultGroup = css`
     ${cssReset}
 
@@ -75,7 +88,14 @@ export abstract class PlayDialog extends LitElement {
     }
   `
 
-  @query('dialog') private _dialog!: HTMLDialogElement
+  @property({reflect: true})
+  override title: string = ''
+
+  @property({reflect: true})
+  description: string = ''
+
+  @query('dialog')
+  private _dialog!: HTMLDialogElement
 
   open(): void {
     this._dialog.showModal()
@@ -85,17 +105,11 @@ export abstract class PlayDialog extends LitElement {
     this._dialog.close()
   }
 
-  abstract get dialogTitle(): string
-
-  abstract get dialogDescription(): string
-
-  abstract dialogContent(): TemplateResult
-
   protected override render(): TemplateResult {
     return html`
       <dialog>
         <header>
-          <h1>${this.dialogTitle}</h1>
+          <h1>${this.title}</h1>
           <play-button
             appearance="plain"
             icon="close-outline"
@@ -105,11 +119,9 @@ export abstract class PlayDialog extends LitElement {
           ></play-button>
         </header>
 
-        ${when(
-          this.dialogDescription,
-          () => html`<p>${this.dialogDescription}</p>`
-        )}
-        ${this.dialogContent()}
+        ${when(this.description, () => html`<p>${this.description}</p>`)}
+
+        <slot></slot>
       </dialog>
     `
   }

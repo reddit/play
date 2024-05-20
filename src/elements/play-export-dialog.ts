@@ -1,9 +1,17 @@
-import {css, type CSSResultGroup, html, type TemplateResult} from 'lit'
+import {
+  css,
+  type CSSResultGroup,
+  html,
+  LitElement,
+  type TemplateResult
+} from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
 import type {PlayToast} from './play-toast.js'
-import './play-button.js'
-import './play-toast.js'
 import {PlayDialog} from './play-dialog/play-dialog.js'
+
+import './play-button.js'
+import './play-dialog/play-dialog.js'
+import './play-toast.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -12,7 +20,7 @@ declare global {
 }
 
 @customElement('play-export-dialog')
-export class PlayExportDialog extends PlayDialog {
+export class PlayExportDialog extends LitElement {
   static override readonly styles: CSSResultGroup = css`
     ${PlayDialog.styles}
 
@@ -77,42 +85,51 @@ export class PlayExportDialog extends PlayDialog {
   `
 
   @property() url: string = ''
+
   @query('play-toast') _toast!: PlayToast
 
-  override get dialogTitle(): string {
-    return 'Export project'
+  @query('play-dialog', true)
+  private _dialog!: PlayDialog
+
+  open(): void {
+    this._dialog.open()
   }
 
-  override get dialogDescription(): string {
-    return 'Start a new project from this pen:'
+  close(): void {
+    this._dialog.close()
   }
 
-  override dialogContent(): TemplateResult {
+  protected override render(): TemplateResult {
     const cmd = `npx devvit new --template='${this.url}'`
-    return html`<ol>
-        <li>
-          <a
-            href="https://developers.reddit.com/docs/quickstart"
-            target="_blank"
-            >Install Node.js and the Devvit command-line tool.</a
-          >
-        </li>
-        <li>
-          Copy the new project command:
-          <pre>${cmd}</pre>
-          <play-button
-            appearance="bordered"
-            size="small"
-            icon="copy-clipboard-outline"
-            label="Copy to clipboard"
-            @click=${async () => {
-              await navigator.clipboard.writeText(cmd)
-              this._toast.open()
-            }}
-          ></play-button>
-        </li>
-        <li>Paste the command into a terminal and press enter.</li>
-      </ol>
+    return html` <play-dialog
+        title="Export project"
+        description="Start a new project from this pen:"
+      >
+        <ol>
+          <li>
+            <a
+              href="https://developers.reddit.com/docs/quickstart"
+              target="_blank"
+              >Install Node.js and the Devvit command-line tool.</a
+            >
+          </li>
+          <li>
+            Copy the new project command:
+            <pre>${cmd}</pre>
+            <play-button
+              appearance="bordered"
+              size="small"
+              icon="copy-clipboard-outline"
+              label="Copy to clipboard"
+              @click=${async () => {
+                await navigator.clipboard.writeText(cmd)
+                this._toast.open()
+              }}
+            ></play-button>
+          </li>
+          <li>Paste the command into a terminal and press enter.</li>
+        </ol>
+      </play-dialog>
       <play-toast>Copied the command!</play-toast>`
   }
 }

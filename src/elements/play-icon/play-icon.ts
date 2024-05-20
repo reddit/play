@@ -41,6 +41,7 @@ export type PlayIconSVG = keyof typeof icons
 const icons = {
   'add-outline': addOutline,
   'archived-outline': archiveOutline,
+  'assets-outline': assetsOutline,
   'browse-outline': browseOutline,
   'caret-down-outline': caretDownOutline,
   'caret-up-outline': caretUpOutline,
@@ -61,8 +62,7 @@ const icons = {
   'resize-horizontal-outline': resizeHorizontalOutline,
   'restart-outline': restartOutline,
   'share-ios-outline': unmountOutline,
-  'share-new-outline': shareNewOutline,
-  'assets-outline': assetsOutline
+  'share-new-outline': shareNewOutline
 }
 
 declare global {
