@@ -21,10 +21,20 @@ export function compile(env: tsvfs.VirtualTypeScriptEnvironment): string {
   const src =
     env.languageService.getEmitOutput(appEntrypointFilename).outputFiles[0]
       ?.text ?? ''
-  // Adapt bundle CommonJS output to format expected by runtime-lite.
+  // Adapt bundle CommonJS output to format expected by our runtimes.
+  // This is a light hack that satisfies two different runtime needs:
+  // 1. runtime-lite needs `exports` to be defined and aliased to `module.exports` like so.
+  // 2. Node wraps the bundle's code in this function:
+  //
+  //    (function(exports, require, module, __filename, __dirname) {
+  //      // [ bundle code here ]
+  //    });
+  //
+  //    We can't overwrite `module.exports` (the resulting bundle won't actually export what
+  //    it needs to), and we can't declare `exports` with const/let ("already been declared").
   return src.replace(
     /^"use strict";/,
-    '"use strict"; module.exports = {}; const {exports} = module;'
+    '"use strict"; if (!module.exports) { module.exports = {}; var exports = module.exports; }\n'
   )
 }
 
