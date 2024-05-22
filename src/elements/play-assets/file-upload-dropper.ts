@@ -82,18 +82,12 @@ export class FileUploadDropper extends LitElement {
   #allowedMimes: string[] = []
   #acceptPatterns: RegExp[] = []
 
-  protected override willUpdate(changedProperties: PropertyValues) {
+  protected override update(changedProperties: PropertyValues) {
+    super.update(changedProperties)
+
     if (changedProperties.has('acceptTypes')) {
       this._accept = flattenAcceptTypes(this.acceptTypes)
-      this.#acceptPatterns = this.acceptTypes.flatMap(type => {
-        return Object.keys(type.accept).flatMap(mimetype => {
-          if (mimetype.includes('*')) {
-            return new RegExp(mimetype.split('*').join('.*'))
-          }
-          this.#allowedMimes.push(mimetype)
-          return []
-        })
-      })
+      this.#acceptPatterns = this.#extractWildcardTypes()
     }
   }
 
@@ -261,5 +255,27 @@ export class FileUploadDropper extends LitElement {
     }
 
     return true
+  }
+
+  /**
+   * Searches for types in the acceptTypes attribute that contain wildcards and
+   * converts them to regular expressions for matching in {#mimeAllowed}
+   *
+   * Example:
+   * input: application/*zip
+   * output: application/.*zip
+   * matches: application/zip, application/x-zip
+   * @private
+   */
+  #extractWildcardTypes(): RegExp[] {
+    return this.acceptTypes.flatMap(type =>
+      Object.keys(type.accept).flatMap(mimetype => {
+        if (mimetype.includes('*')) {
+          return new RegExp(mimetype.split('*').join('.*'))
+        }
+        this.#allowedMimes.push(mimetype)
+        return []
+      })
+    )
   }
 }
