@@ -41,19 +41,22 @@ import type {OpenLine} from '../play-console.js'
 import type {PlayEditor} from '../play-editor/play-editor.js'
 import type {PlayToast} from '../play-toast.js'
 import penVars from './pen-vars.css'
-import {
-  type AssetFilesystemType,
-  assetsContext,
-  PlayAssets
-} from '../play-assets/play-assets.js'
-import {provide} from '@lit/context'
 
+import '../play-assets/play-assets.js'
 import '../play-editor/play-editor.js'
 import '../play-pen-footer.js'
 import '../play-pen-header.js'
 import '../play-preview-controls.js'
 import '../play-preview.js'
 import '../play-toast.js'
+import {
+  type AssetsFilesystemChange,
+  type AssetsFilesystemType,
+  type AssetsState,
+  type AssetsVirtualFileChange,
+  emptyAssetsState,
+  PlayAssets
+} from '../play-assets/play-assets.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -144,9 +147,12 @@ export class PlayPen extends LitElement {
     }
 
   /** Program executable. */
+  @state() private _assetsFilesystemType: AssetsFilesystemType = 'virtual'
+  @state() private _assetsState: AssetsState = emptyAssetsState()
   @state() private _bundle?: Readonly<LinkedBundle> | undefined
   /** Execution preview widths. */
   @state() private _diagnostics: Diagnostics = {previewErrs: [], tsErrs: []}
+  @state() private _enableLocalAssets: boolean = false
   @state() private _openConsole: boolean = false
   @state() private _previewWidth: number = 288
   @state() private _remoteRuntimeOrigin: string =
@@ -157,15 +163,12 @@ export class PlayPen extends LitElement {
   @state() private _useLocalRuntime: boolean = false
   @state() private _useRemoteRuntime: boolean = false
   @state() private _useUIRequest: boolean = false
-  @state() private _enableLocalAssets: boolean = false
-  @state() private _assetFilesystem: AssetFilesystemType = 'virtual'
+  @query('play-assets') private _assets!: PlayAssets
   @query('play-editor') private _editor!: PlayEditor
   @query('play-toast') private _toast!: PlayToast
   #bundleStore?: BundleStore | undefined
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
   @state() _uploaded: Promise<Empty> = Promise.resolve({})
-  @provide({context: assetsContext}) private _assets: PlayAssets =
-    new PlayAssets()
   /** Try to ensure the bundle hostname is unique. See compute-util. */
   #version: number = Date.now()
 
@@ -184,6 +187,10 @@ export class PlayPen extends LitElement {
       (this.allowStorage ? loadSettings(localStorage) : undefined) ??
       defaultSettings
     if (settings) {
+      this._assetsFilesystemType = !settings.enableLocalAssets
+        ? 'virtual'
+        : (settings.assetsFilesystemType as AssetsFilesystemType)
+      this._enableLocalAssets = settings.enableLocalAssets
       this._openConsole = settings.openConsole
       this._remoteRuntimeOrigin = settings.remoteRuntimeOrigin
       this._runtimeDebugLogging = settings.runtimeDebugLogging
@@ -192,16 +199,9 @@ export class PlayPen extends LitElement {
       this._useLocalRuntime = settings.useLocalRuntime
       this._useRemoteRuntime = settings.useRemoteRuntime
       this._useUIRequest = settings.useUIRequest
-      this._enableLocalAssets = settings.enableLocalAssets
-      this._assetFilesystem = !settings.enableLocalAssets
-        ? 'virtual'
-        : (settings.assetFilesystem as AssetFilesystemType)
       // If remote is enabled, #bundleStore is initialized in willUpdate() and
       // bundle is loaded.
     }
-
-    this._assets.addEventListener('assets-updated', this.#assetsUpdated)
-    void this._assets.initialize(this._assetFilesystem)
 
     let pen
     if (this.allowURL) pen = loadPen(location)
@@ -218,15 +218,25 @@ export class PlayPen extends LitElement {
 
   protected override render(): TemplateResult {
     return html`
+      <play-assets
+        allow-storage=${this.allowStorage}
+        filesystem-type=${this._assetsFilesystemType}
+        @assets-updated=${(ev: CustomEvent<AssetsState>) => {
+          this._assetsState = ev.detail
+          // Rebuild the app to access the new assets
+          this.#setSrc(this._src ?? '', false)
+        }}
+      ></play-assets>
       <play-toast>Copied the URL!</play-toast
       ><play-pen-header
-        ?allow-storage=${this.allowStorage}
         name=${this._name}
         remote-runtime-origin=${this._remoteRuntimeOrigin}
+        url=${this.#shareURL().toString()}
+        .assetsState=${this._assetsState}
+        .srcByLabel=${this.srcByLabel}
+        ?allow-storage=${this.allowStorage}
         ?runtime-debug-logging=${this._runtimeDebugLogging}
         ?sandbox-app=${this._sandboxApp}
-        .srcByLabel=${this.srcByLabel}
-        url=${this.#shareURL().toString()}
         ?use-experimental-blocks=${this._useExperimentalBlocks}
         ?use-local-runtime=${this._useLocalRuntime}
         ?use-remote-runtime=${this._useRemoteRuntime}
@@ -255,15 +265,18 @@ export class PlayPen extends LitElement {
           (this._useUIRequest = ev.detail)}
         @enable-local-assets=${(ev: CustomEvent<boolean>) => {
           this._enableLocalAssets = ev.detail
-          if (
-            !this._enableLocalAssets &&
-            this._assets.filesystemType !== 'virtual'
-          ) {
-            void this._assets.initialize('virtual')
+          if (!this._enableLocalAssets) {
+            void this._assets.onFilesystemChange({
+              kind: 'filesystem-type',
+              filesystemType: 'virtual'
+            })
           }
         }}
-        @assets-set-filesystem=${(ev: CustomEvent<AssetFilesystemType>) =>
-          void this._assets.initialize(ev.detail)}
+        @assets-filesystem-change=${(ev: CustomEvent<AssetsFilesystemChange>) =>
+          this._assets.onFilesystemChange(ev.detail)}
+        @assets-virtual-file-change=${(
+          ev: CustomEvent<AssetsVirtualFileChange>
+        ) => this._assets.onVirtualFileChange(ev.detail)}
         @share=${this.#onShare}
       ></play-pen-header>
       <main>
@@ -337,7 +350,7 @@ export class PlayPen extends LitElement {
         _remoteRuntimeOrigin: string
         _useUIRequest: boolean
         _enableLocalAssets: boolean
-        _assetFilesystem: string
+        _assetsState: string
       }>
   ): Promise<void> {
     super.willUpdate(props)
@@ -353,7 +366,7 @@ export class PlayPen extends LitElement {
         props.has('_useRemoteRuntime') ||
         props.has('_useUIRequest') ||
         props.has('_enableLocalAssets') ||
-        props.has('_assetFilesystem'))
+        props.has('_assetsState'))
     )
       saveSettings(localStorage, {
         openConsole: this._openConsole,
@@ -365,7 +378,7 @@ export class PlayPen extends LitElement {
         remoteRuntimeOrigin: this._remoteRuntimeOrigin,
         useUIRequest: this._useUIRequest,
         enableLocalAssets: this._enableLocalAssets,
-        assetFilesystem: this._assetFilesystem,
+        assetsFilesystemType: this._assetsState.filesystemType,
         version: 1
       })
 
@@ -374,8 +387,6 @@ export class PlayPen extends LitElement {
 
     if (props.has('_useRemoteRuntime') || props.has('_remoteRuntimeOrigin'))
       this.#upload()
-
-    if (props.has('allowStorage')) this._assets.allowStorage = this.allowStorage
   }
 
   #appendPreviewError(err: DevvitUIError): void {
@@ -428,7 +439,7 @@ export class PlayPen extends LitElement {
     this._bundle = link(
       compile(this.#env),
       newHostname(this._name, this.#version),
-      await this._assets.getAssetMap()
+      this._assetsState.map
     )
     if (save) this.#save()
     this.#upload()
@@ -447,14 +458,5 @@ export class PlayPen extends LitElement {
     if (this._useRemoteRuntime && this._bundle)
       this._uploaded =
         this.#bundleStore?.upload(this._bundle) ?? Promise.resolve({})
-  }
-
-  #assetsUpdated = () => {
-    if (this._assetFilesystem !== this._assets.filesystemType) {
-      this._assetFilesystem = this._assets.filesystemType
-    }
-    if (this._src) {
-      this.#setSrc(this._src, false)
-    }
   }
 }

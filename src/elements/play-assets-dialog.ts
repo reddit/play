@@ -9,20 +9,19 @@ import {
 import {PlayDialog} from './play-dialog/play-dialog.js'
 import {choose} from 'lit-html/directives/choose.js'
 import {when} from 'lit-html/directives/when.js'
-import {
-  type AssetFilesystemType,
-  assetsContext,
-  PlayAssets
-} from './play-assets/play-assets.js'
 import {cssReset} from '../utils/css-reset.js'
-import {consume} from '@lit/context'
+import {Bubble} from '../utils/bubble.js'
+import {
+  type AssetsFilesystemChange,
+  type AssetsFilesystemType,
+  type AssetsState,
+  emptyAssetsState
+} from './play-assets/play-assets.js'
 
-import './play-assets/play-assets.js'
 import './play-assets/play-assets-virtual-fs.js'
 import './play-assets/play-assets-local-directory.js'
 import './play-assets/play-assets-local-archive.js'
 import './play-dialog/play-dialog.js'
-import {Bubble} from '../utils/bubble.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -50,11 +49,11 @@ export class PlayAssetsDialog extends LitElement {
     }
   `
 
+  @property({attribute: false})
+  assetsState: AssetsState = emptyAssetsState()
+
   @property({attribute: 'enable-local-assets', type: Boolean})
   enableLocalAssets: boolean = false
-
-  @consume({context: assetsContext})
-  private _assets!: PlayAssets
 
   @query('play-dialog', true)
   private _dialog!: PlayDialog
@@ -67,18 +66,6 @@ export class PlayAssetsDialog extends LitElement {
     this._dialog.close()
   }
 
-  override connectedCallback() {
-    super.connectedCallback()
-
-    this._assets.addEventListener('assets-updated', this.#assetsUpdated)
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback()
-
-    this._assets.removeEventListener('assets-updated', this.#assetsUpdated)
-  }
-
   protected override render(): TemplateResult {
     return html`
       <play-dialog
@@ -89,10 +76,13 @@ export class PlayAssetsDialog extends LitElement {
 
         <fieldset>
           <legend>${this.#filesystemTitle}:</legend>
-          ${choose(this._assets.filesystemType, [
+          ${choose(this.assetsState.filesystemType, [
             [
               'virtual',
-              () => html`<play-assets-virtual-fs></play-assets-virtual-fs>`
+              () =>
+                html`<play-assets-virtual-fs
+                  .assetsState=${this.assetsState}
+                ></play-assets-virtual-fs>`
             ],
             ['local', this.#renderLocalFs]
           ])}
@@ -108,7 +98,7 @@ export class PlayAssetsDialog extends LitElement {
         <input
           name="filesystemType"
           type="radio"
-          ?checked="${this._assets.filesystemType === 'virtual'}"
+          ?checked="${this.assetsState.filesystemType === 'virtual'}"
           @change=${this.#setFilesystem}
           value="virtual"
         />
@@ -118,7 +108,7 @@ export class PlayAssetsDialog extends LitElement {
         <input
           name="filesystemType"
           type="radio"
-          ?checked="${this._assets.filesystemType === 'local'}"
+          ?checked="${this.assetsState.filesystemType === 'local'}"
           @change=${this.#setFilesystem}
           value="local"
         />
@@ -130,9 +120,12 @@ export class PlayAssetsDialog extends LitElement {
   #setFilesystem = (
     ev: InputEvent & {currentTarget: HTMLInputElement}
   ): void => {
-    const filesystemType = ev.currentTarget.value as AssetFilesystemType
+    const filesystemType = ev.currentTarget.value as AssetsFilesystemType
     this.dispatchEvent(
-      Bubble<AssetFilesystemType>('assets-set-filesystem', filesystemType)
+      Bubble<AssetsFilesystemChange>('assets-filesystem-change', {
+        kind: 'filesystem-type',
+        filesystemType
+      })
     )
   }
 
@@ -140,22 +133,22 @@ export class PlayAssetsDialog extends LitElement {
     return html`
       <div id="localFs">
         ${when(
-          PlayAssets.hasFileAccessAPI,
+          this.assetsState.hasFileAccessAPI,
           () =>
-            html`<play-assets-local-directory></play-assets-local-directory>`
+            html`<play-assets-local-directory
+              .assetsState=${this.assetsState}
+            ></play-assets-local-directory>`
         )}
-        <play-assets-local-archive></play-assets-local-archive>
+        <play-assets-local-archive
+          .assetsState=${this.assetsState}
+        ></play-assets-local-archive>
       </div>
     `
   }
 
   get #filesystemTitle(): string {
-    return this._assets.filesystemType === 'virtual'
+    return this.assetsState.filesystemType === 'virtual'
       ? 'Manage files'
       : 'Filesystem source'
-  }
-
-  #assetsUpdated = (): void => {
-    this.requestUpdate()
   }
 }

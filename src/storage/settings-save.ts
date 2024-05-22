@@ -1,7 +1,7 @@
 /** Settings state for un/packing to/from LocalStorage. Not shareable. */
 export type SettingsSave = {
   /** Which file system type to use when loading assets */
-  assetFilesystem: string
+  assetsFilesystemType: string
   /** Enable access to local file system to load assets */
   enableLocalAssets: boolean
   /** Most recent console open state. */
@@ -37,7 +37,7 @@ export const defaultSettings: Readonly<SettingsSave> = {
   useRemoteRuntime: false,
   useUIRequest: false,
   enableLocalAssets: false,
-  assetFilesystem: 'virtual',
+  assetsFilesystemType: 'virtual',
   version: 1
 }
 

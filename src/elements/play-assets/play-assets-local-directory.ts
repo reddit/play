@@ -1,12 +1,16 @@
-import {customElement} from 'lit/decorators.js'
+import {customElement, property} from 'lit/decorators.js'
 import {css, html, LitElement, type TemplateResult} from 'lit'
 import {cssReset} from '../../utils/css-reset.js'
 import {when} from 'lit-html/directives/when.js'
 import {fileAccessContext} from '../../utils/file-access-api.js'
-import {assetsContext, type PlayAssets} from './play-assets.js'
-import {consume} from '@lit/context'
 
 import '../play-button.js'
+import {
+  type AssetsFilesystemChange,
+  type AssetsState,
+  emptyAssetsState
+} from './play-assets.js'
+import {Bubble} from '../../utils/bubble.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -49,36 +53,24 @@ export class PlayAssetsLocalDirectory extends LitElement {
     }
   `
 
-  @consume({context: assetsContext})
-  private _assets!: PlayAssets
-
-  override connectedCallback(): void {
-    super.connectedCallback()
-
-    this._assets.addEventListener('assets-updated', this.#assetsUpdated)
-  }
-
-  override disconnectedCallback(): void {
-    super.disconnectedCallback()
-
-    this._assets.removeEventListener('assets-updated', this.#assetsUpdated)
-  }
+  @property({attribute: false})
+  assetsState: AssetsState = emptyAssetsState()
 
   protected override render(): TemplateResult {
     return html`
       <span>Local directory:</span>
       <div class="row vcenter">
         ${when(
-          this._assets.isDirectoryMounted,
+          this.assetsState.directoryName,
           () =>
-            html`<pre class="grow">.../${this._assets.directoryName}</pre>
+            html`<pre class="grow">.../${this.assetsState.directoryName}</pre>
               <play-button
                 appearance="bordered"
                 size="small"
                 icon="share-ios-outline"
                 icon-color="red"
                 title="Unmount"
-                @click=${() => this._assets.unmount()}
+                @click=${() => this.#emitChange({kind: 'unmount'})}
               ></play-button>`,
           () =>
             html`<span class="no-selection grow">No directory selected</span
@@ -99,11 +91,13 @@ export class PlayAssetsLocalDirectory extends LitElement {
       mode: 'read'
     })
     if (directoryHandle) {
-      await this._assets.mountLocalDirectory(directoryHandle)
+      this.#emitChange({kind: 'mount-directory', directoryHandle})
     }
   }
 
-  #assetsUpdated = (): void => {
-    this.requestUpdate()
+  #emitChange(change: AssetsFilesystemChange): void {
+    this.dispatchEvent(
+      Bubble<AssetsFilesystemChange>('assets-filesystem-change', change)
+    )
   }
 }

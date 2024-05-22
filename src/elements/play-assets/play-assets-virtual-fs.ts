@@ -1,21 +1,26 @@
-import {customElement, query, state} from 'lit/decorators.js'
+import {customElement, property, query, state} from 'lit/decorators.js'
 import {
   css,
   type CSSResultGroup,
   html,
   LitElement,
+  type PropertyValues,
   type TemplateResult
 } from 'lit'
 import {cssReset} from '../../utils/css-reset.js'
 import type {FileSelection} from './file-upload-dropper.js'
 import {when} from 'lit-html/directives/when.js'
 import {repeat} from 'lit/directives/repeat.js'
-import {assetsContext, type PlayAssets} from './play-assets.js'
-import {consume} from '@lit/context'
 
 import '../play-button.js'
 import '../play-icon/play-icon.js'
 import './file-upload-dropper.js'
+import {
+  type AssetsState,
+  type AssetsVirtualFileChange,
+  emptyAssetsState
+} from './play-assets.js'
+import {Bubble} from '../../utils/bubble.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -85,6 +90,9 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
     }
   `
 
+  @property({attribute: false})
+  assetsState: AssetsState = emptyAssetsState()
+
   @state()
   private _assetNames: string[] = []
 
@@ -97,22 +105,16 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
   @state()
   private _clearAll: boolean = false
 
-  @consume({context: assetsContext})
-  private _assets!: PlayAssets
-
   @query('#renameAsset', false)
   private _renameInput: HTMLInputElement | undefined
 
-  override connectedCallback() {
-    super.connectedCallback()
-
-    this._assets.addEventListener('assets-updated', this.#assetsUpdated)
-  }
-
-  override disconnectedCallback() {
-    super.disconnectedCallback()
-
-    this._assets.removeEventListener('assets-updated', this.#assetsUpdated)
+  protected override willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('assetsState')) {
+      this._assetNames = Object.keys(this.assetsState.map)
+      this._renameIndex = -1
+      this._deleteIndex = -1
+      this._clearAll = false
+    }
   }
 
   protected override render(): TemplateResult {
@@ -142,7 +144,7 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
     return html`
       <fieldset id="fileList" class="column">
         ${when(
-          this._assets.assetCount > 0,
+          this.assetsState.count > 0,
           this.#renderFiles,
           this.#renderNoFiles
         )}
@@ -160,7 +162,7 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
 
   #renderAssetEntry = (name: string, index: number): TemplateResult => {
     if (index === this._renameIndex) {
-      return this.#renderRenameAssetEntry(name, index)
+      return this.#renderRenameAssetEntry(name)
     } else if (index === this._deleteIndex) {
       return this.#renderDeleteAssetEntry(name)
     }
@@ -186,7 +188,7 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
     `
   }
 
-  #renderRenameAssetEntry = (name: string, index: number): TemplateResult => {
+  #renderRenameAssetEntry = (name: string): TemplateResult => {
     return html`
       <div class="asset row">
         <input
@@ -203,7 +205,7 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
           icon-color="green"
           size="small"
           appearance="bordered"
-          @click=${this.#rename(index)}
+          @click=${this.#rename}
         ></play-button>
         <play-button
           title="Cancel"
@@ -245,7 +247,7 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
       label="Remove All"
       appearance="bordered"
       size="small"
-      ?disabled=${this._assets.assetCount === 0}
+      ?disabled=${this.assetsState.count === 0}
       @click=${() => (this._clearAll = true)}
     ></play-button>`
 
@@ -268,31 +270,39 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
     ></play-button>
   `
 
-  #rename = (index: number) => async () => {
-    const oldName = this._assetNames[index]
+  #rename = (): void => {
+    const oldName = this._assetNames[this._renameIndex]
     const newName = this._renameInput?.value?.trim()
     if (oldName && newName) {
-      await this._assets?.renameVirtualAsset(oldName, newName)
+      this.#emitChange({
+        kind: 'rename',
+        oldName,
+        newName
+      })
     }
-    this._renameIndex = -1
   }
 
-  #delete = (name: string) => async (): Promise<void> => {
-    await this._assets?.deleteVirtualAsset(name)
-    this._deleteIndex = -1
+  #delete = (name: string) => (): void => {
+    this.#emitChange({
+      kind: 'remove',
+      name
+    })
   }
 
-  #clearAllAssets = async (): Promise<void> => {
-    await this._assets?.clearVirtualAssets()
+  #clearAllAssets = (): void => {
+    this.#emitChange({kind: 'clear'})
   }
 
-  #onFiles = async (ev: CustomEvent<FileSelection>): Promise<void> => {
+  #onFiles = (ev: CustomEvent<FileSelection>): void => {
     const files = ev.detail.files ?? ev.detail.fileHandles
     if (files) {
       for (let index = 0; index < files.length; index++) {
         const file = files[index]
         if (file) {
-          await this._assets?.addVirtualAsset(file)
+          this.#emitChange({
+            kind: 'add',
+            fileHandle: file
+          })
         }
       }
     }
@@ -307,19 +317,13 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
 
   #renameKeyUp = (ev: KeyboardEvent): void => {
     if (ev.key === 'Enter') {
-      this.#rename(this._renameIndex)()
+      this.#rename()
     }
   }
 
-  #assetsUpdated = async (): Promise<void> => {
-    const assets = await this._assets.getAssetMap()
-    if (assets) {
-      this._assetNames = Object.keys(assets)
-    }
-    this._renameIndex = -1
-    this._deleteIndex = -1
-    this._clearAll = false
-
-    this.requestUpdate()
+  #emitChange(change: AssetsVirtualFileChange): void {
+    this.dispatchEvent(
+      Bubble<AssetsVirtualFileChange>('assets-virtual-file-change', change)
+    )
   }
 }

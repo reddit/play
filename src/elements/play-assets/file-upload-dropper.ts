@@ -17,7 +17,6 @@ import {
 } from '../../utils/file-access-api.js'
 import {cssReset} from '../../utils/css-reset.js'
 import {Bubble} from '../../utils/bubble.js'
-import {PlayAssets} from './play-assets.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -107,11 +106,11 @@ export class FileUploadDropper extends LitElement {
         ?multiple="${this.multiple}"
         @change=${this.#processFileInput}
       />
-      <label for="${PlayAssets.hasFileAccessAPI ? '' : 'fileInput'}">
+      <label for="${hasFileAccessAPI ? '' : 'fileInput'}">
         <div
           id="fileDrop"
           class="${classMap({dragenter: this._dragging})}"
-          @click=${PlayAssets.hasFileAccessAPI ? this.#pickFile : undefined}
+          @click=${hasFileAccessAPI ? this.#pickFile : undefined}
           @dragenter=${this.#dragStart}
           @dragover=${this.#dragStart}
           @dragleave=${this.#dragEnd}

@@ -1,21 +1,25 @@
+import {type PropertyValues, ReactiveElement} from 'lit'
+import {customElement, property} from 'lit/decorators.js'
 import {WebAccess, WebStorage} from '@zenfs/dom'
-import {Bubble} from '../../utils/bubble.js'
-import {Zip} from '@zenfs/zip'
+import * as ZenFS from '@zenfs/core'
+import {type FileSystem, fs, InMemory} from '@zenfs/core'
+import * as IDB from 'idb-keyval'
 import {
   hasFileAccessAPI,
   tryGetFile,
   tryQueryPermission
 } from '../../utils/file-access-api.js'
-import * as ZenFS from '@zenfs/core'
-import {FileSystem, fs, InMemory} from '@zenfs/core'
-import type {AssetMap} from '@devvit/shared-types/Assets.js'
-import * as IDB from 'idb-keyval'
-import {createContext} from '@lit/context'
+import {Zip} from '@zenfs/zip'
+import {Bubble} from '../../utils/bubble.js'
 
 declare global {
   interface HTMLElementEventMap {
-    'assets-set-filesystem': CustomEvent<AssetFilesystemType>
-    'assets-updated': CustomEvent<void>
+    'assets-filesystem-change': CustomEvent<AssetsFilesystemChange>
+    'assets-updated': CustomEvent<AssetsState>
+    'assets-virtual-file-change': CustomEvent<AssetsVirtualFileChange>
+  }
+  interface HTMLElementTagNameMap {
+    'play-assets': PlayAssets
   }
 }
 
@@ -32,127 +36,247 @@ const MIME: {readonly [ext: string]: string} = {
 }
 const DEFAULT_MIME = 'application/octet-stream'
 
-export type AssetFilesystemType = 'virtual' | 'local'
+//region Custom types
+export type AssetsFilesystemType = 'virtual' | 'local'
 
-export const assetsContext = createContext<PlayAssets>('play-assets')
+type AssetsFilesystemTypeChange = {
+  kind: 'filesystem-type'
+  filesystemType: AssetsFilesystemType
+}
 
-export class PlayAssets extends EventTarget {
-  #filesystemType: AssetFilesystemType = 'virtual'
-  #allowStorage: boolean = false
-  #assetMap: AssetMap = {}
-  #assetCount: number = 0
-  #archiveHandle: FileSystemFileHandle | File | undefined
-  #directoryHandle: FileSystemDirectoryHandle | undefined
+type AssetsFilesystemMountArchiveChange = {
+  kind: 'mount-archive'
+  archiveHandle: FileSystemFileHandle | File
+}
 
-  #waitForMount: Promise<void> = new Promise(
-    resolve => (this._mountReady = resolve)
-  )
-  private _mountReady!: () => void
+type AssetsFilesystemMountDirectoryChange = {
+  kind: 'mount-directory'
+  directoryHandle: FileSystemDirectoryHandle
+}
 
-  static get hasFileAccessAPI(): boolean {
-    return hasFileAccessAPI
+type AssetsFilesystemRemountArchiveChange = {
+  kind: 'remount-archive'
+}
+
+type AssetsFilesystemUnmountChange = {
+  kind: 'unmount'
+}
+
+export type AssetsFilesystemChange =
+  | AssetsFilesystemTypeChange
+  | AssetsFilesystemMountArchiveChange
+  | AssetsFilesystemMountDirectoryChange
+  | AssetsFilesystemRemountArchiveChange
+  | AssetsFilesystemUnmountChange
+
+type AssetsVirtualFileAddChange = {
+  kind: 'add'
+  fileHandle: FileSystemFileHandle | File
+}
+
+type AssetsVirtualFileRemoveChange = {
+  kind: 'remove'
+  name: string
+}
+
+type AssetsVirtualFileRenameChange = {
+  kind: 'rename'
+  oldName: string
+  newName: string
+}
+
+type AssetsVirtualFileClearChange = {
+  kind: 'clear'
+}
+
+export type AssetsVirtualFileChange =
+  | AssetsVirtualFileAddChange
+  | AssetsVirtualFileRemoveChange
+  | AssetsVirtualFileRenameChange
+  | AssetsVirtualFileClearChange
+
+export type AssetsState = {
+  readonly hasFileAccessAPI: boolean
+  readonly filesystemType: AssetsFilesystemType
+
+  readonly archiveFilename?: string | undefined
+  readonly directoryName?: string | undefined
+
+  readonly map: {readonly [path: string]: string}
+  readonly count: number
+}
+
+type LocalFileHandles = {
+  directory?: FileSystemDirectoryHandle | undefined
+  archive?: FileSystemFileHandle | undefined
+}
+//endregion
+
+export function emptyAssetsState(): AssetsState {
+  return {
+    hasFileAccessAPI,
+    filesystemType: 'virtual',
+    map: {},
+    count: 0
   }
+}
 
-  async getAssetMap(): Promise<AssetMap> {
-    if (this.#directoryHandle) {
-      await this.#waitForMount
-      await this.#updateMap(false)
+@customElement('play-assets')
+export class PlayAssets extends ReactiveElement {
+  //region Properties
+  @property({attribute: 'allow-storage', type: Boolean})
+  allowStorage: boolean = false
+
+  @property({attribute: 'filesystem-type', type: String, reflect: true})
+  filesystemType: AssetsFilesystemType = 'virtual'
+  //endregion
+
+  //region Private fields
+  #state: AssetsState = emptyAssetsState()
+  #localFileHandles: LocalFileHandles = {}
+  //endregion
+
+  //region ReactiveElement overrides
+  protected override willUpdate(changedProperties: PropertyValues<this>) {
+    if (changedProperties.has('filesystemType')) {
+      void this.#mountAssets()
     }
-
-    return this.#assetMap
   }
 
-  get filesystemType(): AssetFilesystemType {
-    return this.#filesystemType
-  }
+  //endregion
 
-  set allowStorage(value: boolean) {
-    const oldValue = this.#allowStorage
-    this.#allowStorage = value
-    if (oldValue !== value && this.filesystemType === 'virtual') {
-      void this.initialize(this.filesystemType)
+  //region Event handlers
+  async onFilesystemChange(change: AssetsFilesystemChange): Promise<void> {
+    switch (change.kind) {
+      case 'filesystem-type':
+        this.filesystemType = change.filesystemType
+        await this.#mountAssets()
+        break
+      case 'remount-archive':
+        await this.#remount()
+        break
+      case 'mount-archive':
+        await this.#mountLocalArchive(change.archiveHandle)
+        break
+      case 'mount-directory':
+        await this.#mountLocalDirectory(change.directoryHandle)
+        break
+      case 'unmount':
+        await this.#unmount()
+        break
     }
   }
 
-  get allowStorage(): boolean {
-    return this.#allowStorage
+  async onVirtualFileChange(change: AssetsVirtualFileChange): Promise<void> {
+    if (this.filesystemType !== 'virtual') {
+      return
+    }
+    switch (change.kind) {
+      case 'add':
+        await this.#addVirtualFile(change.fileHandle)
+        break
+      case 'rename':
+        await this.#renameVirtualFile(change.oldName, change.newName)
+        break
+      case 'remove':
+        await this.#removeVirtualFile(change.name)
+        break
+      case 'clear':
+        await this.#clearVirtualFiles()
+        break
+      default:
+        return
+    }
+    await this.#updateMap()
   }
+  //endregion
 
-  get assetCount(): number {
-    return this.#assetCount
-  }
-
-  get isArchiveMounted(): boolean {
-    return !!this.#archiveHandle
-  }
-
-  get archiveFilename(): string | undefined {
-    return this.#archiveHandle?.name
-  }
-
-  get isDirectoryMounted(): boolean {
-    return !!this.#directoryHandle
-  }
-
-  get directoryName(): string | undefined {
-    return this.#directoryHandle?.name
-  }
-
-  //region Mount APIs
-  async mountVirtualFs(): Promise<void> {
-    if (this.allowStorage) {
-      await this.#mountRoot(WebStorage.create({}))
+  //region Mount management
+  async #mountAssets(): Promise<void> {
+    this.#unmountRoot()
+    if (this.filesystemType === 'virtual') {
+      await this.#mountVirtualFS()
     } else {
-      await this.#mountRoot(InMemory.create({}))
+      await this.#tryMountCachedLocalFS()
     }
-    this.#emitAssetsUpdated()
   }
 
-  async mountLocalDirectory(
-    directoryHandle: FileSystemDirectoryHandle
-  ): Promise<void> {
-    await this.#mountRoot(WebAccess.create({handle: directoryHandle}))
-    await this.#updateCache({directory: directoryHandle})
-    this.#directoryHandle = directoryHandle
-    this.#archiveHandle = undefined
-    this.#emitAssetsUpdated()
-    this._mountReady()
+  async #remount(): Promise<void> {
+    if (this.#localFileHandles.archive) {
+      await this.#mountLocalArchive(this.#localFileHandles.archive)
+    }
   }
 
-  async mountLocalArchive(
+  async #unmount(): Promise<void> {
+    this.#unmountRoot()
+    await this.#updateMap()
+    await this.#cacheUpdate({})
+  }
+
+  async #mountLocalArchive(
     fileHandle: FileSystemFileHandle | File
   ): Promise<void> {
     let file
     if ('getFile' in fileHandle) {
       file = await fileHandle.getFile()
-      await this.#updateCache({archive: fileHandle})
+      await this.#cacheUpdate({archive: fileHandle})
     } else {
       file = fileHandle as File
-      await this.#clearCache()
+      await this.#cacheClear()
     }
     await this.#mountRoot(Zip.create({zipData: await file.arrayBuffer()}))
-    this.#archiveHandle = fileHandle
-    this.#directoryHandle = undefined
-    this.#emitAssetsUpdated()
-    this._mountReady()
+    this.#updateState({archiveFilename: fileHandle.name})
   }
 
-  async remountLocalArchive(): Promise<void> {
-    if (this.#archiveHandle) {
-      await this.mountLocalArchive(this.#archiveHandle)
+  async #mountLocalDirectory(
+    directoryHandle: FileSystemDirectoryHandle
+  ): Promise<void> {
+    await this.#mountRoot(WebAccess.create({handle: directoryHandle}))
+    await this.#cacheUpdate({directory: directoryHandle})
+    this.#updateState({directoryName: directoryHandle.name})
+  }
+
+  async #mountRoot(fs: FileSystem): Promise<void> {
+    this.#unmountRoot()
+    ZenFS.mount('/', fs)
+    await this.#updateMap()
+  }
+
+  #unmountRoot(): void {
+    if (ZenFS.mounts.has('/')) {
+      ZenFS.umount('/')
+      this.#updateState({
+        archiveFilename: undefined,
+        directoryName: undefined,
+        map: {},
+        count: 0
+      })
     }
   }
 
-  async unmount(): Promise<void> {
-    this.#unmountRoot()
-    await this.#updateMap()
-    await this.#updateCache({})
-    this.#emitAssetsUpdated()
+  async #mountVirtualFS(): Promise<void> {
+    if (this.allowStorage) {
+      await this.#mountRoot(WebStorage.create({}))
+    } else {
+      await this.#mountRoot(InMemory.create({}))
+    }
+  }
+
+  async #tryMountCachedLocalFS(): Promise<void> {
+    const [directory, archive] = await this.#cacheLoadHandles()
+
+    if (directory && (await this.#canReadHandle(directory))) {
+      await this.#mountLocalDirectory(directory)
+    } else if (archive && (await this.#canReadHandle(archive))) {
+      await this.#mountLocalArchive(archive)
+    } else {
+      await this.#cacheClear()
+    }
   }
   //endregion
 
-  //region Virtual FS
-  async addVirtualAsset(handle: FileSystemFileHandle | File): Promise<void> {
+  //region Virtual filesystem management
+  async #addVirtualFile(handle: FileSystemFileHandle | File): Promise<void> {
     const file = await tryGetFile(handle)
     await fs.promises.writeFile(
       file.name,
@@ -163,165 +287,106 @@ export class PlayAssets extends EventTarget {
     await this.#updateMap()
   }
 
-  async renameVirtualAsset(oldName: string, newName: string): Promise<void> {
-    if (this.#filesystemType !== 'virtual') {
-      return
-    }
-
+  async #renameVirtualFile(oldName: string, newName: string): Promise<void> {
     await fs.promises.rename(oldName, newName)
 
     await this.#updateMap()
   }
 
-  async deleteVirtualAsset(name: string): Promise<void> {
-    if (this.#filesystemType !== 'virtual') {
-      return
-    }
-
+  async #removeVirtualFile(name: string): Promise<void> {
     await fs.promises.unlink(name)
 
     await this.#updateMap()
   }
 
-  async clearVirtualAssets(): Promise<void> {
-    if (this.#filesystemType !== 'virtual' || !this.#assetMap) {
-      return
-    }
-
-    const removals = []
-    for (const name of Object.keys(this.#assetMap)) {
-      removals.push(fs.promises.unlink(name))
-    }
-    await Promise.all(removals)
-
-    await this.#updateMap()
+  async #clearVirtualFiles(): Promise<void> {
+    await Promise.all(
+      Object.keys(this.#state.map ?? {}).map(name => fs.promises.unlink(name))
+    )
   }
   //endregion
 
-  //region Internal FS management
-  async initialize(filesystemType: AssetFilesystemType): Promise<void> {
-    this.#filesystemType = filesystemType || 'virtual'
-    this.#unmountRoot()
-    if (filesystemType === 'virtual') {
-      await this.mountVirtualFs()
-    } else {
-      const [directory, archive] = await this.#loadFromCache()
-
-      if (directory) {
-        if (await this.#verifyPermissions(directory)) {
-          await this.mountLocalDirectory(directory)
-        } else {
-          await this.#clearCache()
-        }
-      } else if (archive) {
-        if (await this.#verifyPermissions(archive)) {
-          await this.mountLocalArchive(archive)
-        } else {
-          await this.#clearCache()
-        }
-      }
-    }
-  }
-
-  async #mountRoot(fs: FileSystem): Promise<void> {
-    this.#unmountRoot()
-    ZenFS.mount('/', fs)
-    await this.#updateMap(false)
-  }
-
-  #unmountRoot(): void {
-    if (ZenFS.mounts.has('/')) {
-      ZenFS.umount('/')
-      this.#archiveHandle = undefined
-      this.#directoryHandle = undefined
-      this.#assetMap = {}
-      this.#assetCount = 0
-      this.#waitForMount = new Promise<void>(
-        resolve => (this._mountReady = resolve)
-      )
-    }
-  }
-  //endregion
-
-  //region Internal FileSystemHandle caching
-  async #loadFromCache(): Promise<
+  //region IndexedDB cache
+  async #cacheLoadHandles(): Promise<
     [FileSystemDirectoryHandle | undefined, FileSystemFileHandle | undefined]
   > {
     const [dir, zip] = await IDB.getMany([CACHE_LAST_DIR, CACHE_LAST_ZIP])
     return [dir, zip]
   }
 
-  async #updateCache(handles: {
-    directory?: FileSystemDirectoryHandle | undefined
-    archive?: FileSystemFileHandle | undefined
-  }): Promise<void> {
+  async #cacheUpdate(handles: LocalFileHandles): Promise<void> {
+    this.#localFileHandles = handles
     await IDB.setMany([
       [CACHE_LAST_DIR, handles.directory],
       [CACHE_LAST_ZIP, handles.archive]
     ])
   }
 
-  async #clearCache(): Promise<void> {
+  async #cacheClear(): Promise<void> {
     await IDB.delMany([CACHE_LAST_DIR, CACHE_LAST_ZIP])
   }
 
-  async #verifyPermissions(handle: FileSystemHandle): Promise<boolean> {
+  async #canReadHandle(handle: FileSystemHandle): Promise<boolean> {
     return (await tryQueryPermission(handle, {mode: 'read'})) === 'granted'
   }
   //endregion
 
-  //region Internal AssetMap caching
-  async #updateMap(emitEvent: boolean = true): Promise<void> {
+  //region State
+  async #updateMap(): Promise<void> {
     this.#clearAssetMap()
-    if (!ZenFS.mounts.has('/')) {
-      return
-    }
-    const entries: string[] = []
-    entries.push(...(await fs.promises.readdir('/')))
-    while (entries.length > 0) {
-      const entry = entries.shift()!
-      // remove the leading / present in some backends
-      const name = entry.replace(/^\//, '')
-      const stat = await fs.promises.stat(entry)
-      if (stat.isDirectory()) {
-        entries.unshift(
-          ...(await fs.promises.readdir(entry)).map(child => {
-            if (child.startsWith('/')) return child
-            return `${entry}/${child}`
-          })
-        )
-      } else {
-        const file = await fs.promises.open(entry)
-        const buffer = await file.readFile()
-        await file.close()
-        const basename = entry.split('/').at(-1)!
-        const extension = basename.split('.').at(-1)!
-        const mimetype = MIME[extension] ?? DEFAULT_MIME
-        this.#assetMap![name] = window.URL.createObjectURL(
-          new Blob([buffer], {type: mimetype})
-        )
-        this.#assetCount++
+    const assetMap: {[path: string]: string} = {}
+    let assetCount = 0
+    if (ZenFS.mounts.has('/')) {
+      const entries: string[] = []
+      entries.push(...(await fs.promises.readdir('/')))
+      while (entries.length > 0) {
+        const entry = entries.shift()!
+        // remove the leading / present in some backends
+        const name = entry.replace(/^\//, '')
+        const stat = await fs.promises.stat(entry)
+        if (stat.isDirectory()) {
+          entries.unshift(
+            ...(await fs.promises.readdir(entry)).map(child => {
+              if (child.startsWith('/')) return child
+              return `${entry}/${child}`
+            })
+          )
+        } else {
+          const file = await fs.promises.open(entry)
+          const buffer = await file.readFile()
+          await file.close()
+          const basename = entry.split('/').at(-1)!
+          const extension = basename.split('.').at(-1)!
+          const mimetype = MIME[extension] ?? DEFAULT_MIME
+          assetMap[name] = window.URL.createObjectURL(
+            new Blob([buffer], {type: mimetype})
+          )
+          assetCount++
+        }
       }
     }
-    if (emitEvent) {
-      this.#emitAssetsUpdated()
-    }
+
+    this.#updateState({map: assetMap, count: assetCount})
   }
 
-  #clearAssetMap(): void {
-    const assetMap = this.#assetMap!
+  #clearAssetMap() {
+    const assetMap = this.#state.map ?? {}
     for (const entry of Object.keys(assetMap)) {
       const url = assetMap[entry] ?? undefined
       if (url) {
         URL.revokeObjectURL(url)
       }
     }
-    this.#assetMap = {}
-    this.#assetCount = 0
+  }
+
+  #updateState(updates: Partial<AssetsState>): void {
+    this.#state = {
+      ...this.#state,
+      ...updates,
+      filesystemType: this.filesystemType
+    }
+
+    this.dispatchEvent(Bubble<AssetsState>('assets-updated', this.#state))
   }
   //endregion
-
-  #emitAssetsUpdated(): void {
-    this.dispatchEvent(Bubble<void>('assets-updated', undefined))
-  }
 }

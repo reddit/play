@@ -17,7 +17,6 @@
     "@devvit/shared-types": "0.10.21-next-2024-05-13-b48ce196f.0",
     "@devvit/ui-renderer": "0.10.21-next-2024-05-13-b48ce196f.0",
     "@esm-bundle/chai": "4.3.4-fix.0",
-    "@lit/context": "1.1.1",
     "@types/jsdom": "21.1.6",
     "@types/mocha": "10.0.6",
     "@typescript/vfs": "1.5.0",
