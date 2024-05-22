@@ -21,7 +21,7 @@ import {PlayAssets} from './play-assets.js'
 
 declare global {
   interface HTMLElementEventMap {
-    'files-selected': CustomEvent<FilesSelectedEvent>
+    'files-selected': CustomEvent<FileSelection>
     cancelled: CustomEvent<never>
   }
   interface HTMLElementTagNameMap {
@@ -29,7 +29,7 @@ declare global {
   }
 }
 
-export type FilesSelectedEvent = {
+export type FileSelection = {
   // Provided in fallback environments where File Access API is not available
   files?: File[]
   // Provided in environments where File Access API is available
@@ -128,16 +128,14 @@ export class FileUploadDropper extends LitElement {
   /**
    * Uses File Access API to get FileSystemFileHandles
    */
-  #pickFile = async () => {
+  #pickFile = async (): Promise<void> => {
     const fileHandles = await fileAccessContext.showOpenFilePicker({
       ...(this.id ? {id: this.id} : {}),
       types: this.acceptTypes,
       multiple: this.multiple
     })
     if (fileHandles.length > 0) {
-      this.dispatchEvent(
-        Bubble<FilesSelectedEvent>('files-selected', {fileHandles})
-      )
+      this.dispatchEvent(Bubble<FileSelection>('files-selected', {fileHandles}))
     } else {
       this.dispatchEvent(Bubble<void>('cancelled', undefined))
     }
@@ -157,7 +155,9 @@ export class FileUploadDropper extends LitElement {
   /**
    * Handles the drag'n'drop result
    */
-  #processDrop = async (ev: InputEvent & {currentTarget: HTMLInputElement}) => {
+  #processDrop = async (
+    ev: InputEvent & {currentTarget: HTMLInputElement}
+  ): Promise<void> => {
     ev.preventDefault()
     this.#dragEnd()
 
@@ -181,9 +181,7 @@ export class FileUploadDropper extends LitElement {
           }
         }
       }
-      this.dispatchEvent(
-        Bubble<FilesSelectedEvent>('files-selected', {fileHandles})
-      )
+      this.dispatchEvent(Bubble<FileSelection>('files-selected', {fileHandles}))
     } else {
       await this.#processFileList(ev.dataTransfer.files)
     }
@@ -204,14 +202,14 @@ export class FileUploadDropper extends LitElement {
       }
     }
 
-    this.dispatchEvent(Bubble<FilesSelectedEvent>('files-selected', {files}))
+    this.dispatchEvent(Bubble<FileSelection>('files-selected', {files}))
   }
 
-  #clearError = () => {
+  #clearError = (): void => {
     this._errorMessage = undefined
   }
 
-  #dragStart = (ev: Event) => {
+  #dragStart = (ev: Event): void => {
     if (ev.type === 'dragover') {
       ev.preventDefault()
     }
@@ -219,7 +217,7 @@ export class FileUploadDropper extends LitElement {
     this._dragging = true
   }
 
-  #dragEnd = () => {
+  #dragEnd = (): void => {
     this._dragging = false
   }
 

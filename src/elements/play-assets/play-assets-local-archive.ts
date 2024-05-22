@@ -1,18 +1,18 @@
-import {customElement, query, state} from 'lit/decorators.js'
+import {customElement, state} from 'lit/decorators.js'
 import {css, html, LitElement, type TemplateResult} from 'lit'
 import {when} from 'lit-html/directives/when.js'
 import {cssReset} from '../../utils/css-reset.js'
 import {type FilePickerType} from '../../utils/file-access-api.js'
-import type {FilesSelectedEvent} from './file-upload-dropper.js'
-import {PlayAssets} from './play-assets.js'
+import type {FileSelection} from './file-upload-dropper.js'
+import {assetsContext, PlayAssets} from './play-assets.js'
 import {styleMap} from 'lit/directives/style-map.js'
+import {consume} from '@lit/context'
 
 import '../play-button.js'
 import '../play-icon/play-icon.js'
 import './file-upload-dropper.js'
 
 declare global {
-  interface HTMLElementEventMap {}
   interface HTMLElementTagNameMap {
     'play-assets-local-archive': PlayAssetsLocalArchive
   }
@@ -55,8 +55,8 @@ export class PlayAssetsLocalArchive extends LitElement {
     }
   `
 
-  @query('play-assets')
-  private _assets?: PlayAssets
+  @consume({context: assetsContext})
+  private _assets!: PlayAssets
 
   @state()
   private _detailsStyle = STYLE_COLLAPSED
@@ -64,14 +64,23 @@ export class PlayAssetsLocalArchive extends LitElement {
   @state()
   private _selectStyle = STYLE_VISIBLE
 
-  protected override render(): TemplateResult {
-    return html`
-      <play-assets @assets-updated=${this.#assetsUpdated}></play-assets>
-      ${this.#renderArchiveDetails()} ${this.#renderMountArchive()}
-    `
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this._assets.addEventListener('assets-updated', this.#assetsUpdated)
   }
 
-  #renderMountArchive = () => {
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+
+    this._assets.removeEventListener('assets-updated', this.#assetsUpdated)
+  }
+
+  protected override render(): TemplateResult {
+    return html` ${this.#renderArchiveDetails()} ${this.#renderMountArchive()} `
+  }
+
+  #renderMountArchive = (): TemplateResult => {
     const types: FilePickerType[] = [
       {
         description: 'ZIP Archive',
@@ -98,13 +107,13 @@ export class PlayAssetsLocalArchive extends LitElement {
     `
   }
 
-  #renderArchiveDetails = () => {
+  #renderArchiveDetails = (): TemplateResult => {
     return html`
       <div class="row gap" style="${styleMap(this._detailsStyle)}">
         <div class="column grow">
           <span>Mounted archive:</span>
-          <pre>${this._assets?.archiveFilename}</pre>
-          <span>File count: ${this._assets?.assetCount}</span>
+          <pre>${this._assets.archiveFilename}</pre>
+          <span>File count: ${this._assets.assetCount}</span>
         </div>
         ${when(
           PlayAssets.hasFileAccessAPI,
@@ -114,7 +123,7 @@ export class PlayAssetsLocalArchive extends LitElement {
               size="small"
               icon="restart-outline"
               title="Refresh"
-              @click=${() => this._assets?.remountLocalArchive()}
+              @click=${() => this._assets.remountLocalArchive()}
             ></play-button>`
         )}
         <play-button
@@ -123,25 +132,26 @@ export class PlayAssetsLocalArchive extends LitElement {
           icon="share-ios-outline"
           icon-color="red"
           title="Unmount"
-          @click=${() => this._assets?.unmount()}
+          @click=${() => this._assets.unmount()}
         ></play-button>
       </div>
     `
   }
 
-  #onFiles = async (ev: CustomEvent<FilesSelectedEvent>) => {
+  #onFiles = async (ev: CustomEvent<FileSelection>): Promise<void> => {
     const file = ev.detail.fileHandles?.[0] ?? ev.detail.files?.[0]
     if (file) {
       await this._assets?.mountLocalArchive(file)
     }
   }
 
-  #assetsUpdated = () => {
-    this._selectStyle = this._assets?.archiveHandle
+  #assetsUpdated = (): void => {
+    this._selectStyle = this._assets.isArchiveMounted
       ? STYLE_COLLAPSED
       : STYLE_VISIBLE
-    this._detailsStyle = this._assets?.archiveHandle
+    this._detailsStyle = this._assets.isArchiveMounted
       ? STYLE_VISIBLE
       : STYLE_COLLAPSED
+    this.requestUpdate()
   }
 }

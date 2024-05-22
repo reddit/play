@@ -1,15 +1,14 @@
-import {customElement, query, state} from 'lit/decorators.js'
+import {customElement} from 'lit/decorators.js'
 import {css, html, LitElement, type TemplateResult} from 'lit'
 import {cssReset} from '../../utils/css-reset.js'
 import {when} from 'lit-html/directives/when.js'
 import {fileAccessContext} from '../../utils/file-access-api.js'
+import {assetsContext, type PlayAssets} from './play-assets.js'
+import {consume} from '@lit/context'
 
-import '../play-assets/play-assets.js'
 import '../play-button.js'
-import type {PlayAssets} from './play-assets.js'
 
 declare global {
-  interface HTMLElementEventMap {}
   interface HTMLElementTagNameMap {
     'play-assets-local-directory': PlayAssetsLocalDirectory
   }
@@ -50,19 +49,27 @@ export class PlayAssetsLocalDirectory extends LitElement {
     }
   `
 
-  @state()
-  private _directoryHandle: PlayAssets['directoryHandle']
-
-  @query('play-assets')
+  @consume({context: assetsContext})
   private _assets!: PlayAssets
+
+  override connectedCallback(): void {
+    super.connectedCallback()
+
+    this._assets.addEventListener('assets-updated', this.#assetsUpdated)
+  }
+
+  override disconnectedCallback(): void {
+    super.disconnectedCallback()
+
+    this._assets.removeEventListener('assets-updated', this.#assetsUpdated)
+  }
 
   protected override render(): TemplateResult {
     return html`
-      <play-assets @assets-updated=${this.#assetsUpdated}></play-assets>
       <span>Local directory:</span>
       <div class="row vcenter">
         ${when(
-          this._directoryHandle,
+          this._assets.isDirectoryMounted,
           () =>
             html`<pre class="grow">.../${this._assets.directoryName}</pre>
               <play-button
@@ -86,7 +93,7 @@ export class PlayAssetsLocalDirectory extends LitElement {
     `
   }
 
-  #pickDirectory = async () => {
+  #pickDirectory = async (): Promise<void> => {
     const directoryHandle = await fileAccessContext.showDirectoryPicker({
       id: 'selectDirectory',
       mode: 'read'
@@ -96,7 +103,7 @@ export class PlayAssetsLocalDirectory extends LitElement {
     }
   }
 
-  #assetsUpdated = () => {
-    this._directoryHandle = this._assets.directoryHandle
+  #assetsUpdated = (): void => {
+    this.requestUpdate()
   }
 }

@@ -9,6 +9,7 @@ import {customElement, property, query} from 'lit/decorators.js'
 import {defaultSettings} from '../storage/settings-save.js'
 import {Bubble} from '../utils/bubble.js'
 import {PlayDialog, type PlayDialogLike} from './play-dialog/play-dialog.js'
+import {cssReset} from '../utils/css-reset.js'
 
 import './play-button.js'
 import './play-dialog/play-dialog.js'
@@ -32,7 +33,11 @@ declare global {
 @customElement('play-settings-dialog')
 export class PlaySettingsDialog extends LitElement implements PlayDialogLike {
   static override readonly styles: CSSResultGroup = css`
-    ${PlayDialog.styles}
+    ${cssReset}
+
+    legend {
+      font-weight: bold;
+    }
 
     input[type='checkbox'] {
       float: left;
@@ -84,7 +89,7 @@ export class PlaySettingsDialog extends LitElement implements PlayDialogLike {
   protected override render(): TemplateResult {
     const description = `Settings are ${this.allowStorage ? 'saved and ' : ''}not shareable.`
     return html`
-      <play-dialog title="Settings" description="${description}">
+      <play-dialog dialog-title="Settings" description="${description}">
         <fieldset>
           <legend>Reddit Internal</legend>
           <p>Runtime settings take effect on subsequent execution.</p>

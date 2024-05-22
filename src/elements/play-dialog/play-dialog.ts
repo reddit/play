@@ -82,16 +82,12 @@ export class PlayDialog extends LitElement implements PlayDialogLike {
       line-height: 28px;
       letter-spacing: 0.2px;
     }
-
-    legend {
-      font-weight: bold;
-    }
   `
 
-  @property({reflect: true})
-  override title: string = ''
+  @property({attribute: 'dialog-title', type: String, reflect: true})
+  dialogTitle: string = ''
 
-  @property({reflect: true})
+  @property({attribute: 'description', type: String, reflect: true})
   description: string = ''
 
   @query('dialog')
@@ -109,7 +105,7 @@ export class PlayDialog extends LitElement implements PlayDialogLike {
     return html`
       <dialog>
         <header>
-          <h1>${this.title}</h1>
+          <h1>${this.dialogTitle}</h1>
           <play-button
             appearance="plain"
             icon="close-outline"

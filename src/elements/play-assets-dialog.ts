@@ -1,4 +1,4 @@
-import {customElement, property, query, state} from 'lit/decorators.js'
+import {customElement, property, query} from 'lit/decorators.js'
 import {
   css,
   type CSSResultGroup,
@@ -11,17 +11,20 @@ import {choose} from 'lit-html/directives/choose.js'
 import {when} from 'lit-html/directives/when.js'
 import {
   type AssetFilesystemType,
+  assetsContext,
   PlayAssets
 } from './play-assets/play-assets.js'
+import {cssReset} from '../utils/css-reset.js'
+import {consume} from '@lit/context'
 
 import './play-assets/play-assets.js'
 import './play-assets/play-assets-virtual-fs.js'
 import './play-assets/play-assets-local-directory.js'
 import './play-assets/play-assets-local-archive.js'
 import './play-dialog/play-dialog.js'
+import {Bubble} from '../utils/bubble.js'
 
 declare global {
-  interface HTMLElementEventMap {}
   interface HTMLElementTagNameMap {
     'play-assets-dialog': PlayAssetsDialog
   }
@@ -30,7 +33,11 @@ declare global {
 @customElement('play-assets-dialog')
 export class PlayAssetsDialog extends LitElement {
   static override readonly styles: CSSResultGroup = css`
-    ${PlayDialog.styles}
+    ${cssReset}
+
+    legend {
+      font-weight: bold;
+    }
 
     fieldset {
       margin-bottom: var(--space);
@@ -46,11 +53,8 @@ export class PlayAssetsDialog extends LitElement {
   @property({attribute: 'enable-local-assets', type: Boolean})
   enableLocalAssets: boolean = false
 
-  @state()
-  private _filesystemType: AssetFilesystemType = 'virtual'
-
-  @query('play-assets')
-  private _assets: PlayAssets | undefined
+  @consume({context: assetsContext})
+  private _assets!: PlayAssets
 
   @query('play-dialog', true)
   private _dialog!: PlayDialog
@@ -63,18 +67,29 @@ export class PlayAssetsDialog extends LitElement {
     this._dialog.close()
   }
 
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this._assets.addEventListener('assets-updated', this.#assetsUpdated)
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+
+    this._assets.removeEventListener('assets-updated', this.#assetsUpdated)
+  }
+
   protected override render(): TemplateResult {
     return html`
-      <play-assets @assets-updated=${this.#assetsUpdated}></play-assets>
       <play-dialog
-        title="Assets"
+        dialog-title="Assets"
         description="Manage static assets available to blocks in :play"
       >
         ${when(this.enableLocalAssets, this.#renderFilesystemPicker)}
 
         <fieldset>
           <legend>${this.#filesystemTitle}:</legend>
-          ${choose(this._filesystemType, [
+          ${choose(this._assets.filesystemType, [
             [
               'virtual',
               () => html`<play-assets-virtual-fs></play-assets-virtual-fs>`
@@ -93,7 +108,7 @@ export class PlayAssetsDialog extends LitElement {
         <input
           name="filesystemType"
           type="radio"
-          ?checked="${this._filesystemType === 'virtual'}"
+          ?checked="${this._assets.filesystemType === 'virtual'}"
           @change=${this.#setFilesystem}
           value="virtual"
         />
@@ -103,7 +118,7 @@ export class PlayAssetsDialog extends LitElement {
         <input
           name="filesystemType"
           type="radio"
-          ?checked="${this._filesystemType === 'local'}"
+          ?checked="${this._assets.filesystemType === 'local'}"
           @change=${this.#setFilesystem}
           value="local"
         />
@@ -112,15 +127,16 @@ export class PlayAssetsDialog extends LitElement {
     </fieldset>`
   }
 
-  #setFilesystem = (ev: InputEvent & {currentTarget: HTMLInputElement}) => {
-    if (this._assets) {
-      this._assets.filesystemType = ev.currentTarget
-        .value as AssetFilesystemType
-      this.requestUpdate()
-    }
+  #setFilesystem = (
+    ev: InputEvent & {currentTarget: HTMLInputElement}
+  ): void => {
+    const filesystemType = ev.currentTarget.value as AssetFilesystemType
+    this.dispatchEvent(
+      Bubble<AssetFilesystemType>('assets-set-filesystem', filesystemType)
+    )
   }
 
-  #renderLocalFs = () => {
+  #renderLocalFs = (): TemplateResult => {
     return html`
       <div id="localFs">
         ${when(
@@ -133,13 +149,13 @@ export class PlayAssetsDialog extends LitElement {
     `
   }
 
-  #assetsUpdated = () => {
-    this._filesystemType = this._assets?.filesystemType ?? 'virtual'
-  }
-
   get #filesystemTitle(): string {
-    return this._filesystemType === 'virtual'
+    return this._assets.filesystemType === 'virtual'
       ? 'Manage files'
       : 'Filesystem source'
+  }
+
+  #assetsUpdated = (): void => {
+    this.requestUpdate()
   }
 }

@@ -1,5 +1,3 @@
-import {type PropertyValues, ReactiveElement} from 'lit'
-import {customElement, property} from 'lit/decorators.js'
 import {WebAccess, WebStorage} from '@zenfs/dom'
 import {Bubble} from '../../utils/bubble.js'
 import {Zip} from '@zenfs/zip'
@@ -12,20 +10,19 @@ import * as ZenFS from '@zenfs/core'
 import {FileSystem, fs, InMemory} from '@zenfs/core'
 import type {AssetMap} from '@devvit/shared-types/Assets.js'
 import * as IDB from 'idb-keyval'
+import {createContext} from '@lit/context'
 
 declare global {
-  interface HTMLElementEventMap {}
-  interface HTMLElementTagNameMap {
-    'play-assets': PlayAssets
+  interface HTMLElementEventMap {
+    'assets-set-filesystem': CustomEvent<AssetFilesystemType>
+    'assets-updated': CustomEvent<void>
   }
 }
-
-export type AssetFilesystemType = 'virtual' | 'local'
 
 const CACHE_LAST_DIR = 'lastMountedDirectory'
 const CACHE_LAST_ZIP = 'lastMountedArchive'
 
-const MIME: {[ext: string]: string} = {
+const MIME: {readonly [ext: string]: string} = {
   html: 'text/html',
   htm: 'text/html',
   jpg: 'image/jpeg',
@@ -35,145 +32,94 @@ const MIME: {[ext: string]: string} = {
 }
 const DEFAULT_MIME = 'application/octet-stream'
 
-declare global {
-  interface HTMLElementTagNameMap {
-    'play-assets': PlayAssets
-  }
-  interface HTMLElementEventMap {
-    'assets-updated': CustomEvent<void>
-  }
-}
+export type AssetFilesystemType = 'virtual' | 'local'
 
-@customElement('play-assets')
-export class PlayAssets extends ReactiveElement {
-  @property({attribute: 'allow-storage', type: Boolean})
-  allowStorage: boolean = false
+export const assetsContext = createContext<PlayAssets>('play-assets')
 
-  @property({attribute: 'filesystem-type', reflect: true, type: String})
-  filesystemType: AssetFilesystemType = 'virtual'
-
-  @property({attribute: false})
-  directoryHandle: FileSystemDirectoryHandle | undefined
-
-  @property({attribute: false})
-  directoryName: string | undefined
-
-  @property({attribute: false})
-  archiveHandle: FileSystemFileHandle | File | undefined
-
-  @property({attribute: false})
-  archiveFilename: string | undefined
-
-  @property({attribute: false})
-  assetCount: number = 0
-
-  _rootAssets: PlayAssets | undefined
+export class PlayAssets extends EventTarget {
+  #filesystemType: AssetFilesystemType = 'virtual'
+  #allowStorage: boolean = false
   #assetMap: AssetMap = {}
+  #assetCount: number = 0
+  #archiveHandle: FileSystemFileHandle | File | undefined
+  #directoryHandle: FileSystemDirectoryHandle | undefined
 
-  private _waitForInit: Promise<void> = new Promise(
-    resolve => (this._initComplete = resolve)
+  #waitForMount: Promise<void> = new Promise(
+    resolve => (this._mountReady = resolve)
   )
-  private _initComplete!: () => void
+  private _mountReady!: () => void
 
   static get hasFileAccessAPI(): boolean {
     return hasFileAccessAPI
   }
 
-  get assetMap(): Promise<AssetMap> {
-    if (this._rootAssets) {
-      return this._rootAssets.assetMap
+  async getAssetMap(): Promise<AssetMap> {
+    if (this.#directoryHandle) {
+      await this.#waitForMount
+      await this.#updateMap(false)
     }
 
-    const resolvedMap = () => this._waitForInit.then(() => this.#assetMap)
-    if (this.directoryHandle) {
-      return this.#updateMap(false).then(resolvedMap)
-    }
-    return resolvedMap()
+    return this.#assetMap
   }
 
-  override connectedCallback() {
-    super.connectedCallback()
-
-    // try and find a play-assets element higher up the DOM to attach to
-
-    this._rootAssets = this.#findRootAssets()
-    this._rootAssets?.addEventListener('assets-updated', this.#syncRootAssets)
-    this.#syncRootAssets()
+  get filesystemType(): AssetFilesystemType {
+    return this.#filesystemType
   }
 
-  override disconnectedCallback() {
-    super.disconnectedCallback()
-
-    this._rootAssets?.removeEventListener(
-      'assets-updated',
-      this.#syncRootAssets
-    )
+  set allowStorage(value: boolean) {
+    const oldValue = this.#allowStorage
+    this.#allowStorage = value
+    if (oldValue !== value && this.filesystemType === 'virtual') {
+      void this.initialize(this.filesystemType)
+    }
   }
 
-  protected override willUpdate(changedProperties: PropertyValues<this>) {
-    if (changedProperties.has('filesystemType')) {
-      if (this._rootAssets) {
-        if (
-          changedProperties.get('filesystemType') &&
-          this._rootAssets.filesystemType !== this.filesystemType
-        ) {
-          this._rootAssets.filesystemType = this.filesystemType
-        }
-      } else {
-        void this.#initialize(this.filesystemType)
-        this.#emitAssetsUpdated()
-      }
-    }
-    if (changedProperties.has('archiveHandle')) {
-      if (this.archiveHandle) {
-        this.archiveFilename = this.archiveHandle.name
-        this.directoryHandle = undefined
-        this.directoryName = undefined
-      } else {
-        this.archiveFilename = undefined
-      }
-    }
-    if (changedProperties.has('directoryHandle')) {
-      if (this.directoryHandle) {
-        this.archiveHandle = undefined
-        this.archiveFilename = undefined
-        this.directoryName = this.directoryHandle.name
-      } else {
-        this.directoryName = undefined
-      }
-    }
+  get allowStorage(): boolean {
+    return this.#allowStorage
+  }
+
+  get assetCount(): number {
+    return this.#assetCount
+  }
+
+  get isArchiveMounted(): boolean {
+    return !!this.#archiveHandle
+  }
+
+  get archiveFilename(): string | undefined {
+    return this.#archiveHandle?.name
+  }
+
+  get isDirectoryMounted(): boolean {
+    return !!this.#directoryHandle
+  }
+
+  get directoryName(): string | undefined {
+    return this.#directoryHandle?.name
   }
 
   //region Mount APIs
-  mountVirtualFs = async () => this.#callRootAssets(this.#mountVirtualFs)
-
-  async #mountVirtualFs(): Promise<void> {
+  async mountVirtualFs(): Promise<void> {
     if (this.allowStorage) {
       await this.#mountRoot(WebStorage.create({}))
-      console.log('Assets will be persisted')
     } else {
       await this.#mountRoot(InMemory.create({}))
-      console.log('Assets will not be persisted')
     }
     this.#emitAssetsUpdated()
   }
 
-  mountLocalDirectory = async (directoryHandle: FileSystemDirectoryHandle) =>
-    this.#callRootAssets(this.#mountLocalDirectory, directoryHandle)
-
-  async #mountLocalDirectory(
+  async mountLocalDirectory(
     directoryHandle: FileSystemDirectoryHandle
   ): Promise<void> {
     await this.#mountRoot(WebAccess.create({handle: directoryHandle}))
     await this.#updateCache({directory: directoryHandle})
-    this.directoryHandle = directoryHandle
+    this.#directoryHandle = directoryHandle
+    this.#archiveHandle = undefined
     this.#emitAssetsUpdated()
+    this._mountReady()
   }
 
-  mountLocalArchive = async (fileHandle: FileSystemFileHandle | File) =>
-    this.#callRootAssets(this.#mountLocalArchive, fileHandle)
-
-  async #mountLocalArchive(
+  async mountLocalArchive(
     fileHandle: FileSystemFileHandle | File
   ): Promise<void> {
     let file
@@ -185,22 +131,19 @@ export class PlayAssets extends ReactiveElement {
       await this.#clearCache()
     }
     await this.#mountRoot(Zip.create({zipData: await file.arrayBuffer()}))
-    this.archiveHandle = fileHandle
+    this.#archiveHandle = fileHandle
+    this.#directoryHandle = undefined
     this.#emitAssetsUpdated()
+    this._mountReady()
   }
 
-  remountLocalArchive = async () =>
-    this.#callRootAssets(this.#remountLocalArchive)
-
-  async #remountLocalArchive(): Promise<void> {
-    if (this.archiveHandle) {
-      await this.mountLocalArchive(this.archiveHandle)
+  async remountLocalArchive(): Promise<void> {
+    if (this.#archiveHandle) {
+      await this.mountLocalArchive(this.#archiveHandle)
     }
   }
 
-  unmount = () => this.#callRootAssets(this.#unmount)
-
-  async #unmount(): Promise<void> {
+  async unmount(): Promise<void> {
     this.#unmountRoot()
     await this.#updateMap()
     await this.#updateCache({})
@@ -209,10 +152,7 @@ export class PlayAssets extends ReactiveElement {
   //endregion
 
   //region Virtual FS
-  addVirtualAsset = async (handle: FileSystemFileHandle | File) =>
-    this.#callRootAssets(this.#addVirtualAsset, handle)
-
-  async #addVirtualAsset(handle: FileSystemFileHandle | File): Promise<void> {
+  async addVirtualAsset(handle: FileSystemFileHandle | File): Promise<void> {
     const file = await tryGetFile(handle)
     await fs.promises.writeFile(
       file.name,
@@ -223,11 +163,8 @@ export class PlayAssets extends ReactiveElement {
     await this.#updateMap()
   }
 
-  renameVirtualAsset = async (oldName: string, newName: string) =>
-    this.#callRootAssets(this.#renameVirtualAsset, oldName, newName)
-
-  async #renameVirtualAsset(oldName: string, newName: string): Promise<void> {
-    if (this.filesystemType !== 'virtual') {
+  async renameVirtualAsset(oldName: string, newName: string): Promise<void> {
+    if (this.#filesystemType !== 'virtual') {
       return
     }
 
@@ -236,11 +173,8 @@ export class PlayAssets extends ReactiveElement {
     await this.#updateMap()
   }
 
-  deleteVirtualAsset = async (name: string) =>
-    this.#callRootAssets(this.#deleteVirtualAsset, name)
-
-  async #deleteVirtualAsset(name: string): Promise<void> {
-    if (this.filesystemType !== 'virtual') {
+  async deleteVirtualAsset(name: string): Promise<void> {
+    if (this.#filesystemType !== 'virtual') {
       return
     }
 
@@ -249,11 +183,8 @@ export class PlayAssets extends ReactiveElement {
     await this.#updateMap()
   }
 
-  clearVirtualAssets = async () =>
-    this.#callRootAssets(this.#clearVirtualAssets)
-
-  async #clearVirtualAssets(): Promise<void> {
-    if (this.filesystemType !== 'virtual' || !this.#assetMap) {
+  async clearVirtualAssets(): Promise<void> {
+    if (this.#filesystemType !== 'virtual' || !this.#assetMap) {
       return
     }
 
@@ -267,34 +198,10 @@ export class PlayAssets extends ReactiveElement {
   }
   //endregion
 
-  #findRootAssets(): PlayAssets | undefined {
-    let currentElement = this.#traverseToParent(this as Element)
-    let root: PlayAssets | undefined
-
-    while (currentElement) {
-      const assets =
-        currentElement.querySelector('play-assets') ??
-        currentElement.shadowRoot?.querySelector('play-assets')
-      if (assets && assets !== this) {
-        root = assets as PlayAssets
-      }
-      currentElement = this.#traverseToParent(currentElement)
-    }
-
-    return root
-  }
-
-  #traverseToParent(el: Element): Element | undefined {
-    if (el.parentElement) {
-      return el.parentElement
-    }
-    if (el.parentNode && 'host' in el.parentNode) {
-      return (el.parentNode as ShadowRoot).host
-    }
-  }
-
-  async #initialize(filesystemType: AssetFilesystemType): Promise<void> {
-    this.filesystemType = filesystemType || 'virtual'
+  //region Internal FS management
+  async initialize(filesystemType: AssetFilesystemType): Promise<void> {
+    this.#filesystemType = filesystemType || 'virtual'
+    this.#unmountRoot()
     if (filesystemType === 'virtual') {
       await this.mountVirtualFs()
     } else {
@@ -314,25 +221,6 @@ export class PlayAssets extends ReactiveElement {
         }
       }
     }
-    this._initComplete()
-  }
-
-  #callRootAssets<R, T extends (...args: any[]) => R>(
-    method: T,
-    ...args: unknown[]
-  ): R {
-    return method.bind(this._rootAssets ?? this)(...args)
-  }
-
-  #syncRootAssets = () => {
-    if (this._rootAssets) {
-      this.filesystemType = this._rootAssets.filesystemType
-      this.archiveHandle = this._rootAssets.archiveHandle
-      this.directoryHandle = this._rootAssets.directoryHandle
-      this.assetCount = this._rootAssets.assetCount
-      // relay the event to local listeners
-      this.#emitAssetsUpdated()
-    }
   }
 
   async #mountRoot(fs: FileSystem): Promise<void> {
@@ -344,15 +232,18 @@ export class PlayAssets extends ReactiveElement {
   #unmountRoot(): void {
     if (ZenFS.mounts.has('/')) {
       ZenFS.umount('/')
-      this.archiveHandle = undefined
-      this.directoryHandle = undefined
+      this.#archiveHandle = undefined
+      this.#directoryHandle = undefined
+      this.#assetMap = {}
+      this.#assetCount = 0
+      this.#waitForMount = new Promise<void>(
+        resolve => (this._mountReady = resolve)
+      )
     }
   }
+  //endregion
 
-  #emitAssetsUpdated() {
-    this.dispatchEvent(Bubble<void>('assets-updated', undefined))
-  }
-
+  //region Internal FileSystemHandle caching
   async #loadFromCache(): Promise<
     [FileSystemDirectoryHandle | undefined, FileSystemFileHandle | undefined]
   > {
@@ -370,10 +261,16 @@ export class PlayAssets extends ReactiveElement {
     ])
   }
 
-  async #clearCache() {
+  async #clearCache(): Promise<void> {
     await IDB.delMany([CACHE_LAST_DIR, CACHE_LAST_ZIP])
   }
 
+  async #verifyPermissions(handle: FileSystemHandle): Promise<boolean> {
+    return (await tryQueryPermission(handle, {mode: 'read'})) === 'granted'
+  }
+  //endregion
+
+  //region Internal AssetMap caching
   async #updateMap(emitEvent: boolean = true): Promise<void> {
     this.#clearAssetMap()
     if (!ZenFS.mounts.has('/')) {
@@ -403,7 +300,7 @@ export class PlayAssets extends ReactiveElement {
         this.#assetMap![name] = window.URL.createObjectURL(
           new Blob([buffer], {type: mimetype})
         )
-        this.assetCount++
+        this.#assetCount++
       }
     }
     if (emitEvent) {
@@ -411,7 +308,7 @@ export class PlayAssets extends ReactiveElement {
     }
   }
 
-  #clearAssetMap() {
+  #clearAssetMap(): void {
     const assetMap = this.#assetMap!
     for (const entry of Object.keys(assetMap)) {
       const url = assetMap[entry] ?? undefined
@@ -420,10 +317,11 @@ export class PlayAssets extends ReactiveElement {
       }
     }
     this.#assetMap = {}
-    this.assetCount = 0
+    this.#assetCount = 0
   }
+  //endregion
 
-  async #verifyPermissions(handle: FileSystemHandle): Promise<boolean> {
-    return (await tryQueryPermission(handle, {mode: 'read'})) === 'granted'
+  #emitAssetsUpdated(): void {
+    this.dispatchEvent(Bubble<void>('assets-updated', undefined))
   }
 }

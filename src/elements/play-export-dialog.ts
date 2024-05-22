@@ -8,6 +8,7 @@ import {
 import {customElement, property, query} from 'lit/decorators.js'
 import type {PlayToast} from './play-toast.js'
 import {PlayDialog} from './play-dialog/play-dialog.js'
+import {cssReset} from '../utils/css-reset.js'
 
 import './play-button.js'
 import './play-dialog/play-dialog.js'
@@ -22,7 +23,11 @@ declare global {
 @customElement('play-export-dialog')
 export class PlayExportDialog extends LitElement {
   static override readonly styles: CSSResultGroup = css`
-    ${PlayDialog.styles}
+    ${cssReset}
+
+    legend {
+      font-weight: bold;
+    }
 
     ol {
       margin-bottom: 0;
@@ -102,7 +107,7 @@ export class PlayExportDialog extends LitElement {
   protected override render(): TemplateResult {
     const cmd = `npx devvit new --template='${this.url}'`
     return html` <play-dialog
-        title="Export project"
+        dialog-title="Export project"
         description="Start a new project from this pen:"
       >
         <ol>
