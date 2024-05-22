@@ -127,12 +127,14 @@ export class PlayAssets extends ReactiveElement {
   @property({attribute: 'allow-storage', type: Boolean})
   allowStorage: boolean = false
 
+  @property({attribute: false})
+  assetsState: AssetsState = emptyAssetsState()
+
   @property({attribute: 'filesystem-type', type: String, reflect: true})
   filesystemType: AssetsFilesystemType = 'virtual'
   //endregion
 
   //region Private fields
-  #state: AssetsState = emptyAssetsState()
   #localFileHandles: LocalFileHandles = {}
   //endregion
 
@@ -301,7 +303,9 @@ export class PlayAssets extends ReactiveElement {
 
   async #clearVirtualFiles(): Promise<void> {
     await Promise.all(
-      Object.keys(this.#state.map ?? {}).map(name => fs.promises.unlink(name))
+      Object.keys(this.assetsState.map ?? {}).map(name =>
+        fs.promises.unlink(name)
+      )
     )
   }
   //endregion
@@ -370,7 +374,7 @@ export class PlayAssets extends ReactiveElement {
   }
 
   #clearAssetMap() {
-    const assetMap = this.#state.map ?? {}
+    const assetMap = this.assetsState.map ?? {}
     for (const entry of Object.keys(assetMap)) {
       const url = assetMap[entry] ?? undefined
       if (url) {
@@ -380,13 +384,13 @@ export class PlayAssets extends ReactiveElement {
   }
 
   #updateState(updates: Partial<AssetsState>): void {
-    this.#state = {
-      ...this.#state,
+    const newState = {
+      ...this.assetsState,
       ...updates,
       filesystemType: this.filesystemType
     }
 
-    this.dispatchEvent(Bubble<AssetsState>('assets-updated', this.#state))
+    this.dispatchEvent(Bubble<AssetsState>('assets-updated', newState))
   }
   //endregion
 }

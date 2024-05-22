@@ -221,6 +221,7 @@ export class PlayPen extends LitElement {
       <play-assets
         allow-storage=${this.allowStorage}
         filesystem-type=${this._assetsFilesystemType}
+        .assetsState=${this._assetsState}
         @assets-updated=${(ev: CustomEvent<AssetsState>) => {
           this._assetsState = ev.detail
           // Rebuild the app to access the new assets

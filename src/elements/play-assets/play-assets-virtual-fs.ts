@@ -11,16 +11,17 @@ import {cssReset} from '../../utils/css-reset.js'
 import type {FileSelection} from './file-upload-dropper.js'
 import {when} from 'lit-html/directives/when.js'
 import {repeat} from 'lit/directives/repeat.js'
-
-import '../play-button.js'
-import '../play-icon/play-icon.js'
-import './file-upload-dropper.js'
+import {createRef, type Ref, ref} from 'lit/directives/ref.js'
 import {
   type AssetsState,
   type AssetsVirtualFileChange,
   emptyAssetsState
 } from './play-assets.js'
 import {Bubble} from '../../utils/bubble.js'
+
+import '../play-button.js'
+import '../play-icon/play-icon.js'
+import './file-upload-dropper.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -108,12 +109,25 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
   @query('#renameAsset', false)
   private _renameInput: HTMLInputElement | undefined
 
-  protected override willUpdate(changedProperties: PropertyValues<this>) {
+  #renameInputRef: Ref<HTMLInputElement> = createRef()
+
+  protected override willUpdate(changedProperties: PropertyValues<this>): void {
     if (changedProperties.has('assetsState')) {
       this._assetNames = Object.keys(this.assetsState.map)
       this._renameIndex = -1
       this._deleteIndex = -1
       this._clearAll = false
+    }
+  }
+
+  protected override update(
+    changedProperties: PropertyValues<{_renameIndex: number}>
+  ) {
+    super.update(changedProperties)
+    if (changedProperties.has('_renameIndex')) {
+      if (this._renameIndex >= 0) {
+        this.#renameInputRef.value?.focus()
+      }
     }
   }
 
@@ -198,6 +212,7 @@ export class PlayAssetsVirtualFilesystem extends LitElement {
           class="grow code"
           @keyup=${this.#renameKeyUp}
           @keydown=${this.#renameKeyDown}
+          ${ref(this.#renameInputRef)}
         />
         <play-button
           title="Save"

@@ -82,9 +82,8 @@ export class FileUploadDropper extends LitElement {
   #allowedMimes: string[] = []
   #acceptPatterns: RegExp[] = []
 
-  protected override update(changedProperties: PropertyValues) {
+  protected override update(changedProperties: PropertyValues<this>) {
     super.update(changedProperties)
-
     if (changedProperties.has('acceptTypes')) {
       this._accept = flattenAcceptTypes(this.acceptTypes)
       this.#acceptPatterns = this.#extractWildcardTypes()
