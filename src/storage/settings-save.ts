@@ -1,7 +1,9 @@
+import type {AssetsFilesystemType} from '../elements/play-assets/play-assets.js'
+
 /** Settings state for un/packing to/from LocalStorage. Not shareable. */
 export type SettingsSave = {
   /** Which file system type to use when loading assets */
-  assetsFilesystemType: string
+  assetsFilesystemType: AssetsFilesystemType
   /** Enable access to local file system to load assets */
   enableLocalAssets: boolean
   /** Most recent console open state. */

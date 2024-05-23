@@ -189,7 +189,7 @@ export class PlayPen extends LitElement {
     if (settings) {
       this._assetsFilesystemType = !settings.enableLocalAssets
         ? 'virtual'
-        : (settings.assetsFilesystemType as AssetsFilesystemType)
+        : settings.assetsFilesystemType
       this._enableLocalAssets = settings.enableLocalAssets
       this._openConsole = settings.openConsole
       this._remoteRuntimeOrigin = settings.remoteRuntimeOrigin
