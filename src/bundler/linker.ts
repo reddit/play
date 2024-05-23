@@ -11,7 +11,7 @@ import type {AssetMap} from '@devvit/shared-types/Assets.js'
 export function link(
   es: string,
   hostname: string,
-  assets?: AssetMap
+  assets: AssetMap
 ): LinkedBundle {
   return {
     actor: {name: 'pen', owner: 'play', version: '0.0.0.0'},
