@@ -2,6 +2,13 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.37
+
+- b2119c0 0.0.37 (#21)
+- a26564f Add asset support to :play (#19)
+- 788f519 Adjusts bundler output to work with Node. (#20)
+- 55a90fa Use npm.org registry for publishing
+
 ## v0.0.36
 
 - e101845 Revert "replace bundle size test dependency (#16)"
