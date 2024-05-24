@@ -14,9 +14,7 @@ import {Bubble} from '../../utils/bubble.js'
 
 declare global {
   interface HTMLElementEventMap {
-    'assets-filesystem-change': CustomEvent<AssetsFilesystemChange>
     'assets-updated': CustomEvent<AssetsState>
-    'assets-virtual-file-change': CustomEvent<AssetsVirtualFileChange>
   }
   interface HTMLElementTagNameMap {
     'play-assets': PlayAssets

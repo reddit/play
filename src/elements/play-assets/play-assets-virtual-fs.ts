@@ -24,6 +24,9 @@ import '../play-icon/play-icon.js'
 import './file-upload-dropper.js'
 
 declare global {
+  interface HTMLElementEventMap {
+    'assets-virtual-file-change': CustomEvent<AssetsVirtualFileChange>
+  }
   interface HTMLElementTagNameMap {
     'play-assets-virtual-fs': PlayAssetsVirtualFilesystem
   }

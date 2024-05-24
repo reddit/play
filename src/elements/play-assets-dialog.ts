@@ -24,6 +24,9 @@ import './play-assets/play-assets-local-archive.js'
 import './play-dialog/play-dialog.js'
 
 declare global {
+  interface HTMLElementEventMap {
+    'assets-filesystem-change': CustomEvent<AssetsFilesystemChange>
+  }
   interface HTMLElementTagNameMap {
     'play-assets-dialog': PlayAssetsDialog
   }

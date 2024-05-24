@@ -435,7 +435,7 @@ export class PlayPen extends LitElement {
   }
 
   /** Throttled changes after updating sources. */
-  #setSrcSideEffects = throttle(async (save: boolean): Promise<void> => {
+  #setSrcSideEffects = throttle((save: boolean): void => {
     this.#version++
     this._bundle = link(
       compile(this.#env),
