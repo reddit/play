@@ -10,6 +10,7 @@ import type {PlayIconSVG} from './play-icon/play-icon.js'
 
 import {cssReset} from '../utils/css-reset.js'
 import './play-icon/play-icon.js'
+import {ifDefined} from 'lit/directives/if-defined.js'
 
 export type PlayButtonAppearance =
   | 'bordered'
@@ -186,6 +187,7 @@ export class PlayButton extends LitElement {
   @property({type: Boolean}) disabled?: boolean
   @property() endIcon?: PlayIconSVG
   @property() icon?: PlayIconSVG
+  @property({attribute: 'icon-color', type: String}) iconColor?: string
   @property() size: PlayButtonSize = 'medium'
   @property({type: String}) label = ''
   @property({type: Number}) badge = 0
@@ -199,6 +201,7 @@ export class PlayButton extends LitElement {
           <play-icon
             size=${this.size === 'small' ? '16px' : '20px'}
             icon=${this.icon}
+            color=${ifDefined(this.iconColor)}
           ></play-icon>
         `}
         <slot></slot>
@@ -209,6 +212,7 @@ export class PlayButton extends LitElement {
           <play-icon
             size=${this.size === 'small' ? '16px' : '20px'}
             icon=${this.endIcon}
+            color=${ifDefined(this.iconColor)}
           ></play-icon>
         `}
       </button>

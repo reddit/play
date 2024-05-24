@@ -12,6 +12,7 @@ import {cssReset} from '../utils/css-reset.js'
 import {openURL} from '../utils/open-url.js'
 import type {PlayExportDialog} from './play-export-dialog.js'
 import type {PlaySettingsDialog} from './play-settings-dialog.js'
+import type {PlayAssetsDialog} from './play-assets-dialog.js'
 
 import './play-button.js'
 import './play-export-dialog.js'
@@ -20,6 +21,8 @@ import './play-logo/play-logo.js'
 import './play-new-pen-button.js'
 import './play-resizable-text-input.js'
 import './play-settings-dialog.js'
+import './play-assets-dialog.js'
+import {type AssetsState, emptyAssetsState} from './play-assets/play-assets.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -70,27 +73,53 @@ export class PlayPenHeader extends LitElement {
     }
   `
 
-  @property({attribute: 'allow-storage', type: Boolean}) allowStorage: boolean =
-    false
-  @property() name: string = ''
-  @property({attribute: false}) srcByLabel?: {readonly [key: string]: string}
-  @property({attribute: 'remote-runtime-origin'}) remoteRuntimeOrigin: string =
-    defaultSettings.remoteRuntimeOrigin
+  @property({attribute: 'allow-storage', type: Boolean})
+  allowStorage: boolean = false
+
+  @property({attribute: false})
+  assetsState: AssetsState = emptyAssetsState()
+
+  @property({attribute: 'enable-local-assets', type: Boolean})
+  enableLocalAssets: boolean = false
+
+  @property()
+  name: string = ''
+
+  @property({attribute: false})
+  srcByLabel?: {readonly [key: string]: string}
+
+  @property({attribute: 'remote-runtime-origin'})
+  remoteRuntimeOrigin: string = defaultSettings.remoteRuntimeOrigin
+
   @property({attribute: 'runtime-debug-logging', type: Boolean})
   runtimeDebugLogging: boolean = false
+
   @property({attribute: 'sandbox-app', type: Boolean})
   sandboxApp: boolean = false
-  @property() url: string = ''
+
+  @property()
+  url: string = ''
+
   @property({attribute: 'use-experimental-blocks', type: Boolean})
   useExperimentalBlocks: boolean = false
+
   @property({attribute: 'use-ui-request', type: Boolean})
   useUIRequest: boolean = false
+
   @property({attribute: 'use-local-runtime', type: Boolean})
   useLocalRuntime: boolean = false
+
   @property({attribute: 'use-remote-runtime', type: Boolean})
   useRemoteRuntime: boolean = false
-  @query('play-export-dialog') private _export!: PlayExportDialog
-  @query('play-settings-dialog') private _settings!: PlaySettingsDialog
+
+  @query('play-assets-dialog')
+  private _assets!: PlayAssetsDialog
+
+  @query('play-export-dialog')
+  private _export!: PlayExportDialog
+
+  @query('play-settings-dialog')
+  private _settings!: PlaySettingsDialog
 
   protected override render(): TemplateResult {
     return html`
@@ -128,6 +157,14 @@ export class PlayPenHeader extends LitElement {
           ><play-button
             appearance="bordered"
             size="small"
+            icon="assets-outline"
+            title="Assets"
+            label="Assets"
+            @click=${() => this._assets.open()}
+          ></play-button>
+          <play-button
+            appearance="bordered"
+            size="small"
             title=":play Settings"
             label="Settings"
             @click=${() => this._settings.open()}
@@ -143,6 +180,10 @@ export class PlayPenHeader extends LitElement {
           ></play-button>
         </div>
       </header>
+      <play-assets-dialog
+        .assetsState=${this.assetsState}
+        ?enable-local-assets=${this.enableLocalAssets}
+      ></play-assets-dialog>
       <play-export-dialog url=${this.url}></play-export-dialog>
       <play-settings-dialog
         ?allow-storage=${this.allowStorage}
@@ -153,6 +194,7 @@ export class PlayPenHeader extends LitElement {
         ?use-ui-request=${this.useUIRequest}
         ?use-local-runtime=${this.useLocalRuntime}
         ?use-remote-runtime=${this.useRemoteRuntime}
+        ?enable-local-assets=${this.enableLocalAssets}
       ></play-settings-dialog>
     `
   }

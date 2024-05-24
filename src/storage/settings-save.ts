@@ -1,5 +1,11 @@
+import type {AssetsFilesystemType} from '../elements/play-assets/play-assets.js'
+
 /** Settings state for un/packing to/from LocalStorage. Not shareable. */
 export type SettingsSave = {
+  /** Which file system type to use when loading assets */
+  assetsFilesystemType: AssetsFilesystemType
+  /** Enable access to local file system to load assets */
+  enableLocalAssets: boolean
   /** Most recent console open state. */
   openConsole: boolean
   /** Probably the devenv compute address. Eg, http://localhost:7788. */
@@ -32,6 +38,8 @@ export const defaultSettings: Readonly<SettingsSave> = {
   useLocalRuntime: true,
   useRemoteRuntime: false,
   useUIRequest: false,
+  enableLocalAssets: false,
+  assetsFilesystemType: 'virtual',
   version: 1
 }
 
