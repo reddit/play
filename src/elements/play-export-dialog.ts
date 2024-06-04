@@ -105,7 +105,7 @@ export class PlayExportDialog extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    const cmd = `npx devvit@latest new --template='${this.url}'`
+    const cmd = `devvit new --template='${this.url}'`
     return html` <play-dialog
         dialog-title="Export project"
         description="Start a new project from this pen:"
