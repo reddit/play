@@ -2,9 +2,9 @@ import type {LinkedBundle, SerializableServiceDefinition} from '@devvit/protos'
 import type {AssetMap} from '@devvit/shared-types/Assets.js'
 
 type LinkerAssetMaps = {
-  // Standard assets from the /assets project path
+  /** Standard assets from the /assets project path */
   assets?: AssetMap | undefined
-  // Webview-only assets from the /webroot project path
+  /** Webview-only assets from the /webroot project path */
   webviewAssets: AssetMap | undefined
 }
 
