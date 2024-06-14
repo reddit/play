@@ -20,6 +20,8 @@ export type SettingsSave = {
   useRemoteRuntime: boolean
   /** Enable UI request, the multithreaded renderer for blocks. */
   useUIRequest: boolean
+  /** Enable speculative execution for UI request. */
+  useSpeculativeExecution: boolean
   /**
    * Settings version recorded at save time. Used for unpacking old data if
    * structural changes have been made. Independent of package.json version.
@@ -38,6 +40,7 @@ export const defaultSettings: Readonly<SettingsSave> = {
   useLocalRuntime: true,
   useRemoteRuntime: false,
   useUIRequest: false,
+  useSpeculativeExecution: false,
   enableLocalAssets: false,
   assetsFilesystemType: 'virtual',
   version: 1

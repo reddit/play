@@ -109,6 +109,8 @@ export class PlayPreview extends LitElement {
   useRemoteRuntime: boolean = false
   @property({attribute: 'use-ui-request', type: Boolean})
   useUIRequest: boolean = false
+  @property({attribute: 'use-speculative-execution', type: Boolean})
+  useSpeculativeExecution: boolean = false
 
   @state() private _err = false
 
@@ -147,6 +149,7 @@ export class PlayPreview extends LitElement {
                 style="--rem16: 50px;"
                 ?use-experimental-blocks=${this.useExperimentalBlocks}
                 ?use-ui-request=${this.useUIRequest}
+                ?use-speculative-execution=${this.useSpeculativeExecution}
                 @devvit-ui-error=${() => (this._err = true)}
                 @devvit-image-upload=${mockImageUpload}
               ></devvit-preview>

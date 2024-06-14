@@ -72,6 +72,8 @@ export class PlaySettingsDialog extends LitElement implements PlayDialogLike {
   useRemoteRuntime: boolean = false
   @property({attribute: 'use-ui-request', type: Boolean})
   useUIRequest: boolean = false
+  @property({attribute: 'use-speculative-execution', type: Boolean})
+  useSpeculativeExecution: boolean = false
   @property({attribute: 'enable-local-assets', type: Boolean})
   enableLocalAssets: boolean = false
 
@@ -189,6 +191,21 @@ export class PlaySettingsDialog extends LitElement implements PlayDialogLike {
             />
             Use UI Request (multithreading). Default:
             ${onOff(defaultSettings.useUIRequest)}.
+          </label>
+          <label>
+            <input
+              ?checked="${this.useSpeculativeExecution}"
+              type="checkbox"
+              @change=${(ev: Event & {currentTarget: HTMLInputElement}) =>
+                this.dispatchEvent(
+                  Bubble<boolean>(
+                    'use-speculative-execution',
+                    ev.currentTarget.checked
+                  )
+                )}
+            />
+            Use speculative execution (only valid when UI request is enabled).
+            Default: ${onOff(defaultSettings.useSpeculativeExecution)}.
           </label>
           <label>
             <input

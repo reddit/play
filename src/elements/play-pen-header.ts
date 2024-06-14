@@ -106,6 +106,9 @@ export class PlayPenHeader extends LitElement {
   @property({attribute: 'use-ui-request', type: Boolean})
   useUIRequest: boolean = false
 
+  @property({attribute: 'use-speculative-execution', type: Boolean})
+  useSpeculativeExecution: boolean = false
+
   @property({attribute: 'use-local-runtime', type: Boolean})
   useLocalRuntime: boolean = false
 
@@ -192,6 +195,7 @@ export class PlayPenHeader extends LitElement {
         ?sandbox-app=${this.sandboxApp}
         ?use-experimental-blocks=${this.useExperimentalBlocks}
         ?use-ui-request=${this.useUIRequest}
+        ?use-speculative-execution=${this.useSpeculativeExecution}
         ?use-local-runtime=${this.useLocalRuntime}
         ?use-remote-runtime=${this.useRemoteRuntime}
         ?enable-local-assets=${this.enableLocalAssets}
