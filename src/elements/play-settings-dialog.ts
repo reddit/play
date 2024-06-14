@@ -23,6 +23,7 @@ declare global {
     'use-local-runtime': CustomEvent<boolean>
     'use-remote-runtime': CustomEvent<boolean>
     'use-ui-request': CustomEvent<boolean>
+    'use-speculative-execution': CustomEvent<boolean>
     'enable-local-assets': CustomEvent<boolean>
   }
   interface HTMLElementTagNameMap {
