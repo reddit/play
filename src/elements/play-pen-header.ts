@@ -103,11 +103,11 @@ export class PlayPenHeader extends LitElement {
   @property({attribute: 'use-experimental-blocks', type: Boolean})
   useExperimentalBlocks: boolean = false
 
-  @property({attribute: 'use-ui-request', type: Boolean})
-  useUIRequest: boolean = false
-
   @property({attribute: 'use-speculative-execution', type: Boolean})
   useSpeculativeExecution: boolean = false
+
+  @property({attribute: 'use-ui-request', type: Boolean})
+  useUIRequest: boolean = false
 
   @property({attribute: 'use-local-runtime', type: Boolean})
   useLocalRuntime: boolean = false

@@ -71,10 +71,10 @@ export class PlaySettingsDialog extends LitElement implements PlayDialogLike {
   useLocalRuntime: boolean = false
   @property({attribute: 'use-remote-runtime', type: Boolean})
   useRemoteRuntime: boolean = false
-  @property({attribute: 'use-ui-request', type: Boolean})
-  useUIRequest: boolean = false
   @property({attribute: 'use-speculative-execution', type: Boolean})
   useSpeculativeExecution: boolean = false
+  @property({attribute: 'use-ui-request', type: Boolean})
+  useUIRequest: boolean = false
   @property({attribute: 'enable-local-assets', type: Boolean})
   enableLocalAssets: boolean = false
 

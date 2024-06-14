@@ -162,8 +162,8 @@ export class PlayPen extends LitElement {
   @state() private _useExperimentalBlocks: boolean = false
   @state() private _useLocalRuntime: boolean = false
   @state() private _useRemoteRuntime: boolean = false
-  @state() private _useUIRequest: boolean = false
   @state() private _useSpeculativeExecution: boolean = false
+  @state() private _useUIRequest: boolean = false
   @query('play-assets') private _assets!: PlayAssets
   @query('play-editor') private _editor!: PlayEditor
   @query('play-toast') private _toast!: PlayToast
@@ -199,8 +199,8 @@ export class PlayPen extends LitElement {
       this._useExperimentalBlocks = settings.useExperimentalBlocks
       this._useLocalRuntime = settings.useLocalRuntime
       this._useRemoteRuntime = settings.useRemoteRuntime
-      this._useUIRequest = settings.useUIRequest
       this._useSpeculativeExecution = settings.useSpeculativeExecution
+      this._useUIRequest = settings.useUIRequest
       // If remote is enabled, #bundleStore is initialized in willUpdate() and
       // bundle is loaded.
     }
@@ -385,8 +385,8 @@ export class PlayPen extends LitElement {
         useLocalRuntime: this._useLocalRuntime,
         useRemoteRuntime: this._useRemoteRuntime,
         remoteRuntimeOrigin: this._remoteRuntimeOrigin,
-        useUIRequest: this._useUIRequest,
         useSpeculativeExecution: this._useSpeculativeExecution,
+        useUIRequest: this._useUIRequest,
         enableLocalAssets: this._enableLocalAssets,
         assetsFilesystemType: this._assetsState.filesystemType,
         version: 1

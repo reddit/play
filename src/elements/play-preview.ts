@@ -107,10 +107,10 @@ export class PlayPreview extends LitElement {
   useLocalRuntime: boolean = false
   @property({attribute: 'use-remote-runtime', type: Boolean})
   useRemoteRuntime: boolean = false
-  @property({attribute: 'use-ui-request', type: Boolean})
-  useUIRequest: boolean = false
   @property({attribute: 'use-speculative-execution', type: Boolean})
   useSpeculativeExecution: boolean = false
+  @property({attribute: 'use-ui-request', type: Boolean})
+  useUIRequest: boolean = false
 
   @state() private _err = false
 
