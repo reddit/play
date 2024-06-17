@@ -162,6 +162,7 @@ export class PlayPen extends LitElement {
   @state() private _useExperimentalBlocks: boolean = false
   @state() private _useLocalRuntime: boolean = false
   @state() private _useRemoteRuntime: boolean = false
+  @state() private _useSpeculativeExecution: boolean = false
   @state() private _useUIRequest: boolean = false
   @query('play-assets') private _assets!: PlayAssets
   @query('play-editor') private _editor!: PlayEditor
@@ -198,6 +199,7 @@ export class PlayPen extends LitElement {
       this._useExperimentalBlocks = settings.useExperimentalBlocks
       this._useLocalRuntime = settings.useLocalRuntime
       this._useRemoteRuntime = settings.useRemoteRuntime
+      this._useSpeculativeExecution = settings.useSpeculativeExecution
       this._useUIRequest = settings.useUIRequest
       // If remote is enabled, #bundleStore is initialized in willUpdate() and
       // bundle is loaded.
@@ -242,6 +244,7 @@ export class PlayPen extends LitElement {
         ?use-local-runtime=${this._useLocalRuntime}
         ?use-remote-runtime=${this._useRemoteRuntime}
         ?use-ui-request=${this._useUIRequest}
+        ?use-speculative-execution=${this._useSpeculativeExecution}
         ?enable-local-assets=${this._enableLocalAssets}
         @edit-name=${(ev: CustomEvent<string>) =>
           this.#setName(ev.detail, true)}
@@ -264,6 +267,8 @@ export class PlayPen extends LitElement {
           (this._remoteRuntimeOrigin = ev.detail)}
         @use-ui-request=${(ev: CustomEvent<boolean>) =>
           (this._useUIRequest = ev.detail)}
+        @use-speculative-execution=${(ev: CustomEvent<boolean>) =>
+          (this._useSpeculativeExecution = ev.detail)}
         @enable-local-assets=${(ev: CustomEvent<boolean>) => {
           this._enableLocalAssets = ev.detail
           if (!this._enableLocalAssets) {
@@ -307,6 +312,7 @@ export class PlayPen extends LitElement {
             ?use-local-runtime=${this._useLocalRuntime}
             ?use-remote-runtime=${this._useRemoteRuntime}
             ?use-ui-request=${this._useUIRequest}
+            ?use-speculative-execution=${this._useSpeculativeExecution}
             @clear-errors=${() => this.#clearPreviewErrors()}
             @devvit-ui-error=${(ev: CustomEvent<DevvitUIError>) =>
               this.#appendPreviewError(ev.detail)}
@@ -350,6 +356,7 @@ export class PlayPen extends LitElement {
         _useRemoteRuntime: boolean
         _remoteRuntimeOrigin: string
         _useUIRequest: boolean
+        _useSpeculativeExecution: boolean
         _enableLocalAssets: boolean
         _assetsState: string
       }>
@@ -366,6 +373,7 @@ export class PlayPen extends LitElement {
         props.has('_useLocalRuntime') ||
         props.has('_useRemoteRuntime') ||
         props.has('_useUIRequest') ||
+        props.has('_useSpeculativeExecution') ||
         props.has('_enableLocalAssets') ||
         props.has('_assetsState'))
     )
@@ -377,6 +385,7 @@ export class PlayPen extends LitElement {
         useLocalRuntime: this._useLocalRuntime,
         useRemoteRuntime: this._useRemoteRuntime,
         remoteRuntimeOrigin: this._remoteRuntimeOrigin,
+        useSpeculativeExecution: this._useSpeculativeExecution,
         useUIRequest: this._useUIRequest,
         enableLocalAssets: this._enableLocalAssets,
         assetsFilesystemType: this._assetsState.filesystemType,
