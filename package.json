@@ -82,6 +82,9 @@
   "license": "BSD-3-Clause",
   "main": "dist/play.js",
   "name": "@devvit/play",
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.18.0"
+  },
   "prettier": {
     "arrowParens": "avoid",
     "bracketSpacing": false,
