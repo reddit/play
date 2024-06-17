@@ -1,21 +1,29 @@
 import type {LinkedBundle, SerializableServiceDefinition} from '@devvit/protos'
 import type {AssetMap} from '@devvit/shared-types/Assets.js'
 
+type LinkerAssetMaps = {
+  /** Standard assets from the /assets project path */
+  assets?: AssetMap | undefined
+  /** Webview-only assets from the /webroot project path */
+  webviewAssets: AssetMap | undefined
+}
+
 /**
  * @arg es JavaScript
  * @arg hostname Arbitrary but something unique to the window like
  *               hello-world.local may allow concurrent sessions with the
  *               remote.
- * @arg assets AssetMap describing how to map project assets to URLs
+ * @param assetMaps Provide maps from relative filenames to their accessible URL
  */
 export function link(
   es: string,
   hostname: string,
-  assets: AssetMap
+  assetMaps: LinkerAssetMaps
 ): LinkedBundle {
   return {
     actor: {name: 'pen', owner: 'play', version: '0.0.0.0'},
-    assets: assets ?? {},
+    assets: assetMaps.assets ?? {},
+    webviewAssets: assetMaps.webviewAssets ?? {},
     code: es,
     hostname,
     provides: provides(),
@@ -144,10 +152,7 @@ function uses(): LinkedBundle[] {
           name: 'Logger',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -168,10 +173,7 @@ function uses(): LinkedBundle[] {
           name: 'HTTP',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -216,10 +218,7 @@ function uses(): LinkedBundle[] {
           name: 'KVStore',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -512,10 +511,7 @@ function uses(): LinkedBundle[] {
           name: 'RedisAPI',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -536,10 +532,7 @@ function uses(): LinkedBundle[] {
           name: 'MediaService',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -560,10 +553,7 @@ function uses(): LinkedBundle[] {
           name: 'Modlog',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -696,10 +686,7 @@ function uses(): LinkedBundle[] {
           name: 'Flair',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -730,10 +717,7 @@ function uses(): LinkedBundle[] {
           name: 'GraphQL',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -990,10 +974,7 @@ function uses(): LinkedBundle[] {
           name: 'LinksAndComments',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -1072,10 +1053,7 @@ function uses(): LinkedBundle[] {
           name: 'Listings',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -1306,10 +1284,7 @@ function uses(): LinkedBundle[] {
           name: 'Moderation',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -1366,10 +1341,7 @@ function uses(): LinkedBundle[] {
           name: 'ModNote',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -1594,10 +1566,7 @@ function uses(): LinkedBundle[] {
           name: 'NewModmail',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -1710,10 +1679,7 @@ function uses(): LinkedBundle[] {
           name: 'PrivateMessages',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -2010,10 +1976,7 @@ function uses(): LinkedBundle[] {
           name: 'Subreddits',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -2139,10 +2102,7 @@ function uses(): LinkedBundle[] {
           name: 'PostCollections',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -2271,10 +2231,7 @@ function uses(): LinkedBundle[] {
           name: 'Users',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -2467,10 +2424,7 @@ function uses(): LinkedBundle[] {
           name: 'Widgets',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -2575,10 +2529,7 @@ function uses(): LinkedBundle[] {
           name: 'Wiki',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -2612,10 +2563,7 @@ function uses(): LinkedBundle[] {
           name: 'RedditAPIV2',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -2652,10 +2600,7 @@ function uses(): LinkedBundle[] {
           name: 'Scheduler',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -2676,10 +2621,7 @@ function uses(): LinkedBundle[] {
           name: 'Settings',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     },
     {
       actor: {name: 'default', owner: 'devvit', version: '1.0.0'},
@@ -2712,10 +2654,13 @@ function uses(): LinkedBundle[] {
           name: 'AssetResolver',
           version: ''
         }
-      ],
-      code: '',
-      uses: [],
-      assets: {}
+      ]
     }
-  ]
+  ].map(partial => ({
+    ...partial,
+    code: '',
+    uses: [],
+    assets: {},
+    webviewAssets: {}
+  }))
 }
