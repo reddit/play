@@ -449,7 +449,11 @@ export class PlayPen extends LitElement {
     this._bundle = link(
       compile(this.#env),
       newHostname(this._name, this.#version),
-      this._assetsState.map
+      {
+        assets: this._assetsState.map,
+        // use a single source of assets to keep things simple
+        webviewAssets: this._assetsState.map
+      }
     )
     if (save) this.#save()
     this.#upload()
