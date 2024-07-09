@@ -19,13 +19,15 @@ export function link(
   es: string,
   hostname: string,
   assetMaps: LinkerAssetMaps
-): LinkedBundle {
+): LinkedBundle & {products: unknown} {
+  // to-do: remove products^ typing once schema is revised.
   return {
     actor: {name: 'pen', owner: 'play', version: '0.0.0.0'},
     assets: assetMaps.assets ?? {},
     webviewAssets: assetMaps.webviewAssets ?? {},
     code: es,
     hostname,
+    products: {},
     provides: provides(),
     uses: uses()
   }
