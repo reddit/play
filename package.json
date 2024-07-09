@@ -89,6 +89,7 @@
     "arrowParens": "avoid",
     "bracketSpacing": false,
     "jsxSingleQuote": true,
+    "printWidth": 80,
     "proseWrap": "always",
     "semi": false,
     "singleQuote": true,
