@@ -1,5 +1,5 @@
-import type {LinkedBundle, SerializableServiceDefinition} from '@devvit/protos'
-import type {AssetMap} from '@devvit/shared-types/Assets.js'
+import type { LinkedBundle, SerializableServiceDefinition } from '@devvit/protos'
+import type { AssetMap } from '@devvit/shared-types/Assets.js'
 
 type LinkerAssetMaps = {
   /** Standard assets from the /assets project path */
@@ -107,7 +107,8 @@ function provides(): SerializableServiceDefinition[] {
   ]
 }
 
-function uses(): LinkedBundle[] {
+function uses(): (LinkedBundle & {products: unknown})[] {
+  // to-do: remove products ^ typing once schema is revised.
   // Assume the app uses everything (`Devvit.configure({...})`). play doesn't
   // have an evaluation phase. See provides() for generation notes.
   return [
@@ -2660,9 +2661,10 @@ function uses(): LinkedBundle[] {
     }
   ].map(partial => ({
     ...partial,
-    code: '',
-    uses: [],
     assets: {},
+    code: '',
+    products: {},
+    uses: [],
     webviewAssets: {}
   }))
 }
