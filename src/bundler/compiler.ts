@@ -34,7 +34,7 @@ export function compile(env: tsvfs.VirtualTypeScriptEnvironment): string {
   //    it needs to), and we can't declare `exports` with const/let ("already been declared").
   return src.replace(
     /^"use strict";/,
-    '"use strict"; if (!module.exports) { module.exports = {}; var exports = module.exports; }\n'
+    '"use strict"; if (!module.exports) { module.exports = {}; var exports = module.exports; };'
   )
 }
 
@@ -76,6 +76,8 @@ function compilerOpts(): ts.CompilerOptions {
     skipDefaultLibCheck: true,
 
     // Improve `debugger` support.
+    // Note: this only works for play's local runtime, not for the remote/node runtime.
+    // For remote/node, we pull this sourcemap off the result and send it separately.
     inlineSources: true,
     inlineSourceMap: true,
 
