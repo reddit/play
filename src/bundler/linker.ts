@@ -40,9 +40,12 @@ export function link(
  * @returns the source map as a JSON-encoded string
  */
 function extractInlineSourceMap(es: string): string {
-  const lastLine = es.split('\n').pop();
-  const sourceMapBase64 = lastLine?.match(/\/\/# sourceMappingURL=data:application\/json;base64,(.*)$/)?.[1] ?? '';
-  return atob(sourceMapBase64);
+  const lastLine = es.split('\n').pop()
+  const sourceMapBase64 =
+    lastLine?.match(
+      /\/\/# sourceMappingURL=data:application\/json;base64,(.*)$/
+    )?.[1] ?? ''
+  return atob(sourceMapBase64)
 }
 
 function provides(): SerializableServiceDefinition[] {
