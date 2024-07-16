@@ -1,5 +1,4 @@
 import type {Empty, LinkedBundle} from '@devvit/protos'
-import {throttle} from '@devvit/shared-types/throttle.js'
 import type {DevvitUIError} from '@devvit/ui-renderer/client/devvit-custom-post.js'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
 import {
@@ -57,6 +56,7 @@ import {
   emptyAssetsState,
   PlayAssets
 } from '../play-assets/play-assets.js'
+import {debounce} from '../../utils/debounce.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -444,7 +444,7 @@ export class PlayPen extends LitElement {
   }
 
   /** Throttled changes after updating sources. */
-  #setSrcSideEffects = throttle((save: boolean): void => {
+  #setSrcSideEffects = debounce((save: boolean): void => {
     this.#version++
     this._bundle = link(
       compile(this.#env),
