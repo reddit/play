@@ -1,4 +1,4 @@
-import {debounce} from './debounce'
+import {debounce} from './debounce.js'
 import {expect, it, describe} from 'vitest'
 
 describe('debounce', () => {
