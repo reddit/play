@@ -56,7 +56,7 @@ import {
   emptyAssetsState,
   PlayAssets
 } from '../play-assets/play-assets.js'
-import {debounce} from '../../utils/debounce.js'
+import {debounce, type DebounceCleanupFn} from '../../utils/debounce.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -74,9 +74,7 @@ declare global {
 export class PlayPen extends LitElement {
   static override readonly styles: CSSResultGroup = css`
     ${cssReset}
-
     ${unsafeCSS(penVars)}
-
     :host {
       /* Light mode. */
       color: var(--color-foreground);
@@ -118,6 +116,7 @@ export class PlayPen extends LitElement {
     }
 
     /* Makes dropdowns appear over other content */
+
     play-pen-header,
     play-pen-footer {
       z-index: var(--z-menu);
@@ -181,6 +180,8 @@ export class PlayPen extends LitElement {
   private _src: string | undefined
   #template?: boolean
 
+  #cleanupDelayedSideEffects: DebounceCleanupFn = () => {}
+
   override connectedCallback(): void {
     super.connectedCallback()
 
@@ -216,6 +217,11 @@ export class PlayPen extends LitElement {
     }
     this.#setSrc(pen.src, false)
     this.#setName(pen.name, false)
+  }
+
+  override disconnectedCallback() {
+    this.#cleanupDelayedSideEffects()
+    super.disconnectedCallback()
   }
 
   protected override render(): TemplateResult {
@@ -440,10 +446,10 @@ export class PlayPen extends LitElement {
         appEntrypointFilename
       )
     }
-    this.#setSrcSideEffects(save)
+    this.#cleanupDelayedSideEffects = this.#setSrcSideEffects(save)
   }
 
-  /** Throttled changes after updating sources. */
+  /** Debounced changes after updating sources. */
   #setSrcSideEffects = debounce((save: boolean): void => {
     this.#version++
     this._bundle = link(
