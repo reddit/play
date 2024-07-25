@@ -56,6 +56,7 @@ export class PlayPreview extends LitElement {
       box-shadow: var(--shadow-xs);
       /* Prevents the border from throwing off the context.dimensions calculation */
       box-sizing: content-box;
+      margin: var(--border-width);
 
       /* When the background is visible, the preview is loading. */
       background-color: var(--color-interactive-background);
@@ -72,6 +73,12 @@ export class PlayPreview extends LitElement {
       transition-duration: 0.2s;
       transition-property: width;
       transition-timing-function: ease-out;
+    }
+
+    .preview:focus, .preview:focus-within, .preview:focus-visible {
+      border-color: var(--color-alien-blue-400);
+      border-width: calc(2 * var(--border-width));
+      margin: 0;
     }
 
     :host([previewWidth='288']) .preview {
@@ -113,6 +120,7 @@ export class PlayPreview extends LitElement {
   useUIRequest: boolean = false
 
   @state() private _err = false
+  @state() private _focused = false
 
   #meta: Metadata = {
     'actor-id': {values: []}, // Set in willUpdate().
@@ -127,11 +135,22 @@ export class PlayPreview extends LitElement {
   }
   #remote: RemoteApp | undefined
 
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.addEventListener('focusin', () => {
+      this._focused = true
+    })
+    this.addEventListener('focusout', () => {
+      this._focused = false
+    })
+  }
+
   protected override render(): TemplateResult {
     // to-do: don't override toaster's --rem16 to offset the toast. Upstream a
     // variable.
     return html`
-      <div class="preview">
+      <div class="preview" tabindex="0">
         ${this.bundle && !this._err
           ? html`
               <devvit-preview
@@ -144,6 +163,7 @@ export class PlayPreview extends LitElement {
                 .metadata=${this.#meta}
                 .remote=${this.useRemoteRuntime ? this.#remote : undefined}
                 .scheme=${this.scheme}
+                .focused=${this._focused}
                 post-id="t3_123"
                 ?runtime-debug-logging=${this.runtimeDebugLogging}
                 style="--rem16: 50px;"
