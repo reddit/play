@@ -11,7 +11,7 @@ import esbuild from 'esbuild'
 import {JSDOM} from 'jsdom'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import pkg from '../package.json' assert {type: 'json'}
+import pkg from '../package.json' with {type: 'json'}
 import {esbuildConfig} from './esbuild-config.js'
 import {readTSDs} from './tsd.js'
 
