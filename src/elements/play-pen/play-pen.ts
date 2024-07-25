@@ -108,7 +108,7 @@ export class PlayPen extends LitElement {
       column-gap: 16px;
       display: flex;
       flex-direction: row;
-      overflow: clip;
+      overflow: hidden;
       padding-right: 16px;
       padding-left: 16px;
       row-gap: 16px;
