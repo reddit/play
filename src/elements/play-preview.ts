@@ -3,7 +3,9 @@ import * as sandboxedRuntimeScript from '@devvit/previews/dist/sandboxed-pen.wor
 // @ts-expect-error
 import * as unsandboxedRuntimeScript from '@devvit/previews/dist/unsandboxed-pen.worker.min.js'
 
-import type {Empty, LinkedBundle, Metadata} from '@devvit/protos'
+import {type Metadata} from '@devvit/protos/lib/Types.js'
+import type {LinkedBundle} from '@devvit/protos/types/devvit/runtime/bundle.js'
+import {type Empty} from '@devvit/protos/types/google/protobuf/empty.js'
 import {
   LitElement,
   css,

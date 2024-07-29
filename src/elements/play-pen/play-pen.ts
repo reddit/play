@@ -1,4 +1,5 @@
-import type {Empty, LinkedBundle} from '@devvit/protos'
+import type {LinkedBundle} from '@devvit/protos/types/devvit/runtime/bundle.js'
+import {type Empty} from '@devvit/protos/types/google/protobuf/empty.js'
 import {throttle} from '@devvit/shared-types/throttle.js'
 import type {DevvitUIError} from '@devvit/ui-renderer/client/devvit-custom-post.js'
 import type {VirtualTypeScriptEnvironment} from '@typescript/vfs'
@@ -37,6 +38,14 @@ import type {ColorScheme} from '../../types/color-scheme.js'
 import type {Diagnostics} from '../../types/diagnostics.js'
 import {newHostname} from '../../utils/compute-util.js'
 import {cssReset} from '../../utils/css-reset.js'
+import {
+  type AssetsFilesystemChange,
+  type AssetsFilesystemType,
+  type AssetsState,
+  type AssetsVirtualFileChange,
+  emptyAssetsState,
+  PlayAssets
+} from '../play-assets/play-assets.js'
 import type {OpenLine} from '../play-console.js'
 import type {PlayEditor} from '../play-editor/play-editor.js'
 import type {PlayToast} from '../play-toast.js'
@@ -49,14 +58,6 @@ import '../play-pen-header.js'
 import '../play-preview-controls.js'
 import '../play-preview.js'
 import '../play-toast.js'
-import {
-  type AssetsFilesystemChange,
-  type AssetsFilesystemType,
-  type AssetsState,
-  type AssetsVirtualFileChange,
-  emptyAssetsState,
-  PlayAssets
-} from '../play-assets/play-assets.js'
 
 declare global {
   interface HTMLElementTagNameMap {

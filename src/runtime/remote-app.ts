@@ -1,16 +1,20 @@
+import { type Metadata } from '@devvit/protos/lib/Types.js'
 import {
   CustomPostDefinition,
-  UIEventHandlerDefinition,
-  type Empty,
-  type HandleUIEventRequest,
-  type HandleUIEventResponse,
-  type Metadata,
   type RenderPostRequest,
-  type RenderPostResponse,
+  type RenderPostResponse
+} from '@devvit/protos/types/devvit/reddit/custom_post/v1alpha/custom_post.js'
+import {
   type UIRequest,
   type UIResponse
-} from '@devvit/protos'
-import type {UIApp} from '@devvit/ui-renderer/client/remote-app.js'
+} from '@devvit/protos/types/devvit/ui/block_kit/v1beta/ui.js'
+import {
+  UIEventHandlerDefinition,
+  type HandleUIEventRequest,
+  type HandleUIEventResponse
+} from '@devvit/protos/types/devvit/ui/events/v1alpha/handle_ui.js'
+import { type Empty } from '@devvit/protos/types/google/protobuf/empty.js'
+import type { UIApp } from '@devvit/ui-renderer/client/remote-app.js'
 import {
   Metadata as NiceMeta,
   createChannel,
