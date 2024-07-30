@@ -1,4 +1,5 @@
-import type {LinkedBundle, SerializableServiceDefinition} from '@devvit/protos'
+import type {LinkedBundle} from '@devvit/protos/types/devvit/runtime/bundle.js'
+import type {SerializableServiceDefinition} from '@devvit/protos/types/devvit/runtime/serializable.js'
 import type {AssetMap} from '@devvit/shared-types/Assets.js'
 
 type LinkerAssetMaps = {
