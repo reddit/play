@@ -151,6 +151,14 @@ function uses(): (LinkedBundle & {products: unknown})[] {
               responseType: 'devvit.plugin.logger.LogResponse',
               requestStream: false,
               responseStream: false
+            },
+            {
+              fullName: '/devvit.plugin.logger.Logger/LogStream',
+              name: 'LogStream',
+              requestType: 'devvit.plugin.logger.LogMessage',
+              responseType: 'devvit.plugin.logger.LogResponse',
+              requestStream: true,
+              responseStream: false
             }
           ],
           name: 'Logger',
