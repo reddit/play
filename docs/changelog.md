@@ -2,6 +2,20 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.39
+
+- 8882b0b upgrade dependencies
+- fcbd274 Fix editor overflow: replace deprecated clip with hidden (#28)
+- 47110cc Fix formatter config for polyrepo
+- 029fb3a Add products to LinkedBundle.uses
+- d1049f4 Upgrade dependencies and add products schema (#24)
+- 1cf3949 Add speculative execution flag (#23)
+- c1e6228 Update linker to provide new webviewAssets field (#22)
+- 9afb695 drop npx from import dialog
+- f6961c5 recommend devvit@latest for import
+
+## v0.0.38
+
 ## v0.0.37
 
 - b2119c0 0.0.37 (#21)

@@ -1,4 +1,5 @@
-import type {LinkedBundle, SerializableServiceDefinition} from '@devvit/protos'
+import type {LinkedBundle} from '@devvit/protos/types/devvit/runtime/bundle.js'
+import type {SerializableServiceDefinition} from '@devvit/protos/types/devvit/runtime/serializable.js'
 import type {AssetMap} from '@devvit/shared-types/Assets.js'
 
 type LinkerAssetMaps = {
@@ -164,6 +165,14 @@ function uses(): (LinkedBundle & {products: unknown})[] {
               requestType: 'devvit.plugin.logger.LogMessages',
               responseType: 'devvit.plugin.logger.LogResponse',
               requestStream: false,
+              responseStream: false
+            },
+            {
+              fullName: '/devvit.plugin.logger.Logger/LogStream',
+              name: 'LogStream',
+              requestType: 'devvit.plugin.logger.LogMessage',
+              responseType: 'devvit.plugin.logger.LogResponse',
+              requestStream: true,
               responseStream: false
             }
           ],
