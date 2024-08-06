@@ -41,7 +41,7 @@ export function link(
  * @returns the source map as a JSON-encoded string
  */
 function extractInlineSourceMap(es: string): string {
-  const lastLine = es.split('\n').pop()
+  const lastLine = es.split('\n').at(-1)
   const sourceMapBase64 =
     lastLine?.match(
       /\/\/# sourceMappingURL=data:application\/json;base64,(.*)$/
