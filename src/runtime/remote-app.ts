@@ -14,7 +14,7 @@ import {
   type HandleUIEventResponse
 } from '@devvit/protos/types/devvit/ui/events/v1alpha/handle_ui.js'
 import {type Empty} from '@devvit/protos/types/google/protobuf/empty.js'
-import type {UIApp} from '@devvit/ui-renderer/client/remote-app.js'
+import type {UIApp} from '@devvit/ui-renderer/client/dispatcher/remote-app.js'
 import {
   Metadata as NiceMeta,
   createChannel,
