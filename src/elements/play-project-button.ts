@@ -139,7 +139,6 @@ export class PlayProjectButton extends LitElement {
       height: 20px;
     }
   `
-
   @property({attribute: false}) srcByLabel?: {readonly [key: string]: string}
   @property() size: SizeOptions = 'medium'
 
@@ -171,13 +170,24 @@ export class PlayProjectButton extends LitElement {
             </button>
           </div>
           <div slot="menu">
-            <play-list-item
-              label="Save"
-              icon="download-outline"
-            ></play-list-item>
+            <!--            <play-list-item-->
+            <!--              label="Save"-->
+            <!--              icon="download-outline"-->
+            <!--            ></play-list-item>-->
+            <!--            <play-list-item-->
+            <!--              label="Load"-->
+            <!--              icon="upload-outline"-->
+            <!--            ></play-list-item>-->
             <play-list-item
               label="Export"
               icon="external-outline"
+              @click=${() =>
+                this.dispatchEvent(
+                  new CustomEvent('open-export-dialog', {
+                    bubbles: true,
+                    composed: true
+                  })
+                )}
             ></play-list-item>
           </div>
         </play-dropdown-menu>

@@ -14,6 +14,7 @@ import type {PlaySettingsDialog} from './play-settings-dialog.js'
 import type {PlayAssetsDialog} from './play-assets-dialog.js'
 
 import './play-button.js'
+import './play-export-dialog.js'
 import './play-icon/play-icon.js'
 import './play-logo/play-logo.js'
 import './play-new-pen-button.js'
@@ -119,6 +120,12 @@ export class PlayPenHeader extends LitElement {
 
   @query('play-settings-dialog')
   private _settings!: PlaySettingsDialog
+
+  protected override firstUpdated(): void {
+    this.addEventListener('open-export-dialog', () => {
+      this.shadowRoot?.querySelector('play-export-dialog')?.open()
+    })
+  }
 
   protected override render(): TemplateResult {
     return html`
