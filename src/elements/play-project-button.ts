@@ -149,9 +149,9 @@ export class PlayProjectButton extends LitElement {
         <button
           class="project-pen"
           @click=${() =>
-      this.dispatchEvent(
-        Bubble<string>('edit-src', this.srcByLabel?.Default || '')
-      )}
+            this.dispatchEvent(
+              Bubble<string>('edit-src', this.srcByLabel?.Default || '')
+            )}
           title="Project Pen"
         >
           <play-icon
