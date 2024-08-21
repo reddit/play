@@ -23,6 +23,7 @@ import './play-resizable-text-input.js'
 import './play-settings-dialog.js'
 import './play-assets-dialog.js'
 import {type AssetsState, emptyAssetsState} from './play-assets/play-assets.js'
+import type {PlayExportDialog} from './play-export-dialog.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -118,12 +119,15 @@ export class PlayPenHeader extends LitElement {
   @query('play-assets-dialog')
   private _assets!: PlayAssetsDialog
 
+  @query('play-export-dialog')
+  private _export!: PlayExportDialog
+
   @query('play-settings-dialog')
   private _settings!: PlaySettingsDialog
 
   protected override firstUpdated(): void {
     this.addEventListener('open-export-dialog', () => {
-      this.shadowRoot?.querySelector('play-export-dialog')?.open()
+      this._export.open()
     })
   }
 
