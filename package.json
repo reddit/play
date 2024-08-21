@@ -60,8 +60,8 @@
       "gzip": "3.5 KB"
     },
     "dist/play-pen.js": {
-      "none": "31900 KB",
-      "gzip": "5150 KB"
+      "none": "32100 KB",
+      "gzip": "5190 KB"
     }
   },
   "typesVersions": {

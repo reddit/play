@@ -10,7 +10,6 @@ import {defaultSettings} from '../storage/settings-save.js'
 import {Bubble} from '../utils/bubble.js'
 import {cssReset} from '../utils/css-reset.js'
 import {openURL} from '../utils/open-url.js'
-import type {PlayExportDialog} from './play-export-dialog.js'
 import type {PlaySettingsDialog} from './play-settings-dialog.js'
 import type {PlayAssetsDialog} from './play-assets-dialog.js'
 
@@ -19,10 +18,12 @@ import './play-export-dialog.js'
 import './play-icon/play-icon.js'
 import './play-logo/play-logo.js'
 import './play-new-pen-button.js'
+import './play-project-button.js'
 import './play-resizable-text-input.js'
 import './play-settings-dialog.js'
 import './play-assets-dialog.js'
 import {type AssetsState, emptyAssetsState} from './play-assets/play-assets.js'
+import type {PlayExportDialog} from './play-export-dialog.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -124,6 +125,12 @@ export class PlayPenHeader extends LitElement {
   @query('play-settings-dialog')
   private _settings!: PlaySettingsDialog
 
+  protected override firstUpdated(): void {
+    this.addEventListener('open-export-dialog', () => {
+      this._export.open()
+    })
+  }
+
   protected override render(): TemplateResult {
     return html`
       <header>
@@ -149,14 +156,11 @@ export class PlayPenHeader extends LitElement {
             label="Docs"
             @click=${() => openURL('https://developers.reddit.com/docs')}
           ></play-button
-          ><play-button
-            appearance="bordered"
-            size="small"
-            icon="download-outline"
-            title="Export Pen"
-            label="Export"
-            @click=${() => this._export.open()}
-          ></play-button
+          ><play-project-button
+          size="small"
+          .srcByLabel=${this.srcByLabel}
+        ></play-project-button
+        ></play-button
           ><play-button
             appearance="bordered"
             size="small"
