@@ -184,7 +184,8 @@ export class PlayPenHeader extends LitElement {
             label="Share"
             @click=${() =>
               this.dispatchEvent(Bubble<undefined>('share', undefined))}
-          ></play-button>
+          ></play-button
+          ><slot name="account-button"></slot>
         </div>
       </header>
       <play-assets-dialog
