@@ -41,10 +41,6 @@ export class PlayApp extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <play-pen allow-storage allow-url>
-        <div slot="account-button">
-          <play-button appearance="orangered" size="small" icon="share-new-outline" label="LOL"></play-button>
-        </div>
-
         <script lang="tsx" type="application/devvit">
           console.log('Hello World!')
         </script>

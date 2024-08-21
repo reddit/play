@@ -285,7 +285,8 @@ export class PlayPen extends LitElement {
           ev: CustomEvent<AssetsVirtualFileChange>
         ) => this._assets.onVirtualFileChange(ev.detail)}
         @share=${this.#onShare}
-      ><div slot="account-button"><slot name="account-button"></slot></div></play-pen-header>
+        ><div slot="account-button"><slot name="account-button"></slot></div
+      ></play-pen-header>
       <main>
         <play-editor
           .env=${this.#env}
