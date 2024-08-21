@@ -170,14 +170,28 @@ export class PlayProjectButton extends LitElement {
             </button>
           </div>
           <div slot="menu">
-            <!--            <play-list-item-->
-            <!--              label="Save"-->
-            <!--              icon="download-outline"-->
-            <!--            ></play-list-item>-->
-            <!--            <play-list-item-->
-            <!--              label="Load"-->
-            <!--              icon="upload-outline"-->
-            <!--            ></play-list-item>-->
+            <play-list-item
+              label="Save"
+              icon="download-outline"
+              @click=${() =>
+                this.dispatchEvent(
+                  new CustomEvent('save-project', {
+                    bubbles: true,
+                    composed: true
+                  })
+                )}
+            ></play-list-item>
+            <play-list-item
+              label="Load"
+              icon="upload-outline"
+              @click=${() =>
+                this.dispatchEvent(
+                  new CustomEvent('load-project', {
+                    bubbles: true,
+                    composed: true
+                  })
+                )}
+            ></play-list-item>
             <play-list-item
               label="Export"
               icon="external-outline"

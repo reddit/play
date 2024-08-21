@@ -6,13 +6,18 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
+import {ifDefined} from 'lit/directives/if-defined.js'
 import {defaultSettings} from '../storage/settings-save.js'
 import {Bubble} from '../utils/bubble.js'
 import {cssReset} from '../utils/css-reset.js'
 import {openURL} from '../utils/open-url.js'
-import type {PlaySettingsDialog} from './play-settings-dialog.js'
+import {type AssetsState, emptyAssetsState} from './play-assets/play-assets.js'
 import type {PlayAssetsDialog} from './play-assets-dialog.js'
+import type {PlayExportDialog} from './play-export-dialog.js'
+import type {PlaySaveDialog} from './play-save-dialog.js'
+import type {PlaySettingsDialog} from './play-settings-dialog.js'
 
+import './play-assets-dialog.js'
 import './play-button.js'
 import './play-export-dialog.js'
 import './play-icon/play-icon.js'
@@ -20,10 +25,9 @@ import './play-logo/play-logo.js'
 import './play-new-pen-button.js'
 import './play-project-button.js'
 import './play-resizable-text-input.js'
+import './play-save-dialog.js'
 import './play-settings-dialog.js'
-import './play-assets-dialog.js'
-import {type AssetsState, emptyAssetsState} from './play-assets/play-assets.js'
-import type {PlayExportDialog} from './play-export-dialog.js'
+import { ProjectSave } from '../storage/project-save.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -99,6 +103,9 @@ export class PlayPenHeader extends LitElement {
   sandboxApp: boolean = false
 
   @property()
+  src: string = ''
+
+  @property()
   url: string = ''
 
   @property({attribute: 'use-experimental-blocks', type: Boolean})
@@ -122,13 +129,25 @@ export class PlayPenHeader extends LitElement {
   @query('play-export-dialog')
   private _export!: PlayExportDialog
 
+  @query('play-save-dialog')
+  private _save!: PlaySaveDialog
+
   @query('play-settings-dialog')
   private _settings!: PlaySettingsDialog
 
-  protected override firstUpdated(): void {
-    this.addEventListener('open-export-dialog', () => {
-      this._export.open()
-    })
+  @property({attribute: 'project-save', type: ProjectSave})
+  private projectSave!: ProjectSave;
+
+  private saveProject(): void {
+    console.log('save project')
+    if (this.projectSave.getCurrentProject() === undefined) {
+      console.log('open')
+      this._save.open()
+    }
+  }
+
+  private loadProject(): void {
+    console.log('load project')
   }
 
   protected override render(): TemplateResult {
@@ -159,6 +178,9 @@ export class PlayPenHeader extends LitElement {
           ><play-project-button
           size="small"
           .srcByLabel=${this.srcByLabel}
+          @open-export-dialog=${() => this._export.open()}
+          @save-project=${() => this.saveProject()}
+          @load-project=${() => this.loadProject()}
         ></play-project-button
         ></play-button
           ><play-button
@@ -193,6 +215,7 @@ export class PlayPenHeader extends LitElement {
         ?enable-local-assets=${this.enableLocalAssets}
       ></play-assets-dialog>
       <play-export-dialog url=${this.url}></play-export-dialog>
+      <play-save-dialog src=${ifDefined(this.src)}></play-save-dialog>
       <play-settings-dialog
         ?allow-storage=${this.allowStorage}
         remote-runtime-origin=${this.remoteRuntimeOrigin}
