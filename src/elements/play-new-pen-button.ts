@@ -150,10 +150,12 @@ export class PlayNewPenButton extends LitElement {
       <div class="container">
         <button
           class="new-pen"
-          @click=${() =>
+          @click=${() => {
+            this.dispatchEvent(Bubble<string>('new-project', ''))
             this.dispatchEvent(
               Bubble<string>('edit-src', this.srcByLabel?.Default || '')
             )}
+          }
           title="New pen"
         >
           <play-icon
@@ -180,6 +182,7 @@ export class PlayNewPenButton extends LitElement {
                 <play-list-item
                   label=${label}
                   @click=${() => {
+                    this.dispatchEvent(Bubble<string>('new-project', label))
                     this.dispatchEvent(Bubble<string>('edit-src', src))
                   }}
                   >${label}</play-list-item

@@ -102,41 +102,16 @@ export class PlayProjectButton extends LitElement {
       border-bottom-right-radius: 16px;
     }
 
-    :host([size='medium']) .project-options {
-      padding-top: 10px;
-      padding-right: 10px;
-      padding-bottom: 10px;
-      padding-left: 8px;
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
-    }
-
-    .project-options:hover,
     .project-template:hover {
       background-color: var(--color-secondary-background-hovered);
     }
 
-    .project-pen:active,
-    .project-options:active {
+    .project-pen:active {
       background-color: var(--color-secondary-background-active);
     }
 
-    .project-pen:focus,
-    .project-options:focus {
+    .project-pen:focus {
       outline-color: var(--color-brand-background);
-    }
-
-    .divider {
-      width: 1px;
-      background-color: var(--color-secondary-background-decor);
-    }
-
-    :host([size='small']) .divider {
-      height: 16px;
-    }
-
-    :host([size='medium']) .divider {
-      height: 20px;
     }
   `
   @property({attribute: false}) srcByLabel?: {readonly [key: string]: string}
@@ -145,24 +120,17 @@ export class PlayProjectButton extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <div class="container">
-        <button
-          class="project-pen"
-          @click=${() =>
-            this.dispatchEvent(
-              Bubble<string>('edit-src', this.srcByLabel?.Default || '')
-            )}
-          title="Project Pen"
-        >
-          <play-icon
-            size=${iconSizes[this.size]}
-            icon="download-outline"
-          ></play-icon>
-          <span>Project</span>
-        </button>
-        <div class="divider"></div>
         <play-dropdown-menu direction="down">
           <div slot="trigger">
-            <button class="project-options" title="Project Options">
+            <button
+              class="project-pen"
+              title="Project Options"
+            >
+              <play-icon
+                size=${iconSizes[this.size]}
+                icon="download-outline"
+              ></play-icon>
+              <span>Project</span>
               <play-icon
                 size=${iconSizes[this.size]}
                 icon="caret-down-outline"

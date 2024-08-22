@@ -150,8 +150,8 @@ export class PlayPen extends LitElement {
       SVG: svg
     }
 
-  @property({attribute: 'project-storage-client'})
-  storageClient: ProjectStorageClient = new LocalProjectStorageClient();
+  @property()
+  projectStorageClient: ProjectStorageClient = new LocalProjectStorageClient();
 
       /** Program executable. */
   @state() private _assetsFilesystemType: AssetsFilesystemType = 'virtual'
@@ -213,8 +213,10 @@ export class PlayPen extends LitElement {
       // bundle is loaded.
     }
 
+    console.log('storageClient', this.projectStorageClient);
+
     if (!this.#projectSave) {
-      this.#projectSave = new ProjectSave(this.storageClient);
+      this.#projectSave = new ProjectSave(this.projectStorageClient);
     }
 
     let pen

@@ -37,6 +37,7 @@ export class ProjectSave {
 
     project.files = [{name: 'main.tsx', content: new TextEncoder().encode(src)}];
     project.updatedAt = new Date();
+    await this.projectStorageClient.UpdateProject(project);
 
     // Store the project in memory and in sessionStorage
     this.setCurrentProject(project)
@@ -52,8 +53,16 @@ export class ProjectSave {
     return project;
   }
 
-  private setCurrentProject(project: PlayProject): void {
+  clearCurrentProject(): void {
+    this.setCurrentProject(undefined);
+  }
+
+  private setCurrentProject(project: PlayProject | undefined): void {
     this.currentProject = project;
-    globalThis.sessionStorage.setItem(SESSION_PROJECT_ID, JSON.stringify(project));
+    if (project) {
+      globalThis.sessionStorage.setItem(SESSION_PROJECT_ID, JSON.stringify(project));
+    } else {
+      globalThis.sessionStorage.removeItem(SESSION_PROJECT_ID);
+    }
   }
 }

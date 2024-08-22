@@ -28,6 +28,7 @@ import './play-resizable-text-input.js'
 import './play-save-dialog.js'
 import './play-settings-dialog.js'
 import { ProjectSave } from '../storage/project-save.js'
+import type { PlayToast } from './play-toast.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -135,14 +136,33 @@ export class PlayPenHeader extends LitElement {
   @query('play-settings-dialog')
   private _settings!: PlaySettingsDialog
 
+  @query('play-toast')
+  private _toast!: PlayToast
+
+  @query('.toast-content')
+  private _toastContent!: HTMLDivElement
+
   @property({attribute: 'project-save', type: ProjectSave})
   private projectSave!: ProjectSave;
 
-  private saveProject(): void {
-    console.log('save project')
+  private async saveProject(): Promise<void> {
+    let projectName = '';
     if (this.projectSave.getCurrentProject() === undefined) {
-      console.log('open')
-      this._save.open()
+      try {
+        projectName = await this._save.open(this.name)
+        this._save.close()
+      } catch (e) {
+        // If the user exited the save flow, just return.
+        return
+      }
+    }
+    try {
+      await this.projectSave.saveProject(projectName, this.src)
+      this._toastContent.textContent = 'Project saved'
+      this._toast.open()
+    } catch (e) {
+      this._toastContent.textContent = `Error: ${e}`
+      this._toast.open()
     }
   }
 
@@ -166,6 +186,7 @@ export class PlayPenHeader extends LitElement {
           <play-new-pen-button
             size="small"
             .srcByLabel=${this.srcByLabel}
+            @new-project=${() => this.projectSave.clearCurrentProject()}
           ></play-new-pen-button
           ><play-button
             appearance="bordered"
@@ -228,6 +249,7 @@ export class PlayPenHeader extends LitElement {
         ?use-remote-runtime=${this.useRemoteRuntime}
         ?enable-local-assets=${this.enableLocalAssets}
       ></play-settings-dialog>
+      <play-toast><div class="toast-content"></div></play-toast>
     `
   }
 }

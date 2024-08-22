@@ -99,6 +99,7 @@ export class PlayDialog extends LitElement implements PlayDialogLike {
 
   close(): void {
     this._dialog.close()
+    this.dispatchEvent(new CustomEvent('closed', {bubbles: true, composed: true}))
   }
 
   protected override render(): TemplateResult {

@@ -90,28 +90,70 @@ export class PlaySaveDialog extends LitElement {
 
   @property() src: string = ''
 
+  @query('#project-title', true)
+  private _nameInput!: HTMLInputElement
+
+  @query('#save-button', true)
+  private _saveButton!: HTMLInputElement
+
   @query('play-dialog', true)
   private _dialog!: PlayDialog
 
-  open(): void {
+  private _currentPromiseResolve: ((name: string) => void) | null = null
+  private _currentPromiseReject: ((err: Error) => void) | null = null
+
+  open(name: string): Promise<string> {
+    this._nameInput.value = name || ''
+    this._saveButton.disabled = this._nameInput.value === ''
     this._dialog.open()
+    this._nameInput.focus()
+    return new Promise((resolve, reject) => {
+      this._currentPromiseResolve = resolve
+      this._currentPromiseReject = reject
+    });
   }
 
   close(): void {
     this._dialog.close()
   }
 
+  _onClosed(): void {
+    if (this._currentPromiseReject) {
+      this._currentPromiseReject(new Error('Dialog closed'))
+    }
+    this._currentPromiseReject = null
+    this._currentPromiseResolve = null
+  }
+
   _save(): void {
-    console.log('saved clicked')
+    if (!this._nameInput.value) {
+      return
+    }
+    this._saveButton.disabled = true
+    if (this._currentPromiseResolve) {
+      this._currentPromiseResolve(this._nameInput.value)
+    }
+    this._currentPromiseReject = null
+    this._currentPromiseResolve = null
   }
 
   protected override render(): TemplateResult {
     return html` <play-dialog
         dialog-title="Save project"
         description="Start a project from this pen:"
+        @closed=${() => this._onClosed()}
       >
-        <input type="text" id="project-title" value="" placeholder="Project Title" />
-        <input type="button" value="Save" @click=${() => this._save()} />
+        <input type="text"
+          id="project-title"
+          placeholder="Project Title"
+          @keypress=${(e: KeyboardEvent) => {
+            this._saveButton.disabled = !this._nameInput.value
+            if (e.key === 'Enter') {
+              this._save()
+            }
+          }}
+          />
+        <input type="button" id="save-button" value="Save" @click=${() => this._save()} />
       </play-dialog>
       `
   }
