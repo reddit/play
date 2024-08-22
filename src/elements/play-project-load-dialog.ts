@@ -12,7 +12,7 @@ import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-dialog/play-dialog.js'
 import './play-toast.js'
-import type {PlayProject} from '@devvit/protos/community.js'
+import type {PlayProject} from '../storage/project-storage-client.js'
 import {ProjectSave} from '../storage/project-save.js'
 
 declare global {

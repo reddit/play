@@ -1,5 +1,7 @@
-import type {PlayProject} from '@devvit/protos/community.js'
-import type {ProjectStorageClient} from './project-storage-client.js'
+import type {
+  PlayProject,
+  ProjectStorageClient
+} from './project-storage-client.js'
 
 const SESSION_PROJECT_ID = 'SESSION_PROJECT_ID'
 

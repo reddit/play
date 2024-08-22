@@ -4,9 +4,10 @@
 // This is fairly primitive, and doesn't bother with relational data ---
 // it simply stores the entire Project objects, ProjectFiles attached.
 
-import type {ProjectStorageClient} from './project-storage-client.js'
-
-import {PlayProject} from '@devvit/protos/community.js'
+import type {
+  PlayProject,
+  ProjectStorageClient
+} from './project-storage-client.js'
 
 const DB_NAME = 'PlayProjectDB'
 const DB_VERSION = 1
