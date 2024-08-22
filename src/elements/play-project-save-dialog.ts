@@ -15,12 +15,12 @@ import './play-toast.js'
 
 declare global {
   interface HTMLElementTagNameMap {
-    'play-save-dialog': PlaySaveDialog
+    'play-project-save-dialog': PlayProjectSaveDialog
   }
 }
 
-@customElement('play-save-dialog')
-export class PlaySaveDialog extends LitElement {
+@customElement('play-project-save-dialog')
+export class PlayProjectSaveDialog extends LitElement {
   static override readonly styles: CSSResultGroup = css`
     ${cssReset}
 

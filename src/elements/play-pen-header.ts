@@ -14,8 +14,10 @@ import {openURL} from '../utils/open-url.js'
 import {type AssetsState, emptyAssetsState} from './play-assets/play-assets.js'
 import type {PlayAssetsDialog} from './play-assets-dialog.js'
 import type {PlayExportDialog} from './play-export-dialog.js'
-import type {PlaySaveDialog} from './play-save-dialog.js'
+import type {PlayProjectSaveDialog} from './play-project-save-dialog.js'
 import type {PlaySettingsDialog} from './play-settings-dialog.js'
+import type { PlayToast } from './play-toast.js'
+import type { PlayProjectLoadDialog } from './play-project-load-dialog.js'
 
 import './play-assets-dialog.js'
 import './play-button.js'
@@ -24,11 +26,11 @@ import './play-icon/play-icon.js'
 import './play-logo/play-logo.js'
 import './play-new-pen-button.js'
 import './play-project-button.js'
+import './play-project-load-dialog.js'
+import './play-project-save-dialog.js'
 import './play-resizable-text-input.js'
-import './play-save-dialog.js'
 import './play-settings-dialog.js'
 import { ProjectSave } from '../storage/project-save.js'
-import type { PlayToast } from './play-toast.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -130,8 +132,11 @@ export class PlayPenHeader extends LitElement {
   @query('play-export-dialog')
   private _export!: PlayExportDialog
 
-  @query('play-save-dialog')
-  private _save!: PlaySaveDialog
+  @query('play-project-save-dialog')
+  private _save!: PlayProjectSaveDialog
+
+  @query('play-project-load-dialog')
+  private _load!: PlayProjectLoadDialog
 
   @query('play-settings-dialog')
   private _settings!: PlaySettingsDialog
@@ -146,7 +151,7 @@ export class PlayPenHeader extends LitElement {
   private projectSave!: ProjectSave;
 
   private async saveProject(): Promise<void> {
-    let projectName = '';
+    let projectName = this.name
     if (this.projectSave.getCurrentProject() === undefined) {
       try {
         projectName = await this._save.open(this.name)
@@ -160,6 +165,7 @@ export class PlayPenHeader extends LitElement {
       await this.projectSave.saveProject(projectName, this.src)
       this._toastContent.textContent = 'Project saved'
       this._toast.open()
+      this.dispatchEvent(Bubble<string>('edit-name', projectName))
     } catch (e) {
       this._toastContent.textContent = `Error: ${e}`
       this._toast.open()
@@ -167,7 +173,7 @@ export class PlayPenHeader extends LitElement {
   }
 
   private loadProject(): void {
-    console.log('load project')
+    this._load.open()
   }
 
   protected override render(): TemplateResult {
@@ -236,7 +242,8 @@ export class PlayPenHeader extends LitElement {
         ?enable-local-assets=${this.enableLocalAssets}
       ></play-assets-dialog>
       <play-export-dialog url=${this.url}></play-export-dialog>
-      <play-save-dialog src=${ifDefined(this.src)}></play-save-dialog>
+      <play-project-save-dialog src=${ifDefined(this.src)}></play-project-save-dialog>
+      <play-project-load-dialog .projectSave=${this.projectSave}></play-project-load-dialog>
       <play-settings-dialog
         ?allow-storage=${this.allowStorage}
         remote-runtime-origin=${this.remoteRuntimeOrigin}

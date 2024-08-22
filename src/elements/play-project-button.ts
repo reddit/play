@@ -6,7 +6,6 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import {Bubble} from '../utils/bubble.js'
 
 import {cssReset} from '../utils/css-reset.js'
 import './play-dropdown-menu.js'

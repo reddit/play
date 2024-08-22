@@ -36,6 +36,7 @@ export class ProjectSave {
     }
 
     project.files = [{name: 'main.tsx', content: new TextEncoder().encode(src)}];
+    project.name = name
     project.updatedAt = new Date();
     await this.projectStorageClient.UpdateProject(project);
 
