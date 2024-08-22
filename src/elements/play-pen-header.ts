@@ -30,7 +30,7 @@ import './play-project-load-dialog.js'
 import './play-project-save-dialog.js'
 import './play-resizable-text-input.js'
 import './play-settings-dialog.js'
-import {ProjectSave} from '../storage/project-save.js'
+import {ProjectManager} from '../storage/project-manager.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -133,13 +133,13 @@ export class PlayPenHeader extends LitElement {
   private _export!: PlayExportDialog
 
   @query('play-project-save-dialog')
-  private _save!: PlayProjectSaveDialog
+  private _saveDialog!: PlayProjectSaveDialog
 
   @query('play-project-load-dialog')
-  private _load!: PlayProjectLoadDialog
+  private _loadDialog!: PlayProjectLoadDialog
 
   @query('play-settings-dialog')
-  private _settings!: PlaySettingsDialog
+  private _settingsDialog!: PlaySettingsDialog
 
   @query('play-toast')
   private _toast!: PlayToast
@@ -147,22 +147,22 @@ export class PlayPenHeader extends LitElement {
   @query('.toast-content')
   private _toastContent!: HTMLDivElement
 
-  @property({attribute: 'project-save', type: ProjectSave})
-  private projectSave!: ProjectSave
+  @property({attribute: 'project-manager', type: ProjectManager})
+  projectManager!: ProjectManager
 
-  private async saveProject(): Promise<void> {
+  private openSaveDialog(): void {
     let projectName = this.name
-    if (this.projectSave.getCurrentProject() === undefined) {
-      try {
-        projectName = await this._save.open(this.name)
-        this._save.close()
-      } catch (e) {
-        // If the user exited the save flow, just return.
-        return
-      }
+    if (this.projectManager.getCurrentProject() === undefined) {
+      this._saveDialog.open(this.name)
+      return
     }
+    this.saveProject(projectName)
+  }
+
+  private async saveProject(projectName: string): Promise<void> {
+    this._saveDialog.close()
     try {
-      await this.projectSave.saveProject(projectName, this.src)
+      await this.projectManager.saveProject(projectName, this.src)
       this._toastContent.textContent = 'Project saved'
       this._toast.open()
       this.dispatchEvent(Bubble<string>('edit-name', projectName))
@@ -173,7 +173,7 @@ export class PlayPenHeader extends LitElement {
   }
 
   private loadProject(): void {
-    this._load.open()
+    this._loadDialog.open()
   }
 
   protected override render(): TemplateResult {
@@ -192,7 +192,7 @@ export class PlayPenHeader extends LitElement {
           <play-new-pen-button
             size="small"
             .srcByLabel=${this.srcByLabel}
-            @new-project=${() => this.projectSave.clearCurrentProject()}
+            @new-project=${() => this.projectManager.clearCurrentProject()}
           ></play-new-pen-button
           ><play-button
             appearance="bordered"
@@ -206,7 +206,7 @@ export class PlayPenHeader extends LitElement {
           size="small"
           .srcByLabel=${this.srcByLabel}
           @open-export-dialog=${() => this._export.open()}
-          @save-project=${() => this.saveProject()}
+          @save-project=${() => this.openSaveDialog()}
           @load-project=${() => this.loadProject()}
         ></play-project-button
         ></play-button
@@ -223,7 +223,7 @@ export class PlayPenHeader extends LitElement {
             size="small"
             title=":play Settings"
             label="Settings"
-            @click=${() => this._settings.open()}
+            @click=${() => this._settingsDialog.open()}
           ></play-button
           ><play-button
             appearance="orangered"
@@ -242,8 +242,10 @@ export class PlayPenHeader extends LitElement {
         ?enable-local-assets=${this.enableLocalAssets}
       ></play-assets-dialog>
       <play-export-dialog url=${this.url}></play-export-dialog>
-      <play-project-save-dialog src=${ifDefined(this.src)}></play-project-save-dialog>
-      <play-project-load-dialog .projectSave=${this.projectSave}></play-project-load-dialog>
+      <play-project-save-dialog
+        src=${ifDefined(this.src)}
+        @save-dialog-submit=${(ev: CustomEvent<string>) => this.saveProject(ev.detail)}></play-project-save-dialog>
+      <play-project-load-dialog .projectManager=${this.projectManager}></play-project-load-dialog>
       <play-settings-dialog
         ?allow-storage=${this.allowStorage}
         remote-runtime-origin=${this.remoteRuntimeOrigin}

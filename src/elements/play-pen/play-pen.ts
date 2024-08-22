@@ -60,7 +60,7 @@ import '../play-preview.js'
 import '../play-toast.js'
 import type {ProjectStorageClient} from '../../storage/project-storage-client.js'
 import {LocalProjectStorageClient} from '../../storage/local-project-storage-client.js'
-import {ProjectSave} from '../../storage/project-save.js'
+import {ProjectManager} from '../../storage/project-manager.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -175,7 +175,7 @@ export class PlayPen extends LitElement {
   @query('play-editor') private _editor!: PlayEditor
   @query('play-toast') private _toast!: PlayToast
   #bundleStore?: BundleStore | undefined
-  #projectSave?: ProjectSave | undefined
+  _projectManager?: ProjectManager | undefined
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
   @state() _uploaded: Promise<Empty> = Promise.resolve({})
   /** Try to ensure the bundle hostname is unique. See compute-util. */
@@ -215,8 +215,8 @@ export class PlayPen extends LitElement {
 
     console.log('storageClient', this.projectStorageClient)
 
-    if (!this.#projectSave) {
-      this.#projectSave = new ProjectSave(this.projectStorageClient)
+    if (!this._projectManager) {
+      this._projectManager = new ProjectManager(this.projectStorageClient)
     }
 
     let pen
@@ -252,7 +252,7 @@ export class PlayPen extends LitElement {
         url=${this.#shareURL().toString()}
         .assetsState=${this._assetsState}
         .srcByLabel=${this.srcByLabel}
-        .projectSave=${this.#projectSave}
+        .projectManager=${this._projectManager}
         ?allow-storage=${this.allowStorage}
         ?runtime-debug-logging=${this._runtimeDebugLogging}
         ?sandbox-app=${this._sandboxApp}

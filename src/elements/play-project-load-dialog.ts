@@ -13,7 +13,7 @@ import './play-button.js'
 import './play-dialog/play-dialog.js'
 import './play-toast.js'
 import type {PlayProject} from '../storage/project-storage-client.js'
-import {ProjectSave} from '../storage/project-save.js'
+import {ProjectManager} from '../storage/project-manager.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -44,8 +44,6 @@ export class PlayProjectLoadDialog extends LitElement {
 
     pre {
       overflow-y: auto;
-      margin-top: var(--space);
-      margin-bottom: var(--space);
       word-break: break-all;
       white-space: pre-line;
       max-height: 100px;
@@ -55,16 +53,8 @@ export class PlayProjectLoadDialog extends LitElement {
       background-color: var(--color-secondary-background);
       color: inherit;
 
-      border-bottom-left-radius: var(--radius);
-      border-bottom-right-radius: var(--radius);
-      border-top-left-radius: var(--radius);
-      border-top-right-radius: var(--radius);
-
-      padding-left: var(--space);
-      padding-top: var(--space);
-      padding-right: var(--space);
-      padding-bottom: var(--space);
-
+      border-radius: var(--radius);
+      padding: var(--space);
       margin-top: var(--space);
       margin-bottom: var(--space);
     }
@@ -111,13 +101,13 @@ export class PlayProjectLoadDialog extends LitElement {
   @query('play-dialog', true)
   private _dialog!: PlayDialog
 
-  @property({attribute: 'project-save', type: ProjectSave})
-  private projectSave!: ProjectSave
+  @property({attribute: 'project-manager', type: ProjectManager})
+  projectManager!: ProjectManager
 
   async open(): Promise<void> {
     this._loading = true
     this._dialog.open()
-    this._projects = await this.projectSave.getProjectList()
+    this._projects = await this.projectManager.getProjectList()
     this._loading = false
   }
 
@@ -128,7 +118,7 @@ export class PlayProjectLoadDialog extends LitElement {
   async _load(): Promise<void> {
     const projectId = this._projectSelect.value
     if (!projectId) return
-    const project = await this.projectSave.loadProject(projectId)
+    const project = await this.projectManager.loadProject(projectId)
 
     // TODO: this assumes just one file for Play.
     const fileContent =

@@ -12,6 +12,7 @@ import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-dialog/play-dialog.js'
 import './play-toast.js'
+import {Bubble} from '../utils/bubble.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -42,8 +43,6 @@ export class PlayProjectSaveDialog extends LitElement {
 
     pre {
       overflow-y: auto;
-      margin-top: var(--space);
-      margin-bottom: var(--space);
       word-break: break-all;
       white-space: pre-line;
       max-height: 100px;
@@ -53,16 +52,8 @@ export class PlayProjectSaveDialog extends LitElement {
       background-color: var(--color-secondary-background);
       color: inherit;
 
-      border-bottom-left-radius: var(--radius);
-      border-bottom-right-radius: var(--radius);
-      border-top-left-radius: var(--radius);
-      border-top-right-radius: var(--radius);
-
-      padding-left: var(--space);
-      padding-top: var(--space);
-      padding-right: var(--space);
-      padding-bottom: var(--space);
-
+      border-radius: var(--radius);
+      padding: var(--space);
       margin-top: var(--space);
       margin-bottom: var(--space);
     }
@@ -99,30 +90,15 @@ export class PlayProjectSaveDialog extends LitElement {
   @query('play-dialog', true)
   private _dialog!: PlayDialog
 
-  private _currentPromiseResolve: ((name: string) => void) | null = null
-  private _currentPromiseReject: ((err: Error) => void) | null = null
-
-  open(name: string): Promise<string> {
+  open(name: string): void {
     this._nameInput.value = name || ''
     this._saveButton.disabled = this._nameInput.value === ''
     this._dialog.open()
     this._nameInput.focus()
-    return new Promise((resolve, reject) => {
-      this._currentPromiseResolve = resolve
-      this._currentPromiseReject = reject
-    })
   }
 
   close(): void {
     this._dialog.close()
-  }
-
-  _onClosed(): void {
-    if (this._currentPromiseReject) {
-      this._currentPromiseReject(new Error('Dialog closed'))
-    }
-    this._currentPromiseReject = null
-    this._currentPromiseResolve = null
   }
 
   _save(): void {
@@ -130,11 +106,9 @@ export class PlayProjectSaveDialog extends LitElement {
       return
     }
     this._saveButton.disabled = true
-    if (this._currentPromiseResolve) {
-      this._currentPromiseResolve(this._nameInput.value)
-    }
-    this._currentPromiseReject = null
-    this._currentPromiseResolve = null
+    this.dispatchEvent(
+      Bubble<string>('save-dialog-submit', this._nameInput.value)
+    )
   }
 
   protected override render(): TemplateResult {
@@ -142,7 +116,6 @@ export class PlayProjectSaveDialog extends LitElement {
       <play-dialog
         dialog-title="Save project"
         description="Start a project from this pen:"
-        @closed=${() => this._onClosed()}
       >
         <input
           type="text"

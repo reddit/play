@@ -10,7 +10,7 @@ const SESSION_PROJECT_ID = 'SESSION_PROJECT_ID'
  *
  * The underlying storage mechanism is abstracted away by the injected storage client.
  */
-export class ProjectSave {
+export class ProjectManager {
   private projectStorageClient: ProjectStorageClient
   private currentProject: PlayProject | undefined
 
