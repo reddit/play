@@ -58,9 +58,9 @@ import '../play-pen-header.js'
 import '../play-preview-controls.js'
 import '../play-preview.js'
 import '../play-toast.js'
-import type { ProjectStorageClient } from '../../storage/project-storage-client.js'
-import { LocalProjectStorageClient } from '../../storage/local-project-storage-client.js'
-import { ProjectSave } from '../../storage/project-save.js'
+import type {ProjectStorageClient} from '../../storage/project-storage-client.js'
+import {LocalProjectStorageClient} from '../../storage/local-project-storage-client.js'
+import {ProjectSave} from '../../storage/project-save.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -151,9 +151,9 @@ export class PlayPen extends LitElement {
     }
 
   @property()
-  projectStorageClient: ProjectStorageClient = new LocalProjectStorageClient();
+  projectStorageClient: ProjectStorageClient = new LocalProjectStorageClient()
 
-      /** Program executable. */
+  /** Program executable. */
   @state() private _assetsFilesystemType: AssetsFilesystemType = 'virtual'
   @state() private _assetsState: AssetsState = emptyAssetsState()
   @state() private _bundle?: Readonly<LinkedBundle> | undefined
@@ -213,10 +213,10 @@ export class PlayPen extends LitElement {
       // bundle is loaded.
     }
 
-    console.log('storageClient', this.projectStorageClient);
+    console.log('storageClient', this.projectStorageClient)
 
     if (!this.#projectSave) {
-      this.#projectSave = new ProjectSave(this.projectStorageClient);
+      this.#projectSave = new ProjectSave(this.projectStorageClient)
     }
 
     let pen

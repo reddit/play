@@ -110,7 +110,7 @@ export class PlayProjectSaveDialog extends LitElement {
     return new Promise((resolve, reject) => {
       this._currentPromiseResolve = resolve
       this._currentPromiseReject = reject
-    });
+    })
   }
 
   close(): void {
@@ -138,12 +138,14 @@ export class PlayProjectSaveDialog extends LitElement {
   }
 
   protected override render(): TemplateResult {
-    return html` <play-dialog
+    return html`
+      <play-dialog
         dialog-title="Save project"
         description="Start a project from this pen:"
         @closed=${() => this._onClosed()}
       >
-        <input type="text"
+        <input
+          type="text"
           id="project-title"
           placeholder="Project Title"
           @keypress=${(e: KeyboardEvent) => {
@@ -152,9 +154,14 @@ export class PlayProjectSaveDialog extends LitElement {
               this._save()
             }
           }}
-          />
-        <input type="button" id="save-button" value="Save" @click=${() => this._save()} />
+        />
+        <input
+          type="button"
+          id="save-button"
+          value="Save"
+          @click=${() => this._save()}
+        />
       </play-dialog>
-      `
+    `
   }
 }

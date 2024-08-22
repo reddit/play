@@ -12,8 +12,8 @@ import {cssReset} from '../utils/css-reset.js'
 import './play-button.js'
 import './play-dialog/play-dialog.js'
 import './play-toast.js'
-import type { PlayProject } from '@devvit/protos/community.js'
-import { ProjectSave } from '../storage/project-save.js'
+import type {PlayProject} from '@devvit/protos/community.js'
+import {ProjectSave} from '../storage/project-save.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -112,7 +112,7 @@ export class PlayProjectLoadDialog extends LitElement {
   private _dialog!: PlayDialog
 
   @property({attribute: 'project-save', type: ProjectSave})
-  private projectSave!: ProjectSave;
+  private projectSave!: ProjectSave
 
   async open(): Promise<void> {
     this._loading = true
@@ -131,37 +131,61 @@ export class PlayProjectLoadDialog extends LitElement {
     const project = await this.projectSave.loadProject(projectId)
 
     // TODO: this assumes just one file for Play.
-    const fileContent = (project.files || []).length > 0 ? new TextDecoder().decode(project.files[0]?.content) : ''
+    const fileContent =
+      (project.files || []).length > 0
+        ? new TextDecoder().decode(project.files[0]?.content)
+        : ''
 
-    this.dispatchEvent(new CustomEvent('edit-src', { detail: fileContent, bubbles: true, composed: true }))
-    this.dispatchEvent(new CustomEvent('edit-name', { detail: project.name, bubbles: true, composed: true }))
+    this.dispatchEvent(
+      new CustomEvent('edit-src', {
+        detail: fileContent,
+        bubbles: true,
+        composed: true
+      })
+    )
+    this.dispatchEvent(
+      new CustomEvent('edit-name', {
+        detail: project.name,
+        bubbles: true,
+        composed: true
+      })
+    )
     this.close()
   }
 
   protected override render(): TemplateResult {
-    return html` <play-dialog
+    return html`
+      <play-dialog
         dialog-title="Load project"
         description="Load one of your saved projects:"
       >
         ${this._loading
           ? html`<p>Loading projects...</p>`
           : html`<p>Choose a project to load:</p>
-            ${this._projects.length > 0
-              ? html`
-                  <div>
-                    <select id="project-select" size="8">
-                      ${this._projects.map(
-                        (project) => html`<option value="${project.id}">${project.name}</option>`
-                      )}
-                    </select>
-                  </div>
-                `
-              : html`<p>No projects available</p>`}`}
+              ${this._projects.length > 0
+                ? html`
+                    <div>
+                      <select id="project-select" size="8">
+                        ${this._projects.map(
+                          project =>
+                            html`<option value="${project.id}">
+                              ${project.name}
+                            </option>`
+                        )}
+                      </select>
+                    </div>
+                  `
+                : html`<p>No projects available</p>`}`}
 
         <div>
-          <input type="button" id="load-button" value="Load" @click=${() => this._load()} />
+          <input
+            type="button"
+            id="load-button"
+            value="Load"
+            @click=${() => this._load()}
+          />
         </div>
       </play-dialog>
-      `
+    `
   }
 }

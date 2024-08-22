@@ -16,8 +16,8 @@ import type {PlayAssetsDialog} from './play-assets-dialog.js'
 import type {PlayExportDialog} from './play-export-dialog.js'
 import type {PlayProjectSaveDialog} from './play-project-save-dialog.js'
 import type {PlaySettingsDialog} from './play-settings-dialog.js'
-import type { PlayToast } from './play-toast.js'
-import type { PlayProjectLoadDialog } from './play-project-load-dialog.js'
+import type {PlayToast} from './play-toast.js'
+import type {PlayProjectLoadDialog} from './play-project-load-dialog.js'
 
 import './play-assets-dialog.js'
 import './play-button.js'
@@ -30,7 +30,7 @@ import './play-project-load-dialog.js'
 import './play-project-save-dialog.js'
 import './play-resizable-text-input.js'
 import './play-settings-dialog.js'
-import { ProjectSave } from '../storage/project-save.js'
+import {ProjectSave} from '../storage/project-save.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -148,7 +148,7 @@ export class PlayPenHeader extends LitElement {
   private _toastContent!: HTMLDivElement
 
   @property({attribute: 'project-save', type: ProjectSave})
-  private projectSave!: ProjectSave;
+  private projectSave!: ProjectSave
 
   private async saveProject(): Promise<void> {
     let projectName = this.name

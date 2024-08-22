@@ -121,10 +121,7 @@ export class PlayProjectButton extends LitElement {
       <div class="container">
         <play-dropdown-menu direction="down">
           <div slot="trigger">
-            <button
-              class="project-pen"
-              title="Project Options"
-            >
+            <button class="project-pen" title="Project Options">
               <play-icon
                 size=${iconSizes[this.size]}
                 icon="download-outline"

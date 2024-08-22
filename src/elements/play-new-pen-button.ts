@@ -154,8 +154,8 @@ export class PlayNewPenButton extends LitElement {
             this.dispatchEvent(Bubble<string>('new-project', ''))
             this.dispatchEvent(
               Bubble<string>('edit-src', this.srcByLabel?.Default || '')
-            )}
-          }
+            )
+          }}
           title="New pen"
         >
           <play-icon
