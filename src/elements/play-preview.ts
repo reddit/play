@@ -118,6 +118,8 @@ export class PlayPreview extends LitElement {
 
   #meta: Metadata = {
     'actor-id': {values: []}, // Set in willUpdate().
+    'devvit-accept-language': {values: [navigator.language]},
+    'devvit-accept-timezone': {values: [Intl.DateTimeFormat().resolvedOptions().timeZone]},
     'devvit-actor': {values: ['main']},
     'devvit-app': {values: ['pen']},
     'devvit-app-user': {values: ['t2_123']},
@@ -125,7 +127,7 @@ export class PlayPreview extends LitElement {
     'devvit-installation': {values: ['123']},
     'devvit-subreddit': {values: ['t5_123']},
     'devvit-user': {values: ['t2_123']},
-    'devvit-user-agent': {values: ['Reddit;Play;not-provided']}
+    'devvit-user-agent': {values: ['Reddit;Play;not-provided']},
   }
   #remote: RemoteApp | undefined
 
