@@ -6,23 +6,31 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
+import {ifDefined} from 'lit/directives/if-defined.js'
+import {ProjectManager} from '../storage/project-manager.js'
 import {defaultSettings} from '../storage/settings-save.js'
 import {Bubble} from '../utils/bubble.js'
 import {cssReset} from '../utils/css-reset.js'
 import {openURL} from '../utils/open-url.js'
-import type {PlayExportDialog} from './play-export-dialog.js'
-import type {PlaySettingsDialog} from './play-settings-dialog.js'
+import {type AssetsState, emptyAssetsState} from './play-assets/play-assets.js'
 import type {PlayAssetsDialog} from './play-assets-dialog.js'
+import type {PlayExportDialog} from './play-export-dialog.js'
+import type {PlayProjectSaveDialog} from './play-project-save-dialog.js'
+import type {PlaySettingsDialog} from './play-settings-dialog.js'
+import type {PlayToast} from './play-toast.js'
+import type {PlayProjectLoadDialog} from './play-project-load-dialog.js'
 
+import './play-assets-dialog.js'
 import './play-button.js'
 import './play-export-dialog.js'
 import './play-icon/play-icon.js'
 import './play-logo/play-logo.js'
 import './play-new-pen-button.js'
+import './play-project-button.js'
+import './play-project-load-dialog.js'
+import './play-project-save-dialog.js'
 import './play-resizable-text-input.js'
 import './play-settings-dialog.js'
-import './play-assets-dialog.js'
-import {type AssetsState, emptyAssetsState} from './play-assets/play-assets.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -98,6 +106,9 @@ export class PlayPenHeader extends LitElement {
   sandboxApp: boolean = false
 
   @property()
+  src: string = ''
+
+  @property()
   url: string = ''
 
   @property({attribute: 'use-experimental-blocks', type: Boolean})
@@ -121,8 +132,49 @@ export class PlayPenHeader extends LitElement {
   @query('play-export-dialog')
   private _export!: PlayExportDialog
 
+  @query('play-project-save-dialog')
+  private _saveDialog!: PlayProjectSaveDialog
+
+  @query('play-project-load-dialog')
+  private _loadDialog!: PlayProjectLoadDialog
+
   @query('play-settings-dialog')
-  private _settings!: PlaySettingsDialog
+  private _settingsDialog!: PlaySettingsDialog
+
+  @query('play-toast')
+  private _toast!: PlayToast
+
+  @query('.toast-content')
+  private _toastContent!: HTMLDivElement
+
+  @property({attribute: 'project-manager', type: ProjectManager})
+  projectManager!: ProjectManager
+
+  private openSaveDialog(): void {
+    let projectName = this.name
+    if (this.projectManager.getCurrentProject() === undefined) {
+      this._saveDialog.open(this.name)
+      return
+    }
+    this.saveProject(projectName)
+  }
+
+  private async saveProject(projectName: string): Promise<void> {
+    this._saveDialog.close()
+    try {
+      await this.projectManager.saveProject(projectName, this.src)
+      this._toastContent.textContent = 'Project saved'
+      this._toast.open()
+      this.dispatchEvent(Bubble<string>('edit-name', projectName))
+    } catch (e) {
+      this._toastContent.textContent = `Error: ${e}`
+      this._toast.open()
+    }
+  }
+
+  private loadProject(): void {
+    this._loadDialog.open()
+  }
 
   protected override render(): TemplateResult {
     return html`
@@ -140,6 +192,7 @@ export class PlayPenHeader extends LitElement {
           <play-new-pen-button
             size="small"
             .srcByLabel=${this.srcByLabel}
+            @new-project=${() => this.projectManager.clearCurrentProject()}
           ></play-new-pen-button
           ><play-button
             appearance="bordered"
@@ -149,14 +202,14 @@ export class PlayPenHeader extends LitElement {
             label="Docs"
             @click=${() => openURL('https://developers.reddit.com/docs')}
           ></play-button
-          ><play-button
-            appearance="bordered"
+          ><play-project-button
             size="small"
-            icon="download-outline"
-            title="Export Pen"
-            label="Export"
-            @click=${() => this._export.open()}
-          ></play-button
+            .srcByLabel=${this.srcByLabel}
+            @open-export-dialog=${() => this._export.open()}
+            @save-project=${() => this.openSaveDialog()}
+            @load-project=${() => this.loadProject()}
+        ></play-project-button
+        ></play-button
           ><play-button
             appearance="bordered"
             size="small"
@@ -170,7 +223,7 @@ export class PlayPenHeader extends LitElement {
             size="small"
             title=":play Settings"
             label="Settings"
-            @click=${() => this._settings.open()}
+            @click=${() => this._settingsDialog.open()}
           ></play-button
           ><play-button
             appearance="orangered"
@@ -180,7 +233,8 @@ export class PlayPenHeader extends LitElement {
             label="Share"
             @click=${() =>
               this.dispatchEvent(Bubble<undefined>('share', undefined))}
-          ></play-button>
+          ></play-button
+          ><slot name="account-button"></slot>
         </div>
       </header>
       <play-assets-dialog
@@ -188,6 +242,10 @@ export class PlayPenHeader extends LitElement {
         ?enable-local-assets=${this.enableLocalAssets}
       ></play-assets-dialog>
       <play-export-dialog url=${this.url}></play-export-dialog>
+      <play-project-save-dialog
+        src=${ifDefined(this.src)}
+        @save-dialog-submit=${(ev: CustomEvent<string>) => this.saveProject(ev.detail)}></play-project-save-dialog>
+      <play-project-load-dialog .projectManager=${this.projectManager}></play-project-load-dialog>
       <play-settings-dialog
         ?allow-storage=${this.allowStorage}
         remote-runtime-origin=${this.remoteRuntimeOrigin}
@@ -200,6 +258,7 @@ export class PlayPenHeader extends LitElement {
         ?use-remote-runtime=${this.useRemoteRuntime}
         ?enable-local-assets=${this.enableLocalAssets}
       ></play-settings-dialog>
+      <play-toast><div class="toast-content"></div></play-toast>
     `
   }
 }

@@ -58,6 +58,9 @@ import '../play-pen-header.js'
 import '../play-preview-controls.js'
 import '../play-preview.js'
 import '../play-toast.js'
+import type {ProjectStorageClient} from '../../storage/project-storage-client.js'
+import {LocalProjectStorageClient} from '../../storage/local-project-storage-client.js'
+import {ProjectManager} from '../../storage/project-manager.js'
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -147,6 +150,9 @@ export class PlayPen extends LitElement {
       SVG: svg
     }
 
+  @property()
+  projectStorageClient: ProjectStorageClient = new LocalProjectStorageClient()
+
   /** Program executable. */
   @state() private _assetsFilesystemType: AssetsFilesystemType = 'virtual'
   @state() private _assetsState: AssetsState = emptyAssetsState()
@@ -169,6 +175,7 @@ export class PlayPen extends LitElement {
   @query('play-editor') private _editor!: PlayEditor
   @query('play-toast') private _toast!: PlayToast
   #bundleStore?: BundleStore | undefined
+  _projectManager?: ProjectManager | undefined
   readonly #env: VirtualTypeScriptEnvironment = newTSEnv()
   @state() _uploaded: Promise<Empty> = Promise.resolve({})
   /** Try to ensure the bundle hostname is unique. See compute-util. */
@@ -206,6 +213,10 @@ export class PlayPen extends LitElement {
       // bundle is loaded.
     }
 
+    if (!this._projectManager) {
+      this._projectManager = new ProjectManager(this.projectStorageClient)
+    }
+
     let pen
     if (this.allowURL) pen = loadPen(location)
     if (this.allowStorage) pen ??= loadPen(localStorage)
@@ -235,9 +246,11 @@ export class PlayPen extends LitElement {
       ><play-pen-header
         name=${this._name}
         remote-runtime-origin=${this._remoteRuntimeOrigin}
+        src=${ifDefined(this._src)}
         url=${this.#shareURL().toString()}
         .assetsState=${this._assetsState}
         .srcByLabel=${this.srcByLabel}
+        .projectManager=${this._projectManager}
         ?allow-storage=${this.allowStorage}
         ?runtime-debug-logging=${this._runtimeDebugLogging}
         ?sandbox-app=${this._sandboxApp}
@@ -285,6 +298,7 @@ export class PlayPen extends LitElement {
           ev: CustomEvent<AssetsVirtualFileChange>
         ) => this._assets.onVirtualFileChange(ev.detail)}
         @share=${this.#onShare}
+        ><div slot="account-button"><slot name="account-button"></slot></div
       ></play-pen-header>
       <main>
         <play-editor
@@ -418,7 +432,7 @@ export class PlayPen extends LitElement {
   }
 
   /** Save to LocalStorage and URL as allowed. */
-  #save(): void {
+  #autosave(): void {
     savePen(
       this.allowURL ? location : undefined,
       this.allowStorage ? localStorage : undefined,
@@ -428,7 +442,7 @@ export class PlayPen extends LitElement {
 
   #setName(name: string, save: boolean): void {
     this._name = name
-    if (save) this.#save()
+    if (save) this.#autosave()
   }
 
   #setSrc(src: string, save: boolean): void {
@@ -456,7 +470,7 @@ export class PlayPen extends LitElement {
         webviewAssets: this._assetsState.map
       }
     )
-    if (save) this.#save()
+    if (save) this.#autosave()
     this.#upload()
   }, 500)
 

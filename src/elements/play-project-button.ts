@@ -6,9 +6,6 @@ import {
   type TemplateResult
 } from 'lit'
 import {customElement, property} from 'lit/decorators.js'
-import {repeat} from 'lit/directives/repeat.js'
-import {Bubble} from '../utils/bubble.js'
-import {openURL} from '../utils/open-url.js'
 
 import {cssReset} from '../utils/css-reset.js'
 import './play-dropdown-menu.js'
@@ -26,12 +23,12 @@ declare global {
     'edit-src': CustomEvent<string>
   }
   interface HTMLElementTagNameMap {
-    'play-new-pen-button': PlayNewPenButton
+    'play-project-button': PlayProjectButton
   }
 }
 
-@customElement('play-new-pen-button')
-export class PlayNewPenButton extends LitElement {
+@customElement('play-project-button')
+export class PlayProjectButton extends LitElement {
   static override readonly styles: CSSResultGroup = css`
     ${cssReset}
 
@@ -70,12 +67,12 @@ export class PlayNewPenButton extends LitElement {
       letter-spacing: -0.3px;
     }
 
-    .new-pen {
+    .project-pen {
       display: flex;
       flex-direction: row;
     }
 
-    :host([size='small']) .new-pen {
+    :host([size='small']) .project-pen {
       column-gap: 8px;
       padding-top: 8px;
       padding-right: 8px;
@@ -85,7 +82,7 @@ export class PlayNewPenButton extends LitElement {
       border-bottom-left-radius: 16px;
     }
 
-    :host([size='medium']) .new-pen {
+    :host([size='medium']) .project-pen {
       column-gap: 8px;
       padding-top: 10px;
       padding-right: 12px;
@@ -95,79 +92,28 @@ export class PlayNewPenButton extends LitElement {
       border-bottom-left-radius: 20px;
     }
 
-    :host([size='small']) .new-from-template {
-      padding-top: 8px;
-      padding-right: 8px;
-      padding-bottom: 8px;
-      padding-left: 8px;
-      border-top-right-radius: 16px;
-      border-bottom-right-radius: 16px;
-    }
-
-    :host([size='medium']) .new-from-template {
-      padding-top: 10px;
-      padding-right: 10px;
-      padding-bottom: 10px;
-      padding-left: 8px;
-      border-top-right-radius: 20px;
-      border-bottom-right-radius: 20px;
-    }
-
-    .new-pen:hover,
-    .new-from-template:hover {
-      background-color: var(--color-secondary-background-hovered);
-    }
-
-    .new-pen:active,
-    .new-from-template:active {
+    .project-pen:active {
       background-color: var(--color-secondary-background-active);
     }
 
-    .new-pen:focus,
-    .new-from-template:focus {
+    .project-pen:focus {
       outline-color: var(--color-brand-background);
     }
-
-    .divider {
-      width: 1px;
-      background-color: var(--color-secondary-background-decor);
-    }
-
-    :host([size='small']) .divider {
-      height: 16px;
-    }
-
-    :host([size='medium']) .divider {
-      height: 20px;
-    }
   `
-
   @property({attribute: false}) srcByLabel?: {readonly [key: string]: string}
   @property() size: SizeOptions = 'medium'
 
   protected override render(): TemplateResult {
     return html`
       <div class="container">
-        <button
-          class="new-pen"
-          @click=${() => {
-            this.dispatchEvent(Bubble<string>('new-project', ''))
-            this.dispatchEvent(
-              Bubble<string>('edit-src', this.srcByLabel?.Default || '')
-            )
-          }}
-          title="New pen"
-        >
-          <play-icon
-            size=${iconSizes[this.size]}
-            icon="add-outline"
-          ></play-icon>
-          <span>New</span>
-        </button>
-        <div class="divider"></div>
         <play-dropdown-menu direction="down">
           <div slot="trigger">
-            <button class="new-from-template" title="New pen from template">
+            <button class="project-pen" title="Project Options">
+              <play-icon
+                size=${iconSizes[this.size]}
+                icon="download-outline"
+              ></play-icon>
+              <span>Project</span>
               <play-icon
                 size=${iconSizes[this.size]}
                 icon="caret-down-outline"
@@ -175,25 +121,38 @@ export class PlayNewPenButton extends LitElement {
             </button>
           </div>
           <div slot="menu">
-            ${repeat(
-              Object.entries(this.srcByLabel ?? {}),
-              ([label]) => label,
-              ([label, src]) => html`
-                <play-list-item
-                  label=${label}
-                  @click=${() => {
-                    this.dispatchEvent(Bubble<string>('new-project', label))
-                    this.dispatchEvent(Bubble<string>('edit-src', src))
-                  }}
-                  >${label}</play-list-item
-                >
-              `
-            )}
             <play-list-item
-              label="More examples"
-              endIcon="external-outline"
+              label="Save"
+              icon="download-outline"
               @click=${() =>
-                openURL('https://developers.reddit.com/docs/playground')}
+                this.dispatchEvent(
+                  new CustomEvent('save-project', {
+                    bubbles: true,
+                    composed: true
+                  })
+                )}
+            ></play-list-item>
+            <play-list-item
+              label="Load"
+              icon="upload-outline"
+              @click=${() =>
+                this.dispatchEvent(
+                  new CustomEvent('load-project', {
+                    bubbles: true,
+                    composed: true
+                  })
+                )}
+            ></play-list-item>
+            <play-list-item
+              label="Export"
+              icon="external-outline"
+              @click=${() =>
+                this.dispatchEvent(
+                  new CustomEvent('open-export-dialog', {
+                    bubbles: true,
+                    composed: true
+                  })
+                )}
             ></play-list-item>
           </div>
         </play-dropdown-menu>
