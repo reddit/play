@@ -213,8 +213,6 @@ export class PlayPen extends LitElement {
       // bundle is loaded.
     }
 
-    console.log('storageClient', this.projectStorageClient)
-
     if (!this._projectManager) {
       this._projectManager = new ProjectManager(this.projectStorageClient)
     }

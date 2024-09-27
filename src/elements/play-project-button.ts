@@ -92,19 +92,6 @@ export class PlayProjectButton extends LitElement {
       border-bottom-left-radius: 20px;
     }
 
-    :host([size='small']) .new-from-template {
-      padding-top: 8px;
-      padding-right: 8px;
-      padding-bottom: 8px;
-      padding-left: 8px;
-      border-top-right-radius: 16px;
-      border-bottom-right-radius: 16px;
-    }
-
-    .project-template:hover {
-      background-color: var(--color-secondary-background-hovered);
-    }
-
     .project-pen:active {
       background-color: var(--color-secondary-background-active);
     }

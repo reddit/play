@@ -7,6 +7,7 @@ import {
 } from 'lit'
 import {customElement, property, query} from 'lit/decorators.js'
 import {ifDefined} from 'lit/directives/if-defined.js'
+import {ProjectManager} from '../storage/project-manager.js'
 import {defaultSettings} from '../storage/settings-save.js'
 import {Bubble} from '../utils/bubble.js'
 import {cssReset} from '../utils/css-reset.js'
@@ -30,7 +31,6 @@ import './play-project-load-dialog.js'
 import './play-project-save-dialog.js'
 import './play-resizable-text-input.js'
 import './play-settings-dialog.js'
-import {ProjectManager} from '../storage/project-manager.js'
 
 declare global {
   interface HTMLElementEventMap {
@@ -203,11 +203,11 @@ export class PlayPenHeader extends LitElement {
             @click=${() => openURL('https://developers.reddit.com/docs')}
           ></play-button
           ><play-project-button
-          size="small"
-          .srcByLabel=${this.srcByLabel}
-          @open-export-dialog=${() => this._export.open()}
-          @save-project=${() => this.openSaveDialog()}
-          @load-project=${() => this.loadProject()}
+            size="small"
+            .srcByLabel=${this.srcByLabel}
+            @open-export-dialog=${() => this._export.open()}
+            @save-project=${() => this.openSaveDialog()}
+            @load-project=${() => this.loadProject()}
         ></play-project-button
         ></play-button
           ><play-button

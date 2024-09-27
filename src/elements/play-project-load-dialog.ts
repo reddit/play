@@ -26,41 +26,7 @@ export class PlayProjectLoadDialog extends LitElement {
   static override readonly styles: CSSResultGroup = css`
     ${cssReset}
 
-    legend {
-      font-weight: bold;
-    }
-
-    ol {
-      margin-bottom: 0;
-      padding-left: 0;
-
-      /* Moves the numbers inside the element */
-      list-style-position: inside;
-    }
-
-    li {
-      margin-top: var(--space);
-    }
-
-    pre {
-      overflow-y: auto;
-      word-break: break-all;
-      white-space: pre-line;
-      max-height: 100px;
-      font-family: var(--font-family-mono);
-      font-size: 14px;
-      line-height: 1.5;
-      background-color: var(--color-secondary-background);
-      color: inherit;
-
-      border-radius: var(--radius);
-      padding: var(--space);
-      margin-top: var(--space);
-      margin-bottom: var(--space);
-    }
-
-    p,
-    li {
+    p {
       color: inherit;
       /* RPL/Body Regular/14-BodyReg */
       font-family: var(--font-family-sans);
@@ -68,15 +34,6 @@ export class PlayProjectLoadDialog extends LitElement {
       font-style: normal;
       font-weight: 400;
       line-height: 20px;
-    }
-
-    a,
-    a:visited {
-      color: var(--color-link);
-    }
-
-    a:hover {
-      color: var(--color-link-hovered);
     }
 
     select {
@@ -166,7 +123,6 @@ export class PlayProjectLoadDialog extends LitElement {
                     </div>
                   `
                 : html`<p>No projects available</p>`}`}
-
         <div>
           <input
             type="button"
