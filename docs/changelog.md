@@ -2,6 +2,21 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.40
+
+- 341b6cc upgrade devvit dependencies
+- 7237b7f upgrade dependencies
+- 7d2e599 upgrade CodeMirror dependencies
+- cbe821a fix SVG example
+- 231d8a2 Set language and timezone in Metadata (#36)
+- 787a6bf update play user agent (#32)
+- b34b3cb upgrade dependencies
+- 0569bdb Move interdependency RemoteApp
+- e5b6674 Play: some improvements towards sourcemaps. (#25)
+- d68050b Adds LogStream to the "uses" list in the linker (#31)
+- aff219c [DX-7170] Migrate @devvit/protos imports to paths (#30)
+- baa9c0d Node v18 -> v22 (#29)
+
 ## v0.0.39
 
 - 8882b0b upgrade dependencies
