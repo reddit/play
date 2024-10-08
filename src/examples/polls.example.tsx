@@ -1,4 +1,4 @@
-import {Devvit} from '@devvit/public-api'
+import {Devvit, useState} from '@devvit/public-api'
 
 type Tally = [option: string, votes: number]
 const tallies: readonly Tally[] = [
@@ -52,9 +52,9 @@ const Footer = (props: {children?: Devvit.ElementChildren}) => (
 Devvit.addCustomPostType({
   name: 'Polls Example',
   height: 'tall',
-  render: context => {
-    const [selection, setSelection] = context.useState('')
-    const [hasVoted, setHasVoted] = context.useState(false)
+  render: () => {
+    const [selection, setSelection] = useState('')
+    const [hasVoted, setHasVoted] = useState(false)
 
     const VotingScreen = (
       <vstack padding='medium' alignment='start' gap='medium' grow>

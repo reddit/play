@@ -1,4 +1,4 @@
-import {Devvit} from '@devvit/public-api'
+import {Devvit, useState, useInterval} from '@devvit/public-api'
 
 function getCurrentTime() {
   const now = new Date()
@@ -10,10 +10,10 @@ function getCurrentTime() {
 
 Devvit.addCustomPostType({
   name: 'Clock',
-  render: context => {
-    const [time, setTime] = context.useState(() => getCurrentTime())
+  render: () => {
+    const [time, setTime] = useState(() => getCurrentTime())
     const tick = () => setTime(() => getCurrentTime())
-    context.useInterval(tick, 1000).start()
+    useInterval(tick, 1000).start()
 
     return (
       <vstack alignment='center middle' height='100%'>
