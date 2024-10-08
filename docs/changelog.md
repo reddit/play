@@ -2,6 +2,10 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.41
+
+- 7194c8a default play to 0.11.x (#38)
+
 ## v0.0.40
 
 - 341b6cc upgrade devvit dependencies
