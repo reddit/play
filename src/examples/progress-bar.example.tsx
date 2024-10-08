@@ -1,9 +1,9 @@
-import {Devvit} from '@devvit/public-api'
+import {Devvit, useState} from '@devvit/public-api'
 
 Devvit.addCustomPostType({
   name: 'Progress bar example',
-  render: context => {
-    const [progress, setProgress] = context.useState(30)
+  render: () => {
+    const [progress, setProgress] = useState(30)
     return (
       <vstack
         alignment='center middle'

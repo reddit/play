@@ -40,7 +40,7 @@ export const defaultSettings: Readonly<SettingsSave> = {
   useLocalRuntime: true,
   useRemoteRuntime: false,
   useSpeculativeExecution: false,
-  useUIRequest: false,
+  useUIRequest: true,
   enableLocalAssets: false,
   assetsFilesystemType: 'virtual',
   version: 1

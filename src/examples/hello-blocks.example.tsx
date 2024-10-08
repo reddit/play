@@ -1,9 +1,9 @@
-import {Devvit} from '@devvit/public-api'
+import {Devvit, useState} from '@devvit/public-api'
 
 Devvit.addCustomPostType({
   name: 'Say Hello',
-  render: context => {
-    const [counter, setCounter] = context.useState(0)
+  render: () => {
+    const [counter, setCounter] = useState(0)
     return (
       <vstack alignment='center middle' height='100%' gap='large'>
         <text size='xxlarge' weight='bold'>
