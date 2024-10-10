@@ -20,12 +20,17 @@ git log "$(git describe --tags --abbrev=0)..@" --oneline
 
 read -p 'commit changelog; <enter> to continue, <ctrl-c> to abort: '
 
+echo 'clearing outdated artifacts...'
 # Clear outdated artifacts.
 npm run clean
+echo 'done'
 
+echo 'validating the installation...'
 # Validate the installation. See `npm help ci`.
 npm ci
+echo 'done'
 
+echo 'creating a version...'
 # This will create a new version commit and tag on the current branch like
 # `v1.2.3`.
 npm version "$VERSION_TYPE"
