@@ -4,3 +4,4 @@
 /src/bundler/tsd.json
 /src/typescript/typescript.js
 /.idea/
+.DS_Store
