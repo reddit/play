@@ -2,6 +2,10 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.42
+
+- 5133c10 Don't require more than Node 20 (#39)
+
 ## v0.0.41
 
 - 7194c8a default play to 0.11.x (#38)
