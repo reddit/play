@@ -22,9 +22,9 @@
     "@typescript/vfs": "1.6.0",
     "@web/dev-server-esbuild": "1.0.2",
     "@web/test-runner": "0.19.0",
-    "@zenfs/core": "0.9.7",
-    "@zenfs/dom": "0.2.6",
-    "@zenfs/zip": "0.3.1",
+    "@zenfs/core": "1.2.7",
+    "@zenfs/dom": "1.0.3",
+    "@zenfs/zip": "0.5.2",
     "codemirror": "6.0.1",
     "esbuild": "0.24.0",
     "idb-keyval": "6.2.1",
@@ -60,7 +60,7 @@
       "gzip": "3.5 KB"
     },
     "dist/play-pen.js": {
-      "none": "26580 KB",
+      "none": "26681 KB",
       "gzip": "4826 KB"
     }
   },

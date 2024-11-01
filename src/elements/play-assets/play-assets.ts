@@ -224,7 +224,7 @@ export class PlayAssets extends ReactiveElement {
       file = fileHandle as File
       await this.#cacheClear()
     }
-    await this.#mountRoot(Zip.create({zipData: await file.arrayBuffer()}))
+    await this.#mountRoot(Zip.create({data: await file.arrayBuffer()}))
     this.#updateState({archiveFilename: fileHandle.name})
   }
 
