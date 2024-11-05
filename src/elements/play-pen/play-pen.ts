@@ -467,7 +467,7 @@ export class PlayPen extends LitElement {
       {
         assets: this._assetsState.map,
         // use a single source of assets to keep things simple
-        webviewAssets: this._assetsState.map
+        webViewAssets: this._assetsState.map
       }
     )
     if (save) this.#autosave()
