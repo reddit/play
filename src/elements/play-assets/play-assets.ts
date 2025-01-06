@@ -9,7 +9,7 @@ import {
   tryGetFile,
   tryQueryPermission
 } from '../../utils/file-access-api.js'
-import {Zip} from '@zenfs/zip'
+import {Zip} from '@zenfs/archives'
 import {Bubble} from '../../utils/bubble.js'
 
 declare global {
@@ -224,7 +224,7 @@ export class PlayAssets extends ReactiveElement {
       file = fileHandle as File
       await this.#cacheClear()
     }
-    await this.#mountRoot(Zip.create({zipData: await file.arrayBuffer()}))
+    await this.#mountRoot(Zip.create({data: await file.arrayBuffer()}))
     this.#updateState({archiveFilename: fileHandle.name})
   }
 
@@ -256,7 +256,17 @@ export class PlayAssets extends ReactiveElement {
 
   async #mountVirtualFS(): Promise<void> {
     if (this.allowStorage) {
-      await this.#mountRoot(WebStorage.create({}))
+      const fs = WebStorage.create({})
+      // dump old localStorage content if it can't be read
+      try {
+        await fs.stat('/')
+      } catch {
+        console.warn(
+          `Couldn't read existing virtual filesystem. A new one will be created.`
+        )
+        await fs.empty()
+      }
+      await this.#mountRoot(fs)
     } else {
       await this.#mountRoot(InMemory.create({}))
     }

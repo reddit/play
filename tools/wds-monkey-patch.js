@@ -14,6 +14,8 @@ export const monkeyPatchCJS = () => ({
             export class Readable {};
             export class Writable {};
           `
+    } else if (context.path.endsWith('eventemitter3/index.js')) {
+      return 'export default class EventEmitter {};'
     }
   }
 })
