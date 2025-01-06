@@ -9,7 +9,7 @@ import {
   tryGetFile,
   tryQueryPermission
 } from '../../utils/file-access-api.js'
-import {Zip} from '@zenfs/zip'
+import {Zip} from '@zenfs/archives'
 import {Bubble} from '../../utils/bubble.js'
 
 declare global {
@@ -224,7 +224,7 @@ export class PlayAssets extends ReactiveElement {
       file = fileHandle as File
       await this.#cacheClear()
     }
-    await this.#mountRoot(Zip.create({zipData: await file.arrayBuffer()}))
+    await this.#mountRoot(Zip.create({data: await file.arrayBuffer()}))
     this.#updateState({archiveFilename: fileHandle.name})
   }
 
