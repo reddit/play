@@ -256,7 +256,14 @@ export class PlayAssets extends ReactiveElement {
 
   async #mountVirtualFS(): Promise<void> {
     if (this.allowStorage) {
-      await this.#mountRoot(WebStorage.create({}))
+      const fs = WebStorage.create({})
+      // dump old localStorage content if it can't be read
+      try {
+        await fs.stat('/')
+      } catch (e) {
+        await fs.empty()
+      }
+      await this.#mountRoot(fs)
     } else {
       await this.#mountRoot(InMemory.create({}))
     }
