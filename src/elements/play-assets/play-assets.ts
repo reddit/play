@@ -260,7 +260,10 @@ export class PlayAssets extends ReactiveElement {
       // dump old localStorage content if it can't be read
       try {
         await fs.stat('/')
-      } catch (e) {
+      } catch {
+        console.warn(
+          `Couldn't read existing virtual filesystem. A new one will be created.`
+        )
         await fs.empty()
       }
       await this.#mountRoot(fs)
