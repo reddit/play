@@ -2,6 +2,10 @@
 
 :play is [semantically versioned](https://semver.org).
 
+## v0.0.44
+
+- 7d76787 Upgrade zen-fs deps (#41)
+
 ## v0.0.42
 
 - 5133c10 Don't require more than Node 20 (#39)
